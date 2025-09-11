@@ -27,10 +27,10 @@ public class Todo
 
     @Override
     public String toString() {
-        return id + " "
-                + title + " "
-                + description + " "
-                + dueDate + " "
-                + completed;
+        return "ID: " + id + " "
+                + "Title: " + title + " "
+                + "Description: " + description + " "
+                + "Due Date: " + dueDate + " "
+                + "Completed: " + completed;
     }
 }
