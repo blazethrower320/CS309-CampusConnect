@@ -22,6 +22,17 @@ public class TodoController
         TodoList.put(todo.title, todo);
     }
 
+    @GetMapping("/todo/format")
+    public String format()
+    {
+        String todoFormat = "";
+        for(Todo todo : TodoList.values())
+        {
+            todoFormat = todoFormat + "\n " + todo.toString();
+        }
+        return todoFormat;
+    }
+
     @GetMapping("todo/lookupid/{id}")
     public Todo LookupTodoID(@PathVariable String id)
     {
