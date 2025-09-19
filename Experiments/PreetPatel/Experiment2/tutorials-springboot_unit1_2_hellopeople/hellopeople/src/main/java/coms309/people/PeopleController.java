@@ -1,5 +1,7 @@
 package coms309.people;
 
+import jakarta.websocket.server.PathParam;
+import lombok.Getter;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -102,10 +104,31 @@ public class PeopleController {
 
     @PatchMapping("/people/{firstName}")
     public Person updatePersonPatch(@PathVariable String firstName, @RequestBody Person p) {
-        p.setFirstName(firstName);
-        //peopleList.replace(firstName, p);
-        //return peopleList.get(firstName);
-        return p;
+        Person updatedperson = peopleList.get(firstName);
+        updatedperson.setFirstName(p.getFirstName());
+        peopleList.put(firstName, updatedperson);
+        return updatedperson;
     }
+
+    @PatchMapping("/people")
+    public Person newPerson(@RequestParam("firstName") String firstName, @RequestBody Person p){
+        Person update = peopleList.get(firstName);
+        update.setFirstName(p.getFirstName());
+        peopleList.put(firstName, update);
+        return update;
+    }
+
+    @GetMapping("/people/address/{address}")
+    public HashMap<String,Person> newPerson(@PathVariable String address){
+        HashMap<String, Person> peopleWithThisAddress = new  HashMap<>();
+        for(Person current : peopleList.values()){
+            if(current.getAddress().equals(address)){
+                peopleWithThisAddress.put(current.getFirstName(),current);
+            }
+        }
+        return peopleWithThisAddress;
+    }
+
+
 } // end of people controller
 
