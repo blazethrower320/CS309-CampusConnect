@@ -1,15 +1,12 @@
-package onetoone;
+package CampusConnect;
 
+import CampusConnect.Database.Models.Users.User;
+import CampusConnect.Database.Models.Users.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-
-import onetoone.Laptops.Laptop;
-import onetoone.Laptops.LaptopRepository;
-import onetoone.Users.User;
-import onetoone.Users.UserRepository;
 
 /**
  * 
@@ -34,6 +31,22 @@ class Main {
      * As mentioned in User.java just associating the Laptop object with the User will save it into the database because of the CascadeType
      */
     @Bean
+    CommandLineRunner initUsers(UserRepository userRepository) {
+        return args -> {
+            userRepository.deleteAll();
+            User user1 = new User("John", "zeet", "JohnZeet", "password");
+            User user2 = new User("Zach", "wehet", "Zach", "password");
+            User user3 = new User("Chase", "woodle", "Chase", "password");
+
+            // This is like INSERT
+            userRepository.save(user1);
+            userRepository.save(user2);
+            userRepository.save(user3);
+
+        };
+    }
+    /*
+    @Bean
     CommandLineRunner initUser(UserRepository userRepository, LaptopRepository laptopRepository) {
         return args -> {
             User user1 = new User("John", "john@somemail.com");
@@ -51,5 +64,5 @@ class Main {
 
         };
     }
-
+    */
 }
