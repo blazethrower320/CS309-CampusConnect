@@ -1,4 +1,4 @@
-package onetoone;
+package CampusConnect;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import onetoone.Laptops.Laptop;
-import onetoone.Laptops.LaptopRepository;
-import onetoone.Users.User;
-import onetoone.Users.UserRepository;
+import CampusConnect.Laptops.Laptop;
+import CampusConnect.Laptops.LaptopRepository;
+import CampusConnect.Users.User;
+import CampusConnect.Users.UserRepository;
 
 /**
  * 

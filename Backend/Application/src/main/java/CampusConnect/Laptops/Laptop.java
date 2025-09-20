@@ -1,4 +1,4 @@
-package onetoone.Laptops;
+package CampusConnect.Laptops;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,7 +8,7 @@ import jakarta.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import onetoone.Users.User;
+import CampusConnect.Users.User;
 
 /**
  * 

@@ -1,4 +1,4 @@
-package onetoone.Laptops;
+package CampusConnect.Laptops;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package onetoone.Users;
+package CampusConnect.Users;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 
-import onetoone.Laptops.Laptop;
+import CampusConnect.Laptops.Laptop;
 
 /**
  * 
