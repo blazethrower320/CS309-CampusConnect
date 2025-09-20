@@ -14,7 +14,7 @@ public class TutorController
     TutorRepository tutorRepository;
 
     @GetMapping(path = "/tutors")
-    public List<User> getAllTutors()
+    public List<Tutor> getAllTutors()
     {
         return tutorRepository.findAll();
     }
