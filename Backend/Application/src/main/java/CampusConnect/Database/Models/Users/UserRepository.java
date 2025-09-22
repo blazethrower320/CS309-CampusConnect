@@ -1,4 +1,8 @@
+<<<<<<< HEAD:Backend/Application/src/main/java/CampusConnect/Database/Models/Users/UserRepository.java
 package CampusConnect.Database.Models.Users;
+=======
+package CampusConnect.Users;
+>>>>>>> main:Backend/Application/src/main/java/CampusConnect/Users/UserRepository.java
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
