@@ -8,20 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-<<<<<<< HEAD
-=======
-import CampusConnect.Laptops.Laptop;
-import CampusConnect.Laptops.LaptopRepository;
-import CampusConnect.Users.User;
-import CampusConnect.Users.UserRepository;
-
->>>>>>> main
-/**
- * 
- * @author Vivek Bengre
- * 
- */ 
-
 @SpringBootApplication
 @EnableJpaRepositories
 class Main {
