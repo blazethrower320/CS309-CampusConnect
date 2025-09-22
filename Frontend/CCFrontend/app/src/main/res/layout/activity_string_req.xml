@@ -34,4 +34,11 @@
         android:layout_marginTop="10dp"
         android:text="Mock Request" />
 
+    <Button
+        android:id="@+id/backStrReqBtn"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:text="Back"/>
+
 </androidx.appcompat.widget.LinearLayoutCompat>
