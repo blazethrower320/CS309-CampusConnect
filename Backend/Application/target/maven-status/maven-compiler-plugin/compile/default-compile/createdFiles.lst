@@ -1,7 +1,10 @@
 CampusConnect\Database\Models\Tutors\Tutor.class
+CampusConnect\Database\Models\Classes\ClassesRepository.class
 CampusConnect\Database\Models\Tutors\TutorController.class
 CampusConnect\Database\Models\Users\User.class
+CampusConnect\Database\Models\Classes\ClassesController.class
 CampusConnect\Database\Models\Tutors\TutorRepository.class
+CampusConnect\Database\Models\Classes\Classes.class
 CampusConnect\Database\Models\Users\UserRepository.class
 CampusConnect\Main.class
 CampusConnect\Database\Models\Users\UserController.class

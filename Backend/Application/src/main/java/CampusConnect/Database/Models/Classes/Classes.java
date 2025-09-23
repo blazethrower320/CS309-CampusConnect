@@ -6,7 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class Tutor {
+public class Classes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userId;
@@ -14,12 +14,16 @@ public class Tutor {
     private String classCode;
     private int classCount;
 
-    public void Classes(long user_id, int classCount, String className, String classCode) {
+    public Classes(){}
+
+    public Classes(long user_id, int classCount, String className, String classCode) {
         this.userId = userId;
         this.className = className;
         this.classCode = classCode;
+        this.classCount = classCount;
     }
     public long getUserId() { return userId; }
     public String getclassName() { return className; }
     public String getclassCode() { return classCode; }
+    public int getclassCount() {return classCount; }
 }
