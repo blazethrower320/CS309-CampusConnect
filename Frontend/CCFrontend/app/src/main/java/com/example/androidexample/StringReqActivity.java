@@ -2,6 +2,7 @@ package com.example.androidexample;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +22,7 @@ public class StringReqActivity extends AppCompatActivity {
 
     // UI components
     private Button btnStringReq;
+    private Button backStrReqBtn;
     private TextView msgResponse;
 
     // API URL for fetching string response
@@ -36,7 +38,19 @@ public class StringReqActivity extends AppCompatActivity {
 
         // Initializing UI components
         btnStringReq = findViewById(R.id.btnStringReq);
+        backStrReqBtn = findViewById(R.id.backStrReqBtn);
+
         msgResponse = findViewById(R.id.msgResponse);
+
+        //Setting click listener on the back button to trigger a new intent
+        backStrReqBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                startActivity(new Intent(StringReqActivity.this, MainActivity.class));
+            }
+        });
 
         // Setting click listener on the button to trigger the string request
         btnStringReq.setOnClickListener(new View.OnClickListener() {
