@@ -1,5 +1,7 @@
 package CampusConnect;
 
+import CampusConnect.Database.Models.Classes.Classes;
+import CampusConnect.Database.Models.Classes.ClassesRepository;
 import CampusConnect.Database.Models.Users.User;
 import CampusConnect.Database.Models.Users.UserRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -32,10 +34,30 @@ class Main {
             User user3 = new User("Chase", "woodle", "Chase", "password");
 
             // This is like INSERT
+
+            Classes class1 = new Classes(1, 23, "Linear Algebra", "MATH207");
+            Classes class2 = new Classes(2, 0, "Differential Equations", "MATH267");
+            Classes class3 = new Classes(3, 17, "Calc 2", "MATH166");
+
+
             userRepository.save(user1);
             userRepository.save(user2);
             userRepository.save(user3);
 
+
+        };
+    }
+    @Bean
+    CommandLineRunner initClasses(ClassesRepository classesRepository) {
+        return args -> {
+            Classes class1 = new Classes(1, 23, "Linear Algebra", "MATH207");
+            Classes class2 = new Classes(2, 0, "Differential Equations", "MATH267");
+            Classes class3 = new Classes(3, 17, "Calc 2", "MATH166");
+
+            classesRepository.deleteAll();
+            classesRepository.save(class1);
+            classesRepository.save(class2);
+            classesRepository.save(class3);
         };
     }
 }
