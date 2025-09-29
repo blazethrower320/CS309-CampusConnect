@@ -26,6 +26,7 @@ public class StringReqActivity extends AppCompatActivity {
     private Button btnStringReq;
     private Button backStrReqBtn;
     private Button majorReqBtn;
+    private Button passReqBtn;
     private TextView msgResponse;
 
     // API URL for fetching string response
@@ -44,6 +45,7 @@ public class StringReqActivity extends AppCompatActivity {
         btnStringReq = findViewById(R.id.btnStringReq);
         backStrReqBtn = findViewById(R.id.backStrReqBtn);
         majorReqBtn = findViewById(R.id.btnmajorReq);
+        passReqBtn = findViewById(R.id.btnPassReq);
 
         msgResponse = findViewById(R.id.msgResponse);
 
@@ -72,7 +74,12 @@ public class StringReqActivity extends AppCompatActivity {
                 makeMajReq();
             }
         });
-
+        passReqBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                makePassReq();
+            }
+        });
     }
 
 
@@ -151,6 +158,37 @@ public class StringReqActivity extends AppCompatActivity {
                     }
                 }
         );
+
+
+        // Add request to queue so it actually runs
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
+
+    private void makePassReq()
+    {
+        StringRequest stringRequest = new StringRequest(
+                Request.Method.GET,
+                URL_PASS_REQ,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("Volley Response", response);
+                        msgResponse.setText(response);
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error)
+                    {
+                        Log.e("Volley Error", error.toString());
+                        msgResponse.setText("Failed to load data. Please try again.");
+                    }
+                }
+        );
+
 
         // Add request to queue so it actually runs
         RequestQueue queue = Volley.newRequestQueue(this);

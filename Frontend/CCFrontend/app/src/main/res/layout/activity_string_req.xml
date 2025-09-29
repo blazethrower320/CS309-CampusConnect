@@ -50,12 +50,14 @@
         android:id="@+id/btnmajorReq"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Username Request"
-        android:background="@drawable/btn_secondary"
-        android:textColor="@android:color/white"
-        android:elevation="6dp"
-        android:padding="12dp" />
+        android:layout_marginTop="10dp"
+        android:text="Major Request" />
+    <Button
+        android:id="@+id/btnPassReq"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Password Request" />
 
     <!-- Back button -->
     <Button
