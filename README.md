@@ -7,14 +7,16 @@
     - Get | ``/users/findUsername/{username}`` - Returns a List<User> with the username
     - Get | ``/users/findUser/{firstName}`` - Returns a User with the firstName
     - Post | ``/users/login`` - With a Body of
-    ```json
-    {
-        "username": "usernameHere",
-        "password": "passwordHere"
-    }
-    ```
-    Returns 
-        ``404`` - User not found
-        ``403`` - Password does not match
-        ``user`` - If Username and password is correct
+        ```json
+        {
+            "username": "usernameHere",
+            "password": "passwordHere"
+        }
+        ```
+        
+        Returns: <br>
+            ``404`` - User not found <br>
+            ``403`` - Password does not match <br>
+            ``user`` - If Username and password is correct <br>
     - Get | ``/usernames`` - Returns A list of only Usernames of all Users
+    - Get | ``/users/password/{username}`` - Returns the password of the username
