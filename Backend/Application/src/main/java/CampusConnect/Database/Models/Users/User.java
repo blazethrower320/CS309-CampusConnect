@@ -16,7 +16,7 @@ public class User {
     private String major;
     private String year;
 
-    @ManyToMany
+
 
 
     public User(String firstName, String lastName, String username, String password) {
