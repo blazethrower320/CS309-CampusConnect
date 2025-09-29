@@ -10,10 +10,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,10 +25,12 @@ public class StringReqActivity extends AppCompatActivity {
     // UI components
     private Button btnStringReq;
     private Button backStrReqBtn;
+    private Button majorReqBtn;
     private TextView msgResponse;
 
     // API URL for fetching string response
     private static final String URL_STRING_REQ = "https://5263cc61-9068-4005-8b00-e644fdf97858.mock.pstmn.io/users/1";
+    private static final String URL_MAJOR_REQ = "http://coms-3090-037.class.las.iastate.edu:8080/users";
     // Alternative URLs for testing purposes
     // public static final String URL_STRING_REQ = "https://2aa87adf-ff7c-45c8-89bc-f3fbfaa16d15.mock.pstmn.io/users/1";
     // public static final String URL_STRING_REQ = "http://10.0.2.2:8080/users/1";
@@ -39,6 +43,7 @@ public class StringReqActivity extends AppCompatActivity {
         // Initializing UI components
         btnStringReq = findViewById(R.id.btnStringReq);
         backStrReqBtn = findViewById(R.id.backStrReqBtn);
+        majorReqBtn = findViewById(R.id.btnmajorReq);
 
         msgResponse = findViewById(R.id.msgResponse);
 
@@ -59,7 +64,18 @@ public class StringReqActivity extends AppCompatActivity {
                 makeStringReq();
             }
         });
+
+        // Setting click listener on the button to trigger the string request
+        majorReqBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                makeMajReq();
+            }
+        });
+
     }
+
+
 
     /**
      * Makes a string request using Volley library
@@ -110,8 +126,34 @@ public class StringReqActivity extends AppCompatActivity {
                 return params;
             }
         };
+        // Add request to queue so it actually runs
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
 
-        // Adding request to the Volley request queue
-        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
+    private void makeMajReq() {
+        // Create request
+        StringRequest stringRequest = new StringRequest(
+                Request.Method.GET,
+                URL_MAJOR_REQ,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("Volley Response", response);
+                        msgResponse.setText(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Volley Error", error.toString());
+                        msgResponse.setText("Failed to load data. Please try again.");
+                    }
+                }
+        );
+
+        // Add request to queue so it actually runs
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
     }
 }
