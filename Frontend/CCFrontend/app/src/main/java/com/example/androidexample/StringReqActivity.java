@@ -46,8 +46,8 @@ public class StringReqActivity extends AppCompatActivity {
         // Initializing UI components
         btnStringReq = findViewById(R.id.btnStringReq);
         backStrReqBtn = findViewById(R.id.backStrReqBtn);
-        majorReqBtn = findViewById(R.id.btnmajorReq);
-        passReqBtn = findViewById(R.id.btnPassReq);
+        majorReqBtn = findViewById(R.id.mjrReqBtn);
+        passReqBtn = findViewById(R.id.passReqBtn);
 
         msgResponse = findViewById(R.id.msgResponse);
 
