@@ -1,39 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center_horizontal"
-    android:padding="20dp">  <!-- Adds padding for better spacing -->
+    android:padding="24dp"
+    android:background="#F8F9FA">
 
+    <!-- Title -->
     <TextView
+        android:id="@+id/responseTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:textSize="30sp"
-        android:text="Response: "
+        android:text="Response"
+        android:textSize="26sp"
         android:textStyle="bold"
-        android:gravity="center" />  <!-- Centers text inside TextView -->
+        android:textColor="#212121"
+        android:gravity="center" />
 
+    <!-- Response message -->
     <TextView
         android:id="@+id/msgResponse"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:text=""
+        android:layout_marginTop="16dp"
+        android:text="Waiting for request..."
         android:textSize="16sp"
-        android:gravity="center" />  <!-- Centers text inside TextView -->
+        android:textColor="#616161"
+        android:gravity="center" />
 
+    <!-- Mock Request button -->
     <Button
         android:id="@+id/btnStringReq"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Mock Request" />
+        android:layout_marginTop="32dp"
+        android:text="Mock Request"
+        android:background="@drawable/btn_primary"
+        android:textColor="@android:color/white"
+        android:elevation="6dp"
+        android:padding="12dp" />
 
+    <!-- Username Request button -->
     <Button
         android:id="@+id/btnmajorReq"
         android:layout_width="match_parent"
@@ -47,12 +59,15 @@
         android:layout_marginTop="10dp"
         android:text="Password Request" />
 
+    <!-- Back button -->
     <Button
         android:id="@+id/backStrReqBtn"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:text="Back"/>
+        android:layout_width="120dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="24dp"
+        android:text="Back"
+        android:background="@drawable/btn_outline"
+        android:textColor="#424242"
+        android:elevation="4dp"/>
 
-
-</androidx.appcompat.widget.LinearLayoutCompat>
+</LinearLayout>
