@@ -76,5 +76,13 @@ public class UserController {
         }
         return usernamesReturn;
     }
+
+    @GetMapping("/users/password/{username}")
+    public String getPasswordByUsername(@PathVariable String username){
+        return userRepository.findByUsername(username).getPassword();
+    }
+
+
+
 }
 
