@@ -80,5 +80,8 @@ public class UserController {
     public String getPasswordByUsername(@PathVariable String username){
         return userRepository.findByUsername(username).getPassword();
     }
+
+
+
 }
 
