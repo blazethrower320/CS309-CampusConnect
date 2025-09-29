@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7efeccab-0aa2-4489-b58e-6852d8e29fb2" name="Changes" comment="">
+    <list default="true" id="7efeccab-0aa2-4489-b58e-6852d8e29fb2" name="Changes" comment="Added function to get password from a given username.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/User.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,10 +23,13 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$/../.." value="Carson-Week5" />
+        <entry key="$PROJECT_DIR$/../.." value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
@@ -49,7 +52,7 @@
     "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "Spring Boot.Main.executor": "Run",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "PreetWeek5",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/blaze/Desktop/COMS309/3_hosen_1/Experiments/CarsonTorrey/Unit2_1_OneToone",
     "node.js.detected.package.eslint": "true",
@@ -63,7 +66,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Spring Boot.Main">
+  <component name="RunManager">
     <configuration name="Main (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="CampusConnect" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="onetoone.Main" />
@@ -112,9 +115,42 @@
       <workItem from="1759178950671" duration="522000" />
       <workItem from="1759179485039" duration="3739000" />
     </task>
+    <task id="LOCAL-00001" summary="Added function to get password from a given username.">
+      <option name="closed" value="true" />
+      <created>1759183501539</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1759183501539</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Added function to get password from a given username.">
+      <option name="closed" value="true" />
+      <created>1759183630090</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1759183630090</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added return password given by username function." />
+    <MESSAGE value="Added function to get password from a given username." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added function to get password from a given username." />
   </component>
 </project>
