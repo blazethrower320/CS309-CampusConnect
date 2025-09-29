@@ -1,5 +1,7 @@
 package CampusConnect.Database.Models.Users;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -61,6 +63,17 @@ public class UserController {
 
         // Username and Password is correct
         return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/usernames")
+    public List<String> getAllUsernames()
+    {
+        ArrayList<String> usernamesReturn = new ArrayList<String>();
+        for(User user : getAllUsers())
+        {
+            usernamesReturn.add(user.getUsername());
+        }
+        return usernamesReturn;
     }
 }
 
