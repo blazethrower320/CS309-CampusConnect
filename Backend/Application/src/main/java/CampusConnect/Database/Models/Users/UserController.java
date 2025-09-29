@@ -2,8 +2,6 @@ package CampusConnect.Database.Models.Users;
 
 import java.util.List;
 
-import CampusConnect.Database.Models.Tutors.TutorRepository;
-import CampusConnect.Models.Credentials;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +12,6 @@ public class UserController {
 
     @Autowired
     UserRepository userRepository;
-    @Autowired
-    TutorRepository tutorRepository;
 
     private String success = "{\"message\":\"success\"}";
     private String failure = "{\"message\":\"failure\"}";
@@ -46,10 +42,10 @@ public class UserController {
     }
 
     @PostMapping("/users/login")
-    public ResponseEntity<Object> loginUser(@RequestBody Credentials credentials)
+    public ResponseEntity<Object> loginUser(@RequestBody User userBody)
     {
-        String username = credentials.getUsername();
-        String password = credentials.getPassword();
+        String username = userBody.getUsername();
+        String password = userBody.getPassword();
 
         User user = userRepository.findByUsername(username);
         if(user == null)
