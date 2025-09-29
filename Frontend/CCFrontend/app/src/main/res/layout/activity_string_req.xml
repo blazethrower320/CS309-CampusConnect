@@ -6,68 +6,87 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center_horizontal"
+    android:gravity="center"
     android:padding="24dp"
-    android:background="#F8F9FA">
+    android:background="@drawable/gradient_bg">
 
-    <!-- Title -->
-    <TextView
-        android:id="@+id/responseTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Response"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        android:textColor="#212121"
-        android:gravity="center" />
+    <LinearLayout
+        android:layout_width="302dp"
+        android:layout_height="600dp"
+        android:background="#63666A"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:gravity="center_horizontal">
 
-    <!-- Response message -->
-    <TextView
-        android:id="@+id/msgResponse"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Waiting for request..."
-        android:textSize="16sp"
-        android:textColor="#616161"
-        android:gravity="center" />
+        <!-- Title -->
+        <TextView
+            android:id="@+id/responseTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="Response"
+            android:textColor="#FFFFFF"
+            android:textSize="26sp"
+            android:textStyle="bold" />
 
-    <!-- Mock Request button -->
-    <Button
-        android:id="@+id/btnStringReq"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Mock Request"
-        android:background="@drawable/btn_primary"
-        android:textColor="@android:color/white"
-        android:elevation="6dp"
-        android:padding="12dp" />
+        <!-- Response message -->
+        <TextView
+            android:id="@+id/msgResponse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="Waiting for request..."
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
 
-    <!-- Username Request button -->
-    <Button
-        android:id="@+id/btnmajorReq"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Major Request" />
-    <Button
-        android:id="@+id/btnPassReq"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Password Request" />
+        <!-- Mock Request button -->
+        <Button
+            android:id="@+id/btnStringReq"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/btn_primary"
+            android:elevation="6dp"
+            android:padding="12dp"
+            android:text="Mock Request"
+            android:textColor="@android:color/white" />
 
-    <!-- Back button -->
-    <Button
-        android:id="@+id/backStrReqBtn"
-        android:layout_width="120dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="24dp"
-        android:text="Back"
-        android:background="@drawable/btn_outline"
-        android:textColor="#424242"
-        android:elevation="4dp"/>
+        <!-- Username Request button -->
+        <Button
+            android:id="@+id/mjrReqBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/btn_primary"
+            android:elevation="6dp"
+            android:padding="12dp"
+            android:text="Username Request"
+            android:textColor="@android:color/white" />
 
+        <!-- Password Request button -->
+        <Button
+            android:id="@+id/passReqBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/btn_primary"
+            android:elevation="6dp"
+            android:padding="12dp"
+            android:text="Password Request"
+            android:textColor="@android:color/white" />
+
+        <!-- Back button -->
+        <Button
+            android:id="@+id/backStrReqBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/btn_outline"
+            android:elevation="4dp"
+            android:text="Back"
+            android:textColor="#FFFFFF" />
+
+    </LinearLayout>
 </LinearLayout>
