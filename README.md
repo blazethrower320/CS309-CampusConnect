@@ -19,4 +19,4 @@
             ``403`` - Password does not match <br>
             ``user`` - If Username and password is correct <br>
     - Get | ``/usernames`` - Returns A list of only Usernames of all Users
-    - Get | ``/users/password/{username} - Returns the password of the username
+    - Get | ``/users/password/{username}`` - Returns the password of the username
