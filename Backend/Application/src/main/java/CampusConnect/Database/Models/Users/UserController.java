@@ -65,6 +65,7 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    // Returns the list of usernames
     @GetMapping("/usernames")
     public List<String> getAllUsernames()
     {
