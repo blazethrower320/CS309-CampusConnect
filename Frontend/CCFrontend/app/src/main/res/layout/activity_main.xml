@@ -5,24 +5,27 @@
     tools:context=".MainActivity"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:background="@drawable/gradient_bg"
     android:orientation="vertical">
 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textStyle="bold"
         android:text="CampusConnect Login"
         android:layout_gravity="center"
         android:layout_marginTop="100dp"
         android:layout_marginBottom="150dp"
         android:textSize="30dp"
-        android:textColor="#474747">
+        android:textColor="#FFFFFF">
     </TextView>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:background="#33FFFFFF"
         android:layout_marginBottom="30dp"
         android:orientation="horizontal">
 
@@ -47,6 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:background="#20FFFFFF"
         android:orientation="horizontal">
 
         <TextView
@@ -71,7 +75,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="200dp"
         android:orientation="horizontal">
 
         <Button
