@@ -1,6 +1,5 @@
 package CampusConnect.Database.Models.Sessions;
 
-import CampusConnect.Database.Models.User_Sessions.User_Sessions;
 import CampusConnect.Database.Models.Users.User;
 import jakarta.persistence.*;
 
@@ -17,13 +16,8 @@ public class Sessions
     private String className;
     private String classCode;
 
-    private String name;
-    @ManyToMany(mappedBy = "studySessions")
-    @JoinTable(
-            name = "User_Sessions",
-            joinColumns = @JoinColumn(name = "session_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
+
+    @ManyToMany(mappedBy = "userSessions")
     private Set<User> users;
 
 

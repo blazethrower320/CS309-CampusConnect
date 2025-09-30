@@ -1,7 +1,6 @@
 package CampusConnect.Database.Models.Users;
 
 import CampusConnect.Database.Models.Sessions.Sessions;
-import CampusConnect.Database.Models.User_Sessions.User_Sessions;
 import jakarta.persistence.*;
 
 import java.util.Set;
