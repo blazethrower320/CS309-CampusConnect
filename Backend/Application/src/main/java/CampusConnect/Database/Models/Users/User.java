@@ -1,5 +1,6 @@
 package CampusConnect.Database.Models.Users;
 
+import CampusConnect.Database.Models.Sessions.Sessions;
 import CampusConnect.Database.Models.User_Sessions.User_Sessions;
 import jakarta.persistence.*;
 
@@ -8,7 +9,6 @@ import java.util.Set;
 @Entity
 public class User {
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
     private String firstName;
@@ -22,8 +22,13 @@ public class User {
 
 
 
-    @OneToMany(mappedBy = "user")
-    Set<User_Sessions> user_sessions;
+    @ManyToMany
+    @JoinTable(
+            name = "User_Sessions",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "session_id")
+    )
+    private Set<Sessions> userSessions;
     public User(String firstName, String lastName, String username, String password) {
         this.firstName = firstName;
         this.lastName = lastName;

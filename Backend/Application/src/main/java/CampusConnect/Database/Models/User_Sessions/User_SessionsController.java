@@ -24,12 +24,7 @@ public class User_SessionsController {
     }
 
 
-    //Returns the class code given from the class name.
-    @GetMapping(path = "/classes/code/{className}")
-    public String getClassCode(@PathVariable String className){
-        String currentClass = User_SessionsRepository.findByclassName(className).getclassCode();
-        return currentClass;
-    }
+
 
 
 
