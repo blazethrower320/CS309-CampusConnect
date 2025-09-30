@@ -1,9 +1,9 @@
 package CampusConnect.Database.Models.Classes;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import CampusConnect.Database.Models.Sessions.Sessions;
+import jakarta.persistence.*;
+
+import java.util.Set;
 
 @Entity
 public class Classes {
@@ -12,6 +12,9 @@ public class Classes {
     private long classId;
     private String className;
     private String classCode;
+
+    @OneToMany(mappedBy = "sessionClass")
+    Set<Sessions> sessions;
 
     public Classes(){}
 
