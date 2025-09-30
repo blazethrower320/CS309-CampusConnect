@@ -4,7 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7efeccab-0aa2-4489-b58e-6852d8e29fb2" name="Changes" comment="Added function to get password from a given username." />
+    <list default="true" id="7efeccab-0aa2-4489-b58e-6852d8e29fb2" name="Changes" comment="Added function to get password from a given username.">
+      <change afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/User_Sessions/User_Sessions.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/User_Sessions/User_SessionsController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/User_Sessions/User_SessionsRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Classes/Classes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Classes/Classes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Classes/ClassesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Classes/ClassesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Sessions/Sessions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Sessions/Sessions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/User.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -51,7 +60,7 @@
     "Spring Boot.Main.executor": "Run",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/blaze/Desktop/COMS309/3_hosen_1/Experiments/CarsonTorrey/Unit2_1_OneToone",
+    "last_opened_file_path": "C:/Users/messi/ComS309/3_hosen_1/Backend/Application/src/main/java/CampusConnect/Database/Models/User_Sessions",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -63,6 +72,11 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\messi\ComS309\3_hosen_1\Backend\Application\src\main\java\CampusConnect\Database\Models\User_Sessions" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="Main (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="CampusConnect" />

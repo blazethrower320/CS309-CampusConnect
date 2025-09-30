@@ -1,4 +1,4 @@
-package CampusConnect.Database.Models.Classes;
+package CampusConnect.Database.Models.User_Sessions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -7,27 +7,27 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public class ClassesController {
+public class User_SessionsController {
     @Autowired
-    ClassesRepository ClassesRepository;
+    User_SessionsRepository User_SessionsRepository;
 
     //Returns all classes
     @GetMapping(path = "/classes")
-    public List<Classes> getAllClasses() {
-        return ClassesRepository.findAll();
+    public List<User_Sessions> getAllClasses() {
+        return User_SessionsRepository.findAll();
     }
 
     //Returns the class given from the class id.
     @GetMapping(path = "/classes/{id}")
-    public Classes getClassById(@PathVariable Long id) {
-        return ClassesRepository.findById(id).orElse(null);
+    public User_Sessions getClassById(@PathVariable Long id) {
+        return User_SessionsRepository.findById(id).orElse(null);
     }
 
 
     //Returns the class code given from the class name.
     @GetMapping(path = "/classes/code/{className}")
     public String getClassCode(@PathVariable String className){
-        String currentClass = ClassesRepository.findByclassName(className).getclassCode();
+        String currentClass = User_SessionsRepository.findByclassName(className).getclassCode();
         return currentClass;
     }
 

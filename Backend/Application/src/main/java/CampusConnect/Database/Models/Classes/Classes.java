@@ -9,21 +9,18 @@ import jakarta.persistence.Id;
 public class Classes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long userId;
+    private long classId;
     private String className;
     private String classCode;
-    private int classCount;
 
     public Classes(){}
 
     public Classes(long user_id, int classCount, String className, String classCode) {
-        this.userId = userId;
+        this.classId = classId;
         this.className = className;
         this.classCode = classCode;
-        this.classCount = classCount;
     }
-    public long getUserId() { return userId; }
+    public long getUserId() { return classId; }
     public String getclassName() { return className; }
     public String getclassCode() { return classCode; }
-    public int getclassCount() {return classCount; }
 }

@@ -1,9 +1,9 @@
 package CampusConnect.Database.Models.Sessions;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import CampusConnect.Database.Models.User_Sessions.User_Sessions;
+import jakarta.persistence.*;
+
+import java.util.Set;
 
 @Entity
 public class Sessions
@@ -16,10 +16,14 @@ public class Sessions
     private String className;
     private String classCode;
 
+    private String name;
+
+
 
 
     public Sessions(){}
-
+    @OneToMany(mappedBy = "sessions")
+    Set<User_Sessions> user_sessions;
     public Sessions(long user_id, long tutor_id, long session_id, double rating, String className, String classCode) {
         this.user_id = user_id;
         this.tutor_id = tutor_id;
