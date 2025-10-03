@@ -41,10 +41,26 @@
             android:text="Create Account"
             android:layout_gravity="center"
             android:layout_marginTop="25dp"
-            android:layout_marginBottom="150dp"
+            android:layout_marginBottom="75dp"
             android:textSize="30dp"
             android:textColor="#FFFFFF">
         </TextView>
+
+        <TextView
+            android:id="@+id/msgResponse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_gravity="center"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="110dp"
+            android:textSize="20dp"
+            android:textColor="#CA0000">
+        </TextView>
+
+
+
+
 
         <LinearLayout
             android:paddingRight="10dp"
@@ -65,7 +81,7 @@
             </TextView>
 
             <EditText
-                android:id="@+id/create_username_edt"
+                android:id="@+id/create_username"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:hint="Enter Username"
