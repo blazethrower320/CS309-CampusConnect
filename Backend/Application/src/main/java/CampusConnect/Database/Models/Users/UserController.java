@@ -104,9 +104,9 @@ public class UserController {
         if (usernames.isEmpty()) {    //Username does not match an existing one.
             return userDNE;
         }
-        for (int i = 0; i < usernames.size() ; i++) {
-            if (usernames.get(i).getPassword().equals(userBody.getPassword())) {
-                userRepository.deleteById(usernames.get(i).getUserId());
+        for (User username : usernames) {
+            if (username.getPassword().equals(userBody.getPassword())) {
+                userRepository.deleteById(username.getUserId());
                 return userDeleted;
             }
         }
