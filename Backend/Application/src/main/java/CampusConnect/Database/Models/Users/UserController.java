@@ -19,6 +19,8 @@ public class UserController {
     private String failure = "{\"message\":\"failure\"}";
     private String userNotFound = "User not found";
     private String wrongUsernamePassword = "Wrong username or password";
+    private String userCreated = "New user created";
+    private String userCreationFailed = "New user failed to create";
 
     @GetMapping(path = "/users")
     public List<User> getAllUsers()
@@ -82,7 +84,14 @@ public class UserController {
         return userRepository.findByUsername(username).getPassword();
     }
 
-
-
+    @PostMapping("/users/createUser")
+    public String createUser(@RequestBody User userBody) {
+        if (getAllUserByUsername(userBody.getUsername()) != null) {  //Assume no same usernames
+            return userCreationFailed;
+        } else {
+            User newUser = new User(userBody.getFirstName(), userBody.getLastName(), userBody.getUsername(), userBody.getPassword());
+            return userCreated;
+        }
+    }
 }
 
