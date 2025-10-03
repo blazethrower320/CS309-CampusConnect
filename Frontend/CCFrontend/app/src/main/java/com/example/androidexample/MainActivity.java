@@ -55,14 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         else if (id == R.id.signup_btn)
         {
-            Log.i("PageInfo", "Signup Button Clicked");
+            startActivity(new Intent(MainActivity.this, CreateAccountActivity.class));
         }
-        //else if (id == R.id.btnJsonObjRequest) {
-        //    startActivity(new Intent(MainActivity.this, JsonObjReqActivity.class));
-        //} else if (id == R.id.btnJsonArrRequest) {
-        //    startActivity(new Intent(MainActivity.this, JsonArrReqActivity.class));
-        //} else if (id == R.id.btnImageRequest) {
-        //    startActivity(new Intent(MainActivity.this, ImageReqActivity.class));
-
     }
 }
