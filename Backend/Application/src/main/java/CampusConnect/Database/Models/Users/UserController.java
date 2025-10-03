@@ -19,6 +19,10 @@ public class UserController {
     private String failure = "{\"message\":\"failure\"}";
     private String userNotFound = "User not found";
     private String wrongUsernamePassword = "Wrong username or password";
+    private String userCreated = "New user created";
+    private String userCreationFailed = "New user failed to create";
+    private String userDNE = "User does not exist";
+    private String userDeleted = "User deleted";
 
     @GetMapping(path = "/users")
     public List<User> getAllUsers()
@@ -80,6 +84,33 @@ public class UserController {
     @GetMapping("/users/password/{username}")
     public String getPasswordByUsername(@PathVariable String username){
         return userRepository.findByUsername(username).getPassword();
+    }
+
+    @PostMapping("/users/createUser")
+    public String createUser(@RequestBody User userBody) {
+        if (getAllUserByUsername(userBody.getUsername()).isEmpty()) {  //Assume no same usernames
+            User newUser = new User(userBody.getFirstName(), userBody.getLastName(), userBody.getUsername(), userBody.getPassword());
+            userRepository.save(newUser);
+            return userCreated;
+        } else {
+            return userCreationFailed;
+        }
+    }
+
+    //Only requires username and password currently.
+    @DeleteMapping("/users/deleteUser")
+    public String deleteUser(@RequestBody User userBody) {
+        ArrayList<User> usernames = new ArrayList<>(getAllUserByUsername(userBody.getUsername()));
+        if (usernames.isEmpty()) {    //Username does not match an existing one.
+            return userDNE;
+        }
+        for (User username : usernames) {
+            if (username.getPassword().equals(userBody.getPassword())) {
+                userRepository.deleteById(username.getUserId());
+                return userDeleted;
+            }
+        }
+        return wrongUsernamePassword;
     }
 
 
