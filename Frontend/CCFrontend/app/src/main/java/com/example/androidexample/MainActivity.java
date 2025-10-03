@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -33,23 +34,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onClick(View v)
-    {
-        int id = v.getId(); // Get the ID of the clicked button
+    public void onClick(View v) {
+        int id = v.getId();
 
-        // Check which button was clicked and start the corresponding activity
-        if (id == R.id.btnStringRequest)
-        {
+        if (id == R.id.btnStringRequest) {
             startActivity(new Intent(MainActivity.this, StringReqActivity.class));
         }
-        else if (id == R.id.login_btn)
-        {
+        else if (id == R.id.login_btn) {
             Log.i("PageInfo", "Login Button Clicked");
+
+            // Get username & password inputs
+            EditText usernameEdt = findViewById(R.id.login_username_edt);
+            EditText passwordEdt = findViewById(R.id.login_password_edt);
+
+            String username = usernameEdt.getText().toString().trim();
+            String password = passwordEdt.getText().toString().trim();
+
+            // Placeholder login validation
+            if (username.equals("testuser") && password.equals("password123")) {
+                // If login is successful → go to main menu
+                Intent intent = new Intent(MainActivity.this, MainMenuActivity.class);
+                intent.putExtra("username", username);
+                startActivity(intent);
+            } else {
+                // Show error in password field
+                passwordEdt.setError("Invalid username or password");
+            }
         }
-        else if (id == R.id.signup_btn)
-        {
+        else if (id == R.id.signup_btn) {
             Log.i("PageInfo", "Signup Button Clicked");
         }
-
     }
+
 }
