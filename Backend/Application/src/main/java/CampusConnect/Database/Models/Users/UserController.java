@@ -21,6 +21,8 @@ public class UserController {
     private String wrongUsernamePassword = "Wrong username or password";
     private String userCreated = "New user created";
     private String userCreationFailed = "New user failed to create";
+    private String userDNE = "User does not exist";
+    private String userDeleted = "User deleted";
 
     @GetMapping(path = "/users")
     public List<User> getAllUsers()
@@ -94,5 +96,24 @@ public class UserController {
             return userCreationFailed;
         }
     }
+
+    //Only requires username and password currently.
+    @DeleteMapping("/users/deleteUser")
+    public String deleteUser(@RequestBody User userBody) {
+        ArrayList<User> usernames = new ArrayList<>(getAllUserByUsername(userBody.getUsername()));
+        if (usernames.isEmpty()) {    //Username does not match an existing one.
+            return userDNE;
+        }
+        for (int i = 0; i < usernames.size() ; i++) {
+            if (usernames.get(i).getPassword().equals(userBody.getPassword())) {
+                userRepository.deleteById(usernames.get(i).getUserId());
+                return userDeleted;
+            }
+        }
+        return wrongUsernamePassword;
+    }
+
+
+
 }
 
