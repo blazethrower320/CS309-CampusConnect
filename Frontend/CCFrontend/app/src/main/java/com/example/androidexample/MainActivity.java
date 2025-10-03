@@ -15,7 +15,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public Button loginBtn;
     public Button signupBtn;
 
-    //private Button jsonObjBtn, jsonArrBtn, imgBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,17 +25,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         strBtn = findViewById(R.id.btnStringRequest);
         loginBtn = findViewById(R.id.login_btn);
         signupBtn = findViewById(R.id.signup_btn);
-        //jsonObjBtn = findViewById(R.id.btnJsonObjRequest);
-        //jsonArrBtn = findViewById(R.id.btnJsonArrRequest);
-        //imgBtn = findViewById(R.id.btnImageRequest);
 
         /* Set click listeners for each button */
         strBtn.setOnClickListener(this);
         loginBtn.setOnClickListener(this);
         signupBtn.setOnClickListener(this);
-        //jsonObjBtn.setOnClickListener(this);
-        //jsonArrBtn.setOnClickListener(this);
-        //imgBtn.setOnClickListener(this);
     }
 
     @Override
@@ -57,12 +50,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         {
             Log.i("PageInfo", "Signup Button Clicked");
         }
-        //else if (id == R.id.btnJsonObjRequest) {
-        //    startActivity(new Intent(MainActivity.this, JsonObjReqActivity.class));
-        //} else if (id == R.id.btnJsonArrRequest) {
-        //    startActivity(new Intent(MainActivity.this, JsonArrReqActivity.class));
-        //} else if (id == R.id.btnImageRequest) {
-        //    startActivity(new Intent(MainActivity.this, ImageReqActivity.class));
 
     }
 }
