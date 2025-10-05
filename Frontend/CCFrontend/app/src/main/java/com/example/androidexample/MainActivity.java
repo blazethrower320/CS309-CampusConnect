@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import androidx.appcompat.app.AppCompatAct
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -79,13 +79,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     url,
                     requestBody,
                     response -> {
-                        // ✅ Success: go to main menu
+                        // Success: go to main menu
                         Intent intent = new Intent(MainActivity.this, MainMenuActivity.class);
                         intent.putExtra("username", username);
                         startActivity(intent);
                     },
                     error -> {
-                        // ❌ Error: show feedback
+                        // Error: show feedback
                         if (error.networkResponse != null) {
                             int statusCode = error.networkResponse.statusCode;
                             if (statusCode == 404) {
