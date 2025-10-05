@@ -61,8 +61,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 passwordEdt.setError("Invalid username or password");
             }
         }
-        else if (id == R.id.signup_btn) {
-            Log.i("PageInfo", "Signup Button Clicked");
+        else if (id == R.id.signup_btn)
+        {
+            startActivity(new Intent(MainActivity.this, CreateAccountActivity.class));
         }
     }
 
