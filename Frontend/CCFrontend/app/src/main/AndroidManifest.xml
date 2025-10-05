@@ -26,6 +26,9 @@
 
         <!-- Main launcher activity -->
         <activity
+            android:name=".CreateAccountActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">   <!-- Must be true if it has MAIN/LAUNCHER -->
             <intent-filter>
