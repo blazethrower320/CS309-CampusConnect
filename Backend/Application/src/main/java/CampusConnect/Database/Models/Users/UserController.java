@@ -4,6 +4,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+import CampusConnect.Database.Models.Tutors.TutorRepository;
 import CampusConnect.Models.editUser;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,9 @@ public class UserController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    TutorRepository tutorRepository;
 
     private String success = "{\"message\":\"success\"}";
     private String failure = "{\"message\":\"failure\"}";
@@ -146,6 +150,11 @@ public class UserController {
         return wrongUsernamePassword;
     }
 
+    @GetMapping("/users/IsTutor/{userID}")
+    public boolean isUserTutor(@PathVariable long userID)
+    {
+        return tutorRepository.findById(userID).isPresent();
+    }
 
 
 }
