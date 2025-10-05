@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -15,7 +16,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public Button loginBtn;
     public Button signupBtn;
 
-    //private Button jsonObjBtn, jsonArrBtn, imgBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,36 +26,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         strBtn = findViewById(R.id.btnStringRequest);
         loginBtn = findViewById(R.id.login_btn);
         signupBtn = findViewById(R.id.signup_btn);
-        //jsonObjBtn = findViewById(R.id.btnJsonObjRequest);
-        //jsonArrBtn = findViewById(R.id.btnJsonArrRequest);
-        //imgBtn = findViewById(R.id.btnImageRequest);
 
         /* Set click listeners for each button */
         strBtn.setOnClickListener(this);
         loginBtn.setOnClickListener(this);
         signupBtn.setOnClickListener(this);
-        //jsonObjBtn.setOnClickListener(this);
-        //jsonArrBtn.setOnClickListener(this);
-        //imgBtn.setOnClickListener(this);
     }
 
     @Override
-    public void onClick(View v)
-    {
-        int id = v.getId(); // Get the ID of the clicked button
+    public void onClick(View v) {
+        int id = v.getId();
 
-        // Check which button was clicked and start the corresponding activity
-        if (id == R.id.btnStringRequest)
-        {
+        if (id == R.id.btnStringRequest) {
             startActivity(new Intent(MainActivity.this, StringReqActivity.class));
         }
-        else if (id == R.id.login_btn)
-        {
+        else if (id == R.id.login_btn) {
             Log.i("PageInfo", "Login Button Clicked");
+
+            // Get username & password inputs
+            EditText usernameEdt = findViewById(R.id.login_username_edt);
+            EditText passwordEdt = findViewById(R.id.login_password_edt);
+
+            String username = usernameEdt.getText().toString().trim();
+            String password = passwordEdt.getText().toString().trim();
+
+            // Placeholder login validation
+            if (username.equals("testuser") && password.equals("password123")) {
+                // If login is successful → go to main menu
+                Intent intent = new Intent(MainActivity.this, MainMenuActivity.class);
+                intent.putExtra("username", username);
+                startActivity(intent);
+            } else {
+                // Show error in password field
+                passwordEdt.setError("Invalid username or password");
+            }
         }
         else if (id == R.id.signup_btn)
         {
             startActivity(new Intent(MainActivity.this, CreateAccountActivity.class));
         }
     }
+
 }
