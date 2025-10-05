@@ -46,8 +46,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if (id == R.id.btnStringRequest) {
             startActivity(new Intent(MainActivity.this, StringReqActivity.class));
-        }
-        else if (id == R.id.login_btn) {
+        } else if (id == R.id.signup_btn) {
+            startActivity(new Intent(MainActivity.this, CreateAccountActivity.class));
+        } else if (id == R.id.login_btn) {
             Log.i("PageInfo", "Login Button Clicked");
 
             // Get username & password inputs
@@ -101,9 +102,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             );
             RequestQueue queue = Volley.newRequestQueue(this);
             queue.add(jsonObjectRequest);
-
         }
-
     }
 
 }
