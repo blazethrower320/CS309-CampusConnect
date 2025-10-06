@@ -23,7 +23,6 @@
     - Patch | `/users/editUsername` - Edits the username of a user id
         ```json
         {
-            "userID": UserIDHere,
             "newUsername": "newUsername",
             "newPassword": "newPassword"
         }
@@ -35,7 +34,6 @@
     - Patch | `/users/editPassword` - Edits the password of a user id
         ```json
         {
-            "userID": UserIDHere,
             "newUsername": "newUsername",
             "newPassword": "newPassword"
         }
@@ -47,7 +45,6 @@
     - Delete | `/users/deleteUser` - Deletes a User from the database
         ```json
         {
-            "userID": UserIDHere,
             "username": "username",
             "password": "password"
         }
