@@ -118,6 +118,19 @@
 
     </LinearLayout>
 
+    <Button
+        android:id="@+id/forgotp_btn"
+        android:background="@drawable/clear_btn"
+        android:paddingLeft="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Forgot Password?"
+        android:textSize="15sp"
+        android:textColor="#A1A1FF">
+    </Button>
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -155,6 +168,7 @@
             android:layout_height="wrap_content">
 
         </TextView>
+
         <Button
             android:id="@+id/signup_btn"
             android:background="@drawable/clear_btn"
@@ -164,10 +178,8 @@
             android:layout_gravity="center"
             android:text="Create Account"
             android:textSize="15sp"
-            android:textColor="#A1A1FF">
-        </Button>
-
-
+            android:textColor="#A1A1FF"
+            android:layout_marginTop="-0.75in" />
     </LinearLayout>
 
 </LinearLayout>
