@@ -16,8 +16,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -97,6 +100,7 @@ public class CreateAccountActivity extends AppCompatActivity
                 //If all information is good, create user
                 else
                 {
+
                     CreateUser(username, password);
                 }
             }
@@ -105,48 +109,64 @@ public class CreateAccountActivity extends AppCompatActivity
 
     public void CreateUser(String username, String password)
     {
-        //Send api call to server to create user
+        // The requestBody part remains the same
+        JSONObject requestBodyJson = new JSONObject();
+        try
+        {
+            requestBodyJson.put("firstName", "Test");
+            requestBodyJson.put("lastName", "Help");
+            requestBodyJson.put("username", username);
+            requestBodyJson.put("password", password);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return; // Exit if the JSON object can't be created
+        }
+        final String requestBody = requestBodyJson.toString();
+
+        // Use a StringRequest instead of a JsonObjectRequest
         StringRequest stringRequest = new StringRequest(
                 Request.Method.POST,
                 URL_CREATE_USER,
-                new Response.Listener<String>()
+                response -> // Success listener
                 {
-                    @Override
-                    public void onResponse(String response)
-                    {
-                        Log.d("Volley Response", response);
-                        //Toast allows for popup message
-                        Toast.makeText(CreateAccountActivity.this, "Account Created", Toast.LENGTH_SHORT).show();
-                        msgResponse.setText("success!!");
-                        /*try { TODO Actually send data to server
-                            // on below line we are parsing the response
-                            // to json object to extract data from it.
-                            JSONObject respObj = new JSONObject(response);
+                    // This will now be triggered correctly on a 2xx response
+                    Log.d("Volley Success", "Response: " + response);
+                    Toast.makeText(CreateAccountActivity.this, "Account Created", Toast.LENGTH_SHORT).show();
+                    msgResponse.setText("success!!");
 
-                            // below are the strings which we
-                            // extract from our json object.
-                            String name = respObj.getString("name");
-                            String job = respObj.getString("job");
-
-                            // on below line we are setting this string s to our text view.
-                            responseTV.setText("Name : " + name + "\n" + "Job : " + job);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } */
-                    }
+                    // Optional: Redirect the user to the login screen after successful creation
+                    // startActivity(new Intent(CreateAccountActivity.this, MainActivity.class));
                 },
-                new Response.ErrorListener()
+                error -> // Error listener
                 {
-                    @Override
-                    public void onErrorResponse(VolleyError error)
-                    {
-                        Log.e("Volley Error", error.toString());
-                        Toast.makeText(CreateAccountActivity.this, "Account Creation Failed", Toast.LENGTH_SHORT).show();
-                        msgResponse.setText("Failed to load data. Please try again.");
-                    }
-                });
-        // Add request to queue so it actually runs
+                    // Error: show feedback
+                    Log.e("Volley Error", error.toString());
+                    Toast.makeText(CreateAccountActivity.this, "Account Creation Failed", Toast.LENGTH_SHORT).show();
+                    msgResponse.setText(error.toString());
+                }
+        ) {
+            // Override getBodyContentType to specify you're sending a JSON
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+
+            // Override getBody to send the JSON data
+            @Override
+            public byte[] getBody() {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (java.io.UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                    return null;
+                }
+            }
+        };
+
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
+
 }
