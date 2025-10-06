@@ -8,4 +8,6 @@ import java.util.List;
 public interface TutorRepository extends JpaRepository<Tutor, Long> {
     @Transactional
     void deleteById(Long id);
+
+    Tutor getTutorByTutorId(Long tutorId);
 }
