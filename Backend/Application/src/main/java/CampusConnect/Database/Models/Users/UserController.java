@@ -4,6 +4,8 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+import CampusConnect.Database.Models.Tutors.TutorRepository;
+import CampusConnect.Models.editUser;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,9 @@ public class UserController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    TutorRepository tutorRepository;
 
     private String success = "{\"message\":\"success\"}";
     private String failure = "{\"message\":\"failure\"}";
@@ -69,6 +74,38 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    @PatchMapping("/users/editUsername")
+    public boolean editUsername(@RequestBody editUser userBody)
+    {
+        String newUsername = userBody.getNewUsername();
+        long userID = userBody.getUserID();
+
+        User user = userRepository.findById(userID).orElse(null);
+
+        if(user == null)
+            return false;
+
+        user.setUsername(newUsername);
+        userRepository.save(user);
+        return true;
+    }
+
+    @PatchMapping("/users/editPassword")
+    public boolean editPassword(@RequestBody editUser userBody)
+    {
+        String newPassword = userBody.getNewPassword();
+        long userID = userBody.getUserID();
+
+        User user = userRepository.findById(userID).orElse(null);
+
+        if(user == null)
+            return false;
+
+        user.setPassword(newPassword);
+        userRepository.save(user);
+        return true;
+    }
+
     // Returns the list of usernames
     @GetMapping("/usernames")
     public List<String> getAllUsernames()
@@ -113,6 +150,11 @@ public class UserController {
         return wrongUsernamePassword;
     }
 
+    @GetMapping("/users/IsTutor/{userID}")
+    public boolean isUserTutor(@PathVariable long userID)
+    {
+        return tutorRepository.findById(userID).isPresent();
+    }
 
 
 }
