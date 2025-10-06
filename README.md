@@ -20,3 +20,40 @@
             ``user`` - If Username and password is correct <br>
     - Get | ``/usernames`` - Returns A list of only Usernames of all Users
     - Get | ``/users/password/{username}`` - Returns the password of the username
+    - Patch | `/users/editUsername` - Edits the username of a user id
+        ```json
+        {
+            "userID": UserIDHere,
+            "newUsername": "newUsername",
+            "newPassword": "newPassword"
+        }
+        ```
+
+        Returns: <br>
+            ``true`` - If it was successfully changed <br>
+            ``false`` - If the user does not exists <br>
+    - Patch | `/users/editPassword` - Edits the password of a user id
+        ```json
+        {
+            "userID": UserIDHere,
+            "newUsername": "newUsername",
+            "newPassword": "newPassword"
+        }
+        ```
+
+        Returns: <br>
+            ``true`` - If it was successfully changed <br>
+            ``false`` - If the user does not exists <br>
+    - Delete | `/users/deleteUser` - Deletes a User from the database
+        ```json
+        {
+            "userID": UserIDHere,
+            "username": "username",
+            "password": "password"
+        }
+        ```
+        Returns: <br>
+            ``String userDNR`` - User does not exists <br>
+            ``String userDeleted`` - User deleted <br>
+            ``String WrongPassword`` - Wrong password <br>
+    - Get | `/users/IsTutor/{userID}` - Returns true or false if the user is a tutor <br>
