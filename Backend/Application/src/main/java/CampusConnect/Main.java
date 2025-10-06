@@ -35,9 +35,9 @@ class Main {
             classesRepository.deleteAll();
             userRepository.deleteAll();
 
-            User user1 = new User("John", "zeet", "JohnZeet", "password");
-            User user2 = new User("Zach", "wehet", "Zach", "password");
-            User user3 = new User("Chase", "woodle", "Chase", "password");
+            User user1 = new User( "JohnZeet", "password");
+            User user2 = new User( "Zach", "password");
+            User user3 = new User( "Chase", "password");
 
 
             userRepository.save(user1);
