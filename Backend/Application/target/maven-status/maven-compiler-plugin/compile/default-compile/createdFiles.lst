@@ -7,6 +7,7 @@ CampusConnect\Database\Models\Tutors\TutorController.class
 CampusConnect\Database\Models\TutorClasses\TutorClassesRepository.class
 CampusConnect\Database\Models\Users\User.class
 CampusConnect\Database\Models\Classes\ClassesController.class
+CampusConnect\Models\editUser.class
 CampusConnect\Database\Models\TutorClasses\TutorClasses.class
 CampusConnect\Database\Models\Tutors\TutorRepository.class
 CampusConnect\Database\Models\Classes\Classes.class

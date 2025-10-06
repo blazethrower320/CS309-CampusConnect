@@ -29,7 +29,7 @@ public class User {
     )
     private Set<Sessions> userSessions;
 
-    public User(String firstName, String lastName, String username, String password) {
+    public User(String username, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -38,6 +38,9 @@ public class User {
         this.major = "";
         this.year = "";
     }
+
+
+
     public User(){
 
     }
