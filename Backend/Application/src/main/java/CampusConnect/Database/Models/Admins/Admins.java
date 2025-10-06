@@ -1,29 +1,25 @@
 package CampusConnect.Database.Models.Admins;
-
-import CampusConnect.Database.Models.Sessions.Sessions;
 import jakarta.persistence.*;
 
-import java.util.Set;
 
 @Entity
 public class Admins {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long classId;
-    private String className;
-    private String classCode;
-
-    @OneToMany(mappedBy = "sessionClass")
-    Set<Sessions> sessions;
+    private long admin_id;
+    private long userId;
+    private String permissions;
+    private Boolean isActive;
 
     public Admins(){}
 
-    public Admins(long user_id, int classCount, String className, String classCode) {
-        this.classId = classId;
-        this.className = className;
-        this.classCode = classCode;
+    public Admins(long admin_id, long userId, String permissions) {
+        this.admin_id = admin_id;
+        this.userId = userId;
+        this.permissions = permissions;
+        this.isActive = true;
     }
-    public long getUserId() { return classId; }
-    public String getclassName() { return className; }
-    public String getclassCode() { return classCode; }
+    public long getAdmin_id() { return admin_id; }
+    public long getUserId() { return userId; }
+    public String getPermissions() { return permissions; }
 }
