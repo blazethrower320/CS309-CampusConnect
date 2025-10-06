@@ -94,9 +94,7 @@ public class UserController {
     public boolean editPassword(@RequestBody editUser userBody)
     {
         String newPassword = userBody.getNewPassword();
-        long userID = userBody.getUserID();
-
-        User user = userRepository.findById(userID).orElse(null);
+        User user = userRepository.findByUsername(userBody.getNewUsername());
 
         if(user == null)
             return false;
