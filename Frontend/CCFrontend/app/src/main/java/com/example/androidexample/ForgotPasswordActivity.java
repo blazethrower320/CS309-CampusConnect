@@ -34,13 +34,13 @@ public class ForgotPasswordActivity extends AppCompatActivity  {
     private String password;
     private String confirmPass;
     //Path to server
-    private static final String URL_CREATE_USER = "http://coms-3090-037.class.las.iastate.edu:8080/users/createUser";
+    private static final String URL_UPDATE_PASSWORD = "http://coms-3090-037.class.las.iastate.edu:8080/users/updatePassword/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
+        setContentView(R.layout.forgot_password);
 
         // Initializing UI components
         backBtn = findViewById(R.id.back_btn);
@@ -91,56 +91,49 @@ public class ForgotPasswordActivity extends AppCompatActivity  {
                 //If all information is good, create user
                 else
                 {
-                    CreateUser(username, password);
+                    UpdatePassword(username, password);
                 }
             }
         });
     }
 
-    public void CreateUser(String username, String password)
-    {
-        //Send api call to server to create user
+    public void UpdatePassword(String username, String password) {
+        String url = URL_UPDATE_PASSWORD + username;
+
         StringRequest stringRequest = new StringRequest(
-                Request.Method.POST,
-                URL_CREATE_USER,
-                new Response.Listener<String>()
-                {
+                Request.Method.PUT,
+                url,
+                new Response.Listener<String>() {
                     @Override
-                    public void onResponse(String response)
-                    {
+                    public void onResponse(String response) {
                         Log.d("Volley Response", response);
-                        //Toast allows for popup message
-                        Toast.makeText(ForgotPasswordActivity.this, "Account Created", Toast.LENGTH_SHORT).show();
-                        msgResponse.setText("success!!");
-                        /*try { TODO Actually send data to server
-                            // on below line we are parsing the response
-                            // to json object to extract data from it.
-                            JSONObject respObj = new JSONObject(response);
-
-                            // below are the strings which we
-                            // extract from our json object.
-                            String name = respObj.getString("name");
-                            String job = respObj.getString("job");
-
-                            // on below line we are setting this string s to our text view.
-                            responseTV.setText("Name : " + name + "\n" + "Job : " + job);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } */
+                        Toast.makeText(ForgotPasswordActivity.this, "Password Updated", Toast.LENGTH_SHORT).show();
+                        msgResponse.setText("Password updated successfully!");
                     }
                 },
-                new Response.ErrorListener()
-                {
+                new Response.ErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error)
-                    {
+                    public void onErrorResponse(VolleyError error) {
                         Log.e("Volley Error", error.toString());
-                        Toast.makeText(ForgotPasswordActivity.this, "Password Change Failed", Toast.LENGTH_SHORT).show();
-                        msgResponse.setText("Failed to load data. Please try again.");
+                        Toast.makeText(ForgotPasswordActivity.this, "Password Update Failed", Toast.LENGTH_SHORT).show();
+                        msgResponse.setText("Failed to update password. Try again.");
                     }
-                });
-        // Add request to queue so it actually runs
+                }
+        ) {
+            @Override
+            public byte[] getBody() {
+                String body = "{\"password\":\"" + password + "\"}";
+                return body.getBytes();
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+        };
+
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
+
 }
