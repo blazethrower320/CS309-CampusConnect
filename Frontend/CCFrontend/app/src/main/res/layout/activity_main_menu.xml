@@ -31,12 +31,24 @@
             android:textSize="30dp"
             android:textColor="#FFFFFF" />
 
+        <Button
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="25dp"
+            android:id="@+id/delete_btn"
+            android:background="@drawable/btn_primary"
+            android:text="Delete Account"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </Button>
+
         <!-- Logout Button -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="75dp"
+            android:layout_marginTop="0dp"
             android:orientation="horizontal">
 
             <Button

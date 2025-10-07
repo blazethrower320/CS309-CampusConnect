@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         // Success: go to main menu
                         Intent intent = new Intent(MainActivity.this, MainMenuActivity.class);
                         intent.putExtra("username", username);
+                        intent.putExtra("password", password);
                         startActivity(intent);
                     },
                     error -> {
