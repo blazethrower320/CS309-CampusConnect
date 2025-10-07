@@ -1,6 +1,5 @@
 package com.example.androidexample;
 
-
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -22,21 +21,20 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.android.volley.Request;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
 public class MainMenuActivity extends AppCompatActivity implements View.OnClickListener {
-    private static final String URL_Delete_USER = "http://coms-3090-037.class.las.iastate.edu:8080/users/deleteUser";
+    private static final String BASE_URL = "http://coms-3090-037.class.las.iastate.edu:8080";
+    private static final String URL_DELETE_USER = BASE_URL + "/users/deleteUser";
 
-    public Button logoutBtn;
-    public Button changeStatusBtn;
+    private Button logoutBtn;
+    private Button changeStatusBtn;
+    private Button deleteBtn;
+    private TextView welcomeText;
 
     private boolean isTutor = false;   // cached tutor status
     private boolean isAdmin = false;   // passed from login/signup
     private int userId;                // must be passed from login/signup
-
-    private static final String BASE_URL = "http://coms-3090-037.class.las.iastate.edu:8080";
+    private String username;
+    private String password;           // pass this from login/signup if required
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,35 +42,42 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_main_menu);
 
         // Get values passed from login/signup
-        String username = getIntent().getStringExtra("username");
+        username = getIntent().getStringExtra("username");
+        password = getIntent().getStringExtra("password"); // make sure to pass from login
         isAdmin = getIntent().getBooleanExtra("isAdmin", false);
         userId = getIntent().getIntExtra("userId", -1);
 
-        TextView welcomeText = findViewById(R.id.welcome_text);
+        // UI
+        welcomeText = findViewById(R.id.welcome_text);
         welcomeText.setText("Welcome, " + username + "!");
 
-        // Buttons
         logoutBtn = findViewById(R.id.logout_btn);
         logoutBtn.setOnClickListener(this);
 
         changeStatusBtn = findViewById(R.id.change_status_btn);
         changeStatusBtn.setOnClickListener(this);
 
-        // Show Change Status button only for admins
+        deleteBtn = findViewById(R.id.delete_btn);
+        deleteBtn.setOnClickListener(this);
+
+        // Only admins see tutor toggle
         if (isAdmin) {
             changeStatusBtn.setVisibility(View.VISIBLE);
-            fetchTutorStatus(); // load current tutor status
+            fetchTutorStatus();
+        } else {
+            changeStatusBtn.setVisibility(View.GONE);
         }
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.logout_btn) {
-            Intent intent = new Intent(MainMenuActivity.this, MainActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(MainMenuActivity.this, MainActivity.class));
             finish();
         } else if (v.getId() == R.id.change_status_btn) {
             toggleTutorStatus();
+        } else if (v.getId() == R.id.delete_btn) {
+            DeleteUser();
         }
     }
 
@@ -90,16 +95,14 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void toggleTutorStatus() {
-        // You’ll need backend to add this PATCH endpoint:
         String url = BASE_URL + "/users/setTutor";
-
         final boolean newStatus = !isTutor;
 
         StringRequest request = new StringRequest(Request.Method.PATCH, url,
                 response -> {
                     isTutor = newStatus;
                     updateStatusButtonText();
-                    Log.d("Tutor Toggle", "Tutor status updated: " + isTutor);
+                    Toast.makeText(this, "Tutor status updated", Toast.LENGTH_SHORT).show();
                 },
                 error -> Log.e("Volley Error", "Failed to toggle tutor status: " + error.toString())) {
 
@@ -127,79 +130,46 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
         } else {
             changeStatusBtn.setText("Set as Tutor");
         }
-        if(v.getId() == R.id.delete_btn)
-        {
-            DeleteUser();
-        }
     }
 
-    public void DeleteUser()
-    {
+    private void DeleteUser() {
+        if (username == null || password == null) {
+            Toast.makeText(this, "Missing credentials", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         JSONObject requestBodyJson = new JSONObject();
-        try
-        {
+        try {
             requestBodyJson.put("username", username);
             requestBodyJson.put("password", password);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
-            return; // Exit if the JSON object can't be created
+            return;
         }
+
         final String requestBody = requestBodyJson.toString();
 
-        // Use a StringRequest instead of a JsonObjectRequest
         StringRequest stringRequest = new StringRequest(
                 Request.Method.DELETE,
-                URL_Delete_USER,
-                response -> // Success listener
-                {
-                    // This will now be triggered correctly on a 2xx response
-                    Log.d("Volley Success", "Response: " + response);
-                    Toast.makeText(MainMenuActivity.this, "Account Deleted", Toast.LENGTH_SHORT).show();
-                    topText.setText("Account Deleted");
-                    deleteBtn.setVisibility(View.INVISIBLE);
-
-                    // Optional: Redirect the user to the login screen after successful creation
-                    // startActivity(new Intent(CreateAccountActivity.this, MainActivity.class));
+                URL_DELETE_USER,
+                response -> {
+                    Toast.makeText(this, "Account Deleted", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(MainMenuActivity.this, MainActivity.class));
+                    finish();
                 },
-                error -> // Error listener
-                {
-                    // Error: show feedback
+                error -> {
                     Log.e("Volley Error", error.toString());
-                    Toast.makeText(MainMenuActivity.this, "Unable to delete account", Toast.LENGTH_SHORT).show();
-                    topText.setText(error.toString());
+                    Toast.makeText(this, "Unable to delete account", Toast.LENGTH_SHORT).show();
                 }
         ) {
-            // Override getBodyContentType to specify you're sending a JSON
             @Override
-            public String getBodyContentType()
-            {
+            public String getBodyContentType() {
                 return "application/json; charset=utf-8";
             }
 
-            // Override getBody to send the JSON data
             @Override
-            public byte[] getBody()
-            {
-                try {
-                    return requestBody == null ? null : requestBody.getBytes("utf-8");
-                } catch (java.io.UnsupportedEncodingException uee) {
-                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
-                    return null;
-                }
-            }
-            @Override
-            public int getMethod()
-            {
-                return Method.POST; // Hack: Treat as POST
-            }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("X-HTTP-Method-Override", "DELETE");
-                return headers;
+            public byte[] getBody() {
+                return requestBody.getBytes();
             }
         };
 
