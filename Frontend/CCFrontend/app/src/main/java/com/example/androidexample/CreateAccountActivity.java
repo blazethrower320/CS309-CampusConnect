@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +37,8 @@ public class CreateAccountActivity extends AppCompatActivity
     private TextView confirmPassTxt;
     private TextView msgResponse;
 
-
+    private CheckBox adminCheckBox;
+    private boolean isAdmin = false;
 
     //Variables
     private String username;
@@ -54,12 +56,12 @@ public class CreateAccountActivity extends AppCompatActivity
         // Initializing UI components
         backBtn = findViewById(R.id.back_btn);
         createAccountBtn = findViewById(R.id.signup_btn);
+        adminCheckBox = findViewById(R.id.admin_checkbox);
         //Initialize text fields
         usernameTxt = findViewById(R.id.create_username);
         passwordTxt = findViewById(R.id.create_password);
         confirmPassTxt = findViewById(R.id.create_password_confirm);
         msgResponse = findViewById(R.id.msgResponse);
-
 
 
         //Setting click listener on the back button to trigger a new intent
@@ -100,68 +102,43 @@ public class CreateAccountActivity extends AppCompatActivity
                 //If all information is good, create user
                 else
                 {
-
-                    CreateUser(username, password);
+                    isAdmin = adminCheckBox.isChecked();
+                    CreateUser(username, password, isAdmin);
                 }
             }
         });
     }
 
-    public void CreateUser(String username, String password)
-    {
-        // The requestBody part remains the same
-        JSONObject requestBodyJson = new JSONObject();
-        try
-        {
-            requestBodyJson.put("firstName", "Test");
-            requestBodyJson.put("lastName", "Help");
-            requestBodyJson.put("username", username);
-            requestBodyJson.put("password", password);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return; // Exit if the JSON object can't be created
-        }
-        final String requestBody = requestBodyJson.toString();
-
-        // Use a StringRequest instead of a JsonObjectRequest
+    public void CreateUser(String username, String password, boolean isAdmin) {
         StringRequest stringRequest = new StringRequest(
                 Request.Method.POST,
                 URL_CREATE_USER,
-                response -> // Success listener
-                {
-                    // This will now be triggered correctly on a 2xx response
-                    Log.d("Volley Success", "Response: " + response);
+                response -> {
+                    Log.d("Volley Response", response);
                     Toast.makeText(CreateAccountActivity.this, "Account Created", Toast.LENGTH_SHORT).show();
                     msgResponse.setText("success!!");
-
-                    // Optional: Redirect the user to the login screen after successful creation
-                    // startActivity(new Intent(CreateAccountActivity.this, MainActivity.class));
                 },
-                error -> // Error listener
-                {
-                    // Error: show feedback
+                error -> {
                     Log.e("Volley Error", error.toString());
                     Toast.makeText(CreateAccountActivity.this, "Account Creation Failed", Toast.LENGTH_SHORT).show();
-                    msgResponse.setText(error.toString());
+                    msgResponse.setText("Failed to load data. Please try again.");
                 }
         ) {
-            // Override getBodyContentType to specify you're sending a JSON
+            @Override
+            public byte[] getBody() {
+                // include role + active fields
+                String body = "{"
+                        + "\"username\":\"" + username + "\","
+                        + "\"password\":\"" + password + "\","
+                        + "\"role\":\"" + (isAdmin ? "ADMIN" : "USER") + "\","
+                        + "\"active\":true"
+                        + "}";
+                return body.getBytes();
+            }
+
             @Override
             public String getBodyContentType() {
                 return "application/json; charset=utf-8";
-            }
-
-            // Override getBody to send the JSON data
-            @Override
-            public byte[] getBody() {
-                try {
-                    return requestBody == null ? null : requestBody.getBytes("utf-8");
-                } catch (java.io.UnsupportedEncodingException uee) {
-                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
-                    return null;
-                }
             }
         };
 

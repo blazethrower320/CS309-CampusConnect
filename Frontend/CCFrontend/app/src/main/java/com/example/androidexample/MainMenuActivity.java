@@ -1,6 +1,5 @@
 package com.example.androidexample;
 
-
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -23,121 +22,154 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainMenuActivity extends AppCompatActivity implements View.OnClickListener {
-    private static final String URL_Delete_USER = "http://coms-3090-037.class.las.iastate.edu:8080/users/deleteUser";
+    private static final String BASE_URL = "http://coms-3090-037.class.las.iastate.edu:8080";
+    private static final String URL_DELETE_USER = BASE_URL + "/users/deleteUser";
 
-    public Button logoutBtn;
-
+    private Button logoutBtn;
+    private Button changeStatusBtn;
     private Button deleteBtn;
+    private TextView welcomeText;
 
-    public String username;
-    public String password;
-
-    public TextView topText;
-
+    private boolean isTutor = false;   // cached tutor status
+    private boolean isAdmin = false;   // passed from login/signup
+    private int userId;                // must be passed from login/signup
+    private String username;
+    private String password;           // pass this from login/signup if required
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
-        // Simple example to show user logged in
-        logoutBtn = findViewById(R.id.logout_btn);
-        deleteBtn = findViewById(R.id.delete_btn);
-        topText = findViewById(R.id.welcome_text);
-
-        logoutBtn.setOnClickListener(this);
-        deleteBtn.setOnClickListener(this);
-        TextView welcomeText = findViewById(R.id.welcome_text);
+        // Get values passed from login/signup
         username = getIntent().getStringExtra("username");
-        password = getIntent().getStringExtra("password");
+        password = getIntent().getStringExtra("password"); // make sure to pass from login
+        isAdmin = getIntent().getBooleanExtra("isAdmin", false);
+        userId = getIntent().getIntExtra("userId", -1);
+
+        // UI
+        welcomeText = findViewById(R.id.welcome_text);
         welcomeText.setText("Welcome, " + username + "!");
 
+        logoutBtn = findViewById(R.id.logout_btn);
+        logoutBtn.setOnClickListener(this);
+
+        changeStatusBtn = findViewById(R.id.change_status_btn);
+        changeStatusBtn.setOnClickListener(this);
+
+        deleteBtn = findViewById(R.id.delete_btn);
+        deleteBtn.setOnClickListener(this);
+
+        // Only admins see tutor toggle
+        if (isAdmin) {
+            changeStatusBtn.setVisibility(View.VISIBLE);
+            fetchTutorStatus();
+        } else {
+            changeStatusBtn.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.logout_btn)
-        {
-            // Send user back to login screen
-            Intent intent = new Intent(MainMenuActivity.this, MainActivity.class);
-            startActivity(intent);
-
-            // Optional: close MainMenu so user can’t press back to return
+        if (v.getId() == R.id.logout_btn) {
+            startActivity(new Intent(MainMenuActivity.this, MainActivity.class));
             finish();
-        }
-        if(v.getId() == R.id.delete_btn)
-        {
+        } else if (v.getId() == R.id.change_status_btn) {
+            toggleTutorStatus();
+        } else if (v.getId() == R.id.delete_btn) {
             DeleteUser();
         }
     }
 
-    public void DeleteUser()
-    {
+    private void fetchTutorStatus() {
+        String url = BASE_URL + "/users/IsTutor/" + userId;
+
+        StringRequest request = new StringRequest(Request.Method.GET, url,
+                response -> {
+                    isTutor = Boolean.parseBoolean(response.trim());
+                    updateStatusButtonText();
+                },
+                error -> Log.e("Volley Error", "Failed to fetch tutor status: " + error.toString()));
+
+        Volley.newRequestQueue(this).add(request);
+    }
+
+    private void toggleTutorStatus() {
+        String url = BASE_URL + "/users/setTutor";
+        final boolean newStatus = !isTutor;
+
+        StringRequest request = new StringRequest(Request.Method.PATCH, url,
+                response -> {
+                    isTutor = newStatus;
+                    updateStatusButtonText();
+                    Toast.makeText(this, "Tutor status updated", Toast.LENGTH_SHORT).show();
+                },
+                error -> Log.e("Volley Error", "Failed to toggle tutor status: " + error.toString())) {
+
+            @Override
+            public byte[] getBody() {
+                String body = "{"
+                        + "\"userID\":" + userId + ","
+                        + "\"isTutor\":" + newStatus
+                        + "}";
+                return body.getBytes();
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+        };
+
+        Volley.newRequestQueue(this).add(request);
+    }
+
+    private void updateStatusButtonText() {
+        if (isTutor) {
+            changeStatusBtn.setText("Set as Non-Tutor");
+        } else {
+            changeStatusBtn.setText("Set as Tutor");
+        }
+    }
+
+    private void DeleteUser() {
+        if (username == null || password == null) {
+            Toast.makeText(this, "Missing credentials", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         JSONObject requestBodyJson = new JSONObject();
-        try
-        {
+        try {
             requestBodyJson.put("username", username);
             requestBodyJson.put("password", password);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
-            return; // Exit if the JSON object can't be created
+            return;
         }
+
         final String requestBody = requestBodyJson.toString();
 
-        // Use a StringRequest instead of a JsonObjectRequest
         StringRequest stringRequest = new StringRequest(
                 Request.Method.DELETE,
-                URL_Delete_USER,
-                response -> // Success listener
-                {
-                    // This will now be triggered correctly on a 2xx response
-                    Log.d("Volley Success", "Response: " + response);
-                    Toast.makeText(MainMenuActivity.this, "Account Deleted", Toast.LENGTH_SHORT).show();
-                    topText.setText("Account Deleted");
-                    deleteBtn.setVisibility(View.INVISIBLE);
-
-                    // Optional: Redirect the user to the login screen after successful creation
-                    // startActivity(new Intent(CreateAccountActivity.this, MainActivity.class));
+                URL_DELETE_USER,
+                response -> {
+                    Toast.makeText(this, "Account Deleted", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(MainMenuActivity.this, MainActivity.class));
+                    finish();
                 },
-                error -> // Error listener
-                {
-                    // Error: show feedback
+                error -> {
                     Log.e("Volley Error", error.toString());
-                    Toast.makeText(MainMenuActivity.this, "Unable to delete account", Toast.LENGTH_SHORT).show();
-                    topText.setText(error.toString());
+                    Toast.makeText(this, "Unable to delete account", Toast.LENGTH_SHORT).show();
                 }
         ) {
-            // Override getBodyContentType to specify you're sending a JSON
             @Override
-            public String getBodyContentType()
-            {
+            public String getBodyContentType() {
                 return "application/json; charset=utf-8";
             }
 
-            // Override getBody to send the JSON data
             @Override
-            public byte[] getBody()
-            {
-                try {
-                    return requestBody == null ? null : requestBody.getBytes("utf-8");
-                } catch (java.io.UnsupportedEncodingException uee) {
-                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
-                    return null;
-                }
-            }
-            @Override
-            public int getMethod()
-            {
-                return Method.POST; // Hack: Treat as POST
-            }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("X-HTTP-Method-Override", "DELETE");
-                return headers;
+            public byte[] getBody() {
+                return requestBody.getBytes();
             }
         };
 
