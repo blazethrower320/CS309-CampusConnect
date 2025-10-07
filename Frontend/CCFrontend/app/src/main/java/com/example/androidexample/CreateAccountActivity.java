@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,7 +34,8 @@ public class CreateAccountActivity extends AppCompatActivity
     private TextView confirmPassTxt;
     private TextView msgResponse;
 
-
+    private CheckBox adminCheckBox;
+    private boolean isAdmin = false;
 
     //Variables
     private String username;
@@ -51,12 +53,12 @@ public class CreateAccountActivity extends AppCompatActivity
         // Initializing UI components
         backBtn = findViewById(R.id.back_btn);
         createAccountBtn = findViewById(R.id.signup_btn);
+        adminCheckBox = findViewById(R.id.admin_checkbox);
         //Initialize text fields
         usernameTxt = findViewById(R.id.create_username);
         passwordTxt = findViewById(R.id.create_password);
         confirmPassTxt = findViewById(R.id.create_password_confirm);
         msgResponse = findViewById(R.id.msgResponse);
-
 
 
         //Setting click listener on the back button to trigger a new intent
@@ -97,55 +99,46 @@ public class CreateAccountActivity extends AppCompatActivity
                 //If all information is good, create user
                 else
                 {
-                    CreateUser(username, password);
+                    isAdmin = adminCheckBox.isChecked();
+                    CreateUser(username, password, isAdmin);
                 }
             }
         });
     }
 
-    public void CreateUser(String username, String password)
-    {
-        //Send api call to server to create user
+    public void CreateUser(String username, String password, boolean isAdmin) {
         StringRequest stringRequest = new StringRequest(
                 Request.Method.POST,
                 URL_CREATE_USER,
-                new Response.Listener<String>()
-                {
-                    @Override
-                    public void onResponse(String response)
-                    {
-                        Log.d("Volley Response", response);
-                        //Toast allows for popup message
-                        Toast.makeText(CreateAccountActivity.this, "Account Created", Toast.LENGTH_SHORT).show();
-                        msgResponse.setText("success!!");
-                        /*try { TODO Actually send data to server
-                            // on below line we are parsing the response
-                            // to json object to extract data from it.
-                            JSONObject respObj = new JSONObject(response);
-
-                            // below are the strings which we
-                            // extract from our json object.
-                            String name = respObj.getString("name");
-                            String job = respObj.getString("job");
-
-                            // on below line we are setting this string s to our text view.
-                            responseTV.setText("Name : " + name + "\n" + "Job : " + job);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } */
-                    }
+                response -> {
+                    Log.d("Volley Response", response);
+                    Toast.makeText(CreateAccountActivity.this, "Account Created", Toast.LENGTH_SHORT).show();
+                    msgResponse.setText("success!!");
                 },
-                new Response.ErrorListener()
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error)
-                    {
-                        Log.e("Volley Error", error.toString());
-                        Toast.makeText(CreateAccountActivity.this, "Account Creation Failed", Toast.LENGTH_SHORT).show();
-                        msgResponse.setText("Failed to load data. Please try again.");
-                    }
-                });
-        // Add request to queue so it actually runs
+                error -> {
+                    Log.e("Volley Error", error.toString());
+                    Toast.makeText(CreateAccountActivity.this, "Account Creation Failed", Toast.LENGTH_SHORT).show();
+                    msgResponse.setText("Failed to load data. Please try again.");
+                }
+        ) {
+            @Override
+            public byte[] getBody() {
+                // include role + active fields
+                String body = "{"
+                        + "\"username\":\"" + username + "\","
+                        + "\"password\":\"" + password + "\","
+                        + "\"role\":\"" + (isAdmin ? "ADMIN" : "USER") + "\","
+                        + "\"active\":true"
+                        + "}";
+                return body.getBytes();
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+        };
+
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
