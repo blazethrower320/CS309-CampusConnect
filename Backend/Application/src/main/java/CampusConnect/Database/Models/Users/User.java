@@ -38,6 +38,9 @@ public class User {
         this.major = "";
         this.year = "";
     }
+
+
+
     public User(){
 
     }
