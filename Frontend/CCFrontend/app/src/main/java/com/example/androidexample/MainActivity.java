@@ -23,6 +23,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public Button loginBtn;
     public Button signupBtn;
 
+    public Button forgotpBtn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +35,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         strBtn = findViewById(R.id.btnStringRequest);
         loginBtn = findViewById(R.id.login_btn);
         signupBtn = findViewById(R.id.signup_btn);
+        forgotpBtn = findViewById(R.id.forgotp_btn);
 
         /* Set click listeners for each button */
         strBtn.setOnClickListener(this);
         loginBtn.setOnClickListener(this);
         signupBtn.setOnClickListener(this);
+        forgotpBtn.setOnClickListener(this);
     }
 
     @Override
@@ -48,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(new Intent(MainActivity.this, StringReqActivity.class));
         } else if (id == R.id.signup_btn) {
             startActivity(new Intent(MainActivity.this, CreateAccountActivity.class));
+        } else if (id == R.id.forgotp_btn) {
+            startActivity(new Intent(MainActivity.this, ForgotPasswordActivity.class));
         } else if (id == R.id.login_btn) {
             Log.i("PageInfo", "Login Button Clicked");
 
@@ -82,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         // Success: go to main menu
                         Intent intent = new Intent(MainActivity.this, MainMenuActivity.class);
                         intent.putExtra("username", username);
+                        intent.putExtra("password", password);
                         startActivity(intent);
                     },
                     error -> {

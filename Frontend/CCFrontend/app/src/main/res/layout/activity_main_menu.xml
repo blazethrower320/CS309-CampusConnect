@@ -8,6 +8,7 @@
     android:background="@drawable/login_bg_image2"
     android:orientation="vertical">
 
+
     <!-- Center Panel -->
     <LinearLayout
         android:layout_width="325dp"
@@ -30,12 +31,24 @@
             android:textSize="30dp"
             android:textColor="#FFFFFF" />
 
+        <Button
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="25dp"
+            android:id="@+id/delete_btn"
+            android:background="@drawable/btn_primary"
+            android:text="Delete Account"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </Button>
+
         <!-- Logout Button -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="75dp"
+            android:layout_marginTop="0dp"
             android:orientation="horizontal">
 
             <Button
@@ -47,6 +60,28 @@
                 android:textSize="15sp"
                 android:textColor="#ffffff" />
         </LinearLayout>
+
+        <!-- Change Status Button (Initially GONE) -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="90dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/change_status_btn"
+                android:background="@drawable/clear_btn"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="Change Status"
+                android:textSize="15sp"
+                android:textColor="#ffffff"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+
+
 
     </LinearLayout>
 </androidx.appcompat.widget.LinearLayoutCompat>

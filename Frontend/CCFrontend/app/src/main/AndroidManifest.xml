@@ -23,6 +23,9 @@
         <activity
             android:name=".MainMenuActivity"
             android:exported="false" />
+        <activity
+            android:name=".ForgotPasswordActivity"
+            android:exported="false" />
 
         <!-- Main launcher activity -->
         <activity
