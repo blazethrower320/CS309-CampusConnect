@@ -1,7 +1,7 @@
 # Backend
 
 ### API Calls
- - Users
+ - ## Users
     - Get | ``/users`` - Returns a list of all users
     - Get | ``/users/{id}`` > Returns a User with the specific ID
     - Get | ``/users/findUsername/{username}`` - Returns a List<User> with the username
@@ -54,21 +54,18 @@
             ``String userDeleted`` - User deleted <br>
             ``String WrongPassword`` - Wrong password <br>
     - Get | `/users/IsTutor/{userID}` - Returns true or false if the user is a tutor <br>
- - Admins
+ - ## Admins
     - Get | `/admins` - Returns a JSON of Admins
     - Post | `/admin/createAdmin/{username}` - Creates a Admin with the username (MUST ALREADY BE A USER) <br>
-        
         Returns: <br>
             ``404`` - User not found <br>
             ``403`` - Admin already exists<br>
             ``admin`` - A  <br>
     - Delete | `/admin/deleteAdmin/{username}` - Deletes a Admin from the database <br>
-        
         Returns: <br>
             ``false`` - Admin not found<br>
             ``true`` - Admin deleted<br>
     - Get | `/admin/getPermissions/{username}` - Displays Permission for a Admin <br>
-        
         Returns: <br>
             ``null`` - Admin does not exists<br>
             ``Permissions`` List of Permissions in a String format- <br>
