@@ -1,5 +1,7 @@
 package CampusConnect;
 
+import CampusConnect.Database.Models.Admins.Admins;
+import CampusConnect.Database.Models.Admins.AdminsRepository;
 import CampusConnect.Database.Models.Classes.Classes;
 import CampusConnect.Database.Models.Classes.ClassesRepository;
 import CampusConnect.Database.Models.Tutors.Tutor;
@@ -28,12 +30,13 @@ class Main {
      * As mentioned in User.java just associating the Laptop object with the User will save it into the database because of the CascadeType
      */
     @Bean
-    CommandLineRunner initData(UserRepository userRepository, TutorRepository tutorRepository, ClassesRepository classesRepository) {
+    CommandLineRunner initData(UserRepository userRepository, TutorRepository tutorRepository, ClassesRepository classesRepository, AdminsRepository adminsRepository) {
         return args -> {
             // Clear tables first
             tutorRepository.deleteAll();
             classesRepository.deleteAll();
             userRepository.deleteAll();
+            adminsRepository.deleteAll();
 
             User user1 = new User( "JohnZeet", "password");
             User user2 = new User( "Zach", "password");
@@ -55,6 +58,14 @@ class Main {
             classesRepository.save(class1);
             classesRepository.save(class2);
             classesRepository.save(class3);
+
+
+
+            Admins admin1 = new Admins(1, "John", "All");
+            Admins admin2 = new Admins(1, "Zach", "All");
+
+            adminsRepository.save(admin1);
+            adminsRepository.save(admin2);
         };
     }
 
