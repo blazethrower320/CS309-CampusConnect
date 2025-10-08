@@ -54,21 +54,25 @@
             ``String userDeleted`` - User deleted <br>
             ``String WrongPassword`` - Wrong password <br>
     - Get | `/users/IsTutor/{userID}` - Returns true or false if the user is a tutor <br>
+
  - ## Admins
-    - Get | `/admins` - Returns a JSON of Admins
+    - Get | `/admins` - Returns a JSON of Admins <br>
     - Post | `/admin/createAdmin/{username}` - Creates a Admin with the username (MUST ALREADY BE A USER) <br>
         Returns: <br>
             ``404`` - User not found <br>
             ``403`` - Admin already exists<br>
-            ``admin`` - A  <br>
+            ``admin`` - Admin Object<br>
+
     - Delete | `/admin/deleteAdmin/{username}` - Deletes a Admin from the database <br>
         Returns: <br>
             ``false`` - Admin not found<br>
             ``true`` - Admin deleted<br>
+
     - Get | `/admin/getPermissions/{username}` - Displays Permission for a Admin <br>
         Returns: <br>
             ``null`` - Admin does not exists<br>
             ``Permissions`` List of Permissions in a String format- <br>
+
     - Patch | `/admin/updateStatus/{username}` - Updates isActive for Admins <br>
         Returns: <br>
             ``404`` - User not found <br>
