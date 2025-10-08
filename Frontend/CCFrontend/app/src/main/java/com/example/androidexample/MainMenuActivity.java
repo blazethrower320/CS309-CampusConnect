@@ -127,6 +127,7 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
                     return null;
                 }
             }
+
             @Override
             public int getMethod()
             {
@@ -134,7 +135,8 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
             }
 
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() throws AuthFailureError
+            {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("X-HTTP-Method-Override", "DELETE");
                 return headers;
