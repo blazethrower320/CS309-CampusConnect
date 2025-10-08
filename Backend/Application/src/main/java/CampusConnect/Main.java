@@ -36,6 +36,7 @@ class Main {
             tutorRepository.deleteAll();
             classesRepository.deleteAll();
             userRepository.deleteAll();
+            adminsRepository.deleteAll();
 
             User user1 = new User("John", "zeet", "JohnZeet", "password");
             User user2 = new User("Zach", "wehet", "Zach", "password");
@@ -58,8 +59,10 @@ class Main {
             classesRepository.save(class2);
             classesRepository.save(class3);
 
-            Admins admin1 = new Admins(1,1, "All");
-            Admins admin2 = new Admins(1,1, "All");
+
+
+            Admins admin1 = new Admins(1, "John", "All");
+            Admins admin2 = new Admins(1, "Zach", "All");
 
             adminsRepository.save(admin1);
             adminsRepository.save(admin2);

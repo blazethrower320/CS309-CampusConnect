@@ -29,6 +29,12 @@ public class UserController {
     private String userDNE = "User does not exist";
     private String userDeleted = "User deleted";
 
+    public String getUserNotFound() {return userNotFound;}
+    public String getUserCreated() {return userCreated;}
+    public String getUserCreationFailed() {return userCreationFailed;}
+    public String getUserDNE() {return userDNE;}
+    public String getUserDeleted() {return userDeleted;}
+
     @GetMapping(path = "/users")
     public List<User> getAllUsers()
     {
@@ -133,7 +139,8 @@ public class UserController {
     }
 
     //Only requires username and password currently.
-    @DeleteMapping("/users/deleteUser")
+    // Need to switch this to post
+    @PostMapping("/users/deleteUser")
     public String deleteUser(@RequestBody User userBody) {
         ArrayList<User> usernames = new ArrayList<>(getAllUserByUsername(userBody.getUsername()));
         if (usernames.isEmpty()) {    //Username does not match an existing one.
