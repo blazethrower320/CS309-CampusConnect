@@ -38,16 +38,16 @@ class Main {
             userRepository.deleteAll();
             adminsRepository.deleteAll();
 
-            User user1 = new User( "JohnZeet", "password");
-            User user2 = new User( "Zach", "password");
-            User user3 = new User( "Chase", "password");
+            User user1 = new User( "JohnZeet", "password", false, false);
+            User user2 = new User( "Zach", "password", false, false);
+            User user3 = new User( "Chase", "password", true, false);
 
 
             userRepository.save(user1);
             userRepository.save(user2);
             userRepository.save(user3);
 
-            Tutor tutor1 = new Tutor(user1.getUserId(), 5, 3.2);
+            Tutor tutor1 = new Tutor(user1.getUserId(), user1.getUsername(), 5, 3.2);
 
             tutorRepository.save(tutor1);
 

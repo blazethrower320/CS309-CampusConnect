@@ -10,4 +10,7 @@ public interface TutorRepository extends JpaRepository<Tutor, Long> {
     void deleteById(Long id);
 
     Tutor getTutorByTutorId(Long tutorId);
+    Boolean existsByUsername(String username);
+    void deleteByUsername(String username);
+    Tutor findByUsername(String username);
 }

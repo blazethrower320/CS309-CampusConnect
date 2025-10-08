@@ -130,7 +130,7 @@ public class UserController {
     @PostMapping("/users/createUser")
     public String createUser(@RequestBody User userBody) {
         if (getAllUserByUsername(userBody.getUsername()).isEmpty()) {  //Assume no same usernames
-            User newUser = new User(userBody.getUsername(), userBody.getPassword());
+            User newUser = new User(userBody.getUsername(), userBody.getPassword(), false, false);
             userRepository.save(newUser);
             return userCreated;
         } else {
