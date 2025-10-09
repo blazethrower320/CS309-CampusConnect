@@ -78,6 +78,10 @@
             ``404`` - User not found <br>
             ``403`` - Admin not found<br>
             ``true / false`` - Depending if they are active or not  <br>
+    - Post | `/admin/updateRatingsTutor/{username}/{rating}` - Updates the Rating of a tutor <br>
+        Returns: <br>
+            ``true`` - Successful <br>
+            ``false`` - Failed <br>
 
  - ## Tutors
     - Get | `/tutors` - Returns a JSON of Tutors <br>
