@@ -78,3 +78,23 @@
             ``404`` - User not found <br>
             ``403`` - Admin not found<br>
             ``true / false`` - Depending if they are active or not  <br>
+
+ - ## Tutors
+    - Get | `/tutors` - Returns a JSON of Tutors <br>
+    - Post | `/tutors/createTutor/{username}` - Creates a Tutor with the username (MUST ALREADY BE A USER) <br>
+        Returns: <br>
+            ``404`` - User not found <br>
+            ``403`` - Tutor already exists<br>
+            ``tutor`` - Tutor Object<br>
+
+    - Delete | `/tutors/deleteTutor/{username}` - Deletes a Admin from the database <br>
+        Returns: <br>
+            ``403`` - Tutor not found<br>
+            ``tutor removed`` - Tutor Removed<br>
+
+    - Patch | `/tutors/editTotalClassCount/{username}` - Edits class count for the user <br>
+        Returns: <br>
+            ``403`` - Tutor not found <br>
+            ``tutor updated`` Tutor updated <br>
+
+
