@@ -52,7 +52,7 @@ public class TutorController
         return ResponseEntity.ok(tutor);
     }
 
-    @DeleteMapping("/tutors/deleteTutor/{username}")
+    @PostMapping("/tutors/deleteTutor/{username}")
     public ResponseEntity<Object> deleteTutor(@PathVariable String username)
     {
         Tutor tutor = tutorRepository.findByUsername(username);

@@ -64,7 +64,7 @@ public class AdminsController {
         return true;
     }
 
-    @DeleteMapping("/admin/deleteAdmin/{username}")
+    @PostMapping("/admin/deleteAdmin/{username}")
     public boolean DeleteAdmin(@PathVariable String username)
     {
         boolean exists = adminsRepository.existsByUsername(username);
