@@ -49,14 +49,18 @@ public class StringReqActivity extends AppCompatActivity {
         msgResponse = findViewById(R.id.msgResponse);
 
         //Setting click listener on the back button to trigger a new intent
+        // inside onCreate() where you set backStrReqBtn listener:
         backStrReqBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                startActivity(new Intent(StringReqActivity.this, MainActivity.class));
+                // fully-qualified class name avoids "cannot resolve symbol" issues
+                startActivity(new Intent(StringReqActivity.this,
+                        com.example.androidexample.MainActivity.class));
             }
         });
+
 
         // Setting click listener on the button to trigger the string request
         btnStringReq.setOnClickListener(new View.OnClickListener() {

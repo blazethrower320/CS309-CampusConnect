@@ -27,6 +27,10 @@
             android:name=".ForgotPasswordActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".EditTutorRatingActivity"
+            android:exported="false" />
+
         <!-- Main launcher activity -->
         <activity
             android:name=".CreateAccountActivity"
