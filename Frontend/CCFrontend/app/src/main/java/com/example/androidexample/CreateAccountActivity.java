@@ -90,9 +90,11 @@ public class CreateAccountActivity extends AppCompatActivity {
                     Toast.makeText(this, "User Created", Toast.LENGTH_SHORT).show();
                     msgResponse.setText("User Created Successfully");
 
-                    // If user selected Admin checkbox, create Admin now
                     if (isAdmin) {
                         CreateAdmin(username);
+                    } else {
+                        // Non-admin user → go to main menu
+                        goToMainMenu(username, password, false);
                     }
                 },
                 error -> {
@@ -116,8 +118,7 @@ public class CreateAccountActivity extends AppCompatActivity {
             }
         };
 
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
+        Volley.newRequestQueue(this).add(stringRequest);
     }
 
     private void CreateAdmin(String username) {
@@ -130,6 +131,9 @@ public class CreateAccountActivity extends AppCompatActivity {
                     Log.d("Admin Response", response);
                     Toast.makeText(this, "Admin Account Created", Toast.LENGTH_SHORT).show();
                     msgResponse.setText("Admin Created Successfully!");
+
+                    // ✅ Now go to main menu as admin
+                    goToMainMenu(username, password, true);
                 },
                 error -> {
                     Log.e("Admin Error", error.toString());
@@ -138,7 +142,16 @@ public class CreateAccountActivity extends AppCompatActivity {
                 }
         );
 
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(adminRequest);
+        Volley.newRequestQueue(this).add(adminRequest);
+    }
+
+    private void goToMainMenu(String username, String password, boolean isAdmin) {
+        Intent intent = new Intent(CreateAccountActivity.this, MainMenuActivity.class);
+        intent.putExtra("username", username);
+        intent.putExtra("password", password);
+        intent.putExtra("isAdmin", isAdmin);
+        intent.putExtra("userId", -1);
+        startActivity(intent);
+        finish();
     }
 }
