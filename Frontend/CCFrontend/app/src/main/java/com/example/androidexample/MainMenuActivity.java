@@ -141,7 +141,6 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
         }
 
         final String requestBody = requestBodyJson.toString();
-
         StringRequest stringRequest = new StringRequest(
                 Request.Method.POST, // changed from DELETE to POST
                 URL_DELETE_USER,
@@ -171,7 +170,7 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void SetNumClasses() {
-        //Get the text from the EditText and the username
+        //Get Text from field
         String classCountStr = numClassEdt.getText().toString();
         if (username == null || username.isEmpty()) {
             Toast.makeText(this, "User information not found.", Toast.LENGTH_SHORT).show();
@@ -182,14 +181,17 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
             return;
         }
 
-        //URL for patch
-        final String URL_SET_CLASSES = "http://coms-3090-037.class.las.iastate.edu:8080/tutors/editTotalClassCount/" + username;
+        //URL for tutor put
+        final String URL_SET_CLASSES = "http://coms-3090-037.class.las.iastate.edu:8080/tutors/editTotalClasses";
+        Log.d("Volley URL", "PUT Request URL: " + URL_SET_CLASSES);
 
-        //Request Body
+        // Request Body
         JSONObject requestBodyJson = new JSONObject();
         try {
             int classCount = Integer.parseInt(classCountStr);
-            requestBodyJson.put("totalClassCount", classCount);
+            requestBodyJson.put("username", username);
+            requestBodyJson.put("totalClasses", classCount);
+            requestBodyJson.put("rating", null);
         } catch (NumberFormatException e) {
             Toast.makeText(this, "Please enter a valid number.", Toast.LENGTH_SHORT).show();
             return;
@@ -198,10 +200,12 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
             return;
         }
         final String requestBody = requestBodyJson.toString();
+        Log.d("Volley Body", "PUT Request Body: " + requestBody);
 
-        // Create StringReq
-        StringRequest patchRequest = new StringRequest(
-                Request.Method.POST, //override this to be PATCH
+
+        //Create Put request
+        StringRequest putRequest = new StringRequest(
+                Request.Method.PUT, // Use the PUT method directly
                 URL_SET_CLASSES,
                 response -> {
                     // Success listener
@@ -234,18 +238,13 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
                 return requestBody.getBytes();
             }
 
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                // This is the workaround to send a PATCH request
-                Map<String, String> headers = new HashMap<>();
-                headers.put("X-HTTP-Method-Override", "PATCH");
-                return headers;
-            }
         };
 
-        // 5. Add the request to the queue
+        //Add req to queue
         RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(patchRequest);
+        queue.add(putRequest);
     }
+
+
 
 }
