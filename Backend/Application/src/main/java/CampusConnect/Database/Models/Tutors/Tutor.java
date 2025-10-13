@@ -29,4 +29,7 @@ public class Tutor {
     public void setTotalClasses(int totalClasses) {
         this.totalClasses = totalClasses;
     }
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
 }

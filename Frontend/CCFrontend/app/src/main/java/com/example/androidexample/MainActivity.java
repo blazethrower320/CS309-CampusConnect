@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,6 +15,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -22,22 +24,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public Button strBtn;
     public Button loginBtn;
     public Button signupBtn;
-
     public Button forgotpBtn;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main); // Set the UI layout for the activity
+        setContentView(R.layout.activity_main);
 
-        // Initialize buttons by finding them using their IDs from XML layout
+        // Initialize buttons
         strBtn = findViewById(R.id.btnStringRequest);
         loginBtn = findViewById(R.id.login_btn);
         signupBtn = findViewById(R.id.signup_btn);
         forgotpBtn = findViewById(R.id.forgotp_btn);
 
-        /* Set click listeners for each button */
+        // Set click listeners
         strBtn.setOnClickListener(this);
         loginBtn.setOnClickListener(this);
         signupBtn.setOnClickListener(this);
@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else if (id == R.id.login_btn) {
             Log.i("PageInfo", "Login Button Clicked");
 
-            // Get username & password inputs
             EditText usernameEdt = findViewById(R.id.login_username_edt);
             EditText passwordEdt = findViewById(R.id.login_password_edt);
 
@@ -69,14 +68,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return;
             }
 
-            // Make API call Chase2 password
             String url = "http://coms-3090-037.class.las.iastate.edu:8080/users/login";
 
             JSONObject requestBody = new JSONObject();
             try {
                 requestBody.put("username", username);
                 requestBody.put("password", password);
-            } catch (Exception e) {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
 
@@ -85,14 +83,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     url,
                     requestBody,
                     response -> {
-                        // Success: go to main menu
-                        Intent intent = new Intent(MainActivity.this, MainMenuActivity.class);
-                        intent.putExtra("username", username);
-                        intent.putExtra("password", password);
-                        startActivity(intent);
+                        try {
+                            // Extract admin flag and userId from response
+                            boolean isAdmin = response.optBoolean("isAdmin", false);
+                            int userId = response.optInt("userId", -1);
+
+                            Log.i("LoginSuccess", "User logged in. isAdmin=" + isAdmin + ", userId=" + userId);
+
+                            Intent intent = new Intent(MainActivity.this, MainMenuActivity.class);
+                            intent.putExtra("username", username);
+                            intent.putExtra("password", password);
+                            intent.putExtra("isAdmin", isAdmin);
+                            intent.putExtra("userId", userId);
+
+                            startActivity(intent);
+                            finish();
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Toast.makeText(this, "Unexpected response format", Toast.LENGTH_SHORT).show();
+                        }
                     },
                     error -> {
-                        // Error: show feedback
                         if (error.networkResponse != null) {
                             int statusCode = error.networkResponse.statusCode;
                             if (statusCode == 404) {
@@ -107,9 +119,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                     }
             );
+
             RequestQueue queue = Volley.newRequestQueue(this);
             queue.add(jsonObjectRequest);
         }
     }
-
 }

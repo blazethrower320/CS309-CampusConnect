@@ -43,7 +43,7 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
 
         // Get values passed from login/signup
         username = getIntent().getStringExtra("username");
-        password = getIntent().getStringExtra("password"); // make sure to pass from login
+        password = getIntent().getStringExtra("password");
         isAdmin = getIntent().getBooleanExtra("isAdmin", false);
         userId = getIntent().getIntExtra("userId", -1);
 
@@ -55,15 +55,17 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
         logoutBtn.setOnClickListener(this);
 
         changeStatusBtn = findViewById(R.id.change_status_btn);
-        changeStatusBtn.setOnClickListener(this);
-
         deleteBtn = findViewById(R.id.delete_btn);
         deleteBtn.setOnClickListener(this);
 
-        // Only admins see tutor toggle
+        // Admin-only button for editing tutor ratings
         if (isAdmin) {
             changeStatusBtn.setVisibility(View.VISIBLE);
-            fetchTutorStatus();
+            changeStatusBtn.setText("Edit Ratings");
+            changeStatusBtn.setOnClickListener(v -> {
+                Intent intent = new Intent(MainMenuActivity.this, EditTutorRatingActivity.class);
+                startActivity(intent);
+            });
         } else {
             changeStatusBtn.setVisibility(View.GONE);
         }
@@ -75,60 +77,10 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
             startActivity(new Intent(MainMenuActivity.this, MainActivity.class));
             finish();
         } else if (v.getId() == R.id.change_status_btn) {
-            toggleTutorStatus();
+            startActivity(new Intent(MainMenuActivity.this, EditTutorRatingActivity.class));
+            finish();
         } else if (v.getId() == R.id.delete_btn) {
             DeleteUser();
-        }
-    }
-
-    private void fetchTutorStatus() {
-        String url = BASE_URL + "/users/IsTutor/" + userId;
-
-        StringRequest request = new StringRequest(Request.Method.GET, url,
-                response -> {
-                    isTutor = Boolean.parseBoolean(response.trim());
-                    updateStatusButtonText();
-                },
-                error -> Log.e("Volley Error", "Failed to fetch tutor status: " + error.toString()));
-
-        Volley.newRequestQueue(this).add(request);
-    }
-
-    private void toggleTutorStatus() {
-        String url = BASE_URL + "/users/setTutor";
-        final boolean newStatus = !isTutor;
-
-        StringRequest request = new StringRequest(Request.Method.PATCH, url,
-                response -> {
-                    isTutor = newStatus;
-                    updateStatusButtonText();
-                    Toast.makeText(this, "Tutor status updated", Toast.LENGTH_SHORT).show();
-                },
-                error -> Log.e("Volley Error", "Failed to toggle tutor status: " + error.toString())) {
-
-            @Override
-            public byte[] getBody() {
-                String body = "{"
-                        + "\"userID\":" + userId + ","
-                        + "\"isTutor\":" + newStatus
-                        + "}";
-                return body.getBytes();
-            }
-
-            @Override
-            public String getBodyContentType() {
-                return "application/json; charset=utf-8";
-            }
-        };
-
-        Volley.newRequestQueue(this).add(request);
-    }
-
-    private void updateStatusButtonText() {
-        if (isTutor) {
-            changeStatusBtn.setText("Set as Non-Tutor");
-        } else {
-            changeStatusBtn.setText("Set as Tutor");
         }
     }
 
@@ -150,7 +102,7 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
         final String requestBody = requestBodyJson.toString();
 
         StringRequest stringRequest = new StringRequest(
-                Request.Method.DELETE,
+                Request.Method.POST, // changed from DELETE to POST
                 URL_DELETE_USER,
                 response -> {
                     Toast.makeText(this, "Account Deleted", Toast.LENGTH_SHORT).show();

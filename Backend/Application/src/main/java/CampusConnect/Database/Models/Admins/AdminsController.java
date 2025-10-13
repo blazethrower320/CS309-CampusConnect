@@ -1,5 +1,7 @@
 package CampusConnect.Database.Models.Admins;
 
+import CampusConnect.Database.Models.Tutors.Tutor;
+import CampusConnect.Database.Models.Tutors.TutorRepository;
 import CampusConnect.Database.Models.Users.User;
 import CampusConnect.Database.Models.Users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,8 @@ public class AdminsController {
     AdminsRepository adminsRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    TutorRepository tutorRepository;
 
     //Returns all classes
     @GetMapping(path = "/admins")
@@ -45,7 +49,22 @@ public class AdminsController {
         return ResponseEntity.ok(admin);
     }
 
-    @DeleteMapping("/admin/deleteAdmin/{username}")
+    @PostMapping("/admin/updateRatingsTutor/{username}/{rating}")
+    public boolean UpdateRatings(@PathVariable String username, @PathVariable double rating)
+    {
+        Tutor tutor = tutorRepository.findByUsername(username);
+        if(tutor == null)
+        {
+            return false;
+        }
+
+        tutor.setRating(rating);
+        tutorRepository.save(tutor);
+
+        return true;
+    }
+
+    @PostMapping("/admin/deleteAdmin/{username}")
     public boolean DeleteAdmin(@PathVariable String username)
     {
         boolean exists = adminsRepository.existsByUsername(username);

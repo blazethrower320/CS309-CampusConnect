@@ -1,4 +1,5 @@
 package CampusConnect.Database.Models.Tutors;
+import CampusConnect.Database.Models.Admins.Admins;
 import org.hibernate.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -22,19 +23,20 @@ public class TutorController
     private String tutorRemoved = "Tutor removed";
     private String tutorUpdated = "Tutor updated";
 
+
     @GetMapping(path = "/tutors")
     public List<Tutor> getAllTutors()
     {
         return tutorRepository.findAll();
     }
 
-    @GetMapping("tutors/info/{tutorID}")
+    @GetMapping("/tutors/info/{tutorID}")
     public Tutor getTutor(@PathVariable long tutorID)
     {
         return tutorRepository.getTutorByTutorId(tutorID);
     }
 
-    @PostMapping("tutors/createTutor/{username}")
+    @PostMapping("/tutors/createTutor/{username}")
     public ResponseEntity<Object> createTutor(@PathVariable String username)
     {
         User givenUser = userRepository.findByUsername(username);
@@ -50,7 +52,7 @@ public class TutorController
         return ResponseEntity.ok(tutor);
     }
 
-    @DeleteMapping("tutors/deleteTutor/{username}")
+    @PostMapping("/tutors/deleteTutor/{username}")
     public ResponseEntity<Object> deleteTutor(@PathVariable String username)
     {
         Tutor tutor = tutorRepository.findByUsername(username);
