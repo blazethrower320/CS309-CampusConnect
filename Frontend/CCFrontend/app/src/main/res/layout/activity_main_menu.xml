@@ -27,10 +27,45 @@
             android:text="Welcome!"
             android:layout_gravity="center"
             android:layout_marginTop="25dp"
-            android:layout_marginBottom="150dp"
+            android:layout_marginBottom="100dp"
             android:textSize="30dp"
             android:textColor="#FFFFFF" />
 
+        <LinearLayout
+            android:id="@+id/numclass_panel"
+            android:layout_gravity="center"
+            android:background="@drawable/gradient_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/numclass_txt"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Num Classes:">
+            </TextView>
+            <EditText
+                android:id="@+id/numclass_edttxt"
+                android:textSize="12dp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:hint="Enter number of classes"
+                android:layout_height="wrap_content">
+
+            </EditText>
+            <Button
+                android:layout_marginBottom="0dp"
+                android:layout_marginTop="0dp"
+                android:id="@+id/setnumclass_btn"
+                android:background="@drawable/btn_primary"
+                android:text="Set"
+                android:layout_gravity="center"
+                android:textSize="10dp"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content">
+
+            </Button>
+        </LinearLayout>
         <Button
             android:layout_marginBottom="10dp"
             android:layout_marginTop="25dp"

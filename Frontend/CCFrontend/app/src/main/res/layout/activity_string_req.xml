@@ -76,6 +76,17 @@
             android:padding="12dp"
             android:text="Password Request"
             android:textColor="@android:color/white" />
+        <!-- Tutors button -->
+        <Button
+            android:id="@+id/tutorsBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/btn_primary"
+            android:elevation="6dp"
+            android:padding="12dp"
+            android:text="Tutors List"
+            android:textColor="@android:color/white" />
 
         <!-- Back button -->
         <Button

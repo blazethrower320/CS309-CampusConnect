@@ -26,8 +26,11 @@ public class CreateAccountActivity extends AppCompatActivity {
     private TextView confirmPassTxt;
     private TextView msgResponse;
     private CheckBox adminCheckBox;
+    private CheckBox tutorCheckBox;
+
 
     private boolean isAdmin = false;
+    private boolean isTutor = false;
 
     // Variables
     private String username;
@@ -37,6 +40,7 @@ public class CreateAccountActivity extends AppCompatActivity {
     // API Endpoints
     private static final String URL_CREATE_USER = "http://coms-3090-037.class.las.iastate.edu:8080/users/createUser";
     private static final String URL_CREATE_ADMIN = "http://coms-3090-037.class.las.iastate.edu:8080/admin/createAdmin/";
+    private static final String URL_CREATE_TUTOR = "http://coms-3090-037.class.las.iastate.edu:8080/tutors/createTutor/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +51,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         backBtn = findViewById(R.id.back_btn);
         createAccountBtn = findViewById(R.id.signup_btn);
         adminCheckBox = findViewById(R.id.admin_checkbox);
+        tutorCheckBox = findViewById(R.id.tutor_checkbox);
         usernameTxt = findViewById(R.id.create_username);
         passwordTxt = findViewById(R.id.create_password);
         confirmPassTxt = findViewById(R.id.create_password_confirm);
@@ -63,6 +68,9 @@ public class CreateAccountActivity extends AppCompatActivity {
             password = passwordTxt.getText().toString().trim();
             confirmPass = confirmPassTxt.getText().toString().trim();
             isAdmin = adminCheckBox.isChecked();
+            isTutor = tutorCheckBox.isChecked();
+
+            // Validation
 
             if (username.isEmpty() || password.isEmpty() || confirmPass.isEmpty()) {
                 Toast.makeText(this, "Please fill out all fields", Toast.LENGTH_SHORT).show();
@@ -90,11 +98,18 @@ public class CreateAccountActivity extends AppCompatActivity {
                     Toast.makeText(this, "User Created", Toast.LENGTH_SHORT).show();
                     msgResponse.setText("User Created Successfully");
 
-                    if (isAdmin) {
+                    if (isAdmin)
+                    {
                         CreateAdmin(username);
-                    } else {
+                    }
+                    else if (isTutor)
+                    {
+                        CreateTutor(username);
+                    }
+                    else
+                    {
                         // Non-admin user → go to main menu
-                        goToMainMenu(username, password, false);
+                        goToMainMenu(username, password, false, false);
                     }
                 },
                 error -> {
@@ -133,7 +148,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                     msgResponse.setText("Admin Created Successfully!");
 
                     // ✅ Now go to main menu as admin
-                    goToMainMenu(username, password, true);
+                    goToMainMenu(username, password, true, false);
                 },
                 error -> {
                     Log.e("Admin Error", error.toString());
@@ -144,12 +159,36 @@ public class CreateAccountActivity extends AppCompatActivity {
 
         Volley.newRequestQueue(this).add(adminRequest);
     }
+    private void CreateTutor(String username) {
+        String url = URL_CREATE_TUTOR + username;
 
-    private void goToMainMenu(String username, String password, boolean isAdmin) {
+        StringRequest adminRequest = new StringRequest(
+                Request.Method.POST,
+                url,
+                response -> {
+                    Log.d("Tutor Response", response);
+                    Toast.makeText(this, "Tutor Account Created", Toast.LENGTH_SHORT).show();
+                    msgResponse.setText("Tutor Created Successfully!");
+
+                    // ✅ Now go to main menu as admin
+                    goToMainMenu(username, password, false, true);
+                },
+                error -> {
+                    Log.e("Tutor Error", error.toString());
+                    Toast.makeText(this, "Tutor Creation Failed", Toast.LENGTH_SHORT).show();
+                    msgResponse.setText("Tutor Creation Failed");
+                }
+        );
+
+        Volley.newRequestQueue(this).add(adminRequest);
+    }
+
+    private void goToMainMenu(String username, String password, boolean isAdmin, boolean isTutor) {
         Intent intent = new Intent(CreateAccountActivity.this, MainMenuActivity.class);
         intent.putExtra("username", username);
         intent.putExtra("password", password);
         intent.putExtra("isAdmin", isAdmin);
+        intent.putExtra("isTutor", isTutor);
         intent.putExtra("userId", -1);
         startActivity(intent);
         finish();
