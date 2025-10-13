@@ -62,12 +62,12 @@ public class TutorController
         return ResponseEntity.status(403).body(tutorNotFound);
     }
 
-    @PatchMapping("tutors/editTotalClasses/{username}/{newTotalClasses}")
-    public ResponseEntity<Object> editTotalClasses(@PathVariable String username, @PathVariable int newTotalClasses)
+    @PutMapping("tutors/editTotalClasses")
+    public ResponseEntity<Object> editTotalClasses(@RequestBody Tutor newTutor)
     {
-        Tutor tutor = tutorRepository.findByUsername(username);
+        Tutor tutor = tutorRepository.findByUsername(newTutor.getUsername());
         if (tutor != null) {
-            tutor.setTotalClasses(newTotalClasses);
+            tutor.setTotalClasses(newTutor.gettotalClasses());
             tutorRepository.save(tutor);
             return ResponseEntity.ok(tutorUpdated);
         }
