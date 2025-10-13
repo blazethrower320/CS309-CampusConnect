@@ -96,7 +96,7 @@
             ``403`` - Tutor not found<br>
             ``tutor removed`` - Tutor Removed<br>
 
-    - Patch | `/tutors/editTotalClassCount/{username}` - Edits class count for the user <br>
+    - PUT | `/tutors/editTotalClasses` - Edits class count for the user <br>
         Returns: <br>
             ``403`` - Tutor not found <br>
             ``tutor updated`` Tutor updated <br>
