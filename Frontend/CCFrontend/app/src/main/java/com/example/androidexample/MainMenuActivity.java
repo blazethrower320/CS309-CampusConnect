@@ -11,6 +11,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import android.widget.ImageButton;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -28,18 +32,21 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
     private static final String URL_DELETE_USER = BASE_URL + "/users/deleteUser";
 
     private Button logoutBtn;
-    private Button changeStatusBtn;
-    private Button setNumClassBtn;
-    private Button deleteBtn;
+    //private Button changeStatusBtn;
+    //private Button setNumClassBtn;
     private TextView welcomeText;
 
-    private LinearLayout numClassPanel;
+    private Button deleteAccountBtn;
+
+    //private LinearLayout numClassPanel;
 
     private EditText numClassEdt;
 
 
     private boolean isTutor = false;   // cached tutor status
     private boolean isAdmin = false;   // passed from login/signup
+    private DrawerLayout drawerLayout;
+    private ImageButton menuButton;
     private int userId;                // must be passed from login/signup
     private String username;
     private String password;           // pass this from login/signup if required
@@ -48,6 +55,19 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
+
+        deleteAccountBtn = findViewById(R.id.delete_account_btn);
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        menuButton = findViewById(R.id.menu_button);
+
+        menuButton.setOnClickListener(v -> {
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START);
+            } else {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
 
         // Get values passed from login/signup
         username = getIntent().getStringExtra("username");
@@ -62,39 +82,26 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
 
         logoutBtn = findViewById(R.id.logout_btn);
         logoutBtn.setOnClickListener(this);
+        //setNumClassBtn.setOnClickListener(this);
 
-        changeStatusBtn = findViewById(R.id.change_status_btn);
-        deleteBtn = findViewById(R.id.delete_btn);
-        deleteBtn.setOnClickListener(this);
-
-        //Tutor UI elements
-        numClassPanel = findViewById(R.id.numclass_panel);
-        numClassEdt = findViewById(R.id.numclass_edttxt);
-
-        setNumClassBtn = findViewById(R.id.setnumclass_btn);
-        setNumClassBtn.setOnClickListener(this);
+        deleteAccountBtn.setOnClickListener(v -> DeleteUser());
 
 
-        // Admin-only button for editing tutor ratings
+
+        // Admin-only buttons
         if (isAdmin)
         {
-            changeStatusBtn.setVisibility(View.VISIBLE);
-            numClassPanel.setVisibility(View.GONE);
-            changeStatusBtn.setText("Edit Ratings");
-            changeStatusBtn.setOnClickListener(v -> {
-                Intent intent = new Intent(MainMenuActivity.this, EditTutorRatingActivity.class);
-                startActivity(intent);
-            });
+
         }
-        else if (isTutor)
+        else if (isTutor) // Tutor-only buttons
         {
-            numClassPanel.setVisibility(View.VISIBLE);
-            changeStatusBtn.setVisibility(View.GONE);
+            //numClassPanel.setVisibility(View.VISIBLE);
+            //changeStatusBtn.setVisibility(View.GONE);
         }
         else
         {
-            changeStatusBtn.setVisibility(View.GONE);
-            numClassPanel.setVisibility(View.GONE);
+            //changeStatusBtn.setVisibility(View.GONE);
+            //numClassPanel.setVisibility(View.GONE);
         }
     }
 
@@ -105,18 +112,11 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
             startActivity(new Intent(MainMenuActivity.this, MainActivity.class));
             finish();
         }
-        else if (v.getId() == R.id.change_status_btn)
-        {
-            startActivity(new Intent(MainMenuActivity.this, EditTutorRatingActivity.class));
-            finish();
-        }
-        else if (v.getId() == R.id.delete_btn)
+        if (v.getId() == R.id.delete_account_btn)
         {
             DeleteUser();
-        }
-        else if (v.getId() == R.id.setnumclass_btn)
-        {
-            SetNumClasses();
+            startActivity(new Intent(MainMenuActivity.this, MainActivity.class));
+            finish();
         }
     }
 

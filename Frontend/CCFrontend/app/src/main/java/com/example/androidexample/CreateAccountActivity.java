@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -19,35 +18,28 @@ import com.android.volley.toolbox.Volley;
 public class CreateAccountActivity extends AppCompatActivity {
 
     // UI components
-    private Button backBtn;
-    private Button createAccountBtn;
-    private TextView usernameTxt;
-    private TextView passwordTxt;
-    private TextView confirmPassTxt;
-    private TextView msgResponse;
-    private CheckBox adminCheckBox;
-    private CheckBox tutorCheckBox;
+    private Button backBtn, createAccountBtn;
+    private TextView usernameTxt, passwordTxt, confirmPassTxt, msgResponse;
+    private CheckBox adminCheckBox, tutorCheckBox;
 
-
+    // Flags
     private boolean isAdmin = false;
     private boolean isTutor = false;
 
-    // Variables
-    private String username;
-    private String password;
-    private String confirmPass;
+    // Constants
+    private static final String BASE_URL = "http://coms-3090-037.class.las.iastate.edu:8080";
+    private static final String URL_CREATE_USER = BASE_URL + "/users/createUser";
+    private static final String URL_CREATE_ADMIN = BASE_URL + "/admin/createAdmin/";
+    private static final String URL_CREATE_TUTOR = BASE_URL + "/tutors/createTutor/";
 
-    // API Endpoints
-    private static final String URL_CREATE_USER = "http://coms-3090-037.class.las.iastate.edu:8080/users/createUser";
-    private static final String URL_CREATE_ADMIN = "http://coms-3090-037.class.las.iastate.edu:8080/admin/createAdmin/";
-    private static final String URL_CREATE_TUTOR = "http://coms-3090-037.class.las.iastate.edu:8080/tutors/createTutor/";
+    private RequestQueue queue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        // Initialize UI components
+        // Initialize UI
         backBtn = findViewById(R.id.back_btn);
         createAccountBtn = findViewById(R.id.signup_btn);
         adminCheckBox = findViewById(R.id.admin_checkbox);
@@ -57,74 +49,70 @@ public class CreateAccountActivity extends AppCompatActivity {
         confirmPassTxt = findViewById(R.id.create_password_confirm);
         msgResponse = findViewById(R.id.msgResponse);
 
-        // Back button
+        // Initialize Volley queue (reuse it)
+        queue = Volley.newRequestQueue(this);
+
+        // Back button action
         backBtn.setOnClickListener(v ->
                 startActivity(new Intent(CreateAccountActivity.this, MainActivity.class))
         );
 
-        // Create account button
-        createAccountBtn.setOnClickListener(v -> {
-            username = usernameTxt.getText().toString().trim();
-            password = passwordTxt.getText().toString().trim();
-            confirmPass = confirmPassTxt.getText().toString().trim();
-            isAdmin = adminCheckBox.isChecked();
-            isTutor = tutorCheckBox.isChecked();
-
-            // Validation
-
-            if (username.isEmpty() || password.isEmpty() || confirmPass.isEmpty()) {
-                Toast.makeText(this, "Please fill out all fields", Toast.LENGTH_SHORT).show();
-                msgResponse.setText("Incomplete Field(s)");
-                return;
-            }
-
-            if (!password.equals(confirmPass)) {
-                Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
-                msgResponse.setText("Passwords do not match");
-                return;
-            }
-
-            // Create user first
-            CreateUser(username, password);
-        });
+        // Create Account button action
+        createAccountBtn.setOnClickListener(v -> handleCreateAccount());
     }
 
-    private void CreateUser(String username, String password) {
-        StringRequest stringRequest = new StringRequest(
+    /** Validate inputs and create user **/
+    private void handleCreateAccount() {
+        String username = usernameTxt.getText().toString().trim();
+        String password = passwordTxt.getText().toString().trim();
+        String confirmPass = confirmPassTxt.getText().toString().trim();
+        isAdmin = adminCheckBox.isChecked();
+        isTutor = tutorCheckBox.isChecked();
+
+        if (username.isEmpty() || password.isEmpty() || confirmPass.isEmpty()) {
+            showToast("Please fill out all fields");
+            msgResponse.setText("Incomplete Field(s)");
+            return;
+        }
+
+        if (!password.equals(confirmPass)) {
+            showToast("Passwords do not match");
+            msgResponse.setText("Passwords do not match");
+            return;
+        }
+
+        createUser(username, password);
+    }
+
+    /** Generic user creation **/
+    private void createUser(String username, String password) {
+        StringRequest request = new StringRequest(
                 Request.Method.POST,
                 URL_CREATE_USER,
                 response -> {
-                    Log.d("Volley Response", response);
-                    Toast.makeText(this, "User Created", Toast.LENGTH_SHORT).show();
+                    Log.d("CreateUser", "Response: " + response);
                     msgResponse.setText("User Created Successfully");
+                    showToast("User Created");
 
-                    if (isAdmin)
-                    {
-                        CreateAdmin(username);
-                    }
-                    else if (isTutor)
-                    {
-                        CreateTutor(username);
-                    }
-                    else
-                    {
-                        // Non-admin user → go to main menu
+                    // Chain next step depending on role
+                    if (isAdmin) {
+                        createRoleAccount(username, URL_CREATE_ADMIN, true, false);
+                    } else if (isTutor) {
+                        createRoleAccount(username, URL_CREATE_TUTOR, false, true);
+                    } else {
                         goToMainMenu(username, password, false, false);
                     }
                 },
                 error -> {
-                    Log.e("Volley Error", error.toString());
-                    Toast.makeText(this, "User Creation Failed", Toast.LENGTH_SHORT).show();
+                    Log.e("CreateUser", "Error: " + error.toString());
+                    showToast("User Creation Failed");
                     msgResponse.setText("User Creation Failed");
                 }
         ) {
             @Override
             public byte[] getBody() {
-                String body = "{"
-                        + "\"username\":\"" + username + "\","
-                        + "\"password\":\"" + password + "\""
-                        + "}";
-                return body.getBytes();
+                String jsonBody = "{\"username\":\"" + username + "\",\"password\":\"" + password + "\"}";
+                return jsonBody.getBytes();
             }
 
             @Override
@@ -133,56 +121,33 @@ public class CreateAccountActivity extends AppCompatActivity {
             }
         };
 
-        Volley.newRequestQueue(this).add(stringRequest);
+        queue.add(request);
     }
 
-    private void CreateAdmin(String username) {
-        String url = URL_CREATE_ADMIN + username;
-
-        StringRequest adminRequest = new StringRequest(
+    /** Admin or Tutor account creation **/
+    private void createRoleAccount(String username, String baseUrl, boolean isAdmin, boolean isTutor) {
+        StringRequest request = new StringRequest(
                 Request.Method.POST,
-                url,
+                baseUrl + username,
                 response -> {
-                    Log.d("Admin Response", response);
-                    Toast.makeText(this, "Admin Account Created", Toast.LENGTH_SHORT).show();
-                    msgResponse.setText("Admin Created Successfully!");
-
-                    // ✅ Now go to main menu as admin
-                    goToMainMenu(username, password, true, false);
+                    String role = isAdmin ? "Admin" : "Tutor";
+                    Log.d(role + " Response", response);
+                    msgResponse.setText(role + " Created Successfully!");
+                    showToast(role + " Account Created");
+                    goToMainMenu(username, passwordTxt.getText().toString(), isAdmin, isTutor);
                 },
                 error -> {
-                    Log.e("Admin Error", error.toString());
-                    Toast.makeText(this, "Admin Creation Failed", Toast.LENGTH_SHORT).show();
-                    msgResponse.setText("Admin Creation Failed");
+                    String role = isAdmin ? "Admin" : "Tutor";
+                    Log.e(role + " Error", error.toString());
+                    showToast(role + " Creation Failed");
+                    msgResponse.setText(role + " Creation Failed");
                 }
         );
 
-        Volley.newRequestQueue(this).add(adminRequest);
-    }
-    private void CreateTutor(String username) {
-        String url = URL_CREATE_TUTOR + username;
-
-        StringRequest adminRequest = new StringRequest(
-                Request.Method.POST,
-                url,
-                response -> {
-                    Log.d("Tutor Response", response);
-                    Toast.makeText(this, "Tutor Account Created", Toast.LENGTH_SHORT).show();
-                    msgResponse.setText("Tutor Created Successfully!");
-
-                    // ✅ Now go to main menu as admin
-                    goToMainMenu(username, password, false, true);
-                },
-                error -> {
-                    Log.e("Tutor Error", error.toString());
-                    Toast.makeText(this, "Tutor Creation Failed", Toast.LENGTH_SHORT).show();
-                    msgResponse.setText("Tutor Creation Failed");
-                }
-        );
-
-        Volley.newRequestQueue(this).add(adminRequest);
+        queue.add(request);
     }
 
+    /** Navigate to Main Menu **/
     private void goToMainMenu(String username, String password, boolean isAdmin, boolean isTutor) {
         Intent intent = new Intent(CreateAccountActivity.this, MainMenuActivity.class);
         intent.putExtra("username", username);
@@ -192,5 +157,10 @@ public class CreateAccountActivity extends AppCompatActivity {
         intent.putExtra("userId", -1);
         startActivity(intent);
         finish();
+    }
+
+    /** Utility: quick toast **/
+    private void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

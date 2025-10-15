@@ -24,6 +24,18 @@
         </Button>
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/msgResponse"
+        android:layout_width="400dp"
+        android:layout_height="50dp"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        android:textStyle="italic"
+        android:visibility="visible"
+        android:layout_marginBottom="32dp" />
+
 
     <LinearLayout
         android:layout_width="325dp"
@@ -46,18 +58,6 @@
             android:textColor="#FFFFFF">
         </TextView>
 
-        <TextView
-            android:id="@+id/msgResponse"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:layout_gravity="center"
-            android:layout_marginTop="-20dp"
-            android:layout_marginBottom="110dp"
-            android:textSize="20dp"
-            android:textColor="#CA0000">
-        </TextView>
-
         <LinearLayout
             android:paddingRight="10dp"
             android:paddingLeft="10dp"
@@ -65,7 +65,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/text_editor_panel"
-            android:layout_marginTop="-150dp"
             android:orientation="horizontal">
 
             <TextView
@@ -121,7 +120,7 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="-250dp"
+            android:layout_marginTop="-200dp"
             android:background="@drawable/text_editor_panel"
             android:orientation="horizontal">
 
@@ -144,44 +143,41 @@
 
         </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="70dp">
+
         <CheckBox
             android:id="@+id/admin_checkbox"
-            android:layout_width="wrap_content"
+            android:layout_width="134dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
             android:text="Create Admin Account"
-            android:textColor="#FFFFFF"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"/>
+            android:textColor="#FFFFFF" />
+
         <CheckBox
             android:id="@+id/tutor_checkbox"
-            android:layout_width="wrap_content"
+            android:layout_width="141dp"
             android:layout_height="wrap_content"
             android:text="Create Tutor Account"
-            android:textColor="#FFFFFF"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"/>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
 
             <Button
                 android:id="@+id/signup_btn"
                 android:background="@drawable/btn_primary"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="109dp"
                 android:gravity="center"
                 android:text="Create Account"
                 android:textSize="15sp"
                 android:textColor="#ffffff">
             </Button>
-
-
-        </LinearLayout>
-
 
     </androidx.appcompat.widget.LinearLayoutCompat>
