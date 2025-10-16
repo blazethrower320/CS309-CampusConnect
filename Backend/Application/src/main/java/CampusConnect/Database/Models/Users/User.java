@@ -9,7 +9,7 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private long userId;
 
     @Column(name = "first_name")
     private String firstName;
@@ -34,14 +34,14 @@ public class User {
 
 
 
-
+    /*
     @ManyToMany
     @JoinTable(
             name = "User_Sessions",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "session_id")
     )
-    private Set<Sessions> userSessions;
+    private Set<Sessions> userSessions;     */
 
     public User(String username, String password, boolean tutor, boolean admin) {
         this.firstName = firstName;
@@ -60,7 +60,7 @@ public class User {
 
     }
     public boolean isAdmin(){ return isAdmin;}
-    public Long getUserId() { return userId; }
+    public long getUserId() { return userId; }
     public String getFirstName() { return firstName; }
     public String getLastName() { return lastName; }
     public String getUsername() { return username; }
