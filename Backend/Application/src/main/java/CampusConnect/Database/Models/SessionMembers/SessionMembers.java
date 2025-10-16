@@ -1,12 +1,10 @@
-package CampusConnect.Database.Models.SessionParticipants;
+package CampusConnect.Database.Models.SessionMembers;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class SessionParticipants {
+public class SessionMembers {
 
     @Id
     private long id;
@@ -14,9 +12,9 @@ public class SessionParticipants {
     private long userId;
     private boolean isTutor;
 
-    public SessionParticipants(){}
+    public SessionMembers(){}
 
-    public SessionParticipants(long userId, long sessionId, boolean isTutor) {
+    public SessionMembers(long userId, long sessionId, boolean isTutor) {
         this.userId = userId;
         this.sessionId = sessionId;
         this.isTutor = isTutor;

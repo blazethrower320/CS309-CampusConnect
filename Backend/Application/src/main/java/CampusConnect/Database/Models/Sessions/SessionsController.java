@@ -1,9 +1,7 @@
 package CampusConnect.Database.Models.Sessions;
 
-import CampusConnect.Database.Models.Ratings.Ratings;
-import CampusConnect.Database.Models.Ratings.RatingsRepository;
-import CampusConnect.Database.Models.SessionParticipants.SessionParticipants;
-import CampusConnect.Database.Models.SessionParticipants.SessionParticipantsRepository;
+import CampusConnect.Database.Models.SessionMembers.SessionMembers;
+import CampusConnect.Database.Models.SessionMembers.SessionMembersRepository;
 import CampusConnect.Database.Models.Tutors.Tutor;
 import CampusConnect.Database.Models.Tutors.TutorRepository;
 import CampusConnect.Database.Models.Users.UserRepository;
@@ -24,11 +22,11 @@ public class SessionsController
     @Autowired
     private TutorRepository tutorRepository;
     @Autowired
-    private SessionParticipantsRepository participantsRepository;
+    private SessionMembersRepository participantsRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private SessionParticipantsRepository sessionParticipantsRepository;
+    private SessionMembersRepository sessionParticipantsRepository;
 
     @GetMapping(path = "/sessions")
     public List<Sessions> getAllSessions() {
@@ -80,7 +78,7 @@ public class SessionsController
 
         System.out.println(newSession.getId());
 
-        SessionParticipants newMember = new SessionParticipants
+        SessionMembers newMember = new SessionMembers
                 (
                         newSession.getUserId(),
                         newSession.getId(),
