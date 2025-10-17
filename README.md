@@ -102,7 +102,7 @@
             ``ok`` Tutor updated <br>
 - ## Sessions
     - Get | `/sessions` - Returns a JSON of Sessions <br>
-    - Post | `/sessions/createSession` - Creates a New Session with the Tutor, Also includes them as a Member
+    - Post | `/sessions/createSession` - Creates a New Session with the Tutor, Also includes them as a Member<br>
         ```json
         {
             "userId": 1111,
@@ -129,7 +129,7 @@
     - Get | `/sessions/getSession/{sessionId}` - Gets a session with the Session ID<br>
         Returns:<br>
             ``404`` - Session Not found<br>
-            ``ok`` - Success<br>
+            ``ok`` - Success<br> <br>
 
 - ## Session Members
     - Get | `/sessions/getAllSessionMembers/{sessionId}` - Gets Session Members<br>
