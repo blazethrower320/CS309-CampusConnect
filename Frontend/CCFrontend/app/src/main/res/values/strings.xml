@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">AndroidExample</string>
+
+    <string-array name="majors_array">
+        <item>All</item>
+        <item>EE</item>
+        <item>CPRE</item>
+        <item>COM S</item>
+        <item>MATH</item>
+        <!-- add more majors as needed -->
+    </string-array>
 </resources>
