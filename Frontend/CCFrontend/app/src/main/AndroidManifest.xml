@@ -28,7 +28,7 @@
             android:exported="false" />
 
         <activity
-            android:name=".EditTutorRatingActivity"
+            android:name=".SessionActivity"
             android:exported="false" />
 
         <!-- Main launcher activity -->
