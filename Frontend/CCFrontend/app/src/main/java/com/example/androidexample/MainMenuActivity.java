@@ -47,6 +47,7 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
     private boolean isAdmin = false;   // passed from login/signup
     private DrawerLayout drawerLayout;
     private ImageButton menuButton;
+
     private int userId;                // must be passed from login/signup
     private String username;
     private String password;           // pass this from login/signup if required
@@ -68,6 +69,19 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
                 drawerLayout.openDrawer(GravityCompat.START);
             }
         });
+
+        LinearLayout sessionsBtn = findViewById(R.id.nav_sessions);
+        sessionsBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(MainMenuActivity.this, SessionActivity.class);
+            intent.putExtra("username", username);
+            intent.putExtra("userId", userId);
+            intent.putExtra("isAdmin", isAdmin);
+            intent.putExtra("isTutor", isTutor);
+            intent.putExtra("password", password); // only if needed for certain calls
+            startActivity(intent);
+            drawerLayout.closeDrawer(GravityCompat.START);
+        });
+
 
         // Get values passed from login/signup
         username = getIntent().getStringExtra("username");

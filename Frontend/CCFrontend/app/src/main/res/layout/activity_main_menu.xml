@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
@@ -28,13 +29,13 @@
                 android:layout_height="40dp"
                 android:background="@android:color/transparent"
                 android:src="@drawable/ic_menu"
-                android:contentDescription="Menu"/>
+                android:contentDescription="Menu" />
 
             <TextView
                 android:id="@+id/title_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="70dp"
+                android:layout_marginStart="67dp"
                 android:text="Campus Connect"
                 android:textColor="#FFFFFF"
                 android:textSize="20sp" />
@@ -42,10 +43,10 @@
             <Button
                 android:id="@+id/logout_btn"
                 android:text="Logout"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="25dp"
                 android:background="@drawable/clear_btn"
                 android:layout_width="100dp"
-                android:layout_height="40dp"/>
+                android:layout_height="40dp" />
         </LinearLayout>
 
         <!-- Existing main content -->
@@ -68,6 +69,7 @@
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
                 android:textSize="24sp" />
+
             <Button
                 android:id="@+id/delete_account_btn"
                 android:layout_width="wrap_content"
@@ -78,7 +80,7 @@
                 android:layout_marginTop="20dp"
                 android:padding="10dp"
                 android:textSize="16sp"
-                android:fontFamily="sans-serif-medium"/>
+                android:fontFamily="sans-serif-medium" />
 
 
         </LinearLayout>
@@ -87,14 +89,41 @@
     <!-- Sidebar / Navigation Drawer -->
     <LinearLayout
         android:id="@+id/nav_view"
-        android:layout_width="120dp"
+        android:layout_width="100dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:orientation="vertical"
         android:background="#2E2E3A"
-        android:paddingTop="60dp">
+        android:paddingTop="60dp"
+        android:gravity="center_horizontal">
 
-        <!-- We’ll add items later -->
+        <!-- Sessions -->
+        <LinearLayout
+            android:id="@+id/nav_sessions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:padding="12dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:attr/selectableItemBackground">
+
+            <ImageView
+                android:layout_width="69dp"
+                android:layout_height="69dp"
+                android:src="@drawable/ic_schedule"
+                android:contentDescription="Sessions"
+                app:tint="#FFFFFF" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sessions"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"
+                android:layout_marginTop="4dp" />
         </LinearLayout>
+    </LinearLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>
