@@ -129,8 +129,8 @@
     - Get | `/sessions/getSession/{sessionId}` - Gets a session with the Session ID<br>
         Returns:<br>
             ``404`` - Session Not found<br>
-            ``ok`` - Success<br>
-<br>
+            ``ok`` - Success<br> <br>
+
 - ## Session Members
     - Get | `/sessions/getAllSessionMembers/{sessionId}` - Gets Session Members<br>
         Returns:<br>
