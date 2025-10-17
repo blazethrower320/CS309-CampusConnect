@@ -94,11 +94,52 @@
     - Delete | `/tutors/deleteTutor/{username}` - Deletes a Admin from the database <br>
         Returns: <br>
             ``403`` - Tutor not found<br>
-            ``tutor removed`` - Tutor Removed<br>
+            ``ok`` - Tutor Removed<br>
 
     - PUT | `/tutors/editTotalClasses` - Edits class count for the user <br>
         Returns: <br>
             ``403`` - Tutor not found <br>
-            ``tutor updated`` Tutor updated <br>
+            ``ok`` Tutor updated <br>
+- ## Sessions
+    - Get | `/sessions` - Returns a JSON of Sessions <br>
+    - Post | `/sessions/createSession` - Creates a New Session with the Tutor, Also includes them as a Member
+        ```json
+        {
+            "userId": 1111,
+            "tutorId": 1111
+            "className": "Computer Science 309"
+            "classCode": "COMS309"
+            "meetingLocation": "Pearson"
+            "meetingTime": "Friday"
+        }
+        ```
+        Returns: <br>
+            ``400`` - Tutor Not found<br>
+            ``ok`` - Success<br>
+    - Post | `/sessions/joinSession` - Allows a User to join a specific Session<br>
+        ```json
+        {
+            "sessionId": 1111,
+            "userId": 1111
+        }
+        ```
+        Returns:<br>
+            ``404`` - Session Not found<br>
+            ``ok`` - Success<br>
+    - Get | `/sessions/getSession/{sessionId}` - Gets a session with the Session ID<br>
+        Returns:<br>
+            ``404`` - Session Not found<br>
+            ``ok`` - Success<br>
+
+- ## Session Members
+    - Get | `/sessions/getAllSessionMembers/{sessionId}` - Gets Session Members<br>
+        Returns:<br>
+            ``ok`` - Returns List<members><br>
+    - Get | `/sessions/getSessionTutor/{sessionId}` - Gets Tutor from Session<br>
+        Returns:
+            ``400`` - Session Not Found<br>
+            ``401`` - Tutor not found<br>
+            ``ok`` - Success<br>
+
 
 
