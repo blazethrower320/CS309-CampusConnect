@@ -35,6 +35,11 @@
         <activity
             android:name=".CreateAccountActivity"
             android:exported="false" />
+        <!-- Profile Activity-->
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">   <!-- Must be true if it has MAIN/LAUNCHER -->

@@ -27,7 +27,11 @@ public class SessionActivity extends AppCompatActivity {
         menuButton = findViewById(R.id.menu_button);
 
         // Find the "Home" button layout
-        LinearLayout homeButton = findViewById(R.id.nav_sessions);
+        LinearLayout homeButton = findViewById(R.id.nav_home);
+
+        //Find the "Sessions" button layout
+        LinearLayout profileButton = findViewById(R.id.nav_profile);
+
 
         // Open sidebar when menu button clicked
         menuButton.setOnClickListener(v -> {
@@ -41,6 +45,18 @@ public class SessionActivity extends AppCompatActivity {
         // When user clicks "Home", go to MainMenuActivity
         homeButton.setOnClickListener(v -> {
             Intent intent = new Intent(SessionActivity.this, MainMenuActivity.class);
+            intent.putExtra("username", username);
+            intent.putExtra("userId", userId);
+            intent.putExtra("isAdmin", isAdmin);
+            intent.putExtra("isTutor", isTutor);
+            intent.putExtra("password", password);
+            startActivity(intent);
+            finish(); // optional: close SessionActivity so it doesn’t pile up in the backstack
+        });
+
+        // When user clicks "Profile", go to ProfileActivity
+        profileButton.setOnClickListener(v -> {
+            Intent intent = new Intent(SessionActivity.this, ProfileActivity.class);
             intent.putExtra("username", username);
             intent.putExtra("userId", userId);
             intent.putExtra("isAdmin", isAdmin);
