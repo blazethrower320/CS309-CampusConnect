@@ -4,6 +4,7 @@ import CampusConnect.Database.Models.Classes.Classes;
 import CampusConnect.Database.Models.Users.User;
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -42,7 +43,7 @@ public class Sessions
     public long getTutorId(){ return tutorId; }
     public String getMeetingLocation(){ return meetingLocation; }
     public String getMeetingTime(){ return meetingTime; }
-    public long getId() { return sessionId; }
+    public long getSessionId() { return sessionId; }
     public String getClassName() { return className; }
     public String getClassCode() { return classCode; }
 }

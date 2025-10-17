@@ -7,10 +7,7 @@ import CampusConnect.Database.Models.Tutors.TutorRepository;
 import CampusConnect.Database.Models.Users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,45 +23,42 @@ public class SessionsController
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private SessionMembersRepository sessionParticipantsRepository;
+    private SessionMembersRepository sessionMembersRepository;
 
     @GetMapping(path = "/sessions")
     public List<Sessions> getAllSessions() {
         return sessionsRepository.findAll();
     }
 
-    /*
+
     @PostMapping("/sessions/joinSession")
     public ResponseEntity<Object> joinSession(@RequestBody Sessions session)
     {
-        Sessions sessionExists = sessionsRepository.findAllBySessionId(session.getId());
+        Sessions sessionExists = sessionsRepository.getSessionsBySessionId(session.getSessionId());
         if(sessionExists == null)
         {
             return ResponseEntity.status(404).body("Session Not found");
-            // something, not found
         }
 
-        // A group session
-        Sessions newSession = new Sessions
+        SessionMembers newMember = new SessionMembers
                 (
                         session.getUserId(),
-                        sessionExists.getClassName(),
-                        sessionExists.getClassCode(),
-                        sessionExists.getMeetingLocation(),
-                        sessionExists.getMeetingTime(),
-                        sessionExists.getTutorId(),
+                        sessionExists.getSessionId(),
                         false
                 );
-        nextSessionId++;
-        sessionsRepository.save(newSession);
-        return ResponseEntity.ok(newSession);
+
+        sessionMembersRepository.save(newMember);
+        return ResponseEntity.ok(newMember);
     }
-    */
+
     @PostMapping("/sessions/createSession")
     public ResponseEntity<Object> createSession(@RequestBody Sessions session)
     {
         // A group session
         Tutor tutor = tutorRepository.getTutorByTutorId(session.getTutorId());
+        if(tutor == null)
+            return ResponseEntity.status(400).body("Tutor Not found");
+
         Sessions newSession = new Sessions
                 (
                         session.getUserId(),
@@ -76,16 +70,23 @@ public class SessionsController
                 );
         sessionsRepository.save(newSession);
 
-        System.out.println(newSession.getId());
-
         SessionMembers newMember = new SessionMembers
                 (
                         newSession.getUserId(),
-                        newSession.getId(),
+                        newSession.getSessionId(),
                         true
                 );
-        sessionParticipantsRepository.save(newMember);
+        sessionMembersRepository.save(newMember);
 
         return ResponseEntity.ok(newSession);
+    }
+
+    @GetMapping("/sessions/getSession/{sessionId}")
+    public ResponseEntity<Object> getSession(@PathVariable long sessionId)
+    {
+        Sessions session = sessionsRepository.findAllBySessionId(sessionId);
+        if(session == null)
+            return ResponseEntity.status(404).body("Session Not Found");
+        return ResponseEntity.ok(session);
     }
 }
