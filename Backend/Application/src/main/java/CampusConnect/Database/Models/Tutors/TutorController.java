@@ -76,4 +76,10 @@ public class TutorController
         return ResponseEntity.status(403).body(tutorNotFound);
     }
 
+
+    @GetMapping("tutors/getTutorFromUserId/{userId}")
+    public Tutor getTutorFromUserId(@PathVariable long userId)
+    {
+        return tutorRepository.getTutorByUserId(userId);
+    }
 }

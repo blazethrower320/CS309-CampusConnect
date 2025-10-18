@@ -9,12 +9,15 @@ import java.util.Set;
 public class Classes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "classId")
     private long classId;
     private String className;
     private String classCode;
 
-    @OneToMany(mappedBy = "sessionClass")
-    Set<Sessions> sessions;
+    /*
+    @OneToMany(mappedBy = "sessionClass", cascade = CascadeType.ALL)
+    private Set<Sessions> sessions;
+    */
 
     public Classes(){}
 
