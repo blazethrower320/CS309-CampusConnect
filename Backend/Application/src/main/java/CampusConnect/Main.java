@@ -42,6 +42,7 @@ class Main {
             classesRepository.deleteAll();
             userRepository.deleteAll();
             adminsRepository.deleteAll();
+            sessionsRepository.deleteAll();
             sessionMembersRepository.deleteAll();
 
             User user1 = new User( "JohnZeet", "password", false, false);

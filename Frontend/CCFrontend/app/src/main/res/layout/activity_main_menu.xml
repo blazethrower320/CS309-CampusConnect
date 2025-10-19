@@ -1,122 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    tools:context=".MainMenuActivity"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_bg_image2"
-    android:orientation="vertical">
+    tools:context=".MainMenuActivity">
 
-
-    <!-- Center Panel -->
+    <!-- Main content (your current layout) -->
     <LinearLayout
-        android:layout_width="325dp"
-        android:layout_height="450dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/login_bg_image2"
         android:orientation="vertical"
-        android:layout_gravity="center"
-        android:background="@drawable/layout_bg"
-        android:layout_marginTop="150dp">
+        android:padding="16dp">
 
-        <!-- Welcome Message -->
-        <TextView
-            android:id="@+id/welcome_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:text="Welcome!"
-            android:layout_gravity="center"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="100dp"
-            android:textSize="30dp"
-            android:textColor="#FFFFFF" />
-
+        <!-- Top bar with hamburger button -->
         <LinearLayout
-            android:id="@+id/numclass_panel"
-            android:layout_gravity="center"
-            android:background="@drawable/gradient_bg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageButton
+                android:id="@+id/menu_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_menu"
+                android:contentDescription="Menu" />
+
             <TextView
-                android:id="@+id/numclass_txt"
-                android:layout_gravity="center"
+                android:id="@+id/title_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Num Classes:">
-            </TextView>
-            <EditText
-                android:id="@+id/numclass_edttxt"
-                android:textSize="12dp"
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:hint="Enter number of classes"
-                android:layout_height="wrap_content">
-
-            </EditText>
-            <Button
-                android:layout_marginBottom="0dp"
-                android:layout_marginTop="0dp"
-                android:id="@+id/setnumclass_btn"
-                android:background="@drawable/btn_primary"
-                android:text="Set"
-                android:layout_gravity="center"
-                android:textSize="10dp"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content">
-
-            </Button>
-        </LinearLayout>
-        <Button
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="25dp"
-            android:id="@+id/delete_btn"
-            android:background="@drawable/btn_primary"
-            android:text="Delete Account"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-        </Button>
-
-        <!-- Logout Button -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="0dp"
-            android:orientation="horizontal">
+                android:layout_marginStart="67dp"
+                android:text="Campus Connect"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp" />
 
             <Button
                 android:id="@+id/logout_btn"
-                android:background="@drawable/btn_primary"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
                 android:text="Logout"
-                android:textSize="15sp"
-                android:textColor="#ffffff" />
+                android:layout_marginStart="25dp"
+                android:background="@drawable/clear_btn"
+                android:layout_width="100dp"
+                android:layout_height="40dp" />
         </LinearLayout>
 
-        <!-- Change Status Button (Initially GONE) -->
+        <!-- Existing main content -->
         <LinearLayout
-            android:layout_width="150dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:layout_marginTop="100dp"
+            android:gravity="center_horizontal"
+            android:background="@drawable/layout_bg">
+
+            <!-- Welcome -->
+            <TextView
+                android:id="@+id/welcome_text"
+                android:layout_width="210dp"
+                android:layout_height="77dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="30dp"
+                android:text="Welcome!"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp" />
 
             <Button
-                android:id="@+id/change_status_btn"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/clear_btn"
-                android:text="Change Status"
-                android:textColor="#ffffff"
-                android:textSize="15sp"
-                android:visibility="visible" />
+                android:id="@+id/delete_account_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Delete Account"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#E53935"
+                android:layout_marginTop="20dp"
+                android:padding="10dp"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-medium" />
+
+
         </LinearLayout>
-
-
-
-
     </LinearLayout>
-</androidx.appcompat.widget.LinearLayoutCompat>
+
+    <!-- Sidebar / Navigation Drawer -->
+    <LinearLayout
+        android:id="@+id/nav_view"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:orientation="vertical"
+        android:background="#2E2E3A"
+        android:paddingTop="60dp"
+        android:gravity="center_horizontal">
+
+        <!-- Sessions -->
+        <LinearLayout
+            android:id="@+id/nav_sessions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:padding="12dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:attr/selectableItemBackground">
+
+            <ImageView
+                android:layout_width="69dp"
+                android:layout_height="69dp"
+                android:src="@drawable/ic_schedule"
+                android:contentDescription="Sessions"
+                app:tint="#FFFFFF" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sessions"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.drawerlayout.widget.DrawerLayout>

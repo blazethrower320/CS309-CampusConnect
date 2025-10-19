@@ -13,38 +13,6 @@
         android:orientation="vertical"
         android:paddingBottom="40dp">
 
-        <!-- Top Bar -->
-        <LinearLayout
-            android:background="#232323"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:layout_width="85dp"
-                android:layout_height="50dp"
-                android:text="Menu"
-                android:background="@drawable/menu_btn"
-                android:id="@+id/menuBtn" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="right">
-
-                <Button
-                    android:id="@+id/btnStringRequest"
-                    android:background="@drawable/btn_primary"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Users"
-                    android:textSize="15sp"
-                    android:textColor="#ffffff" />
-            </LinearLayout>
-        </LinearLayout>
-
         <!-- Main Login Panel -->
         <LinearLayout
             android:layout_width="325dp"
@@ -60,7 +28,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="25dp"
                 android:layout_marginBottom="50dp"
-                android:text="CampusConnect Login"
+                android:text="CampusConnect"
                 android:textColor="#FFFFFF"
                 android:textSize="30dp"
                 android:textStyle="bold" />
@@ -157,10 +125,10 @@
 
                 <Button
                     android:id="@+id/signup_btn"
-                    android:layout_width="wrap_content"
+                    android:layout_width="157dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="-20dp"
+                    android:layout_marginLeft="-10dp"
                     android:background="@drawable/clear_btn"
                     android:ellipsize="none"
                     android:maxLines="1"

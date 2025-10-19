@@ -21,7 +21,7 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     // Declare button variables
-    public Button strBtn;
+    //public Button strBtn;
     public Button loginBtn;
     public Button signupBtn;
     public Button forgotpBtn;
@@ -32,13 +32,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         // Initialize buttons
-        strBtn = findViewById(R.id.btnStringRequest);
         loginBtn = findViewById(R.id.login_btn);
         signupBtn = findViewById(R.id.signup_btn);
         forgotpBtn = findViewById(R.id.forgotp_btn);
 
         // Set click listeners
-        strBtn.setOnClickListener(this);
+        //strBtn.setOnClickListener(this);
         loginBtn.setOnClickListener(this);
         signupBtn.setOnClickListener(this);
         forgotpBtn.setOnClickListener(this);
@@ -48,9 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         int id = v.getId();
 
-        if (id == R.id.btnStringRequest) {
-            startActivity(new Intent(MainActivity.this, StringReqActivity.class));
-        } else if (id == R.id.signup_btn) {
+        if (id == R.id.signup_btn) {
             startActivity(new Intent(MainActivity.this, CreateAccountActivity.class));
         } else if (id == R.id.forgotp_btn) {
             startActivity(new Intent(MainActivity.this, ForgotPasswordActivity.class));
