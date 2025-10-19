@@ -1,6 +1,8 @@
 package CampusConnect.Database.Models.Users;
 
+import CampusConnect.Database.Models.Admins.Admins;
 import CampusConnect.Database.Models.Sessions.Sessions;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -32,7 +34,9 @@ public class User {
     private String major;
     private String year;
 
-
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Admins admin;
 
     /*
     @ManyToMany
@@ -43,9 +47,8 @@ public class User {
     )
     private Set<Sessions> userSessions;     */
 
+
     public User(String username, String password, boolean tutor, boolean admin) {
-        this.firstName = firstName;
-        this.lastName = lastName;
         this.username = username;
         this.password = password;
         this.isTutor = tutor;
@@ -71,4 +74,30 @@ public class User {
     public User setUsername(String username) { this.username = username; return this; }
     public User setPassword(String password) { this.password = password; return this; }
 
+    public boolean getisTutor(){
+        return isTutor;
+    }
+
+    public void setisTutor(boolean isTutor){
+        this.isTutor = isTutor;
+    }
+
+    public boolean getisAdmin(){
+        return isAdmin;
+    }
+
+    public void setisAdmin(boolean isAdmin){
+        this.isAdmin = isAdmin;
+    }
+
+    public Admins getAdmin(){
+        return admin;
+    }
+
+    public void setAdmin(Admins admin) {
+        this.admin = admin;
+        if (admin != null && admin.getUser() != this){
+            admin.setUser(this);
+        }
+    }
 }
