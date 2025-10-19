@@ -17,7 +17,7 @@ public class AdminService {
         }
         Admins admin = new Admins(user, "All");
         admin.setUser(user);
-        user.setisAdmin(true);
+        //user.setisAdmin(true);
         return adminsRepository.save(admin);
     }
 

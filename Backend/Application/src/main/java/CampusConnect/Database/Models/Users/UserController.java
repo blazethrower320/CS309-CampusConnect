@@ -134,18 +134,18 @@ public class UserController {
     }
 
     @PostMapping("/users/createUser")
-    public ResponseEntity<String> createUser(@RequestBody User userBody) {
+    public ResponseEntity<String> createUser(@RequestBody UserRequest userReq) {
         // Check if username already exists
-        if (!getAllUserByUsername(userBody.getUsername()).isEmpty()) {
+        if (!getAllUserByUsername(userReq.getUsername()).isEmpty()) {
             return ResponseEntity.status(400).body("Username already exists");
         }
 
         // Save the User
-        User newUser = new User(userBody.getUsername(), userBody.getPassword(), userBody.isTutor(), userBody.isAdmin());
+        User newUser = new User(userReq.getUsername(), userReq.getPassword(), userReq.getisTutor());
         newUser = userRepository.save(newUser);
 
         // If the user should also be an admin, create Admin entity
-        if (newUser.isAdmin()) {
+        if (userReq.getisAdmin()) {
             Admins admin = adminService.createAdmin(newUser);
             if (admin == null) {
                 return ResponseEntity.status(400).body("Admin already exists for this user");
@@ -179,9 +179,9 @@ public class UserController {
             return userDNE;
         }
         userRepository.delete(user);
-        if(user.isAdmin()){
-            adminService.deleteAdmin(user);
-        }
+       // if(user.isAdmin()){
+        //    adminService.deleteAdmin(user);
+        //}
         return "Deleted User";
     }
 

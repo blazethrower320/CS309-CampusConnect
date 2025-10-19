@@ -28,8 +28,8 @@ public class User {
     @Column(name = "is_tutor", nullable = false)
     private boolean isTutor = false;
 
-    @Column(name = "is_admin", nullable = false)
-    private boolean isAdmin = false;
+    //@Column(name = "is_admin", nullable = false)
+    //private boolean isAdmin = false;
 
     private String major;
     private String year;
@@ -48,11 +48,11 @@ public class User {
     private Set<Sessions> userSessions;     */
 
 
-    public User(String username, String password, boolean tutor, boolean admin) {
+    public User(String username, String password, boolean tutor) {
         this.username = username;
         this.password = password;
         this.isTutor = tutor;
-        this.isAdmin = admin;
+        //this.isAdmin = admin;
         this.major = "";
         this.year = "";
     }
@@ -62,7 +62,7 @@ public class User {
     public User(){
 
     }
-    public boolean isAdmin(){ return isAdmin;}
+    //public boolean isAdmin(){ return isAdmin;}
     public long getUserId() { return userId; }
     public String getFirstName() { return firstName; }
     public String getLastName() { return lastName; }
@@ -82,13 +82,13 @@ public class User {
         this.isTutor = isTutor;
     }
 
-    public boolean getisAdmin(){
-        return isAdmin;
-    }
+   // public boolean getisAdmin(){
+    //    return isAdmin;
+   // }
 
-    public void setisAdmin(boolean isAdmin){
-        this.isAdmin = isAdmin;
-    }
+    //public void setisAdmin(boolean isAdmin){
+    //    this.isAdmin = isAdmin;
+    //}
 
     public Admins getAdmin(){
         return admin;
