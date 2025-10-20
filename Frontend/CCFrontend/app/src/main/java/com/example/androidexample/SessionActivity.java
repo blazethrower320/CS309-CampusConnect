@@ -65,9 +65,12 @@ public class SessionActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
         menuButton = findViewById(R.id.menu_button);
 
-        // Find the "Home" button layout
-
-        //Find the "Sessions" button layout
+        // Get values passed from login/signup
+        username = getIntent().getStringExtra("username");
+        password = getIntent().getStringExtra("password");
+        isAdmin = getIntent().getBooleanExtra("isAdmin", false);
+        isTutor = getIntent().getBooleanExtra("isTutor", false);
+        userId = getIntent().getIntExtra("userId", -1);
 
         LinearLayout homeButton = findViewById(R.id.nav_home);
         homeButton.setOnClickListener(v -> {
@@ -94,13 +97,6 @@ public class SessionActivity extends AppCompatActivity {
             finish();
             drawerLayout.closeDrawer(GravityCompat.START);
         });
-
-        // Get values passed from login/signup
-        username = getIntent().getStringExtra("username");
-        password = getIntent().getStringExtra("password");
-        isAdmin = getIntent().getBooleanExtra("isAdmin", false);
-        isTutor = getIntent().getBooleanExtra("isTutor", false);
-        userId = getIntent().getIntExtra("userId", -1);
 
         // Open sidebar when menu button clicked
         menuButton.setOnClickListener(v -> {
