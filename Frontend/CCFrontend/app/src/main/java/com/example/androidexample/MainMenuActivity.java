@@ -96,8 +96,6 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
         });
 
 
-
-
         // Get values passed from login/signup
         username = getIntent().getStringExtra("username");
         password = getIntent().getStringExtra("password");
