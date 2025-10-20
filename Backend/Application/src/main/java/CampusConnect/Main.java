@@ -85,7 +85,8 @@ class Main {
                     "Pearson",
                     "3PM @ Friday",
                     tutor1.getTutorID(),
-                    LocalDateTime.now()
+                    LocalDateTime.now(),
+                    "October 20th, 2025"
 
             );
 

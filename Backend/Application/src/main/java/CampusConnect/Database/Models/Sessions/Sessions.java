@@ -20,7 +20,8 @@ public class Sessions
     private String classCode;
     private String meetingLocation;
     private String meetingTime;
-    private LocalDateTime date;
+    private LocalDateTime dateCreated;
+    private String assignedDate;
 
     /*
     @ManyToMany(mappedBy = "userSessions")
@@ -33,14 +34,19 @@ public class Sessions
 
     public Sessions(){}
 
-    public Sessions(long userId, String className, String classCode, String meetingLocation, String meetingTime, long tutorId, LocalDateTime date) {
+    public Sessions(long userId, String className, String classCode, String meetingLocation, String meetingTime, long tutorId, LocalDateTime date, String assignedDate) {
         this.userId = userId;
         this.tutorId = tutorId;
         this.className = className;
         this.classCode = classCode;
         this.meetingLocation = meetingLocation;
         this.meetingTime = meetingTime;
-        this.date = date;
+        this.dateCreated = date;
+        this.assignedDate = assignedDate;
+    }
+    public void setAssignedDate(String assignedDate)
+    {
+        this.assignedDate = assignedDate;
     }
     public long getUserId(){return userId;}
     public long getTutorId(){ return tutorId; }
@@ -49,5 +55,6 @@ public class Sessions
     public long getSessionId() { return sessionId; }
     public String getClassName() { return className; }
     public String getClassCode() { return classCode; }
-    public LocalDateTime getDate() { return date; }
+    public LocalDateTime getDateCreated() { return dateCreated; }
+    public String getAssignedDate() { return assignedDate; }
 }
