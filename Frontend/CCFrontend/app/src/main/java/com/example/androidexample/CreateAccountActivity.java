@@ -53,9 +53,11 @@ public class CreateAccountActivity extends AppCompatActivity {
         queue = Volley.newRequestQueue(this);
 
         // Back button action
-        backBtn.setOnClickListener(v ->
-                startActivity(new Intent(CreateAccountActivity.this, MainActivity.class))
-        );
+        backBtn.setOnClickListener(v -> {
+            startActivity(new Intent(CreateAccountActivity.this, MainActivity.class));
+            finish();
+
+        });
 
         // Create Account button action
         createAccountBtn.setOnClickListener(v -> handleCreateAccount());
