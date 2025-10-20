@@ -130,11 +130,11 @@
         Returns:<br>
             ``404`` - Session Not found<br>
             ``ok`` - Success<br> <br>
-    - Get | `/sessions/setDate` - Sets the Meeting Date of a session<br>
+    - Get | `/sessions/setMeetingTime` - Sets the Meeting Date of a session<br>
         ```json
         {
             "sessionId": 1,
-            "assignedDate": "October 20th, 2025"
+            "meetingTime": "October 20th, 2025"
         }
         ```
         Returns:<br>
