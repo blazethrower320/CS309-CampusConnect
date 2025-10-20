@@ -54,12 +54,12 @@
             ``String userDeleted`` - User deleted <br>
             ``String WrongPassword`` - Wrong password <br>
     - Get | `/users/IsTutor/{userID}` - Returns true or false if the user is a tutor <br>
-    - Get | '/users/major/{username}' - Returns the major of the given user from the username <br>
-    - Get | '/users/editMajor/{username}/{major}' - Updates the major of the user <br>
-    - Get | '/users/bio/{username}' - Returns the bio of the given user from the username <br>
-    - Get | '/users/editBio/{username}/{bio}' - Updates the bio of the user <br>
-    - Get | '/users/classification/{username}' - Returns the classification of the given user from the username <br>
-    - Get | '/users/editClassification/{username}/{classification}' - Updates the classification of the user <br>
+    - Get | `/users/major/{username}` - Returns the major of the given user from the username <br>
+    - Get | `/users/editMajor/{username}/{major}` - Updates the major of the user <br>
+    - Get | `/users/bio/{username}` - Returns the bio of the given user from the username <br>
+    - Get | `/users/editBio/{username}/{bio}` - Updates the bio of the user <br>
+    - Get | `/users/classification/{username}` - Returns the classification of the given user from the username <br>
+    - Get | `/users/editClassification/{username}/{classification}` - Updates the classification of the user <br>
 
 
 
