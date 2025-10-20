@@ -146,7 +146,7 @@ public class UserController {
         }
 
         // Save the User
-        User newUser = new User(userReq.getUsername(), userReq.getPassword(), userReq.getisTutor());
+        User newUser = new User(userReq.getUsername(), userReq.getPassword());
         newUser = userRepository.save(newUser);
 
         // If the user should also be an admin, create Admin entity

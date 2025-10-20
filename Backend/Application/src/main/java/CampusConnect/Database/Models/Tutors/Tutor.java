@@ -17,6 +17,7 @@ public class Tutor {
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
+
     public Tutor() {}
 
     public Tutor(User user) {
