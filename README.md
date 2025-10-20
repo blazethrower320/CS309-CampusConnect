@@ -130,6 +130,17 @@
         Returns:<br>
             ``404`` - Session Not found<br>
             ``ok`` - Success<br> <br>
+    - Get | `/sessions/setDate` - Sets the Meeting Date of a session<br>
+        ```json
+        {
+            "sessionId": 1,
+            "assignedDate": "October 20th, 2025"
+        }
+        ```
+        Returns:<br>
+            ``true`` - Successfully changed<br>
+            ``false`` - Session was not found<br>
+    - Get | `/sessions/getMeetingDate/{sessionId}` - Returns a String of the Meeting Date<br>
 
 - ## Session Members
     - Get | `/sessions/getAllSessionMembers/{sessionId}` - Gets Session Members<br>
