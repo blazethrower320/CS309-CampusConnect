@@ -40,6 +40,8 @@ public class SessionMembersController
 
 
         Tutor tutor = tutorRepository.getTutorByTutorId(session.getTutorId());
+        String username = tutor.getUser().getUsername();
+
         if(tutor == null)
         {
             return ResponseEntity.status(401).body("Tutor not found");
