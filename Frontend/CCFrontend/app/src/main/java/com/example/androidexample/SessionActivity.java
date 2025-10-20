@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,6 +39,13 @@ public class SessionActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ImageButton menuButton;
 
+    private boolean isTutor = false;   // cached tutor status
+    private boolean isAdmin = false;   // passed from login/signup
+
+    private int userId;                // must be passed from login/signup
+    private String username;
+    private String password;
+
     private Spinner majorSpinner;
     private SearchView classSearchView;
     private RecyclerView sessionsRecycler;
@@ -54,21 +62,41 @@ public class SessionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_session);
 
-        String username = getIntent().getStringExtra("username");
-        int userId = getIntent().getIntExtra("userId", -1);
-        boolean isAdmin = getIntent().getBooleanExtra("isAdmin", false);
-        boolean isTutor = getIntent().getBooleanExtra("isTutor", false);
-        String password = getIntent().getStringExtra("password");
-
         drawerLayout = findViewById(R.id.drawer_layout);
         menuButton = findViewById(R.id.menu_button);
 
-        // Find the "Home" button layout
+        // Get values passed from login/signup
+        username = getIntent().getStringExtra("username");
+        password = getIntent().getStringExtra("password");
+        isAdmin = getIntent().getBooleanExtra("isAdmin", false);
+        isTutor = getIntent().getBooleanExtra("isTutor", false);
+        userId = getIntent().getIntExtra("userId", -1);
+
         LinearLayout homeButton = findViewById(R.id.nav_home);
+        homeButton.setOnClickListener(v -> {
+            Intent intent = new Intent(SessionActivity.this, MainMenuActivity.class);
+            intent.putExtra("username", username);
+            intent.putExtra("userId", userId);
+            intent.putExtra("isAdmin", isAdmin);
+            intent.putExtra("isTutor", isTutor);
+            intent.putExtra("password", password); // only if needed for certain calls
+            startActivity(intent);
+            finish();
+            drawerLayout.closeDrawer(GravityCompat.START);
+        });
 
-        //Find the "Sessions" button layout
         LinearLayout profileButton = findViewById(R.id.nav_profile);
-
+        profileButton.setOnClickListener(v -> {
+            Intent intent = new Intent(SessionActivity.this, ProfileActivity.class);
+            intent.putExtra("username", username);
+            intent.putExtra("userId", userId);
+            intent.putExtra("isAdmin", isAdmin);
+            intent.putExtra("isTutor", isTutor);
+            intent.putExtra("password", password); // only if needed for certain calls
+            startActivity(intent);
+            finish();
+            drawerLayout.closeDrawer(GravityCompat.START);
+        });
 
         // Open sidebar when menu button clicked
         menuButton.setOnClickListener(v -> {
@@ -77,18 +105,6 @@ public class SessionActivity extends AppCompatActivity {
             } else {
                 drawerLayout.openDrawer(findViewById(R.id.nav_view));
             }
-        });
-
-        // When user clicks "Home", go to MainMenuActivity
-        homeButton.setOnClickListener(v -> {
-            Intent intent = new Intent(SessionActivity.this, MainMenuActivity.class);
-            intent.putExtra("username", username);
-            intent.putExtra("userId", userId);
-            intent.putExtra("isAdmin", isAdmin);
-            intent.putExtra("isTutor", isTutor);
-            intent.putExtra("password", password);
-            startActivity(intent);
-            finish(); // optional: close SessionActivity so it doesn’t pile up in the backstack
         });
 
         // --- New UI wiring ---
