@@ -19,6 +19,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @SpringBootApplication
 @EnableJpaRepositories
 class Main {
@@ -45,9 +49,9 @@ class Main {
             sessionsRepository.deleteAll();
             sessionMembersRepository.deleteAll();
 
-            User user1 = new User( "JohnZeet", "password", false);
-            User user2 = new User( "Zach", "password", false);
-            User user3 = new User( "Chase", "password", true);
+            User user1 = new User( "JohnZeet", "password");
+            User user2 = new User( "Zach", "password");
+            User user3 = new User( "Chase", "password");
 
 
             userRepository.save(user1);
@@ -72,14 +76,17 @@ class Main {
             classesRepository.save(class2);
             classesRepository.save(class3);
 
-
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d',' yyyy");
+            String date = LocalDate.now().format(formatter);
             Sessions session1 = new Sessions(
                     user1.getUserId(),
                     "Computer Science 309",
                     "COMS309",
                     "Pearson",
                     "3PM @ Friday",
-                    tutor1.getTutorID()
+                    tutor1.getTutorID(),
+                    LocalDateTime.now()
+
             );
 
             sessionsRepository.save(session1);
