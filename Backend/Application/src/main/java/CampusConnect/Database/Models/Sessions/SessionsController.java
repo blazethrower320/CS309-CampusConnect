@@ -95,4 +95,20 @@ public class SessionsController
             return ResponseEntity.status(404).body("Session Not Found");
         return ResponseEntity.ok(session);
     }
+
+    @GetMapping("/sessions/setMeetingTime")
+    public boolean setSessionDate(@RequestBody SessionEditRequest edit)
+    {
+        Sessions session = sessionsRepository.getSessionsBySessionId(edit.getSessionId());
+        if(session == null)
+            return false;
+        session.setMeetingTime(edit.getMeetingTime());
+        sessionsRepository.save(session);
+        return true;
+    }
+    @GetMapping("/sessions/getMeetingDate/{sessionId}")
+    public String getMeetingTime(@PathVariable long sessionId)
+    {
+        return sessionsRepository.getSessionsBySessionId(sessionId).getMeetingTime();
+    }
 }
