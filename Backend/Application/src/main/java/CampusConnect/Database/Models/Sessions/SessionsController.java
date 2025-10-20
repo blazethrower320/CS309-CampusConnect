@@ -72,8 +72,7 @@ public class SessionsController
                         session.getMeetingLocation(),
                         session.getMeetingTime(),
                         tutor.getTutorID(),
-                        LocalDateTime.now(),
-                        "October 20th, 2025"
+                        LocalDateTime.now()
                 );
         sessionsRepository.save(newSession);
 
@@ -97,19 +96,19 @@ public class SessionsController
         return ResponseEntity.ok(session);
     }
 
-    @GetMapping("/sessions/setDate")
+    @GetMapping("/sessions/setMeetingTime")
     public boolean setSessionDate(@RequestBody SessionEditRequest edit)
     {
         Sessions session = sessionsRepository.getSessionsBySessionId(edit.getSessionId());
         if(session == null)
             return false;
-        session.setAssignedDate(edit.getAssignedDate());
+        session.setMeetingTime(edit.getMeetingTime());
         sessionsRepository.save(session);
         return true;
     }
     @GetMapping("/sessions/getMeetingDate/{sessionId}")
-    public String getAssignedDate(@PathVariable long sessionId)
+    public String getMeetingTime(@PathVariable long sessionId)
     {
-        return sessionsRepository.getSessionsBySessionId(sessionId).getAssignedDate();
+        return sessionsRepository.getSessionsBySessionId(sessionId).getMeetingTime();
     }
 }

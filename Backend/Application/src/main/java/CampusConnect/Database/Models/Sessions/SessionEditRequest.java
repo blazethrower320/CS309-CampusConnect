@@ -3,14 +3,14 @@ package CampusConnect.Database.Models.Sessions;
 public class SessionEditRequest
 {
     private long sessionId;
-    private String assignedDate;
+    private String meetingTime;
 
-    public SessionEditRequest(long id, String assignedDate)
+    public SessionEditRequest(long id, String meetingTime)
     {
         this.sessionId = id;
-        this.assignedDate = assignedDate;
+        this.meetingTime = meetingTime;
     }
 
-    public String getAssignedDate() { return assignedDate; }
+    public String getMeetingTime() { return meetingTime; }
     public long getSessionId() { return sessionId; }
 }
