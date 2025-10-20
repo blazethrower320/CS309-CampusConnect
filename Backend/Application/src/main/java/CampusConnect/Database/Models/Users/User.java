@@ -26,12 +26,14 @@ public class User {
     @Column(name = "password")
     private String password;
 
-
-    //@Column(name = "is_admin", nullable = false)
-    //private boolean isAdmin = false;
-
+    @Column(name = "major")
     private String major;
-    private String year;
+
+    @Column(name = "classification")
+    private String classification;
+
+    @Column(name = "bio")
+    private String bio;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
@@ -54,10 +56,9 @@ public class User {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
-        //this.isTutor = tutor;
-        //this.isAdmin = admin;
-        this.major = "";
-        this.year = "";
+        major = null;
+        classification = null;
+        bio = null;
     }
 
 
@@ -65,18 +66,29 @@ public class User {
     public User(){
 
     }
-    //public boolean isAdmin(){ return isAdmin;}
+
     public long getUserId() { return userId; }
+
     public String getFirstName() { return firstName; }
+    public void setFirstName(String firstName){ this.firstName = firstName; }
+
     public String getLastName() { return lastName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
+
     public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
+
     public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+
+    public void setMajor(String major){this.major = major; }
     public String getMajor() { return major; }
-    public String getYear() { return year; }
-    public User setUsername(String username) { this.username = username; return this; }
-    public User setPassword(String password) { this.password = password; return this; }
 
+    public void setClassification(String classification){ this.classification = classification; }
+    public String getClassification() { return classification; }
 
+    public void setBio(String bio){ this.bio = bio; }
+    public String getBio() { return bio; }
 
 
 

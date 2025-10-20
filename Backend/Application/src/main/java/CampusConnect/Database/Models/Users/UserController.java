@@ -1,12 +1,10 @@
 package CampusConnect.Database.Models.Users;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 import CampusConnect.Database.Models.Admins.AdminService;
 import CampusConnect.Database.Models.Admins.Admins;
-import CampusConnect.Database.Models.Admins.AdminsController;
 import CampusConnect.Database.Models.Tutors.Tutor;
 import CampusConnect.Database.Models.Tutors.TutorRepository;
 import CampusConnect.Database.Models.Tutors.TutorService;
@@ -24,6 +22,9 @@ public class UserController {
 
     @Autowired
     private TutorService tutorService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     UserRepository userRepository;
@@ -121,6 +122,22 @@ public class UserController {
         return true;
     }
 
+    @PatchMapping("/users/editMajor/{username}/{newMajor}")
+    public void editMajor(@PathVariable String username, @PathVariable String newMajor){
+        userService.updateMajor(username, newMajor);
+    }
+
+    @PatchMapping("/users/editBio/{username}/{newBio}")
+    public void editBio(@PathVariable String username, @PathVariable String newBio){
+        userService.updateBio(username, newBio);
+    }
+
+    @PatchMapping("/users/editClassification/{username}/{newClassification}")
+    public void editClassification(@PathVariable String username, @PathVariable String newClassification){
+        userService.updateClassification(username, newClassification);
+    }
+
+
     // Returns the list of usernames
     @GetMapping("/usernames")
     public List<String> getAllUsernames()
@@ -146,7 +163,7 @@ public class UserController {
         }
 
         // Save the User
-        User newUser = new User(userReq.getUsername(), userReq.getPassword(), userReq.getisTutor());
+        User newUser = new User(userReq.getUsername(), userReq.getPassword());
         newUser = userRepository.save(newUser);
 
         // If the user should also be an admin, create Admin entity
