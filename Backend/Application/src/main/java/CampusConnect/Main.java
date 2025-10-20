@@ -4,10 +4,15 @@ import CampusConnect.Database.Models.Admins.Admins;
 import CampusConnect.Database.Models.Admins.AdminsRepository;
 import CampusConnect.Database.Models.Classes.Classes;
 import CampusConnect.Database.Models.Classes.ClassesRepository;
+import CampusConnect.Database.Models.SessionMembers.SessionMembers;
+import CampusConnect.Database.Models.SessionMembers.SessionMembersRepository;
+import CampusConnect.Database.Models.Sessions.Sessions;
+import CampusConnect.Database.Models.Sessions.SessionsRepository;
 import CampusConnect.Database.Models.Tutors.Tutor;
 import CampusConnect.Database.Models.Tutors.TutorRepository;
 import CampusConnect.Database.Models.Users.User;
 import CampusConnect.Database.Models.Users.UserRepository;
+import com.mysql.cj.Session;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -30,22 +35,30 @@ class Main {
      * As mentioned in User.java just associating the Laptop object with the User will save it into the database because of the CascadeType
      */
     @Bean
-    CommandLineRunner initData(UserRepository userRepository, TutorRepository tutorRepository, ClassesRepository classesRepository, AdminsRepository adminsRepository) {
+    CommandLineRunner initData(UserRepository userRepository, TutorRepository tutorRepository, ClassesRepository classesRepository, AdminsRepository adminsRepository, SessionMembersRepository sessionMembersRepository, SessionsRepository sessionsRepository) {
         return args -> {
             // Clear tables first
             tutorRepository.deleteAll();
             classesRepository.deleteAll();
             userRepository.deleteAll();
             adminsRepository.deleteAll();
+            sessionsRepository.deleteAll();
+            sessionMembersRepository.deleteAll();
 
-            User user1 = new User( "JohnZeet", "password", false, false);
-            User user2 = new User( "Zach", "password", false, false);
-            User user3 = new User( "Chase", "password", true, false);
+            User user1 = new User( "JohnZeet", "password", false);
+            User user2 = new User( "Zach", "password", false);
+            User user3 = new User( "Chase", "password", true);
 
 
             userRepository.save(user1);
             userRepository.save(user2);
             userRepository.save(user3);
+
+            Admins admin1 = new Admins(user1, "All");
+            Admins admin2 = new Admins(user2, "All");
+
+            adminsRepository.save(admin1);
+            adminsRepository.save(admin2);
 
             Tutor tutor1 = new Tutor(user1.getUserId(), user1.getUsername(), 5, 3.2);
 
@@ -60,12 +73,21 @@ class Main {
             classesRepository.save(class3);
 
 
+            Sessions session1 = new Sessions(
+                    user1.getUserId(),
+                    "Computer Science 309",
+                    "COMS309",
+                    "Pearson",
+                    "3PM @ Friday",
+                    tutor1.getTutorID()
+            );
 
-            Admins admin1 = new Admins(1, "John", "All");
-            Admins admin2 = new Admins(1, "Zach", "All");
+            sessionsRepository.save(session1);
 
-            adminsRepository.save(admin1);
-            adminsRepository.save(admin2);
+            SessionMembers sessionMembers1 = new SessionMembers(user1.getUserId(), session1.getSessionId(), true);
+            sessionMembersRepository.save(sessionMembers1);
+
+
         };
     }
 

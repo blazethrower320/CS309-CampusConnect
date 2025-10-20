@@ -1,6 +1,7 @@
 package CampusConnect.Database.Models.Admins;
 
 import CampusConnect.Database.Models.Admins.Admins;
+import CampusConnect.Database.Models.Users.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,4 +12,7 @@ public interface AdminsRepository extends JpaRepository<Admins, Long> {
     boolean existsByUsername(String username);
     void deleteByUsername(String username);
     Admins findByUsername(String username);
+    Admins findByUser(User user);
+    boolean existsByUser(User user);
+
 }
