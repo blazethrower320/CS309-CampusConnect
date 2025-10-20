@@ -1,0 +1,33 @@
+package CampusConnect.Database.Models.Tutors;
+
+import CampusConnect.Database.Models.Users.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class TutorService {
+
+    @Autowired
+    private TutorRepository tutorRepository;
+
+    public Tutor createTutor(User user) {
+        // Check if the admin already exists
+        if (tutorRepository.existsByUser(user)) {
+            throw new RuntimeException("Admin already exists");
+        }
+        Tutor tutor = new Tutor(user);
+        tutor.setUser(user);
+        return tutorRepository.save(tutor);
+    }
+
+    public String deleteAdmin(User user){
+        Tutor tutor = tutorRepository.findByUser(user);
+        if(tutorRepository.existsByUsername(tutor.getUsername())){
+            tutorRepository.delete(tutor);
+            return "Admin Deleted";
+        }
+        else {
+            return "Admin Does Not Exist";
+        }
+    }
+}

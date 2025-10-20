@@ -7,7 +7,9 @@ import java.util.List;
 import CampusConnect.Database.Models.Admins.AdminService;
 import CampusConnect.Database.Models.Admins.Admins;
 import CampusConnect.Database.Models.Admins.AdminsController;
+import CampusConnect.Database.Models.Tutors.Tutor;
 import CampusConnect.Database.Models.Tutors.TutorRepository;
+import CampusConnect.Database.Models.Tutors.TutorService;
 import CampusConnect.Models.editUser;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ public class UserController {
 
     @Autowired
     private AdminService adminService;
+
+    @Autowired
+    private TutorService tutorService;
 
     @Autowired
     UserRepository userRepository;
@@ -149,6 +154,13 @@ public class UserController {
             Admins admin = adminService.createAdmin(newUser);
             if (admin == null) {
                 return ResponseEntity.status(400).body("Admin already exists for this user");
+            }
+        }
+
+        if (userReq.getisTutor()) {
+            Tutor tutor = tutorService.createTutor(newUser);
+            if (tutor == null){
+                return ResponseEntity.status(401).body("Tutor already exists for this user");
             }
         }
 
