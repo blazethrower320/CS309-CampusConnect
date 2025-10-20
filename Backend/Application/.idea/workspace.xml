@@ -4,8 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7efeccab-0aa2-4489-b58e-6852d8e29fb2" name="Changes" comment="User Function  implemented and working">
+    <list default="true" id="cf6e63bf-8d9d-4315-b435-5d84b483cbd4" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/UserRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Admins/AdminService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Admins/AdminService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Admins/Admins.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Admins/Admins.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/UserController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -13,47 +18,29 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Class" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$/../.." value="FinishDemo1" />
-      </map>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
-  <component name="GitLabMergeRequestFiltersHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPENED&quot;,
-    &quot;assignee&quot;: {
-      &quot;type&quot;: &quot;org.jetbrains.plugins.gitlab.mergerequest.ui.filters.GitLabMergeRequestsFiltersValue.MergeRequestsMemberFilterValue.MergeRequestsAssigneeFilterValue&quot;,
-      &quot;username&quot;: &quot;preetp&quot;,
-      &quot;fullname&quot;: &quot;Patel, Preet&quot;
+  <component name="GitLabMergeRequestFiltersHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPENED",
+    "assignee": {
+      "type": "org.jetbrains.plugins.gitlab.mergerequest.ui.filters.GitLabMergeRequestsFiltersValue.MergeRequestsMemberFilterValue.MergeRequestsAssigneeFilterValue",
+      "username": "preetp",
+      "fullname": "Patel, Preet"
     }
   }
-}</component>
-  <component name="GitLabMergeRequestsSettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;first&quot;: &quot;https://git.las.iastate.edu/cs309/2025fall/3_hosen_1&quot;,
-    &quot;second&quot;: &quot;6d21ed2b-5074-4426-9f8d-3cf5d6d52e0a&quot;
+}]]></component>
+  <component name="GitLabMergeRequestsSettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "first": "https://git.las.iastate.edu/cs309/2025fall/3_hosen_1",
+    "second": "6d21ed2b-5074-4426-9f8d-3cf5d6d52e0a"
   }
-}</component>
-  <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
-  </component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 0
-}</component>
-  <component name="ProjectId" id="32vvcl3QHab3hCWxSb7g7WQbaBQ" />
-  <component name="ProjectLevelVcsManager">
-    <ConfirmationsSetting value="2" id="Add" />
-  </component>
+}]]></component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 6
+}]]></component>
+  <component name="ProjectId" id="34GWgMZxOgyAJVJzpAc90go498f" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -62,36 +49,13 @@
   "keyToString": {
     "Application.Main.executor": "Run",
     "Maven.CampusConnect [package].executor": "Run",
-    "Maven.onetoone [package].executor": "Run",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "Spring Boot.Main.executor": "Run",
-    "git-widget-placeholder": "Carson-Week8",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/messi/ComS309/3_hosen_1/Backend/Application/src/main/java/CampusConnect/Database/Models/User_Sessions",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.0",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "vue.rearranger.settings.migration": "true"
+    "git-widget-placeholder": "!36 on MapAllTables",
+    "kotlin-language-version-configured": "true"
   }
 }]]></component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\messi\ComS309\3_hosen_1\Backend\Application\src\main\java\CampusConnect\Database\Models\User_Sessions" />
-    </key>
-  </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="CampusConnect.Main" />
       <module name="CampusConnect" />
@@ -105,170 +69,20 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Main (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="CampusConnect" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="onetoone.Main" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Main" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="CampusConnect" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="CampusConnect.Main" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Main" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="CampusConnect" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="CampusConnect.Main" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Main" />
         <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.21829.142" />
-        <option value="bundled-js-predefined-d6986cc7102b-7c0b70fcd90d-JavaScript-IU-242.21829.142" />
-      </set>
-    </attachedChunks>
-  </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="7efeccab-0aa2-4489-b58e-6852d8e29fb2" name="Changes" comment="" />
-      <created>1758313941596</created>
+      <changelist id="cf6e63bf-8d9d-4315-b435-5d84b483cbd4" name="Changes" comment="" />
+      <created>1760840500267</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1758313941596</updated>
-      <workItem from="1758313942624" duration="6621000" />
-      <workItem from="1758394866187" duration="8416000" />
-      <workItem from="1758565845826" duration="1306000" />
-      <workItem from="1758569375013" duration="12000" />
-      <workItem from="1758727426778" duration="25000" />
-      <workItem from="1758766402604" duration="62000" />
-      <workItem from="1759160350429" duration="4131000" />
-      <workItem from="1759178950671" duration="522000" />
-      <workItem from="1759179485039" duration="3739000" />
-      <workItem from="1759519196002" duration="1089000" />
-      <workItem from="1759520934065" duration="925000" />
-      <workItem from="1759624223971" duration="458000" />
-      <workItem from="1759624693539" duration="3258000" />
-      <workItem from="1759973457499" duration="195000" />
-      <workItem from="1760484591181" duration="66000" />
-      <workItem from="1760484663466" duration="599000" />
-      <workItem from="1760489077275" duration="2000" />
-      <workItem from="1760496858125" duration="12000" />
-      <workItem from="1760553166637" duration="4169000" />
-      <workItem from="1760578768960" duration="2685000" />
-      <workItem from="1760675732400" duration="8000" />
-      <workItem from="1760723643013" duration="8081000" />
+      <updated>1760840500267</updated>
     </task>
-    <task id="LOCAL-00001" summary="Added function to get password from a given username.">
-      <option name="closed" value="true" />
-      <created>1759183501539</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1759183501539</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Added function to get password from a given username.">
-      <option name="closed" value="true" />
-      <created>1759183630090</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1759183630090</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Added function to get password from a given username.">
-      <option name="closed" value="true" />
-      <created>1759184490884</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1759184490884</updated>
-    </task>
-    <task id="LOCAL-00004" summary="Added function to get password from a given username.">
-      <option name="closed" value="true" />
-      <created>1759191707647</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1759191707647</updated>
-    </task>
-    <task id="LOCAL-00005" summary="Added a Many to Many mapping for User and Sessions">
-      <option name="closed" value="true" />
-      <created>1759195805655</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1759195805655</updated>
-    </task>
-    <task id="LOCAL-00006" summary="Many to Many mapping works for Sessions and User">
-      <option name="closed" value="true" />
-      <created>1759197305436</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1759197305436</updated>
-    </task>
-    <task id="LOCAL-00007" summary="Added database relationships between classes and sessions.">
-      <option name="closed" value="true" />
-      <created>1759253535377</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1759253535377</updated>
-    </task>
-    <task id="LOCAL-00008" summary="Added create User function.">
-      <option name="closed" value="true" />
-      <created>1759451764396</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1759451764396</updated>
-    </task>
-    <task id="LOCAL-00009" summary="User Function  implemented and working">
-      <option name="closed" value="true" />
-      <created>1759452521787</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1759452521787</updated>
-    </task>
-    <option name="localTasksCounter" value="10" />
     <servers />
-  </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="Added return password given by username function." />
-    <MESSAGE value="Added function to get password from a given username." />
-    <MESSAGE value="Added a Many to Many mapping for User and Sessions" />
-    <MESSAGE value="Many to Many mapping works for Sessions and User" />
-    <MESSAGE value="Added database relationships between classes and sessions." />
-    <MESSAGE value="Added create User function." />
-    <MESSAGE value="User Function  implemented and working" />
-    <option name="LAST_COMMIT_MESSAGE" value="User Function  implemented and working" />
   </component>
 </project>

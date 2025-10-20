@@ -29,7 +29,9 @@ public class AdminsController {
         return adminsRepository.findAll();
     }
 
+    /*
     @PostMapping("/admin/createAdmin/{username}")
+     /*
     public ResponseEntity<Object> CreateAdmin(@PathVariable String username)
     {
         User user = userRepository.findByUsername(username);
@@ -42,7 +44,28 @@ public class AdminsController {
             return ResponseEntity.status(403).body(adminAlreadyExists);
         }
 
-        Admins admin = new Admins(user.getUserId(), username, "All");
+        Admins admin = new Admins(user, "All");
+
+        adminsRepository.save(admin);
+
+        return ResponseEntity.ok(admin);
+    }
+    */
+
+
+
+    public ResponseEntity<Object> CreateAdmin(User user)
+    {
+        if(user == null)
+            return ResponseEntity.status(404).body(userNotFound);
+
+        //boolean exists = adminsRepository.existsByUsername(username);
+        //if(exists)
+        //{
+        //    return ResponseEntity.status(403).body(adminAlreadyExists);
+        //}
+
+        Admins admin = new Admins(user, "All");
 
         adminsRepository.save(admin);
 

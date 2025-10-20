@@ -45,14 +45,20 @@ class Main {
             sessionsRepository.deleteAll();
             sessionMembersRepository.deleteAll();
 
-            User user1 = new User( "JohnZeet", "password", false, false);
-            User user2 = new User( "Zach", "password", false, false);
-            User user3 = new User( "Chase", "password", true, false);
+            User user1 = new User( "JohnZeet", "password", false);
+            User user2 = new User( "Zach", "password", false);
+            User user3 = new User( "Chase", "password", true);
 
 
             userRepository.save(user1);
             userRepository.save(user2);
             userRepository.save(user3);
+
+            Admins admin1 = new Admins(user1, "All");
+            Admins admin2 = new Admins(user2, "All");
+
+            adminsRepository.save(admin1);
+            adminsRepository.save(admin2);
 
             Tutor tutor1 = new Tutor(user1.getUserId(), user1.getUsername(), 5, 3.2);
 
@@ -81,11 +87,7 @@ class Main {
             SessionMembers sessionMembers1 = new SessionMembers(user1.getUserId(), session1.getSessionId(), true);
             sessionMembersRepository.save(sessionMembers1);
 
-            Admins admin1 = new Admins(1, "John", "All");
-            Admins admin2 = new Admins(1, "Zach", "All");
 
-            adminsRepository.save(admin1);
-            adminsRepository.save(admin2);
         };
     }
 
