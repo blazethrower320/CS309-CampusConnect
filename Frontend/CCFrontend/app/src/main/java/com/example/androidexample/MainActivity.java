@@ -49,8 +49,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if (id == R.id.signup_btn) {
             startActivity(new Intent(MainActivity.this, CreateAccountActivity.class));
+            finish();
         } else if (id == R.id.forgotp_btn) {
             startActivity(new Intent(MainActivity.this, ForgotPasswordActivity.class));
+            finish();
         } else if (id == R.id.login_btn) {
             Log.i("PageInfo", "Login Button Clicked");
 
@@ -63,6 +65,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (username.isEmpty() || password.isEmpty()) {
                 passwordEdt.setError("Please fill in both fields");
                 return;
+            }
+            //TODO remove when done with the project/can be uncommented to test app
+            else if (username.equals("Test") && password.equals("Test"))
+            {
+                Intent intent = new Intent(MainActivity.this, MainMenuActivity.class);
+                intent.putExtra("username", username);
+                intent.putExtra("password", password);
+                intent.putExtra("isAdmin", false);
+                intent.putExtra("userId", 0);
+
+                startActivity(intent);
+                finish();
             }
 
             String url = "http://coms-3090-037.class.las.iastate.edu:8080/users/login";

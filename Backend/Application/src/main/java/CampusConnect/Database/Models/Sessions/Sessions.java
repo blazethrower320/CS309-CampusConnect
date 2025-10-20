@@ -4,6 +4,7 @@ import CampusConnect.Database.Models.Classes.Classes;
 import CampusConnect.Database.Models.Users.User;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -19,6 +20,7 @@ public class Sessions
     private String classCode;
     private String meetingLocation;
     private String meetingTime;
+    private LocalDateTime date;
 
     /*
     @ManyToMany(mappedBy = "userSessions")
@@ -31,13 +33,14 @@ public class Sessions
 
     public Sessions(){}
 
-    public Sessions(long userId, String className, String classCode, String meetingLocation, String meetingTime, long tutorId) {
+    public Sessions(long userId, String className, String classCode, String meetingLocation, String meetingTime, long tutorId, LocalDateTime date) {
         this.userId = userId;
         this.tutorId = tutorId;
         this.className = className;
         this.classCode = classCode;
         this.meetingLocation = meetingLocation;
         this.meetingTime = meetingTime;
+        this.date = date;
     }
     public long getUserId(){return userId;}
     public long getTutorId(){ return tutorId; }
@@ -46,4 +49,5 @@ public class Sessions
     public long getSessionId() { return sessionId; }
     public String getClassName() { return className; }
     public String getClassCode() { return classCode; }
+    public LocalDateTime getDate() { return date; }
 }
