@@ -28,9 +28,20 @@ import java.util.HashMap;
 import java.util.Map;
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener
 {
+    //Text Fields
+    private TextView roleText;
+    private TextView nameText;
+    private TextView usernameText;
+    private TextView bioText;
+    private TextView majorText;
+    private TextView classificationText;
+    private TextView contactInfoText;
+
+    //Buttons
     private Button logoutBtn; //Logout button
     private ImageButton editProfileBtn; //Edit profile btn
     private ImageButton menuBtn; //Three line btn
+
 
     private DrawerLayout drawerLayout; //Menu bar layout
 
@@ -51,6 +62,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         //Initialize UI elements
+
+        //Text Fields
+        roleText = findViewById(R.id.role_text);
+        nameText = findViewById(R.id.name_text);
+        usernameText = findViewById(R.id.username_text);
 
         //Buttons
         menuBtn = findViewById(R.id.menu_button);
@@ -76,6 +92,22 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         menuBtn.setOnClickListener(this);
         editProfileBtn.setOnClickListener(this);
 
+        //Set text fields to have user data
+        usernameText.setText("@" + username);
+        if(isAdmin)
+        {
+            roleText.setText("Admin");
+        }
+        else if(isTutor)
+        {
+            roleText.setText("Tutor");
+        }
+        else
+        {
+            roleText.setText("Student");
+        }
+        nameText.setText("First Last");
+
 
     }
 
@@ -100,7 +132,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
         if(id == R.id.edit_profile_btn)
         {
-            //TODO: Add edit profile functionality
+            Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
+            intent.putExtra("username", username);
+            intent.putExtra("userId", userId);
+            intent.putExtra("isAdmin", isAdmin);
+            intent.putExtra("isTutor", isTutor);
+            intent.putExtra("password", password);
+            startActivity(intent);
+            finish();
         }
         if(id == R.id.nav_sessions)
         {

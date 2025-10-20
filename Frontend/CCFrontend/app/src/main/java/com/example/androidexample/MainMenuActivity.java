@@ -79,6 +79,7 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
             intent.putExtra("isTutor", isTutor);
             intent.putExtra("password", password); // only if needed for certain calls
             startActivity(intent);
+            finish();
             drawerLayout.closeDrawer(GravityCompat.START);
         });
 
@@ -91,7 +92,7 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
             intent.putExtra("isTutor", isTutor);
             intent.putExtra("password", password); // only if needed for certain calls
             startActivity(intent);
-            //finish();
+            finish();
             drawerLayout.closeDrawer(GravityCompat.START);
         });
 

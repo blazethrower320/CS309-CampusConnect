@@ -47,9 +47,10 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         msgResponse = findViewById(R.id.msgResponse);
 
         // Back button
-        backBtn.setOnClickListener(v ->
-                startActivity(new Intent(ForgotPasswordActivity.this, MainActivity.class)));
-
+        backBtn.setOnClickListener(v ->{
+                startActivity(new Intent(ForgotPasswordActivity.this, MainActivity.class));
+            finish();
+        });
         // Update password button
         updatePassBtn.setOnClickListener(v -> {
             username = usernameTxt.getText().toString().trim();
