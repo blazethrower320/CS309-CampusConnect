@@ -22,6 +22,7 @@ public class Tutor {
 
     public Tutor(User user) {
         this.user = user;
+        this.username = user.getUsername();
         //this.userId = userId;
         //this.totalClasses = totalClasses;
         //this.rating = rating;

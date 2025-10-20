@@ -38,11 +38,14 @@ public class SessionMembersController
             return ResponseEntity.status(400).body("Session not found");
         }
 
+
         Tutor tutor = tutorRepository.getTutorByTutorId(session.getTutorId());
         if(tutor == null)
         {
             return ResponseEntity.status(401).body("Tutor not found");
         }
+
+
         return ResponseEntity.ok(tutor);
     }
 }
