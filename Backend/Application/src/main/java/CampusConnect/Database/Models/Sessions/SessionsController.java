@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -59,6 +62,8 @@ public class SessionsController
         if(tutor == null)
             return ResponseEntity.status(400).body("Tutor Not found");
 
+
+
         Sessions newSession = new Sessions
                 (
                         session.getUserId(),
@@ -66,7 +71,8 @@ public class SessionsController
                         session.getClassCode(),
                         session.getMeetingLocation(),
                         session.getMeetingTime(),
-                        tutor.getTutorID()
+                        tutor.getTutorID(),
+                        LocalDateTime.now()
                 );
         sessionsRepository.save(newSession);
 
