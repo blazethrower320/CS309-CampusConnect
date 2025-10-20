@@ -122,19 +122,34 @@ public class UserController {
         return true;
     }
 
-    @PatchMapping("/users/editMajor/{username}/{newMajor}")
-    public void editMajor(@PathVariable String username, @PathVariable String newMajor){
-        userService.updateMajor(username, newMajor);
+    @GetMapping("/users/major/{username}")
+    public String getMajor(@PathVariable String username){
+        return userRepository.getUserByUsername(username).getMajor();
     }
 
-    @PatchMapping("/users/editBio/{username}/{newBio}")
-    public void editBio(@PathVariable String username, @PathVariable String newBio){
-        userService.updateBio(username, newBio);
+    @PatchMapping("/users/editMajor/{username}/{major}")
+    public void editMajor(@PathVariable String username, @PathVariable String major){
+        userService.updateMajor(username, major);
     }
 
-    @PatchMapping("/users/editClassification/{username}/{newClassification}")
-    public void editClassification(@PathVariable String username, @PathVariable String newClassification){
-        userService.updateClassification(username, newClassification);
+    @GetMapping("/users/bio/{username}")
+    public String getBio(@PathVariable String username){
+        return userRepository.getUserByUsername(username).getBio();
+    }
+
+    @PatchMapping("/users/editBio/{username}/{bio}")
+    public void editBio(@PathVariable String username, @PathVariable String bio){
+        userService.updateBio(username, bio);
+    }
+
+    @GetMapping("/users/classification/{username}")
+    public String getClassification(@PathVariable String username){
+        return userRepository.getUserByUsername(username).getClassification();
+    }
+
+    @PatchMapping("/users/editClassification/{username}/{classification}")
+    public void editClassification(@PathVariable String username, @PathVariable String classification){
+        userService.updateClassification(username, classification);
     }
 
 
