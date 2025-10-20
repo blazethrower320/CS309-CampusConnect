@@ -64,7 +64,11 @@ public class SessionActivity extends AppCompatActivity {
         menuButton = findViewById(R.id.menu_button);
 
         // Find the "Home" button layout
-        LinearLayout homeButton = findViewById(R.id.nav_sessions);
+        LinearLayout homeButton = findViewById(R.id.nav_home);
+
+        //Find the "Sessions" button layout
+        LinearLayout profileButton = findViewById(R.id.nav_profile);
+
 
         // Open sidebar when menu button clicked
         menuButton.setOnClickListener(v -> {
