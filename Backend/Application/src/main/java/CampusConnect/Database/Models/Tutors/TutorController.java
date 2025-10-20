@@ -47,7 +47,7 @@ public class TutorController
         if (exists){
             return ResponseEntity.status(403).body(tutorAlreadyExists);
         }
-        Tutor tutor =  new Tutor(givenUser.getUserId(),username, 0, 0);
+        Tutor tutor =  new Tutor(givenUser);
         tutorRepository.save(tutor);
         return ResponseEntity.ok(tutor);
     }
@@ -77,9 +77,9 @@ public class TutorController
     }
 
 
-    @GetMapping("tutors/getTutorFromUserId/{userId}")
-    public Tutor getTutorFromUserId(@PathVariable long userId)
-    {
-        return tutorRepository.getTutorByUserId(userId);
-    }
+    //@GetMapping("tutors/getTutorFromUserId/{userId}")
+    //public Tutor getTutorFromUserId(@PathVariable long userId)
+   // {
+   //     return tutorRepository.getTutorByUserId(userId);
+    //}
 }

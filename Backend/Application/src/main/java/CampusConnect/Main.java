@@ -29,7 +29,7 @@ class Main {
 
     // Create 3 users with their machines
     /**
-     * 
+     *
      * @param userRepository repository for the User entity
      * Creates a commandLine runner to enter dummy data into the database
      * As mentioned in User.java just associating the Laptop object with the User will save it into the database because of the CascadeType
@@ -60,7 +60,7 @@ class Main {
             adminsRepository.save(admin1);
             adminsRepository.save(admin2);
 
-            Tutor tutor1 = new Tutor(user1.getUserId(), user1.getUsername(), 5, 3.2);
+            Tutor tutor1 = new Tutor(user1);
 
             tutorRepository.save(tutor1);
 

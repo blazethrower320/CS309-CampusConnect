@@ -2,6 +2,7 @@ package CampusConnect.Database.Models.Users;
 
 import CampusConnect.Database.Models.Admins.Admins;
 import CampusConnect.Database.Models.Sessions.Sessions;
+import CampusConnect.Database.Models.Tutors.Tutor;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
@@ -25,8 +26,6 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "is_tutor", nullable = false)
-    private boolean isTutor = false;
 
     //@Column(name = "is_admin", nullable = false)
     //private boolean isAdmin = false;
@@ -34,9 +33,13 @@ public class User {
     private String major;
     private String year;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Admins admin;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private Tutor tutor;
 
     /*
     @ManyToMany
@@ -48,10 +51,10 @@ public class User {
     private Set<Sessions> userSessions;     */
 
 
-    public User(String username, String password, boolean tutor) {
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.isTutor = tutor;
+        //this.isTutor = tutor;
         //this.isAdmin = admin;
         this.major = "";
         this.year = "";
@@ -68,27 +71,14 @@ public class User {
     public String getLastName() { return lastName; }
     public String getUsername() { return username; }
     public String getPassword() { return password; }
-    public boolean isTutor() { return isTutor; }
     public String getMajor() { return major; }
     public String getYear() { return year; }
     public User setUsername(String username) { this.username = username; return this; }
     public User setPassword(String password) { this.password = password; return this; }
 
-    public boolean getisTutor(){
-        return isTutor;
-    }
 
-    public void setisTutor(boolean isTutor){
-        this.isTutor = isTutor;
-    }
 
-   // public boolean getisAdmin(){
-    //    return isAdmin;
-   // }
 
-    //public void setisAdmin(boolean isAdmin){
-    //    this.isAdmin = isAdmin;
-    //}
 
     public Admins getAdmin(){
         return admin;
@@ -100,4 +90,16 @@ public class User {
             admin.setUser(this);
         }
     }
+
+    public Tutor getTutor(){
+        return tutor;
+    }
+
+    public void setTutor(Tutor tutor){
+        this.tutor = tutor;
+        if(tutor != null && tutor.getUser() != this){
+            tutor.setUser(this);
+        }
+    }
+
 }
