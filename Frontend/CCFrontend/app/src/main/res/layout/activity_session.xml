@@ -47,10 +47,50 @@
             android:layout_marginTop="8dp"
             android:background="#FFFFFF" />
 
-        <!-- Your main page content here -->
+        <!-- Filter row: Spinner (Major) + SearchView -->
+        <LinearLayout
+            android:id="@+id/filter_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:layout_marginTop="12dp">
+
+            <Spinner
+                android:id="@+id/major_spinner"
+                android:layout_width="0dp"
+                android:layout_weight="0.35"
+                android:layout_height="48dp"
+                android:background="@android:drawable/btn_dropdown"
+                android:popupBackground="#3A3A3A"/>
+
+            <SearchView
+                android:id="@+id/class_search_view"
+                android:layout_width="0dp"
+                android:layout_weight="0.65"
+                android:layout_height="48dp"
+                android:queryHint="Search (ex: COM S 309)"
+                android:iconifiedByDefault="false"
+                android:layout_marginStart="8dp"/>
+        </LinearLayout>
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#C0C0C0"/>
+
+        <!-- Sessions list placeholder -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/sessions_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="12dp"/>
+
     </LinearLayout>
 
-    <!-- Sidebar / Navigation Drawer -->
+    <!-- Sidebar / Navigation Drawer (unchanged) -->
     <LinearLayout
         android:id="@+id/nav_view"
         android:layout_width="100dp"
@@ -99,7 +139,8 @@
             android:padding="12dp"
             android:clickable="true"
             android:focusable="true"
-            android:background="?android:attr/selectableItemBackground">
+            android:background="?android:attr/selectableItemBackground"
+            android:visibility="gone">
 
             <ImageView
                 android:layout_width="69dp"
@@ -174,3 +215,4 @@
     </LinearLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>
+

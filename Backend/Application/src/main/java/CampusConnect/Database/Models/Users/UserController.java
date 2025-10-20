@@ -4,7 +4,12 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+import CampusConnect.Database.Models.Admins.AdminService;
+import CampusConnect.Database.Models.Admins.Admins;
+import CampusConnect.Database.Models.Admins.AdminsController;
+import CampusConnect.Database.Models.Tutors.Tutor;
 import CampusConnect.Database.Models.Tutors.TutorRepository;
+import CampusConnect.Database.Models.Tutors.TutorService;
 import CampusConnect.Models.editUser;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +18,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class UserController {
+
+    @Autowired
+    private AdminService adminService;
+
+    @Autowired
+    private TutorService tutorService;
 
     @Autowired
     UserRepository userRepository;
@@ -128,31 +139,62 @@ public class UserController {
     }
 
     @PostMapping("/users/createUser")
+    public ResponseEntity<String> createUser(@RequestBody UserRequest userReq) {
+        // Check if username already exists
+        if (!getAllUserByUsername(userReq.getUsername()).isEmpty()) {
+            return ResponseEntity.status(400).body("Username already exists");
+        }
+
+        // Save the User
+        User newUser = new User(userReq.getUsername(), userReq.getPassword());
+        newUser = userRepository.save(newUser);
+
+        // If the user should also be an admin, create Admin entity
+        if (userReq.getisAdmin()) {
+            Admins admin = adminService.createAdmin(newUser);
+            if (admin == null) {
+                return ResponseEntity.status(400).body("Admin already exists for this user");
+            }
+        }
+
+        if (userReq.getisTutor()) {
+            Tutor tutor = tutorService.createTutor(newUser);
+            if (tutor == null){
+                return ResponseEntity.status(401).body("Tutor already exists for this user");
+            }
+        }
+
+        return ResponseEntity.ok("User created successfully");
+    }
+
+    /*
+    @PostMapping("/users/createUser")
     public String createUser(@RequestBody User userBody) {
         if (getAllUserByUsername(userBody.getUsername()).isEmpty()) {  //Assume no same usernames
             User newUser = new User(userBody.getUsername(), userBody.getPassword(), false, false);
             userRepository.save(newUser);
+            if(newUser.isAdmin()){
+                //CreateAdmin
+            }
             return userCreated;
         } else {
             return userCreationFailed;
         }
     }
-
+    */
     //Only requires username and password currently.
     // Need to switch this to post
     @PostMapping("/users/deleteUser")
     public String deleteUser(@RequestBody User userBody) {
-        ArrayList<User> usernames = new ArrayList<>(getAllUserByUsername(userBody.getUsername()));
-        if (usernames.isEmpty()) {    //Username does not match an existing one.
+        User user = userRepository.findByUsername(userBody.getUsername());
+        if (user == null) {    //Username does not match an existing one.
             return userDNE;
         }
-        for (User username : usernames) {
-            if (username.getPassword().equals(userBody.getPassword())) {
-                userRepository.deleteById(username.getUserId());
-                return userDeleted;
-            }
-        }
-        return wrongUsernamePassword;
+        userRepository.delete(user);
+       // if(user.isAdmin()){
+        //    adminService.deleteAdmin(user);
+        //}
+        return "Deleted User";
     }
 
     @GetMapping("/users/IsTutor/{userID}")
