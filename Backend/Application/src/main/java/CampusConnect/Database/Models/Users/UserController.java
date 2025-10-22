@@ -5,10 +5,12 @@ import java.util.List;
 
 import CampusConnect.Database.Models.Admins.AdminService;
 import CampusConnect.Database.Models.Admins.Admins;
+import CampusConnect.Database.Models.Admins.AdminsRepository;
 import CampusConnect.Database.Models.Tutors.Tutor;
 import CampusConnect.Database.Models.Tutors.TutorRepository;
 import CampusConnect.Database.Models.Tutors.TutorService;
 import CampusConnect.Models.editUser;
+import CampusConnect.Database.Models.Users.UserRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +33,9 @@ public class UserController {
 
     @Autowired
     TutorRepository tutorRepository;
+
+    @Autowired
+    AdminsRepository adminRepository;
 
     private String success = "{\"message\":\"success\"}";
     private String failure = "{\"message\":\"failure\"}";
@@ -234,6 +239,19 @@ public class UserController {
     {
         return tutorRepository.findById(userID).isPresent();
     }
+
+    @GetMapping("/users/find/{username}")
+    public UserRequest findUser(@PathVariable String username){
+        if(!userRepository.existsByUsername(username)){
+            throw new RuntimeException("No user found.");
+        }
+        User user = userRepository.findByUsername(username);
+        boolean isTutor = tutorRepository.existsByUsername(username);
+        boolean isAdmin = adminRepository.existsByUsername(username);
+        UserRequest userReq = new UserRequest(user.getFirstName(), user.getLastName(), user.getUsername(), user.getPassword(), isTutor, isAdmin, user.getMajor(), user.getClassification(), user.getBio(), user.getContractInfo());
+        return userReq;
+    }
+
 
 
 }

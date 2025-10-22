@@ -12,6 +12,7 @@ import CampusConnect.Database.Models.Tutors.Tutor;
 import CampusConnect.Database.Models.Tutors.TutorRepository;
 import CampusConnect.Database.Models.Users.User;
 import CampusConnect.Database.Models.Users.UserRepository;
+import CampusConnect.Database.Models.Users.UserService;
 import com.mysql.cj.Session;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -52,8 +53,7 @@ class Main {
             User user1 = new User( "JohnZeet", "password");
             User user2 = new User( "Zach", "password");
             User user3 = new User( "Chase", "password");
-
-
+            
             userRepository.save(user1);
             userRepository.save(user2);
             userRepository.save(user3);
@@ -65,6 +65,7 @@ class Main {
             adminsRepository.save(admin2);
 
             Tutor tutor1 = new Tutor(user1);
+
 
             tutorRepository.save(tutor1);
 

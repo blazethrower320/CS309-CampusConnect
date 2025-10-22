@@ -32,6 +32,9 @@ public class User {
     @Column(name = "classification")
     private String classification;
 
+    @Column(name = "contact_info")
+    private String contractInfo;
+
     @Column(name = "bio")
     private String bio;
 
@@ -89,6 +92,9 @@ public class User {
 
     public void setBio(String bio){ this.bio = bio; }
     public String getBio() { return bio; }
+
+    public void setContractInfo(String contactInfo){ this.contractInfo =contactInfo; }
+    public String getContractInfo(){ return contractInfo; }
 
 
 
