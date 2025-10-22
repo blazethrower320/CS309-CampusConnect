@@ -139,6 +139,7 @@
                     android:layout_height="wrap_content">
                 </TextView>
                 <TextView
+                    android:id="@+id/bio_text"
                     android:layout_width="wrap_content"
                     android:text="Bio Text here"
                     android:textColor="@color/white"
@@ -164,6 +165,7 @@
                 android:layout_height="wrap_content">
             </TextView>
             <TextView
+                android:id="@+id/major_text"
                 android:layout_width="wrap_content"
                 android:text="Major Here"
                 android:textColor="@color/white"
@@ -190,6 +192,7 @@
                     android:layout_height="wrap_content">
                 </TextView>
                 <TextView
+                    android:id="@+id/classification_text"
                     android:layout_width="wrap_content"
                     android:text="Classification Here"
                     android:textColor="@color/white"
@@ -212,6 +215,16 @@
                     android:layout_width="wrap_content"
                     android:text="Contact Information:"
                     android:textColor="@color/white"
+                    android:layout_height="wrap_content">
+
+                </TextView>
+                <TextView
+                    android:id="@+id/contactInfo_text"
+                    android:layout_width="wrap_content"
+                    android:text="Contact Info Here"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="22dp"
+                    android:textSize="12dp"
                     android:layout_height="wrap_content">
 
                 </TextView>
