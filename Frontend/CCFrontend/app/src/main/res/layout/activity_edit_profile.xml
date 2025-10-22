@@ -125,10 +125,11 @@
 
             <!-- Layouts for text fields-->
             <LinearLayout
+                android:orientation="vertical"
                 android:background="@drawable/nestedlayout_bg"
                 android:layout_width="match_parent"
                 android:layout_marginBottom="5dp"
-                android:layout_height="100dp">
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:paddingTop="5dp"
@@ -144,7 +145,7 @@
                     android:layout_width="wrap_content"
                     android:text="Enter Bio Text Here"
                     android:textColor="@color/white"
-                    android:layout_marginTop="22dp"
+                    android:layout_marginLeft="12dp"
                     android:textSize="12dp"
                     android:layout_height="wrap_content">
 

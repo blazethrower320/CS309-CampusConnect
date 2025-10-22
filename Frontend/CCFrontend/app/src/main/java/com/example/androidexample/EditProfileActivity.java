@@ -2,16 +2,25 @@ package com.example.androidexample;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+import org.json.JSONObject;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 
 public class EditProfileActivity extends AppCompatActivity implements View.OnClickListener
@@ -130,13 +139,97 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
             startActivity(intent);
             finish();
         }
-
-
-
     }
     public void UpdateProfile(String username)
     {
+        //URL for put request
+        final String URL_UPDATE_USER = "http://coms-3090-037.class.las.iastate.edu:8080/users/update";
 
+        // Create a JSON object to hold the updated user data.
+        JSONObject requestBodyJson = new JSONObject();
+        try
+        {
+            //Get updated fields
+            String updatedBio = bioText.getText().toString();
+            String updatedMajor = majorText.getText().toString();
+            String updatedClassification = classificationText.getText().toString();
+            String updatedContactInfo = contactInfoText.getText().toString();
+
+            //Add info to JSON object
+            requestBodyJson.put("firstName", firstName);
+            requestBodyJson.put("lastName", lastName);
+            requestBodyJson.put("username", username);
+            requestBodyJson.put("password", password);
+            requestBodyJson.put("major", updatedMajor);
+            requestBodyJson.put("bio", updatedBio);
+            requestBodyJson.put("classification", updatedClassification);
+            requestBodyJson.put("contactInfo", updatedContactInfo);
+
+
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            // If there's an error creating the JSON, we can't proceed.
+            Toast.makeText(this, "Error creating update request.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Convert the JSON object to a string for the request body.
+        final String requestBody = requestBodyJson.toString();
+        Log.d("Volley UpdateProfile", "Request Body: " + requestBody);
+
+        //Create request
+        StringRequest putRequest = new StringRequest(
+                Request.Method.PUT,
+                URL_UPDATE_USER,
+                response -> {
+                    // This is the success listener.
+                    Log.d("Volley Success", "Profile updated: " + response);
+                    Toast.makeText(EditProfileActivity.this, "Profile updated successfully!", Toast.LENGTH_SHORT).show();
+                },
+                error -> {
+                    // This is the error listener.
+                   Log.e("Volley Error", "Failed to update profile: " + error.toString());
+
+                    // Providing more detailed error feedback is helpful for debugging.
+                    String responseBody = "";
+                    if (error.networkResponse != null)
+                    {
+                        try
+                        {
+                            responseBody = new String(error.networkResponse.data, "utf-8");
+                            Log.e("Volley Error", "Status Code: " + error.networkResponse.statusCode);
+                            Log.e("Volley Error", "Response Body: " + responseBody);
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                    Toast.makeText(EditProfileActivity.this, "Update failed: " + responseBody, Toast.LENGTH_LONG).show();
+                }
+        ) {
+            //override for custom body
+            @Override
+            public String getBodyContentType()
+            {
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody()
+            {
+                // Return the JSON object as a byte array.
+                return requestBody.getBytes();
+            }
+        };
+
+        //Request for volley
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(putRequest);
     }
+
 
 }

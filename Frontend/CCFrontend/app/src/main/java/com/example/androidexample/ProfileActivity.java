@@ -162,6 +162,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             intent.putExtra("contactInfo", contactInfo);
             intent.putExtra("firstName", firstName);
             intent.putExtra("lastName", lastName);
+            intent.putExtra("password", password);
             startActivity(intent);
             finish();
         }
