@@ -1,6 +1,8 @@
 package CampusConnect.Database.Models.Tutors;
 
+import CampusConnect.Database.Models.Ratings.Ratings;
 import CampusConnect.Database.Models.Users.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -16,6 +18,10 @@ public class Tutor {
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
+
+    @OneToOne(mappedBy = "tutor", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private Ratings ratings;
 
 
     public Tutor() {}
@@ -49,6 +55,13 @@ public class Tutor {
         this.user = user;
         if(user != null && user.getTutor() != this){
             user.setTutor(this);
+        }
+    }
+    public Ratings getRatings() { return ratings; }
+    public void setRatings(Ratings ratings){
+        this.ratings = ratings;
+        if(ratings != null && ratings.getTutor() != this){
+            ratings.setTutor(this);
         }
     }
 }

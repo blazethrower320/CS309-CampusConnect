@@ -1,6 +1,7 @@
 package CampusConnect.Database.Models.Users;
 
 import CampusConnect.Database.Models.Admins.Admins;
+import CampusConnect.Database.Models.Ratings.Ratings;
 import CampusConnect.Database.Models.Sessions.Sessions;
 import CampusConnect.Database.Models.Tutors.Tutor;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -45,6 +46,10 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Tutor tutor;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private Ratings ratings;
 
     /*
     @ManyToMany
@@ -117,6 +122,13 @@ public class User {
         this.tutor = tutor;
         if(tutor != null && tutor.getUser() != this){
             tutor.setUser(this);
+        }
+    }
+    public Ratings getRatings(){ return ratings; }
+    public void setRatings(Ratings ratings){
+        this.ratings = ratings;
+        if(ratings != null && ratings.getUser() != this){
+            ratings.setUser(this);
         }
     }
 

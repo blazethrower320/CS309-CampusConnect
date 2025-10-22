@@ -1,9 +1,8 @@
 package CampusConnect.Database.Models.Ratings;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import CampusConnect.Database.Models.Tutors.Tutor;
+import CampusConnect.Database.Models.Users.User;
+import jakarta.persistence.*;
 
 @Entity
 public class Ratings
@@ -11,31 +10,35 @@ public class Ratings
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private long user_id;
-    private long tutor_id;
-    private long session_id;
     private double rating;
     private String className;
-    private String classCode;
 
 
+    @OneToOne
+    @JoinColumn(name = "tutor_id", nullable = false, unique = true)
+    private Tutor tutor;
+
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
+    private User user;
+
+    public Ratings(Tutor tutor, User user) {
+        this.tutor = tutor;
+        this.user = user;
+    }
 
     public Ratings(){}
 
-    public Ratings(long user_id, long tutor_id, long session_id, double rating, String className, String classCode) {
-        this.user_id = user_id;
-        this.tutor_id = tutor_id;
-        this.session_id = session_id;
-        this.rating = rating;
-        this.className = className;
-        this.classCode = classCode;
-    }
-
     public long getId() { return id; }
-    public long getUserId() { return user_id; }
-    public long getTutorId() { return tutor_id; }
-    public long getSessionId() { return session_id; }
     public double getRating() { return rating; }
+    public void setRating(double rating) { this.rating = rating; }
     public String getClassName() { return className; }
-    public String getClassCode() { return classCode; }
+    public void setClassName(String className) { this.className = className; }
+
+    // Add these
+    public Tutor getTutor() { return tutor; }
+    public void setTutor(Tutor tutor) { this.tutor = tutor; }
+
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
 }
