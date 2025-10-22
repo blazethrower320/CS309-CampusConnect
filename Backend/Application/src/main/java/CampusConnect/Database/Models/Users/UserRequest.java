@@ -5,8 +5,10 @@ public class UserRequest {
     private String password;
     private boolean isTutor;
     private boolean isAdmin;
+    private String
 
-    public UserRequest(String username, String password, boolean isTutor, boolean isAdmin){
+
+    public UserRequest(String username, String password, boolean isTutor, boolean isAdmin, ){
         this.username = username;
         this.password = password;
         this.isTutor = isTutor;

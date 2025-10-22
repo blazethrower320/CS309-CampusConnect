@@ -235,6 +235,8 @@ public class UserController {
         return tutorRepository.findById(userID).isPresent();
     }
 
+    @GetMapping("/user")
+
 
 }
 
