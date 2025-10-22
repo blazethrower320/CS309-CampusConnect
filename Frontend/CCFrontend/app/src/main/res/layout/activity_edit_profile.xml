@@ -140,6 +140,7 @@
                     android:layout_height="wrap_content">
                 </TextView>
                 <EditText
+                    android:id="@+id/edit_bio_text"
                     android:layout_width="wrap_content"
                     android:text="Enter Bio Text Here"
                     android:textColor="@color/white"
@@ -165,6 +166,7 @@
                     android:layout_height="wrap_content">
                 </TextView>
                 <EditText
+                    android:id="@+id/edit_major_text"
                     android:layout_width="wrap_content"
                     android:text="Enter Major Here"
                     android:textColor="@color/white"
@@ -191,6 +193,7 @@
                     android:layout_height="wrap_content">
                 </TextView>
                 <EditText
+                    android:id="@+id/edit_classification_text"
                     android:layout_width="wrap_content"
                     android:text="Enter Classification Here"
                     android:textColor="@color/white"
@@ -202,6 +205,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:orientation="vertical"
                 android:background="@drawable/nestedlayout_bg"
                 android:layout_width="match_parent"
                 android:layout_height="100dp">
@@ -217,7 +221,9 @@
 
                 </TextView>
                 <EditText
+                    android:id="@+id/edit_contactInfo_text"
                     android:layout_width="wrap_content"
+                    android:layout_marginLeft="12dp"
                     android:layout_height="wrap_content"
                     android:text="Enter Contact Information Here"
                     android:textColor="@color/white"

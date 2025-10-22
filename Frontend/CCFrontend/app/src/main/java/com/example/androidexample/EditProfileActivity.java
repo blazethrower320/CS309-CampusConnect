@@ -36,6 +36,14 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     private String username;
     private String password;           // pass this from login/signup if required
 
+    //profile fields
+    private String bio;
+    private String major;
+    private String classification;
+    private String contactInfo;
+    private String firstName;
+    private String lastName;
+
 
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -47,6 +55,12 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         roleText = findViewById(R.id.role_text);
         nameText = findViewById(R.id.name_text);
         usernameText = findViewById(R.id.username_text);
+        bioText = findViewById(R.id.edit_bio_text);
+        majorText = findViewById(R.id.edit_major_text);
+        classificationText = findViewById(R.id.edit_classification_text);
+        contactInfoText = findViewById(R.id.edit_contactInfo_text);
+
+
 
         //Buttons
         cancelBtn = findViewById(R.id.cancel_button);
@@ -58,8 +72,12 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         isAdmin = getIntent().getBooleanExtra("isAdmin", false);
         isTutor = getIntent().getBooleanExtra("isTutor", false);
         password = getIntent().getStringExtra("password");
-
-        //Menu Bar
+        bio = getIntent().getStringExtra("bio");
+        major = getIntent().getStringExtra("major");
+        classification = getIntent().getStringExtra("classification");
+        contactInfo = getIntent().getStringExtra("contactInfo");
+        firstName = getIntent().getStringExtra("firstName");
+        lastName = getIntent().getStringExtra("lastName");
 
         //set button listeners to be active
         cancelBtn.setOnClickListener(this);
@@ -79,9 +97,11 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         {
             roleText.setText("Student");
         }
-        nameText.setText("First Last");
-
-
+        nameText.setText(firstName + " " + lastName);
+        bioText.setText(bio);
+        majorText.setText(major);
+        classificationText.setText(classification);
+        contactInfoText.setText(contactInfo);
     }
 
     public void onClick(View v)
@@ -89,6 +109,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         int id = v.getId();
         if (id == R.id.confirm_btn)
         {
+            UpdateProfile(username);
             Intent intent = new Intent(EditProfileActivity.this, ProfileActivity.class);
             intent.putExtra("username", username);
             intent.putExtra("userId", userId);
@@ -113,4 +134,9 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
 
 
     }
+    public void UpdateProfile(String username)
+    {
+
+    }
+
 }
