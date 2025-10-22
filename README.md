@@ -54,6 +54,14 @@
             ``String userDeleted`` - User deleted <br>
             ``String WrongPassword`` - Wrong password <br>
     - Get | `/users/IsTutor/{userID}` - Returns true or false if the user is a tutor <br>
+    - Get | `/users/major/{username}` - Returns the major of the given user from the username <br>
+    - Get | `/users/editMajor/{username}/{major}` - Updates the major of the user <br>
+    - Get | `/users/bio/{username}` - Returns the bio of the given user from the username <br>
+    - Get | `/users/editBio/{username}/{bio}` - Updates the bio of the user <br>
+    - Get | `/users/classification/{username}` - Returns the classification of the given user from the username <br>
+    - Get | `/users/editClassification/{username}/{classification}` - Updates the classification of the user <br>
+
+
 
  - ## Admins
     - Get | `/admins` - Returns a JSON of Admins <br>
@@ -130,6 +138,17 @@
         Returns:<br>
             ``404`` - Session Not found<br>
             ``ok`` - Success<br> <br>
+    - Get | `/sessions/setMeetingTime` - Sets the Meeting Date of a session<br>
+        ```json
+        {
+            "sessionId": 1,
+            "meetingTime": "October 20th, 2025"
+        }
+        ```
+        Returns:<br>
+            ``true`` - Successfully changed<br>
+            ``false`` - Session was not found<br>
+    - Get | `/sessions/getMeetingDate/{sessionId}` - Returns a String of the Meeting Date<br>
 
 - ## Session Members
     - Get | `/sessions/getAllSessionMembers/{sessionId}` - Gets Session Members<br>
