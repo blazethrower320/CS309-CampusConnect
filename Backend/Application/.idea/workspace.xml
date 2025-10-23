@@ -5,15 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6d29c9f1-ee49-4c0f-98ba-fc2545596b57" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/TutorRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Admins/AdminsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Admins/AdminsController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Ratings/Ratings.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Ratings/Ratings.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Ratings/RatingsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Ratings/RatingsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Ratings/RatingsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Ratings/RatingsRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/Tutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/Tutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/TutorRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/TutorRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
@@ -38,6 +49,9 @@
   &quot;associatedIndex&quot;: 8
 }</component>
   <component name="ProjectId" id="34RJzgjvtSOgZ7NB0EgBDWr8Man" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -94,7 +108,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1761170715555</updated>
-      <workItem from="1761174159648" duration="1410000" />
+      <workItem from="1761174159648" duration="3422000" />
     </task>
     <servers />
   </component>

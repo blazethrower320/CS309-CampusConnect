@@ -12,7 +12,7 @@ public class Tutor {
     private long tutorId;
     //private long userId;
     private int totalClasses;
-    private double rating;
+    private double totalRating;
     private String username;
 
     @OneToOne
@@ -38,13 +38,13 @@ public class Tutor {
     //public long getUserId() { return userId; }
     public long getTutorID() { return tutorId; }
     public int gettotalClasses() { return totalClasses; }
-    public double getRating() { return rating; }
+    public double getTotalRating() { return totalRating; }
 
     public void setTotalClasses(int totalClasses) {
         this.totalClasses = totalClasses;
     }
-    public void setRating(double rating) {
-        this.rating = rating;
+    public void setTotalRating(double rating) {
+        this.totalRating = rating;
     }
 
     public User getUser(){

@@ -81,7 +81,7 @@ public class AdminsController {
             return false;
         }
 
-        tutor.setRating(rating);
+        tutor.setTotalRating(rating);
         tutorRepository.save(tutor);
 
         return true;
