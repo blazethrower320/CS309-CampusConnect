@@ -87,7 +87,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         editProfileBtn = findViewById(R.id.edit_profile_btn);
 
 
-        //Call GetUserInfo TODO IMPORTANT!!!
+        //Call GetUserInfo TODO IMPORTANT BUT COMPLETE!!!
         //Get username from intent
         username = getIntent().getStringExtra("username");
         //Get all info from user

@@ -76,14 +76,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 intent.putExtra("isAdmin", false);
                 intent.putExtra("userId", 0);
 
-                startActivity(intent);
-                finish();
-            }
-            else if (username.equals("Test") && password.equals("Test"))
-            {
-                Intent intent = new Intent(MainActivity.this, MainMenuActivity.class);
-                intent.putExtra("username", username);
-                intent.putExtra("password", password);
 
                 startActivity(intent);
                 finish();
