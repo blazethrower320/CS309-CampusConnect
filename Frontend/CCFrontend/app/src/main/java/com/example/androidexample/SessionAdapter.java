@@ -3,17 +3,25 @@ package com.example.androidexample;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.List;
 
 public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.ViewHolder> {
 
-    private List<Session> sessions;
+    public interface OnJoinClickListener {
+        void onJoinClick(Session session);
+    }
 
-    public SessionAdapter(List<Session> sessions) {
+    private List<Session> sessions;
+    private OnJoinClickListener joinListener;
+
+    public SessionAdapter(List<Session> sessions, OnJoinClickListener joinListener) {
         this.sessions = sessions;
+        this.joinListener = joinListener;
     }
 
     public void updateList(List<Session> newList) {
@@ -23,7 +31,6 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.ViewHold
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // Inflate your custom session_item.xml
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.session_item, parent, false);
         return new ViewHolder(view);
@@ -32,6 +39,7 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Session s = sessions.get(position);
+
         holder.className.setText(s.getClassName());
         holder.classCode.setText(s.getClassCode());
         holder.meetingLocation.setText("Location: " + s.getMeetingLocation());
@@ -39,10 +47,28 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.ViewHold
 
         String tutor = s.getTutorUsername() != null ? s.getTutorUsername() : "Loading tutor...";
         holder.tutorUsername.setText("Tutor: " + tutor);
+
+        // 🧠 Join Button State Logic
+        if (s.isJoined()) {
+            holder.joinButton.setText("Joined");
+            holder.joinButton.setEnabled(false);
+            holder.joinButton.setAlpha(0.6f);
+        } else {
+            holder.joinButton.setText("Join Session");
+            holder.joinButton.setEnabled(true);
+            holder.joinButton.setAlpha(1f);
+        }
+
+        // 🖱 Click handler
+        holder.joinButton.setOnClickListener(v -> {
+            if (joinListener != null && !s.isJoined()) {
+                joinListener.onJoinClick(s);
+            }
+        });
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView className, classCode, meetingLocation, meetingTime, tutorUsername;
+        TextView className, classCode, meetingLocation, meetingTime, tutorUsername, joinButton;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -51,12 +77,13 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.ViewHold
             meetingLocation = itemView.findViewById(R.id.meeting_location);
             meetingTime = itemView.findViewById(R.id.meeting_time);
             tutorUsername = itemView.findViewById(R.id.tutor_username);
+            joinButton = itemView.findViewById(R.id.btn_join_session);
         }
     }
-
 
     @Override
     public int getItemCount() {
         return sessions == null ? 0 : sessions.size();
     }
 }
+

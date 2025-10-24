@@ -127,7 +127,13 @@ public class SessionActivity extends AppCompatActivity {
 
         // RecyclerView + adapter
         sessionsRecycler.setLayoutManager(new LinearLayoutManager(this));
-        sessionAdapter = new SessionAdapter(new ArrayList<>());
+        // inside onCreate(), replace adapter creation with:
+        sessionAdapter = new SessionAdapter(allSessions, session -> {
+            joinSession(session.getSessionId(), userId);
+        });
+
+        sessionsRecycler.setAdapter(sessionAdapter);
+
         sessionsRecycler.setAdapter(sessionAdapter);
 
         // request queue
@@ -165,8 +171,45 @@ public class SessionActivity extends AppCompatActivity {
         });
     }
 
+    private void joinSession(int sessionId, int userId) {
+        String url = BASE_URL + "/sessions/joinSession";
+
+        JSONObject body = new JSONObject();
+        try {
+            body.put("sessionId", sessionId);
+            body.put("userId", userId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Failed to create request", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        JsonObjectRequest joinRequest = new JsonObjectRequest(Request.Method.POST, url, body,
+                response -> {
+                    Log.d("SessionActivity", "Joined session " + sessionId + ": " + response.toString());
+                    Toast.makeText(SessionActivity.this, "Joined session", Toast.LENGTH_SHORT).show();
+
+                    // ✅ Mark session as joined
+                    for (Session s : allSessions) {
+                        if (s.getSessionId() == sessionId) {
+                            s.setJoined(true);
+                            break;
+                        }
+                    }
+                    sessionAdapter.notifyDataSetChanged(); // refresh UI
+                },
+                error -> {
+                    Log.e("SessionActivity", "Failed to join session " + sessionId + ": " + error.getMessage());
+                    Toast.makeText(SessionActivity.this, "Join failed", Toast.LENGTH_SHORT).show();
+                });
+
+        requestQueue.add(joinRequest);
+    }
+
+
+
     private void fetchSessionsFromBackend() {
-        String url = BASE_URL + SESSIONS_ENDPOINT; // e.g. http://10.0.2.2:8080/sessions
+        String url = BASE_URL + SESSIONS_ENDPOINT;
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET, url, null,
