@@ -62,7 +62,7 @@
                 android:layout_weight="0.35"
                 android:layout_height="48dp"
                 android:background="@android:drawable/btn_dropdown"
-                android:popupBackground="#3A3A3A"/>
+                android:popupBackground="#FFFFFF"/>
 
             <SearchView
                 android:id="@+id/class_search_view"
@@ -139,8 +139,7 @@
             android:padding="12dp"
             android:clickable="true"
             android:focusable="true"
-            android:background="?android:attr/selectableItemBackground"
-            android:visibility="gone">
+            android:background="?android:attr/selectableItemBackground">
 
             <ImageView
                 android:layout_width="69dp"
