@@ -46,6 +46,8 @@ public class SessionActivity extends AppCompatActivity {
     private String username;
     private String password;
 
+    private TextView createSession;
+
     private Spinner majorSpinner;
     private SearchView classSearchView;
     private RecyclerView sessionsRecycler;
@@ -63,6 +65,7 @@ public class SessionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_session);
 
         drawerLayout = findViewById(R.id.drawer_layout);
+        createSession = findViewById(R.id.btn_create_session);
         menuButton = findViewById(R.id.menu_button);
 
         // Get values passed from login/signup
@@ -71,6 +74,10 @@ public class SessionActivity extends AppCompatActivity {
         isAdmin = getIntent().getBooleanExtra("isAdmin", false);
         isTutor = getIntent().getBooleanExtra("isTutor", false);
         userId = getIntent().getIntExtra("userId", -1);
+
+        if (isTutor) {
+            createSession.setVisibility(View.VISIBLE);
+        }
 
         LinearLayout homeButton = findViewById(R.id.nav_home);
         homeButton.setOnClickListener(v -> {
@@ -106,6 +113,18 @@ public class SessionActivity extends AppCompatActivity {
                 drawerLayout.openDrawer(findViewById(R.id.nav_view));
             }
         });
+
+        createSession.setOnClickListener(v -> {
+            Intent intent = new Intent(SessionActivity.this, CreateSessionActivity.class);
+            intent.putExtra("username", username);
+            intent.putExtra("userId", userId);
+            intent.putExtra("isAdmin", isAdmin);
+            intent.putExtra("isTutor", isTutor);
+            intent.putExtra("password", password);
+            startActivity(intent);
+            finish();
+        });
+
 
         // --- New UI wiring ---
         majorSpinner = findViewById(R.id.major_spinner);
