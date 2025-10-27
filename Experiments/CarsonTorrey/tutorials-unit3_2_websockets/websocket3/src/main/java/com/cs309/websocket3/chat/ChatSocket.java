@@ -1,9 +1,7 @@
 package com.cs309.websocket3.chat;
 
 import java.io.IOException;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import jakarta.websocket.OnClose;
 import jakarta.websocket.OnError;
@@ -41,7 +39,7 @@ public class ChatSocket {
 	// Store all socket session and their corresponding username.
 	private static Map<Session, String> sessionUsernameMap = new Hashtable<>();
 	private static Map<String, Session> usernameSessionMap = new Hashtable<>();
-
+	private static Map<String, ArrayList<Message>> userLogs = new HashMap<>();
 	private final Logger logger = LoggerFactory.getLogger(ChatSocket.class);
 
 	@OnOpen
@@ -62,13 +60,13 @@ public class ChatSocket {
 		broadcast(message);
 	}
 
-
 	@OnMessage
 	public void onMessage(Session session, String message) throws IOException {
 
 		// Handle new messages
 		logger.info("Entered into Message: Got Message:" + message);
 		String username = sessionUsernameMap.get(session);
+		userLogs.computeIfAbsent(username, k -> new ArrayList<>()).add(new Message(username, message));
 
     // Direct message to a user using the format "@username <message>"
 		if (message.startsWith("@")) {
@@ -78,7 +76,14 @@ public class ChatSocket {
 			sendMessageToPArticularUser(destUsername, "[DM] " + username + ": " + message);
 			sendMessageToPArticularUser(username, "[DM] " + username + ": " + message);
 
-		} 
+		}
+		else if(message.startsWith("getMyTimeStamps"))
+		{
+			for(Message msg : userLogs.get(username))
+			{
+				broadcast(msg.getSent().toString());
+			}
+		}
     else { // broadcast
 			broadcast(username + ": " + message);
 		}
