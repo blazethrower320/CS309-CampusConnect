@@ -38,6 +38,7 @@ public class ChatServer1 {
     // Two maps for the ease of retrieval by key
     private static Map < Session, String > sessionUsernameMap = new Hashtable < > ();
     private static Map < String, Session > usernameSessionMap = new Hashtable < > ();
+    private static Map < String, Session > password = new Hashtable < > ();
 
     // server side logger
     private final Logger logger = LoggerFactory.getLogger(ChatServer1.class);
@@ -70,7 +71,8 @@ public class ChatServer1 {
             sendMessageToPArticularUser(username, "Welcome to the chat server, "+username);
 
             // send to everyone in the chat
-            broadcast("User: " + username + " has Joined the Chat");
+            //broadcast("User: " + username + " has Joined the Chat");
+            sendMessageToPArticularUser(username, "Enter Password: ");
         }
     }
 
@@ -89,6 +91,20 @@ public class ChatServer1 {
         // server side log
         logger.info("[onMessage] " + username + ": " + message);
 
+        if(!password.containsKey(username))
+        {
+            // didnt enter password yet
+            if(message.equals("password")) {
+                broadcast(username + " has entered the password");
+                password.put(username, session);
+            }
+            else
+            {
+                sendMessageToPArticularUser(username, "Wrong password... Enter password: ");
+                return;
+            }
+        }
+
         // Direct message to a user using the format "@username <message>"
         if (message.startsWith("@")) {
 
@@ -106,7 +122,10 @@ public class ChatServer1 {
             sendMessageToPArticularUser(username, "[DM from " + username + "]: " + actualMessage);
         }
         else { // Message to whole chat
-            broadcast(username + ": " + message);
+            for(String user : password.keySet())
+            {
+                sendMessageToPArticularUser(user, message);
+            }
         }
     }
 
