@@ -108,8 +108,7 @@
             android:padding="12dp"
             android:clickable="true"
             android:focusable="true"
-            android:background="?android:attr/selectableItemBackground"
-            android:visibility="gone">
+            android:background="?android:attr/selectableItemBackground">
 
             <ImageView
                 android:layout_width="69dp"

@@ -6,7 +6,8 @@ public class Session {
     private String classCode;
     private String meetingLocation;
     private String meetingTime;
-    private String tutorUsername; // 👈 new field
+    private String tutorUsername;
+    private boolean joined;
 
     public Session(int sessionId, String className, String classCode, String meetingLocation, String meetingTime, String tutorUsername) {
         this.sessionId = sessionId;
@@ -15,6 +16,7 @@ public class Session {
         this.meetingLocation = meetingLocation;
         this.meetingTime = meetingTime;
         this.tutorUsername = tutorUsername;
+        this.joined = false;
     }
 
     public int getSessionId() { return sessionId; }
@@ -25,4 +27,8 @@ public class Session {
 
     public String getTutorUsername() { return tutorUsername; }
     public void setTutorUsername(String tutorUsername) { this.tutorUsername = tutorUsername; }
+
+    public boolean isJoined() { return joined; }
+
+    public void setJoined(boolean joined) { this.joined = joined; }
 }

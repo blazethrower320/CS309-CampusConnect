@@ -1,65 +1,110 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp"
     android:background="@drawable/session_item_background"
     android:layout_marginVertical="8dp"
-    android:elevation="4dp">
+    android:elevation="4dp"
+    android:clipToOutline="false">
 
-    <!-- Class Name -->
-    <TextView
-        android:id="@+id/class_name"
+    <!-- Top Section: Class Name + Tutor -->
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="COM S 309"
-        android:textStyle="bold"
-        android:textColor="#000000"
-        android:textSize="20sp" />
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:baselineAligned="false">
 
-    <!-- Class Code -->
+        <TextView
+            android:id="@+id/class_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="COM S 309"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tutor_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tutor: Loading..."
+            android:textColor="#666666"
+            android:textSize="14sp"
+            android:layout_marginStart="12dp" />
+
+        <TextView
+            android:id="@+id/btn_join_session"
+            android:background="@drawable/session_join_button_background"
+            android:layout_width="64dp"
+            android:layout_height="40dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginStart="20dp"
+            android:text="Join"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Class Title -->
     <TextView
         android:id="@+id/class_code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Software Development Practices"
-        android:textColor="#222222"
+        android:textColor="#333333"
         android:textSize="16sp"
-        android:layout_marginTop="4dp" />
-
-    <!-- Tutor -->
-    <TextView
-        android:id="@+id/tutor_username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tutor: Loading..."
-        android:textColor="#444444"
-        android:textSize="15sp"
         android:layout_marginTop="6dp" />
 
-    <!-- Horizontal Row: Location + Time -->
+    <!-- Location and Time Row -->
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="6dp">
+        android:layout_marginTop="10dp"
+        android:gravity="start">
+
+        <!-- Location icon + text -->
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginEnd="4dp"
+            android:src="@drawable/outline_location"
+            app:tint="#444444"/>
 
         <TextView
             android:id="@+id/meeting_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Location: Coover 101"
+            android:text="Coover 101"
             android:textColor="#444444"
             android:textSize="15sp" />
+
+        <!-- Space between location and time -->
+        <Space
+            android:layout_width="16dp"
+            android:layout_height="match_parent" />
+
+        <!-- Time icon + text -->
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginEnd="4dp"
+            android:src="@drawable/outline_alarm"
+            app:tint="#444444" />
 
         <TextView
             android:id="@+id/meeting_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" • Fridays 3:00 PM"
+            android:text="Fridays 3:00 PM"
             android:textColor="#444444"
-            android:textSize="15sp"
-            android:layout_marginStart="8dp" />
+            android:textSize="15sp" />
     </LinearLayout>
+
 
 </LinearLayout>
