@@ -60,7 +60,21 @@
     - Get | `/users/editBio/{username}/{bio}` - Updates the bio of the user <br>
     - Get | `/users/classification/{username}` - Returns the classification of the given user from the username <br>
     - Get | `/users/editClassification/{username}/{classification}` - Updates the classification of the user <br>
-
+    - Get | `/users/find/{username}` - Returns a UserRequest with all the user fields + boolean flags for tutor and admin 
+        ```json
+        {
+            "firstName": "firstName",
+            "lastName": "lastName",
+            "username": "username",
+            "password": "password"
+            "isTutor" : "isTutor",
+            "isAdmin" : "isAdmin",
+            "major"   : "major",
+            "classification": "classification",
+            "bio"     : "bio"
+        }
+        ```
+    - Put | `/users/update` - Updates the User and returns the user.
 
 
  - ## Admins

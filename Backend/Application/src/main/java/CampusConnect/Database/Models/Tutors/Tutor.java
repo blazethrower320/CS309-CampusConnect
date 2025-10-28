@@ -1,9 +1,14 @@
 package CampusConnect.Database.Models.Tutors;
 
+
 import CampusConnect.Database.Models.Ratings.Ratings;
+import CampusConnect.Database.Models.Sessions.Sessions;
 import CampusConnect.Database.Models.Users.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Tutor {
@@ -13,6 +18,7 @@ public class Tutor {
     //private long userId;
     private int totalClasses;
     private double totalRating;
+
     private String username;
 
     @OneToOne
@@ -23,6 +29,10 @@ public class Tutor {
     @JsonIgnore
     private Ratings ratings;
 
+
+    @OneToMany(mappedBy = "tutor")
+    @JsonIgnore
+    private Set<Sessions> tutorSessions = new HashSet<>();
 
     public Tutor() {}
 

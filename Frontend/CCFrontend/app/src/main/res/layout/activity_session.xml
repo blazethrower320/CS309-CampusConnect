@@ -34,12 +34,27 @@
                 android:id="@+id/title_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="110dp"
+                android:layout_marginStart="100dp"
                 android:text="Sessions"
                 android:textStyle="bold"
                 android:textColor="#FFFFFF"
                 android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/btn_create_session"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="60dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="Create Session"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:visibility="gone"/>
+
         </LinearLayout>
+
 
         <View
             android:layout_width="match_parent"
@@ -62,14 +77,16 @@
                 android:layout_weight="0.35"
                 android:layout_height="48dp"
                 android:background="@android:drawable/btn_dropdown"
-                android:popupBackground="#3A3A3A"/>
+                android:popupBackground="#FFFFFF"/>
 
             <SearchView
                 android:id="@+id/class_search_view"
+                style="@style/DarkInputField"
                 android:layout_width="0dp"
                 android:layout_weight="0.65"
                 android:layout_height="48dp"
                 android:queryHint="Search (ex: COM S 309)"
+                android:textColorHint="@color/white"
                 android:iconifiedByDefault="false"
                 android:layout_marginStart="8dp"/>
         </LinearLayout>
@@ -139,8 +156,7 @@
             android:padding="12dp"
             android:clickable="true"
             android:focusable="true"
-            android:background="?android:attr/selectableItemBackground"
-            android:visibility="gone">
+            android:background="?android:attr/selectableItemBackground">
 
             <ImageView
                 android:layout_width="69dp"

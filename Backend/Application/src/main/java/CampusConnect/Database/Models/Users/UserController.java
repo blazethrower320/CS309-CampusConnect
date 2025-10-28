@@ -259,6 +259,22 @@ public class UserController {
         return userReq;
     }
 
+    @PutMapping("/users/update")
+    public User updateUser(@RequestBody UserRequest updatedUser){
+        if(!userRepository.existsByUsername(updatedUser.getUsername())){
+            throw new RuntimeException("No user found.");
+        }
+        User user = userRepository.findByUsername(updatedUser.getUsername());
+        user.setFirstName(updatedUser.getfirstName());
+        user.setLastName(updatedUser.getlastName());
+        if (updatedUser.getPassword() != null) {user.setPassword(updatedUser.getPassword());}
+        user.setMajor(updatedUser.getMajor());
+        user.setClassification(updatedUser.getClassification());
+        user.setBio(updatedUser.getBio());
+        user.setContractInfo(updatedUser.getContactInfo());
+        userRepository.save(user);
+        return user;
+    }
 
 
 }

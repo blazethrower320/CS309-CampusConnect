@@ -43,6 +43,10 @@
         <activity
             android:name=".EditProfileActivity"
             android:exported="false" />
+        <!-- Create Session Activity-->
+        <activity
+            android:name=".CreateSessionActivity"
+            android:exported="false" />
 
         <activity
             android:name=".MainActivity"

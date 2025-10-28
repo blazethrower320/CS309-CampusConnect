@@ -2,9 +2,12 @@ package CampusConnect.Database.Models.Sessions;
 
 import CampusConnect.Database.Models.Classes.Classes;
 import CampusConnect.Database.Models.Users.User;
+import CampusConnect.Database.Models.Tutors.Tutor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -14,22 +17,28 @@ public class Sessions
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long sessionId;
-    private long userId;
-    private long tutorId;
+    private long userId; //REMOVE
+    private long tutorId; //REMOVE
     private String className;
     private String classCode;
     private String meetingLocation;
     private String meetingTime;
     private LocalDateTime dateCreated;
 
-    /*
-    @ManyToMany(mappedBy = "userSessions")
-    private Set<User> users;
+
+    @ManyToMany
+    @JoinTable(
+            name = "StudySessions",
+            joinColumns = @JoinColumn(name = "session_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    @JsonIgnore
+    private  Set<User> users = new HashSet<>();
 
     @ManyToOne
-    @JoinColumn(name = "classId")
-    private Classes sessionClass;
-     */
+    @JoinColumn(name = "tutor_id")
+    private Tutor tutor;
+
 
     public Sessions(){}
 
