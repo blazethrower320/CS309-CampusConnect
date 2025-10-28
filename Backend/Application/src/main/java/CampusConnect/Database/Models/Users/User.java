@@ -6,6 +6,7 @@ import CampusConnect.Database.Models.Tutors.Tutor;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -46,14 +47,9 @@ public class User {
     @JsonIgnore
     private Tutor tutor;
 
-    /*
-    @ManyToMany
-    @JoinTable(
-            name = "User_Sessions",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "session_id")
-    )
-    private Set<Sessions> userSessions;     */
+    @ManyToMany(mappedBy = "users")
+    @JsonIgnore
+    private Set<Sessions> userSessions = new HashSet<>();
 
 
     public User(String username, String password) {
