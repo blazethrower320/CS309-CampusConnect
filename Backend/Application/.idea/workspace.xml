@@ -5,8 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6d29c9f1-ee49-4c0f-98ba-fc2545596b57" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/WebSockets/GroupChats/ChatSocket.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/WebSockets/GroupChats/ChatSocketConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/WebSockets/GroupChats/Message.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/WebSockets/GroupChats/MessageRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/Tutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/Tutor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/UserController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,6 +62,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "Carson-Week9",
     "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/blaze/Desktop/COMS309/3_hosen_1/Experiments/CarsonTorrey/tutorials-unit3_1_one_websocket/WebSocketSpringboot",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -103,6 +108,9 @@
       <option name="presentableId" value="Default" />
       <updated>1761170715555</updated>
       <workItem from="1761174159648" duration="3748000" />
+      <workItem from="1761598067136" duration="170000" />
+      <workItem from="1761598938472" duration="1179000" />
+      <workItem from="1761618302587" duration="28000" />
     </task>
     <servers />
   </component>
