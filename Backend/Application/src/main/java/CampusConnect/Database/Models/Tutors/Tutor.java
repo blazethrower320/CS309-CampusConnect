@@ -1,7 +1,12 @@
 package CampusConnect.Database.Models.Tutors;
 
+import CampusConnect.Database.Models.Sessions.Sessions;
 import CampusConnect.Database.Models.Users.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Tutor {
@@ -10,13 +15,16 @@ public class Tutor {
     private long tutorId;
     //private long userId;
     private int totalClasses;
-    private double rating;
+    private double rating = 0;
     private String username;
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
+    @OneToMany(mappedBy = "tutor")
+    @JsonIgnore
+    private Set<Sessions> tutorSessions = new HashSet<>();
 
     public Tutor() {}
 

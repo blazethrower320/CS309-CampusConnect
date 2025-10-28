@@ -10,13 +10,18 @@
         <module name="WebSocketServer" />
         <module name="WebSocketServer (1)" />
         <module name="websocket3" />
+        <module name="WebSocketServer (2)" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="WebSocketServer" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="WebSocketServer" options="-parameters" />
       <module name="WebSocketServer (1)" options="-parameters" />
+      <module name="WebSocketServer (2)" options="-parameters" />
       <module name="websocket3" options="-parameters" />
     </option>
   </component>
