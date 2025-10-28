@@ -62,7 +62,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String username = usernameEdt.getText().toString().trim();
             String password = passwordEdt.getText().toString().trim();
 
-            if (username.isEmpty() || password.isEmpty()) {
+            if (username.isEmpty() || password.isEmpty())
+            {
                 passwordEdt.setError("Please fill in both fields");
                 return;
             }
@@ -74,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 intent.putExtra("password", password);
                 intent.putExtra("isAdmin", false);
                 intent.putExtra("userId", 0);
+
 
                 startActivity(intent);
                 finish();
