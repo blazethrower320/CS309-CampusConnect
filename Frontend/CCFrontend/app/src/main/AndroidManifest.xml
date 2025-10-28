@@ -47,6 +47,14 @@
         <activity
             android:name=".CreateSessionActivity"
             android:exported="false" />
+        <!-- Review List Activity-->
+        <activity
+            android:name=".ReviewListActivity"
+            android:exported="false" />
+        <!-- Tutor Reviews Activity-->
+        <activity
+            android:name=".TutorReviewsActivity"
+            android:exported="false" />
 
         <activity
             android:name=".MainActivity"

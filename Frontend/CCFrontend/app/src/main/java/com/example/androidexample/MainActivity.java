@@ -95,20 +95,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     requestBody,
                     response -> {
                         try {
-                            // Extract admin flag and userId from response
                             boolean isAdmin = response.optBoolean("isAdmin", false);
                             int userId = response.optInt("userId", -1);
 
-                            Log.i("LoginSuccess", "User logged in. isAdmin=" + isAdmin + ", userId=" + userId);
+                            // Make a second call to get full user info (including tutor flag)
+                            String userInfoUrl = "http://coms-3090-037.class.las.iastate.edu:8080/users/find/" + username;
 
-                            Intent intent = new Intent(MainActivity.this, MainMenuActivity.class);
-                            intent.putExtra("username", username);
-                            intent.putExtra("password", password);
-                            intent.putExtra("isAdmin", isAdmin);
-                            intent.putExtra("userId", userId);
+                            JsonObjectRequest userInfoRequest = new JsonObjectRequest(
+                                    Request.Method.GET,
+                                    userInfoUrl,
+                                    null,
+                                    userResponse -> {
+                                        boolean isTutor = userResponse.optBoolean("isTutor", false);
 
-                            startActivity(intent);
-                            finish();
+                                        Log.i("LoginSuccess", "User logged in. isAdmin=" + isAdmin + ", isTutor=" + isTutor + ", userId=" + userId);
+
+                                        Intent intent = new Intent(MainActivity.this, MainMenuActivity.class);
+                                        intent.putExtra("username", username);
+                                        intent.putExtra("password", password);
+                                        intent.putExtra("isAdmin", isAdmin);
+                                        intent.putExtra("isTutor", isTutor);
+                                        intent.putExtra("userId", userId);
+
+                                        startActivity(intent);
+                                        finish();
+                                    },
+                                    error -> {
+                                        Log.e("UserInfoError", "Failed to fetch user info: " + error.getMessage());
+                                        Toast.makeText(MainActivity.this, "Failed to get user details", Toast.LENGTH_SHORT).show();
+                                    }
+                            );
+
+                            Volley.newRequestQueue(this).add(userInfoRequest);
 
                         } catch (Exception e) {
                             e.printStackTrace();

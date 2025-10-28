@@ -105,6 +105,19 @@ public class SessionActivity extends AppCompatActivity {
             drawerLayout.closeDrawer(GravityCompat.START);
         });
 
+        LinearLayout reviewsButton = findViewById(R.id.nav_reviews);
+        reviewsButton.setOnClickListener(v -> {
+            Intent intent = new Intent(SessionActivity.this, ReviewListActivity.class);
+            intent.putExtra("username", username);
+            intent.putExtra("userId", userId);
+            intent.putExtra("isAdmin", isAdmin);
+            intent.putExtra("isTutor", isTutor);
+            intent.putExtra("password", password); // only if needed for certain calls
+            startActivity(intent);
+            finish();
+            drawerLayout.closeDrawer(GravityCompat.START);
+                });
+
         // Open sidebar when menu button clicked
         menuButton.setOnClickListener(v -> {
             if (drawerLayout.isDrawerOpen(findViewById(R.id.nav_view))) {

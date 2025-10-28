@@ -1,124 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#5B5B5B">
+    tools:context=".ReviewListActivity">
 
-    <!-- Main content -->
+    <!-- MAIN CONTENT AREA -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/login_bg_image2"
         android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:padding="16dp">
 
         <!-- Top bar -->
         <LinearLayout
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="30dp"
             android:layout_width="match_parent"
+            android:background="@drawable/menubar_layout"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
             <ImageButton
                 android:id="@+id/menu_button"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:background="@android:color/transparent"
-                android:contentDescription="Menu"
-                android:src="@drawable/ic_menu" />
+                android:src="@drawable/ic_menu"
+                android:contentDescription="Menu" />
 
             <TextView
                 android:id="@+id/title_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="100dp"
-                android:text="Sessions"
-                android:textStyle="bold"
+                android:layout_marginStart="70dp"
+                android:text="Campus Connect"
                 android:textColor="#FFFFFF"
                 android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/btn_create_session"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="60dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:text="Create Session"
-                android:textColor="@color/white"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:visibility="gone"/>
-
         </LinearLayout>
 
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="8dp"
-            android:background="#FFFFFF" />
-
-        <!-- Filter row: Spinner (Major) + SearchView -->
-        <LinearLayout
-            android:id="@+id/filter_row"
-            android:layout_width="match_parent"
+        <!-- Add your screen’s main UI here (below the menubar) -->
+        <!-- Optional search hint or space -->
+        <!-- Search bar -->
+        <SearchView
+            android:id="@+id/tutor_search_bar"
+            android:layout_width="242dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="12dp"
-            android:layout_marginTop="12dp">
-
-            <Spinner
-                android:id="@+id/major_spinner"
-                android:layout_width="0dp"
-                android:layout_weight="0.35"
-                android:layout_height="48dp"
-                android:background="@android:drawable/btn_dropdown"
-                android:popupBackground="#FFFFFF"/>
-
-            <SearchView
-                android:id="@+id/class_search_view"
-                style="@style/DarkInputField"
-                android:layout_width="0dp"
-                android:layout_weight="0.65"
-                android:layout_height="48dp"
-                android:queryHint="Search (ex: COM S 309)"
-                android:textColorHint="@color/white"
-                android:iconifiedByDefault="false"
-                android:layout_marginStart="8dp"/>
-        </LinearLayout>
-
-        <!-- Divider -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#C0C0C0"/>
-
-        <!-- Sessions list placeholder -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/sessions_recycler"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:clipChildren="false"
+            android:layout_marginStart="65dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/menubar_layout"
+            android:backgroundTintMode="src_over"
+            android:backgroundTint="@color/white"
+            android:elevation="4dp"
+            android:iconifiedByDefault="false"
             android:padding="8dp"
-            android:scrollbars="vertical" />
+            android:queryHint="Search tutors by name or username" />
 
+
+        <!-- RecyclerView for tutors -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/reviewRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:paddingBottom="16dp" />
     </LinearLayout>
 
-    <!-- Sidebar / Navigation Drawer (unchanged) -->
+
+    <!-- SIDEBAR / NAVIGATION DRAWER -->
     <LinearLayout
         android:id="@+id/nav_view"
-        android:layout_width="100dp"
+        android:layout_width="120dp"
         android:layout_height="match_parent"
+        android:layout_gravity="start"
         android:orientation="vertical"
         android:background="#2E2E3A"
         android:paddingTop="60dp"
-        android:gravity="center_horizontal"
-        android:layout_gravity="start">
+        android:gravity="center_horizontal">
 
         <!-- Home -->
         <LinearLayout
@@ -232,7 +195,6 @@
                 android:layout_marginTop="4dp" />
         </LinearLayout>
 
-
         <!-- Settings -->
         <LinearLayout
             android:id="@+id/nav_settings"
@@ -263,4 +225,3 @@
     </LinearLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>
-

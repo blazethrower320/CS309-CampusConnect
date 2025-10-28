@@ -96,6 +96,19 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
             drawerLayout.closeDrawer(GravityCompat.START);
         });
 
+        LinearLayout reviewsBtn = findViewById(R.id.nav_reviews);
+        reviewsBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(MainMenuActivity.this, ReviewListActivity.class);
+            intent.putExtra("username", username);
+            intent.putExtra("userId", userId);
+            intent.putExtra("isAdmin", isAdmin);
+            intent.putExtra("isTutor", isTutor);
+            intent.putExtra("password", password);
+            startActivity(intent);
+            finish();
+            drawerLayout.closeDrawer(GravityCompat.START);
+        });
+
 
         // Get values passed from login/signup
         username = getIntent().getStringExtra("username");
