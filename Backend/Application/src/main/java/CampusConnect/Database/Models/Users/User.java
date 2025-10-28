@@ -1,6 +1,7 @@
 package CampusConnect.Database.Models.Users;
 
 import CampusConnect.Database.Models.Admins.Admins;
+import CampusConnect.Database.Models.Ratings.Ratings;
 import CampusConnect.Database.Models.Sessions.Sessions;
 import CampusConnect.Database.Models.Tutors.Tutor;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -47,6 +48,18 @@ public class User {
     @JsonIgnore
     private Tutor tutor;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private Ratings ratings;
+
+    /*
+    @ManyToMany
+    @JoinTable(
+            name = "User_Sessions",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "session_id")
+    )
+    private Set<Sessions> userSessions;     */
     @ManyToMany(mappedBy = "users")
     @JsonIgnore
     private Set<Sessions> userSessions = new HashSet<>();
@@ -113,6 +126,13 @@ public class User {
         this.tutor = tutor;
         if(tutor != null && tutor.getUser() != this){
             tutor.setUser(this);
+        }
+    }
+    public Ratings getRatings(){ return ratings; }
+    public void setRatings(Ratings ratings){
+        this.ratings = ratings;
+        if(ratings != null && ratings.getUser() != this){
+            ratings.setUser(this);
         }
     }
 

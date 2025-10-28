@@ -1,5 +1,7 @@
 package CampusConnect.Database.Models.Tutors;
 
+
+import CampusConnect.Database.Models.Ratings.Ratings;
 import CampusConnect.Database.Models.Sessions.Sessions;
 import CampusConnect.Database.Models.Users.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,12 +17,18 @@ public class Tutor {
     private long tutorId;
     //private long userId;
     private int totalClasses;
-    private double rating = 0;
+    private double totalRating;
+
     private String username;
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
+
+    @OneToOne(mappedBy = "tutor", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private Ratings ratings;
+
 
     @OneToMany(mappedBy = "tutor")
     @JsonIgnore
@@ -40,13 +48,13 @@ public class Tutor {
     //public long getUserId() { return userId; }
     public long getTutorID() { return tutorId; }
     public int gettotalClasses() { return totalClasses; }
-    public double getRating() { return rating; }
+    public double getTotalRating() { return totalRating; }
 
     public void setTotalClasses(int totalClasses) {
         this.totalClasses = totalClasses;
     }
-    public void setRating(double rating) {
-        this.rating = rating;
+    public void setTotalRating(double rating) {
+        this.totalRating = rating;
     }
 
     public User getUser(){
@@ -57,6 +65,13 @@ public class Tutor {
         this.user = user;
         if(user != null && user.getTutor() != this){
             user.setTutor(this);
+        }
+    }
+    public Ratings getRatings() { return ratings; }
+    public void setRatings(Ratings ratings){
+        this.ratings = ratings;
+        if(ratings != null && ratings.getTutor() != this){
+            ratings.setTutor(this);
         }
     }
 }
