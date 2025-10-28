@@ -2,17 +2,19 @@ package com.example.androidexample;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,6 +25,7 @@ public class CreateSessionActivity extends AppCompatActivity {
     private ImageButton backButton;
     private int userId;
     private boolean isTutor;
+    private String username;
 
     private static final String BASE_URL = "http://coms-3090-037.class.las.iastate.edu:8080";
 
@@ -35,6 +38,7 @@ public class CreateSessionActivity extends AppCompatActivity {
         Intent intent = getIntent();
         userId = intent.getIntExtra("userId", -1);
         isTutor = intent.getBooleanExtra("isTutor", false);
+        username = intent.getStringExtra("username");
 
         // Initialize views
         editClassName = findViewById(R.id.edit_class_name);
@@ -48,47 +52,49 @@ public class CreateSessionActivity extends AppCompatActivity {
 
         // Handle Create Session button
         createButton.setOnClickListener(v -> {
-            String className = editClassName.getText().toString();
-            String classCode = editClassCode.getText().toString();
-            String meetingLocation = editMeetingLocation.getText().toString();
-            String meetingTime = editMeetingTime.getText().toString();
+            String className = editClassName.getText().toString().trim();
+            String classCode = editClassCode.getText().toString().trim();
+            String meetingLocation = editMeetingLocation.getText().toString().trim();
+            String meetingTime = editMeetingTime.getText().toString().trim();
 
             if (className.isEmpty() || classCode.isEmpty() || meetingLocation.isEmpty() || meetingTime.isEmpty()) {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            JSONObject sessionData = new JSONObject();
-            try {
-                sessionData.put("userId", userId);
-                sessionData.put("tutorId", userId);
-                sessionData.put("className", className);
-                sessionData.put("classCode", classCode);
-                sessionData.put("meetingLocation", meetingLocation);
-                sessionData.put("meetingTime", meetingTime);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            // ✅ Step 1: Fetch the tutorId using /users/getTutor/{userId}
+            String userUrl = BASE_URL + "/users/getTutor/" + userId;
 
-            String url = BASE_URL + "/sessions/createSession";
-
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, sessionData,
+            JsonObjectRequest userRequest = new JsonObjectRequest(Request.Method.GET, userUrl, null,
                     response -> {
-                        Toast.makeText(this, "Session Created Successfully!", Toast.LENGTH_SHORT).show();
-                        // Go back to SessionActivity
-                        Intent backIntent = new Intent(CreateSessionActivity.this, SessionActivity.class);
-                        backIntent.putExtra("userId", userId);
-                        backIntent.putExtra("isTutor", isTutor);
-                        startActivity(backIntent);
-                        finish();
+                        try {
+                            // If the endpoint returns the tutor object directly like:
+                            // {
+                            //   "tutorId": 5,
+                            //   "name": "John Doe",
+                            //   ...
+                            // }
+                            int tutorId = response.optInt("tutorID", -1);
+
+                            if (tutorId != -1) {
+                                Log.d("CreateSession", "Fetched tutorId: " + tutorId);
+                                createSession(userId, tutorId, className, classCode, meetingLocation, meetingTime);
+                            } else {
+                                Toast.makeText(this, "Tutor ID not found in response.", Toast.LENGTH_SHORT).show();
+                                Log.e("CreateSession", "Tutor ID missing from response: " + response);
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Toast.makeText(this, "Failed to parse tutor info", Toast.LENGTH_SHORT).show();
+                        }
                     },
                     error -> {
-                        String errorMessage = (error.networkResponse != null && error.networkResponse.statusCode == 400)
-                                ? "Tutor not found" : "Error creating session";
-                        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+                        Log.e("CreateSession", "Error fetching tutor info: " + error.toString());
+                        Toast.makeText(this, "Failed to fetch tutor info", Toast.LENGTH_SHORT).show();
                     });
 
-            queue.add(request);
+            queue.add(userRequest);
         });
 
         // Handle Back button
@@ -96,8 +102,49 @@ public class CreateSessionActivity extends AppCompatActivity {
             Intent backIntent = new Intent(CreateSessionActivity.this, SessionActivity.class);
             backIntent.putExtra("userId", userId);
             backIntent.putExtra("isTutor", isTutor);
+            backIntent.putExtra("username", username);
             startActivity(backIntent);
             finish();
         });
+    }
+
+    // ✅ Step 2: Use fetched tutorId to create a new session
+    private void createSession(int userId, int tutorId, String className, String classCode,
+                               String meetingLocation, String meetingTime) {
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = BASE_URL + "/sessions/createSession";
+
+        JSONObject sessionData = new JSONObject();
+        try {
+            sessionData.put("userId", userId);
+            sessionData.put("tutorId", tutorId);
+            sessionData.put("className", className);
+            sessionData.put("classCode", classCode);
+            sessionData.put("meetingLocation", meetingLocation);
+            sessionData.put("meetingTime", meetingTime);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, sessionData,
+                response -> {
+                    Toast.makeText(this, "Session Created Successfully!", Toast.LENGTH_SHORT).show();
+                    Intent backIntent = new Intent(CreateSessionActivity.this, SessionActivity.class);
+                    backIntent.putExtra("userId", userId);
+                    backIntent.putExtra("isTutor", true);
+                    backIntent.putExtra("username", username);
+                    startActivity(backIntent);
+                    finish();
+                },
+                error -> {
+                    String msg = (error.networkResponse != null && error.networkResponse.statusCode == 400)
+                            ? "Tutor not found"
+                            : "Error creating session";
+                    Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+                    Log.e("CreateSession", "Error creating session: " + error.toString());
+                });
+
+        queue.add(request);
     }
 }
