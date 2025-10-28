@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/tutorials-unit3_1_one_websocket/WebSocketAndorid" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/tutorials-unit3_1_one_websocket/WebSocketAndorid" />
+            <option value="$PROJECT_DIR$/tutorials-unit3_1_one_websocket/WebSocketAndorid/app" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/tutorials-unit3_1_websockets/WebSocketAndorid-service-approach" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/tutorials-unit3_1_websockets/WebSocketAndorid-service-approach" />
+            <option value="$PROJECT_DIR$/tutorials-unit3_1_websockets/WebSocketAndorid-service-approach/app" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/tutorials-unit3_1_websockets/WebSocketAndorid-singleton-approach" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/tutorials-unit3_1_websockets/WebSocketAndorid-singleton-approach" />
+            <option value="$PROJECT_DIR$/tutorials-unit3_1_websockets/WebSocketAndorid-singleton-approach/app" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>
