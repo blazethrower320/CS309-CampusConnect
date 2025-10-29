@@ -159,8 +159,15 @@ public class SessionActivity extends AppCompatActivity {
 
         // RecyclerView + adapter
         sessionsRecycler.setLayoutManager(new LinearLayoutManager(this));
+
         // inside onCreate(), replace adapter creation with:
         sessionAdapter = new SessionAdapter(allSessions, session -> {
+            // Prevent tutors from joining their own session
+            if (session.getTutorUsername() != null && session.getTutorUsername().equalsIgnoreCase(username)) {
+                Toast.makeText(SessionActivity.this, "You cannot join your own session.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             joinSession(session.getSessionId(), userId);
         });
 
