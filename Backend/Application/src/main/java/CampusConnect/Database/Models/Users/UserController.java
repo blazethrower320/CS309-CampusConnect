@@ -58,6 +58,13 @@ public class UserController {
         return userRepository.findAll();
     }
 
+    @GetMapping("/users/getTutor/{userId}")
+    public Tutor getTutor(@PathVariable long userId)
+    {
+        User user = getUserById(userId);
+        return user.getTutor();
+    }
+
     @GetMapping(path = "/users/{id}")
     public User getUserById(@PathVariable Long id)
     {

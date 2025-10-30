@@ -105,6 +105,19 @@ public class SessionActivity extends AppCompatActivity {
             drawerLayout.closeDrawer(GravityCompat.START);
         });
 
+        LinearLayout reviewsButton = findViewById(R.id.nav_reviews);
+        reviewsButton.setOnClickListener(v -> {
+            Intent intent = new Intent(SessionActivity.this, ReviewListActivity.class);
+            intent.putExtra("username", username);
+            intent.putExtra("userId", userId);
+            intent.putExtra("isAdmin", isAdmin);
+            intent.putExtra("isTutor", isTutor);
+            intent.putExtra("password", password); // only if needed for certain calls
+            startActivity(intent);
+            finish();
+            drawerLayout.closeDrawer(GravityCompat.START);
+                });
+
         // Open sidebar when menu button clicked
         menuButton.setOnClickListener(v -> {
             if (drawerLayout.isDrawerOpen(findViewById(R.id.nav_view))) {
@@ -146,8 +159,15 @@ public class SessionActivity extends AppCompatActivity {
 
         // RecyclerView + adapter
         sessionsRecycler.setLayoutManager(new LinearLayoutManager(this));
+
         // inside onCreate(), replace adapter creation with:
         sessionAdapter = new SessionAdapter(allSessions, session -> {
+            // Prevent tutors from joining their own session
+            if (session.getTutorUsername() != null && session.getTutorUsername().equalsIgnoreCase(username)) {
+                Toast.makeText(SessionActivity.this, "You cannot join your own session.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             joinSession(session.getSessionId(), userId);
         });
 

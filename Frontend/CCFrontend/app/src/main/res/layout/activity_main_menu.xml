@@ -53,11 +53,11 @@
         <!-- Existing main content -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="100dp"
+            android:layout_height="576dp"
+            android:layout_marginTop="50dp"
+            android:background="#525252"
             android:gravity="center_horizontal"
-            android:background="@drawable/layout_bg">
+            android:orientation="vertical">
 
             <!-- Welcome -->
             <TextView
@@ -65,26 +65,82 @@
                 android:layout_width="210dp"
                 android:layout_height="77dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="30dp"
+
                 android:text="Welcome!"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
                 android:textSize="24sp" />
 
-            <Button
-                android:id="@+id/delete_account_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Delete Account"
-                android:textColor="#FFFFFF"
-                android:backgroundTint="#E53935"
-                android:layout_marginTop="20dp"
-                android:padding="10dp"
-                android:textSize="16sp"
-                android:fontFamily="sans-serif-medium" />
+            <!-- Active Sessions Section -->
+            <LinearLayout
+                android:id="@+id/active_sessions_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/layout_bg"
+                android:backgroundTint="#424242"
+                android:clipToOutline="false"
+                android:clipToPadding="false"
+                android:elevation="2dp"
+                android:orientation="vertical"
+                android:padding="12dp">
 
+                <TextView
+                    android:id="@+id/active_sessions_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="8dp"
+                    android:text="Joined Sessions"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
+                <ProgressBar
+                    android:id="@+id/loading_spinner"
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="16dp"
+                    android:indeterminate="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/empty_sessions_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:gravity="center"
+                    android:text="Go to the sessions page to join a session!"
+                    android:textColor="#A8A8A8"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/active_sessions_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false" />
+            </LinearLayout>
         </LinearLayout>
+
+
+        <Button
+            android:id="@+id/delete_account_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="-70dp"
+            android:backgroundTint="#E53935"
+            android:fontFamily="sans-serif-medium"
+            android:padding="10dp"
+            android:text="Delete Account"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+
     </LinearLayout>
 
     <!-- Sidebar / Navigation Drawer -->
@@ -177,6 +233,34 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Profile"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
+
+        <!-- Reviews -->
+        <LinearLayout
+            android:id="@+id/nav_reviews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:padding="12dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:attr/selectableItemBackground">
+
+            <ImageView
+                android:layout_width="69dp"
+                android:layout_height="69dp"
+                android:src="@drawable/outline_award_star"
+                android:contentDescription="Reviews"
+                app:tint="#FFFFFF" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reviews"
                 android:textColor="#FFFFFF"
                 android:textSize="12sp"
                 android:layout_marginTop="4dp" />

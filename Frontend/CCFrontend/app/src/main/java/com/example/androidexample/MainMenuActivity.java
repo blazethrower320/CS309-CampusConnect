@@ -1,9 +1,12 @@
 package com.example.androidexample;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.MediaRouteButton;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.content.Intent;
 import android.util.Log;
@@ -13,17 +16,23 @@ import android.widget.Toast;
 
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.widget.ImageButton;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,6 +46,8 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
     private TextView welcomeText;
 
     private Button deleteAccountBtn;
+
+    private ProgressBar loadingSpinner;
 
     //private LinearLayout numClassPanel;
 
@@ -52,6 +63,11 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
     private String username;
     private String password;           // pass this from login/signup if required
 
+    private RecyclerView activeSessionsRecycler;
+    private ActiveSessionsAdapter activeSessionsAdapter;
+    private ArrayList<Session> activeSessions = new ArrayList<>();
+    private TextView emptySessionsMessage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +77,8 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
 
         drawerLayout = findViewById(R.id.drawer_layout);
         menuButton = findViewById(R.id.menu_button);
+
+        loadingSpinner = findViewById(R.id.loading_spinner);
 
         menuButton.setOnClickListener(v -> {
             if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -96,6 +114,19 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
             drawerLayout.closeDrawer(GravityCompat.START);
         });
 
+        LinearLayout reviewsBtn = findViewById(R.id.nav_reviews);
+        reviewsBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(MainMenuActivity.this, ReviewListActivity.class);
+            intent.putExtra("username", username);
+            intent.putExtra("userId", userId);
+            intent.putExtra("isAdmin", isAdmin);
+            intent.putExtra("isTutor", isTutor);
+            intent.putExtra("password", password);
+            startActivity(intent);
+            finish();
+            drawerLayout.closeDrawer(GravityCompat.START);
+        });
+
 
         // Get values passed from login/signup
         username = getIntent().getStringExtra("username");
@@ -114,7 +145,15 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
 
         deleteAccountBtn.setOnClickListener(v -> DeleteUser());
 
+        activeSessionsRecycler = findViewById(R.id.active_sessions_recycler);
+        emptySessionsMessage = findViewById(R.id.empty_sessions_message);
 
+        activeSessionsAdapter = new ActiveSessionsAdapter(activeSessions);
+        activeSessionsRecycler.setLayoutManager(new LinearLayoutManager(this));
+        activeSessionsRecycler.setAdapter(activeSessionsAdapter);
+
+
+        fetchUserSessions();
 
         // Admin-only buttons
         if (isAdmin)
@@ -196,6 +235,55 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
+
+
+    private void fetchUserSessions() {
+        String url = BASE_URL + "/sessions/user/" + userId;
+        loadingSpinner.setVisibility(View.VISIBLE);
+        JsonArrayRequest request = new JsonArrayRequest(
+                Request.Method.GET, url, null,
+                response -> {
+                    activeSessions.clear();
+                    try {
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject obj = response.getJSONObject(i);
+                            int sessionId = obj.optInt("sessionId", -1);
+                            String className = obj.optString("className", "");
+                            String meetingLocation = obj.optString("meetingLocation", "");
+                            String meetingTime = obj.optString("meetingTime", "");
+                            JSONObject tutorObj = obj.optJSONObject("tutor");
+
+                            String tutorName = tutorObj != null ? tutorObj.optString("username", "Unknown Tutor") : "Unknown Tutor";
+
+                            Session s = new Session(sessionId, className, "", meetingLocation, meetingTime, tutorName);
+                            activeSessions.add(s);
+                        }
+                    } catch (JSONException e) {
+                        Log.e("MainMenu", "JSON parse error", e);
+                        loadingSpinner.setVisibility(View.GONE);
+                    }
+
+                    loadingSpinner.setVisibility(View.GONE);
+
+                    // Toggle empty message visibility
+                    if (activeSessions.isEmpty()) {
+                        emptySessionsMessage.setVisibility(View.VISIBLE);
+                    } else {
+                        emptySessionsMessage.setVisibility(View.GONE);
+                    }
+
+                    activeSessionsAdapter.notifyDataSetChanged();
+                },
+                error -> {
+                    Log.e("MainMenu", "Session fetch failed", error);
+                    loadingSpinner.setVisibility(View.GONE);
+                    emptySessionsMessage.setVisibility(View.VISIBLE);
+                }
+        );
+
+        Volley.newRequestQueue(this).add(request);
+    }
+
 
     private void SetNumClasses() {
         //Get Text from field
