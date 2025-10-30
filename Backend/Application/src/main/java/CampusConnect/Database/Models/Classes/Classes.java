@@ -14,10 +14,7 @@ public class Classes {
     private String className;
     private String classCode;
 
-    /*
-    @OneToMany(mappedBy = "sessionClass", cascade = CascadeType.ALL)
-    private Set<Sessions> sessions;
-    */
+
 
     public Classes(){}
 
