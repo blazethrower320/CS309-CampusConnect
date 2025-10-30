@@ -17,13 +17,12 @@ public class Sessions
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long sessionId;
-    private long userId; //REMOVE
-    private long tutorId; //REMOVE
     private String className;
     private String classCode;
     private String meetingLocation;
     private String meetingTime;
     private LocalDateTime dateCreated;
+    private boolean pastSession;
 
 
     @ManyToMany
@@ -42,9 +41,8 @@ public class Sessions
 
     public Sessions(){}
 
-    public Sessions(long userId, String className, String classCode, String meetingLocation, String meetingTime, long tutorId, LocalDateTime date) {
-        this.userId = userId;
-        this.tutorId = tutorId;
+    public Sessions(Tutor tutor, String className, String classCode, String meetingLocation, String meetingTime, LocalDateTime date) {
+        this.tutor = tutor;
         this.className = className;
         this.classCode = classCode;
         this.meetingLocation = meetingLocation;
@@ -55,12 +53,30 @@ public class Sessions
     {
         this.meetingTime = meetingTime;
     }
-    public long getUserId(){return userId;}
-    public long getTutorId(){ return tutorId; }
-    public String getMeetingLocation(){ return meetingLocation; }
     public String getMeetingTime(){ return meetingTime; }
+
+    public void setMeetingLocation(String meetingLocation) { this.meetingLocation = meetingLocation; }
+    public String getMeetingLocation(){ return meetingLocation; }
+
     public long getSessionId() { return sessionId; }
+
     public String getClassName() { return className; }
+
     public String getClassCode() { return classCode; }
+
     public LocalDateTime getDateCreated() { return dateCreated; }
+
+    public Tutor getTutor() { return tutor; }
+    public void setTutor(Tutor tutor) { this.tutor = tutor; }
+
+    public Set<User> getUsers(){
+        return users;
+    }
+
+    public void addUser(User user){
+        if(!users.add(user)){
+            throw new RuntimeException("User couldn't be added");
+        }
+    }
+
 }

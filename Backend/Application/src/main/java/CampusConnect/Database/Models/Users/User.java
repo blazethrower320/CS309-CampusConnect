@@ -62,7 +62,7 @@ public class User {
     private Set<Sessions> userSessions;     */
     @ManyToMany(mappedBy = "users")
     @JsonIgnore
-    private Set<Sessions> userSessions = new HashSet<>();
+    private Set<Sessions> Sessions = new HashSet<>();
 
 
     public User(String username, String password) {
