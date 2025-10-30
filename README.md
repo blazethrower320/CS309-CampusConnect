@@ -127,23 +127,16 @@
     - Post | `/sessions/createSession` - Creates a New Session with the Tutor, Also includes them as a Member<br>
         ```json
         {
-            "userId": 1111,
             "tutorId": 1111
-            "className": "Computer Science 309"
-            "classCode": "COMS309"
-            "meetingLocation": "Pearson"
-            "meetingTime": "Friday"
+            "className": "Computer Science 309",
+            "classCode": "COMS309",
+            "meetingLocation": "Pearson",
+            "meetingTime": "Friday",
+            "dateCreated": "2025-10-29T19:00:00"    
         }
         ```
-        Returns: <br>
-            ``400`` - Tutor Not found<br>
-            ``ok`` - Success<br>
-    - Post | `/sessions/joinSession` - Allows a User to join a specific Session<br>
+    - Post | `/sessions/joinSession/{username}/{sessionId}` - Allows a User to join a specific Session<br>
         ```json
-        {
-            "sessionId": 1111,
-            "userId": 1111
-        }
         ```
         Returns:<br>
             ``404`` - Session Not found<br>
@@ -164,15 +157,6 @@
             ``false`` - Session was not found<br>
     - Get | `/sessions/getMeetingDate/{sessionId}` - Returns a String of the Meeting Date<br>
 
-- ## Session Members
-    - Get | `/sessions/getAllSessionMembers/{sessionId}` - Gets Session Members<br>
-        Returns:<br>
-            ``ok`` - Returns List<members><br>
-    - Get | `/sessions/getSessionTutor/{sessionId}` - Gets Tutor from Session<br>
-        Returns:
-            ``400`` - Session Not Found<br>
-            ``401`` - Tutor not found<br>
-            ``ok`` - Success<br>
 
 
 
