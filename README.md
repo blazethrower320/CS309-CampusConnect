@@ -137,10 +137,6 @@
         ```
     - Post | `/sessions/joinSession/{username}/{sessionId}` - Allows a User to join a specific Session<br>
         ```json
-        ```
-        Returns:<br>
-            ``404`` - Session Not found<br>
-            ``ok`` - Success<br>
     - Get | `/sessions/getSession/{sessionId}` - Gets a session with the Session ID<br>
         Returns:<br>
             ``404`` - Session Not found<br>
