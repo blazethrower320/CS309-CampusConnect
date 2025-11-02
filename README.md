@@ -2,11 +2,11 @@
 
 ### API Calls
  - ## Users
-    - Get | ``/users`` - Returns a list of all users
-    - Get | ``/users/{id}`` > Returns a User with the specific ID
-    - Get | ``/users/findUsername/{username}`` - Returns a List<User> with the username
-    - Get | ``/users/findUser/{firstName}`` - Returns a User with the firstName
-    - Post | ``/users/login`` - With a Body of
+    - GET | ``/users`` - Returns a list of all users
+    - GET | ``/users/{id}`` > Returns a User with the specific ID
+    - GET | ``/users/findUsername/{username}`` - Returns a List<User> with the username
+    - GET | ``/users/findUser/{firstName}`` - Returns a User with the firstName
+    - POST | ``/users/login`` - With a Body of
         ```json
         {
             "username": "usernameHere",
@@ -18,9 +18,9 @@
             ``404`` - User not found <br>
             ``403`` - Password does not match <br>
             ``user`` - If Username and password is correct <br>
-    - Get | ``/usernames`` - Returns A list of only Usernames of all Users
-    - Get | ``/users/password/{username}`` - Returns the password of the username
-    - Patch | `/users/editUsername` - Edits the username of a user id
+    - GET | ``/usernames`` - Returns A list of only Usernames of all Users
+    - GET | ``/users/password/{username}`` - Returns the password of the username
+    - PATCH | `/users/editUsername` - Edits the username of a user id
         ```json
         {
             "newUsername": "newUsername",
@@ -31,7 +31,7 @@
         Returns: <br>
             ``true`` - If it was successfully changed <br>
             ``false`` - If the user does not exists <br>
-    - Patch | `/users/editPassword` - Edits the password of a user id
+    - PATCH | `/users/editPassword` - Edits the password of a user id
         ```json
         {
             "newUsername": "newUsername",
@@ -42,7 +42,7 @@
         Returns: <br>
             ``true`` - If it was successfully changed <br>
             ``false`` - If the user does not exists <br>
-    - Delete | `/users/deleteUser` - Deletes a User from the database
+    - DELETE | `/users/deleteUser` - Deletes a User from the database
         ```json
         {
             "username": "username",
@@ -53,14 +53,14 @@
             ``String userDNR`` - User does not exists <br>
             ``String userDeleted`` - User deleted <br>
             ``String WrongPassword`` - Wrong password <br>
-    - Get | `/users/IsTutor/{userID}` - Returns true or false if the user is a tutor <br>
-    - Get | `/users/major/{username}` - Returns the major of the given user from the username <br>
-    - Get | `/users/editMajor/{username}/{major}` - Updates the major of the user <br>
-    - Get | `/users/bio/{username}` - Returns the bio of the given user from the username <br>
-    - Get | `/users/editBio/{username}/{bio}` - Updates the bio of the user <br>
-    - Get | `/users/classification/{username}` - Returns the classification of the given user from the username <br>
-    - Get | `/users/editClassification/{username}/{classification}` - Updates the classification of the user <br>
-    - Get | `/users/find/{username}` - Returns a UserRequest with all the user fields + boolean flags for tutor and admin 
+    - GET | `/users/IsTutor/{userID}` - Returns true or false if the user is a tutor <br>
+    - GET | `/users/major/{username}` - Returns the major of the given user from the username <br>
+    - GET | `/users/editMajor/{username}/{major}` - Updates the major of the user <br>
+    - GET | `/users/bio/{username}` - Returns the bio of the given user from the username <br>
+    - GET | `/users/editBio/{username}/{bio}` - Updates the bio of the user <br>
+    - GET | `/users/classification/{username}` - Returns the classification of the given user from the username <br>
+    - GET | `/users/editClassification/{username}/{classification}` - Updates the classification of the user <br>
+    - GET | `/users/find/{username}` - Returns a UserRequest with all the user fields + boolean flags for tutor and admin 
         ```json
         {
             "firstName": "firstName",
@@ -78,42 +78,42 @@
 
 
  - ## Admins
-    - Get | `/admins` - Returns a JSON of Admins <br>
-    - Post | `/admin/createAdmin/{username}` - Creates a Admin with the username (MUST ALREADY BE A USER) <br>
+    - GET | `/admins` - Returns a JSON of Admins <br>
+    - POST | `/admin/createAdmin/{username}` - Creates a Admin with the username (MUST ALREADY BE A USER) <br>
         Returns: <br>
             ``404`` - User not found <br>
             ``403`` - Admin already exists<br>
             ``admin`` - Admin Object<br>
 
-    - Delete | `/admin/deleteAdmin/{username}` - Deletes a Admin from the database <br>
+    - DELETE | `/admin/deleteAdmin/{username}` - Deletes a Admin from the database <br>
         Returns: <br>
             ``false`` - Admin not found<br>
             ``true`` - Admin deleted<br>
 
-    - Get | `/admin/getPermissions/{username}` - Displays Permission for a Admin <br>
+    - GET | `/admin/getPermissions/{username}` - Displays Permission for a Admin <br>
         Returns: <br>
             ``null`` - Admin does not exists<br>
             ``Permissions`` List of Permissions in a String format- <br>
 
-    - Patch | `/admin/updateStatus/{username}` - Updates isActive for Admins <br>
+    - PATCH | `/admin/updateStatus/{username}` - Updates isActive for Admins <br>
         Returns: <br>
             ``404`` - User not found <br>
             ``403`` - Admin not found<br>
             ``true / false`` - Depending if they are active or not  <br>
-    - Post | `/admin/updateRatingsTutor/{username}/{rating}` - Updates the Rating of a tutor <br>
+    - POST | `/admin/updateRatingsTutor/{username}/{rating}` - Updates the Rating of a tutor <br>
         Returns: <br>
             ``true`` - Successful <br>
             ``false`` - Failed <br>
 
  - ## Tutors
-    - Get | `/tutors` - Returns a JSON of Tutors <br>
-    - Post | `/tutors/createTutor/{username}` - Creates a Tutor with the username (MUST ALREADY BE A USER) <br>
+    - GET | `/tutors` - Returns a JSON of Tutors <br>
+    - POST | `/tutors/createTutor/{username}` - Creates a Tutor with the username (MUST ALREADY BE A USER) <br>
         Returns: <br>
             ``404`` - User not found <br>
             ``403`` - Tutor already exists<br>
             ``tutor`` - Tutor Object<br>
 
-    - Delete | `/tutors/deleteTutor/{username}` - Deletes a Admin from the database <br>
+    - DELETE | `/tutors/deleteTutor/{username}` - Deletes a Admin from the database <br>
         Returns: <br>
             ``403`` - Tutor not found<br>
             ``ok`` - Tutor Removed<br>
@@ -122,9 +122,11 @@
         Returns: <br>
             ``403`` - Tutor not found <br>
             ``ok`` Tutor updated <br>
+    - GET | `/tutors/getTutorRating/{tutorID}` - Returns DOUBLE of the Tutors rating
+
 - ## Sessions
-    - Get | `/sessions` - Returns a JSON of Sessions <br>
-    - Post | `/sessions/createSession` - Creates a New Session with the Tutor, Also includes them as a Member<br>
+    - GET | `/sessions` - Returns a JSON of Sessions <br>
+    - POST | `/sessions/createSession` - Creates a New Session with the Tutor, Also includes them as a Member<br>
         ```json
         {
             "tutorId": 1111
@@ -135,12 +137,12 @@
             "dateCreated": "2025-10-29T19:00:00"    
         }
         ```
-    - Post | `/sessions/joinSession/{username}/{sessionId}` - Allows a User to join a specific Session<br>
-    - Get | `/sessions/getSession/{sessionId}` - Gets a session with the Session ID<br>
+    - POST | `/sessions/joinSession/{username}/{sessionId}` - Allows a User to join a specific Session<br>
+    - GET | `/sessions/getSession/{sessionId}` - Gets a session with the Session ID<br>
         Returns:<br>
             ``404`` - Session Not found<br>
             ``ok`` - Success<br> <br>
-    - Get | `/sessions/setMeetingTime` - Sets the Meeting Date of a session<br>
+    - GET | `/sessions/setMeetingTime` - Sets the Meeting Date of a session<br>
         ```json
         {
             "sessionId": 1,
@@ -150,7 +152,27 @@
         Returns:<br>
             ``true`` - Successfully changed<br>
             ``false`` - Session was not found<br>
-    - Get | `/sessions/getMeetingDate/{sessionId}` - Returns a String of the Meeting Date<br>
+    - GET | `/sessions/getMeetingDate/{sessionId}` - Returns a String of the Meeting Date<br>
+
+- ## Ratings
+    - GET | `/ratings` - Returns a List of all Ratings
+    - GET | `/ratings/getTutorRatings/{tutorId}` - Returns a List of the Tutors Ratings
+    - POST | `/ratings/createRating`
+        ```json
+        {
+            "rating": 5
+            "comments": "Very good Tutor Session",
+            "tutorID": {
+                "id": 1
+            },
+            "userId":{
+                "id": 2
+            }
+        }
+        ```
+        Returns:
+            ``404`` - Invalid Tutor or User
+            ``200`` - Success
 
 
 
