@@ -162,11 +162,11 @@
         {
             "rating": 5
             "comments": "Very good Tutor Session",
-            "tutorID": {
-                "id": 1
+            "tutor": {
+                "tutorID": 1
             },
-            "userId":{
-                "id": 2
+            "user":{
+                "userId": 2
             }
         }
         ```
