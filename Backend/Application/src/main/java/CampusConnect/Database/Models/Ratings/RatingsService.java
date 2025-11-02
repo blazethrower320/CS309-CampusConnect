@@ -48,7 +48,7 @@ public class RatingsService {
         for(Ratings ratings : tutorRatings)
             totalStars += ratings.getRating();
 
-        tutor.setTotalRating(totalStars / tutorRatings.size()-1);
+        tutor.setTotalRating(totalStars / tutorRatings.size());
         tutorRepository.save(tutor);
     }
 

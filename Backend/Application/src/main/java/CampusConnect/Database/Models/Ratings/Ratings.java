@@ -11,16 +11,17 @@ public class Ratings
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(nullable = false)
     private int rating = 0;
     private String comments = "";
 
 
-    @OneToOne
-    @JoinColumn(name = "tutor_id", nullable = false, unique = true)
+    @ManyToOne
+    @JoinColumn(name = "tutor_id", nullable = false)
     private Tutor tutor;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", nullable = false, unique = true)
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     public Ratings(Tutor tutor, User user) {

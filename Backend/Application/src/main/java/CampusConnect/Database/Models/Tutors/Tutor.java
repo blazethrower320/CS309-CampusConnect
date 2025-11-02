@@ -17,7 +17,7 @@ public class Tutor {
     private long tutorId;
     //private long userId;
     private int totalClasses;
-    private double totalRating;
+    private double totalRating = 5.0;
 
     private String username;
 
@@ -25,9 +25,9 @@ public class Tutor {
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
-    @OneToOne(mappedBy = "tutor", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private Ratings ratings;
+    private Set<Ratings> ratings = new HashSet<>();
 
 
     @OneToMany(mappedBy = "tutor")
@@ -67,11 +67,10 @@ public class Tutor {
             user.setTutor(this);
         }
     }
-    public Ratings getRatings() { return ratings; }
-    public void setRatings(Ratings ratings){
+    public Set<Ratings> getRatings() {
+        return ratings;
+    }
+    public void setRatings(Set<Ratings> ratings) {
         this.ratings = ratings;
-        if(ratings != null && ratings.getTutor() != this){
-            ratings.setTutor(this);
-        }
     }
 }

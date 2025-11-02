@@ -48,9 +48,9 @@ public class User {
     @JsonIgnore
     private Tutor tutor;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private Ratings ratings;
+    private Set<Ratings> ratings = new HashSet<>();
 
     /*
     @ManyToMany
@@ -128,12 +128,11 @@ public class User {
             tutor.setUser(this);
         }
     }
-    public Ratings getRatings(){ return ratings; }
-    public void setRatings(Ratings ratings){
+    public Set<Ratings> getRatings() {
+        return ratings;
+    }
+    public void setRatings(Set<Ratings> ratings) {
         this.ratings = ratings;
-        if(ratings != null && ratings.getUser() != this){
-            ratings.setUser(this);
-        }
     }
 
 }

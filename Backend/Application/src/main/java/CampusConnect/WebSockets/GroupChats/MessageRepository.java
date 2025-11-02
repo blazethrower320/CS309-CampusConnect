@@ -1,4 +1,7 @@
 package CampusConnect.WebSockets.GroupChats;
 
-public class MessageRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface MessageRepository extends JpaRepository<Message, Long>{
+
 }
