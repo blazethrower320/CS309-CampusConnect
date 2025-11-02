@@ -155,9 +155,9 @@
     - GET | `/sessions/getMeetingDate/{sessionId}` - Returns a String of the Meeting Date<br>
 
 - ## Ratings
-    - GET | `/ratings` - Returns a List of all Ratings
-    - GET | `/ratings/getTutorRatings/{tutorId}` - Returns a List of the Tutors Ratings
-    - POST | `/ratings/createRating`
+    - GET | `/ratings` - Returns a List of all Ratings<br>
+    - GET | `/ratings/getTutorRatings/{tutorId}` - Returns a List of the Tutors Ratings<br>
+    - POST | `/ratings/createRating`<br>
         ```json
         {
             "rating": 5
@@ -170,9 +170,9 @@
             }
         }
         ```
-        Returns:
-            ``404`` - Invalid Tutor or User
-            ``200`` - Success
+        Returns:<br>
+            ``404`` - Invalid Tutor or User<br>
+            ``200`` - Success<br>
 
 
 
