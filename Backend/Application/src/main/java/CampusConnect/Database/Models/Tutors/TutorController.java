@@ -52,6 +52,13 @@ public class TutorController
         return ResponseEntity.ok(tutor);
     }
 
+    @GetMapping("/tutors/getTutorRating/{tutorID}")
+    public double getTutorRating(@PathVariable long tutorID)
+    {
+        Tutor tutor = tutorRepository.getTutorByTutorId(tutorID);
+        return tutor.getTotalRating();
+    }
+
     @PostMapping("/tutors/deleteTutor/{username}")
     public ResponseEntity<Object> deleteTutor(@PathVariable String username)
     {
