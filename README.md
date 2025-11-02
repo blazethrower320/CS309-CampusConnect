@@ -162,12 +162,8 @@
         {
             "rating": 5
             "comments": "Very good Tutor Session",
-            "tutor": {
-                "tutorID": 1
-            },
-            "user":{
-                "userId": 2
-            }
+            "tutorId": 1,
+            "userId", 2,
         }
         ```
         Returns:<br>
