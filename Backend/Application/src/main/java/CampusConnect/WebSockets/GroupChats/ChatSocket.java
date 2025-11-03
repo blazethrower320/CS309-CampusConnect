@@ -1,10 +1,10 @@
 package CampusConnect.WebSockets.GroupChats;
 
 import java.io.IOException;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import CampusConnect.Database.Models.Sessions.Sessions;
+import CampusConnect.Database.Models.Sessions.SessionsRepository;
 import CampusConnect.Database.Models.Users.User;
 import CampusConnect.WebSockets.GroupChats.RepositoryProvider;
 import jakarta.websocket.OnClose;
@@ -25,13 +25,12 @@ import org.springframework.stereotype.Controller;
 public class ChatSocket {
 
     // Store all socket session and their corresponding username.
-    private static Map<Session, String> sessionUsernameMap = new Hashtable<>();
-    private static Map<String, Session> usernameSessionMap = new Hashtable<>();
+    private static Map<Long, Set<SocketDTO>> tutorSessionMaps = new Hashtable<>();
 
     private final Logger logger = LoggerFactory.getLogger(ChatSocket.class);
 
     @OnOpen
-    public void onOpen(Session session, @PathParam("userId") long userId)
+    public void onOpen(Session session, @PathParam("userId") long userId, @PathParam("sessionId") long sessionId)
             throws IOException {
 
         logger.info("Entered into Open");
@@ -44,41 +43,42 @@ public class ChatSocket {
             return;
         }
 
-        sessionUsernameMap.put(session, user.getUsername());
-        usernameSessionMap.put(user.getUsername(), session);
 
-        sendMessageToPArticularUser(user.getUsername(), getChatHistory());
+        Sessions tutorSession = RepositoryProvider.getSessionsRepository().getSessionsBySessionId(sessionId);
+        if(tutorSession == null)
+        {
+            logger.error("Session was not found");
+            session.close();
+            return;
+        }
 
+        SocketDTO tutorSessionDTO = new SocketDTO(user, tutorSession, session);
+
+        Set<SocketDTO> foundSession = tutorSessionMaps.get(sessionId);
+        if(foundSession == null)
+        {
+            foundSession = new HashSet<>();
+            tutorSessionMaps.put(sessionId, foundSession);
+        }
+
+        foundSession.add(tutorSessionDTO);
+
+        sendMessageToPArticularUser(user.getUserId(), sessionId, getChatHistory(sessionId));
         String message = "User:" + user.getUsername() + " has Joined the Chat";
-        broadcast(message);
     }
 
 
     @OnMessage
-    public void onMessage(Session session, @PathParam("sessionId") long chatSessionId,
+    public void onMessage(Session session, @PathParam("sessionId") long sessionId,
                           @PathParam("userId") long userId, String message) throws IOException {
 
-        logger.info("Entered into Message: Got Message:" + message);
-        String username = sessionUsernameMap.get(session);
+        Set<SocketDTO> allConnectedUsers = tutorSessionMaps.get(sessionId);
+        SocketDTO userInfo = allConnectedUsers.stream().filter(c -> c.getUser().getUserId() == userId).findFirst().orElse(null);
+        Sessions tutorSession = RepositoryProvider.getSessionsRepository().getSessionsBySessionId(userInfo.getSessions().getSessionId());
 
-        if (username == null) {
-            logger.error("Username not found in session map");
-            return;
-        }
+        sendMessageToGroupChat(allConnectedUsers, userInfo.getUser().getUsername() + ": " + message);
 
-        if (message.startsWith("@")) {
-            String destUsername = message.split(" ")[0].substring(1);
-
-            sendMessageToPArticularUser(destUsername, "[DM] " + username + ": " + message);
-            sendMessageToPArticularUser(username, "[DM] " + username + ": " + message);
-
-        }
-        else {
-
-            broadcast(username + ": " + message);
-        }
-
-        RepositoryProvider.getMessageRepository().save(new Message(userId, chatSessionId, message, username));
+        RepositoryProvider.getMessageRepository().save(new Message(userId, sessionId, message, userInfo.getUser().getUsername()));
     }
 
 
@@ -86,16 +86,27 @@ public class ChatSocket {
     public void onClose(Session session) throws IOException {
         logger.info("Entered into Close");
 
-        String username = sessionUsernameMap.get(session);
+        Long sessionId = null;
+        SocketDTO user = null;
+        for (Map.Entry<Long, Set<SocketDTO>> entry : tutorSessionMaps.entrySet())
+        {
+            for (SocketDTO dto : entry.getValue())
+            {
+                if (dto.getSocketSession().equals(session))
+                {
+                    sessionId = entry.getKey();
+                    user = dto;
+                    break;
+                }
+            }
+            if (sessionId != null) break;
+        }
 
-        if (username != null) {
-            sessionUsernameMap.remove(session);
-            usernameSessionMap.remove(username);
-
-            String message = username + " disconnected";
-            broadcast(message);
-        } else {
-            logger.warn("Session closed but username was null");
+        if(user != null)
+        {
+            Set<SocketDTO> userSet = tutorSessionMaps.get(sessionId);
+            logger.info("User: " + user.getUser().getUsername() + " left.");
+            userSet.remove(user);
         }
     }
 
@@ -107,13 +118,19 @@ public class ChatSocket {
     }
 
 
-    private void sendMessageToPArticularUser(String username, String message) {
+    private void sendMessageToPArticularUser(long userId, long sessionId, String message) {
         try {
-            Session userSession = usernameSessionMap.get(username);
-            if (userSession != null && userSession.isOpen()) {
-                userSession.getBasicRemote().sendText(message);
-            } else {
-                logger.warn("Cannot send message to " + username + " - session not found or closed");
+            Set<SocketDTO> users = tutorSessionMaps.get(sessionId);
+
+            SocketDTO user = users.stream().filter(c -> c.getUser().getUserId() == userId).findFirst().orElse(null);
+            if(user == null)
+                return;
+
+
+            Session userSocketSession = user.getSocketSession();
+            if(userSocketSession != null && userSocketSession.isOpen())
+            {
+                userSocketSession.getBasicRemote().sendText(message);
             }
         }
         catch (IOException e) {
@@ -122,29 +139,38 @@ public class ChatSocket {
         }
     }
 
-
-    private void broadcast(String message) {
-        sessionUsernameMap.forEach((session, username) -> {
-            try {
-                if (session.isOpen()) {
-                    session.getBasicRemote().sendText(message);
+    private void sendMessageToGroupChat(Set<SocketDTO> users, String message)
+    {
+        try
+        {
+            for(SocketDTO user : users)
+            {
+                Session socketSession = user.getSocketSession();
+                if(socketSession != null && socketSession.isOpen())
+                {
+                    socketSession.getBasicRemote().sendText(message);
                 }
             }
-            catch (IOException e) {
-                logger.info("Exception: " + e.getMessage());
-                e.printStackTrace();
-            }
-        });
+        }
+        catch (IOException e)
+        {
+            logger.info("Exception: " + e.getMessage());
+            e.printStackTrace();
+        }
+
     }
 
 
-    private String getChatHistory() {
+    private String getChatHistory(long sessionId) {
         List<Message> messages = RepositoryProvider.getMessageRepository().findAll();
 
         StringBuilder sb = new StringBuilder();
         if(messages != null && messages.size() != 0) {
             for (Message message : messages) {
-                sb.append(message.getUsername() + ": " + message.getMessage() + "\n");
+                if(message.getSessionId() == sessionId)
+                {
+                    sb.append(message.getUsername() + ": " + message.getMessage() + "\n");
+                }
             }
         }
         return sb.toString();
