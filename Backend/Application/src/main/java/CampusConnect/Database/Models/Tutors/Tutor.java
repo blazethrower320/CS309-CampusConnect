@@ -13,10 +13,10 @@ public class Tutor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long tutorId;
-    //private long userId;
     private int totalClasses;
     private double rating = 0;
     private String username;
+    private double hourlyRate;
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
@@ -38,7 +38,7 @@ public class Tutor {
     }
     public String getUsername(){ return username; }
     //public long getUserId() { return userId; }
-    public long getTutorID() { return tutorId; }
+    public long getTutorId() { return tutorId; }
     public int gettotalClasses() { return totalClasses; }
     public double getRating() { return rating; }
 
@@ -58,5 +58,12 @@ public class Tutor {
         if(user != null && user.getTutor() != this){
             user.setTutor(this);
         }
+    }
+
+    public double getHourlyRate(){
+        return hourlyRate;
+    }
+    public void setHourlyRate(Double rate){
+        this.hourlyRate = rate;
     }
 }

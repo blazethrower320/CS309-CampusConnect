@@ -14,9 +14,11 @@ public interface TutorRepository extends JpaRepository<Tutor, Long> {
     Boolean existsByUsername(String username);
     void deleteByUsername(String username);
     Tutor findByUsername(String username);
-    //Tutor getTutorByUserId(long userId);
+    Tutor getTutorByUserUserId(long userId);
     Tutor getTutorByUsername(String username);
     boolean existsByUser(User user);
 
     Tutor findByUser(User user);
+
+    Tutor findByUser_UserId(long userId);
 }
