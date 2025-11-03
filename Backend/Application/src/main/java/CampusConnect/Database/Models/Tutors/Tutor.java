@@ -1,5 +1,7 @@
 package CampusConnect.Database.Models.Tutors;
 
+
+import CampusConnect.Database.Models.Ratings.Ratings;
 import CampusConnect.Database.Models.Sessions.Sessions;
 import CampusConnect.Database.Models.Users.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -14,7 +16,8 @@ public class Tutor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long tutorId;
     private int totalClasses;
-    private double rating = 0;
+    private double totalRating;
+
     private String username;
     private double hourlyRate;
 
@@ -38,7 +41,7 @@ public class Tutor {
     }
     public String getUsername(){ return username; }
     //public long getUserId() { return userId; }
-    public long getTutorId() { return tutorId; }
+    public long getTutorID() { return tutorId; }
     public int gettotalClasses() { return totalClasses; }
     public double getRating() { return rating; }
 
@@ -65,5 +68,12 @@ public class Tutor {
     }
     public void setHourlyRate(Double rate){
         this.hourlyRate = rate;
+    }
+    public Ratings getRatings() { return ratings; }
+    public void setRatings(Ratings ratings){
+        this.ratings = ratings;
+        if(ratings != null && ratings.getTutor() != this){
+            ratings.setTutor(this);
+        }
     }
 }

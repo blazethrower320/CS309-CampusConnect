@@ -127,7 +127,8 @@ public class CreateAccountActivity extends AppCompatActivity {
     }
 
     /** Admin or Tutor account creation **/
-    private void createRoleAccount(String username, String baseUrl, boolean isAdmin, boolean isTutor) {
+    private void createRoleAccount(String username, String baseUrl, boolean isAdmin, boolean isTutor)
+    {
         StringRequest request = new StringRequest(
                 Request.Method.POST,
                 baseUrl + username,
@@ -150,7 +151,8 @@ public class CreateAccountActivity extends AppCompatActivity {
     }
 
     /** Navigate to Main Menu **/
-    private void goToMainMenu(String username, String password, boolean isAdmin, boolean isTutor) {
+    private void goToMainMenu(String username, String password, boolean isAdmin, boolean isTutor)
+    {
         Intent intent = new Intent(CreateAccountActivity.this, MainMenuActivity.class);
         intent.putExtra("username", username);
         intent.putExtra("password", password);
@@ -162,7 +164,8 @@ public class CreateAccountActivity extends AppCompatActivity {
     }
 
     /** Utility: quick toast **/
-    private void showToast(String message) {
+    private void showToast(String message)
+    {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }
