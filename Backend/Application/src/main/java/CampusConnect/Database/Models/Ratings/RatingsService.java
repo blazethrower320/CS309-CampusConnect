@@ -24,8 +24,7 @@ public class RatingsService {
     private RatingsRepository ratingsRepository;
 
     public Ratings createRating(RatingsDTO ratingsDTO) {
-        Tutor tutor = tutorRepository.findById(ratingsDTO.getTutorId())
-                .orElseThrow(() -> new RuntimeException("Tutor not found"));
+        Tutor tutor = tutorRepository.getTutorByTutorId(ratingsDTO.getTutorId());
         User user = userRepository.getUserByUserId(ratingsDTO.getUserId());
 
         Ratings rating = new Ratings(
@@ -35,15 +34,17 @@ public class RatingsService {
                 ratingsDTO.getComments()
         );
 
-        updateTutorRating(tutor);
+        ratingsRepository.save(rating);
 
-        return ratingsRepository.save(rating);
+        updateTutorRating(tutor);
+        return rating;
     }
 
     public void updateTutorRating(Tutor tutor)
     {
         double rating = tutor.getTotalRating();
         List<Ratings> tutorRatings = ratingsRepository.getAllRatingsByTutor(tutor);
+
         int totalStars = 0;
         for(Ratings ratings : tutorRatings)
             totalStars += ratings.getRating();
