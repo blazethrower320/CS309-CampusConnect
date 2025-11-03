@@ -151,6 +151,10 @@
             ``true`` - Successfully changed<br>
             ``false`` - Session was not found<br>
     - Get | `/sessions/getMeetingDate/{sessionId}` - Returns a String of the Meeting Date<br>
+    - Patch | `/sessions/setMeetingTime/{time}/{sessionId}` - Sets the meeting time and day of a session<br>
+    - Get | `/sessions/getTutor/{sessionId}` - Returns the tutor for the session<br>
+    - Get | `/sessions/user/{userId}` - Returns all the sessions the users has<br>
+    - Get | `/sessions/users/{sessionId}` - Returns all the users a session has<br>
 
 
 
