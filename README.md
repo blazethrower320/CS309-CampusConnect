@@ -74,7 +74,7 @@
             "bio"     : "bio"
         }
         ```
-    - Put | `/users/update` - Updates the User and returns the user.
+    - PUT | `/users/update` - Updates the User Information and returns the user.
 
 
  - ## Admins
@@ -163,12 +163,22 @@
             "rating": 5
             "comments": "Very good Tutor Session",
             "tutorId": 1,
-            "userId", 2,
+            "userId": 2
         }
         ```
         Returns:<br>
             ``404`` - Invalid Tutor or User<br>
             ``200`` - Success<br>
+
+- ## Messages (Group)
+    - GET | `/messages` - returns a list of all the group messages
+
+- ## Private Messages (DMs)
+    - GET | `/privateMessages` - returns a list of all private messages
+
+- ## WebSockets
+    - Group Chat Socket | `/groupChat/{sessionId}/{userId}` <br>
+    - DM Chat Socket | `/DM/{userId1}/{userId2}` <br>
 
 
 
