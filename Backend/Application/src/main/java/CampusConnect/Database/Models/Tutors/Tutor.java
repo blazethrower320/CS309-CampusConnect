@@ -15,20 +15,15 @@ public class Tutor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long tutorId;
-    //private long userId;
     private int totalClasses;
     private double totalRating;
 
     private String username;
+    private double hourlyRate;
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
-
-    @OneToOne(mappedBy = "tutor", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private Ratings ratings;
-
 
     @OneToMany(mappedBy = "tutor")
     @JsonIgnore
@@ -48,13 +43,13 @@ public class Tutor {
     //public long getUserId() { return userId; }
     public long getTutorID() { return tutorId; }
     public int gettotalClasses() { return totalClasses; }
-    public double getTotalRating() { return totalRating; }
+    public double getRating() { return rating; }
 
     public void setTotalClasses(int totalClasses) {
         this.totalClasses = totalClasses;
     }
-    public void setTotalRating(double rating) {
-        this.totalRating = rating;
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 
     public User getUser(){
@@ -66,6 +61,13 @@ public class Tutor {
         if(user != null && user.getTutor() != this){
             user.setTutor(this);
         }
+    }
+
+    public double getHourlyRate(){
+        return hourlyRate;
+    }
+    public void setHourlyRate(Double rate){
+        this.hourlyRate = rate;
     }
     public Ratings getRatings() { return ratings; }
     public void setRatings(Ratings ratings){

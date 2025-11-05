@@ -4,18 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d29c9f1-ee49-4c0f-98ba-fc2545596b57" name="Changes" comment="Added mapping for sessions feature. Sessions mapped with tutor and users table.">
-      <change afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Sessions/SessionsDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Sessions/SessionsService.java" afterDir="false" />
+    <list default="true" id="6d29c9f1-ee49-4c0f-98ba-fc2545596b57" name="Changes" comment="Fixed Mapping issues and reworked functions to match the new mapping. Created a DTO to avoid creating an infinite loop by passing in the User object straight up.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Classes/Classes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Classes/Classes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/SessionMembers/SessionMembers.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/SessionMembers/SessionMembersController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/SessionMembers/SessionMembersRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Sessions/Sessions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Sessions/Sessions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Sessions/SessionEditRequest.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Sessions/SessionsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Sessions/SessionsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Sessions/SessionsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Sessions/SessionsRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/Tutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/Tutor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/TutorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/TutorController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/TutorRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/TutorRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/UserRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,12 +121,21 @@
       <option name="project" value="LOCAL" />
       <updated>1761673887377</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Fixed Mapping issues and reworked functions to match the new mapping. Created a DTO to avoid creating an infinite loop by passing in the User object straight up.">
+      <option name="closed" value="true" />
+      <created>1761785410655</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1761785410655</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Added mapping for sessions feature. Sessions mapped with tutor and users table." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added mapping for sessions feature. Sessions mapped with tutor and users table." />
+    <MESSAGE value="Fixed Mapping issues and reworked functions to match the new mapping. Created a DTO to avoid creating an infinite loop by passing in the User object straight up." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed Mapping issues and reworked functions to match the new mapping. Created a DTO to avoid creating an infinite loop by passing in the User object straight up." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
