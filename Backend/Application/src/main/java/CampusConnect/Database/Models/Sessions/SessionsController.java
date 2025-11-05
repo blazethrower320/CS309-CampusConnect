@@ -3,6 +3,7 @@ package CampusConnect.Database.Models.Sessions;
 
 import CampusConnect.Database.Models.Tutors.Tutor;
 import CampusConnect.Database.Models.Tutors.TutorRepository;
+import CampusConnect.Database.Models.Users.User;
 import CampusConnect.Database.Models.Users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class SessionsController
@@ -31,22 +33,48 @@ public class SessionsController
         return sessionsRepository.findAll();
     }
 
+    @GetMapping("/sessions/users/{sessionId}")
+    public Set<User> getAllUsers(@PathVariable long sessionId){
+        Set<User> users = sessionsRepository.findById(sessionId).getUsers();
+        if (users != null){
+            return users;
+        }
+        else throw new RuntimeException("No users found");
+    }
+
+    @GetMapping("/sessions/user/{userId}")
+    public List<Sessions> getSessionsForUser(@PathVariable long userId){
+        List<Sessions> allSessions = sessionsRepository.findAllByUsers_UserId(userId);
+        return allSessions;
+    }
+
+    @GetMapping("/sessions/getSessionTutor/{sessionId}")
+    public Tutor getSessionTutor(@PathVariable long sessionId){
+        Tutor tutor = sessionsRepository.findById(sessionId).getTutor();
+        return tutor;
+    }
 
     @PostMapping("/sessions/joinSession/{username}/{sessionId}")
-    public void joinSession(@PathVariable String username, @PathVariable long sessionId)
-    {
-        Sessions sessionExists = sessionsRepository.getSessionsBySessionId(sessionId);
-        if(sessionExists == null)
-        {
+    public Sessions joinSession(@PathVariable String username, @PathVariable long sessionId) {
+        // Fetch session (can be null)
+        Sessions session = sessionsRepository.findBySessionId(sessionId);
+        if (session == null) {
             throw new RuntimeException("Session Not Found");
         }
-        if(!userRepository.existsByUsername(username)){
-            throw new RuntimeException("User not found");
+
+        // Fetch user
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new RuntimeException("User Not Found");
         }
+
+        // Add user
         sessionsService.addUser(username, sessionId);
+        sessionsRepository.save(session);
 
-
+        return session;
     }
+
 
     @PostMapping("/sessions/createSession")
     public Sessions createSession(@RequestBody SessionsDTO sessionsDTO)
@@ -63,16 +91,28 @@ public class SessionsController
         return ResponseEntity.ok(session);
     }
 
-    @GetMapping("/sessions/setMeetingTime")
-    public boolean setSessionDate(@RequestBody SessionEditRequest edit)
+    @PatchMapping("/sessions/setMeetingTime/{time}/{sessionId}")
+    public Sessions setTime(@PathVariable String time, @PathVariable long sessionId)
     {
-        Sessions session = sessionsRepository.getSessionsBySessionId(edit.getSessionId());
-        if(session == null)
-            return false;
-        session.setMeetingTime(edit.getMeetingTime());
-        sessionsRepository.save(session);
-        return true;
+        Sessions session = sessionsRepository.getSessionsBySessionId(sessionId);
+        if(session == null){
+            throw new RuntimeException("Session not found");
+        }
+        session.setMeetingTime(time);
+        return sessionsRepository.save(session);
+
     }
+
+    @PatchMapping("/sessions/setMeetingLocation/{location}/{sessionId}")
+    public Sessions setMeetingLocation(@PathVariable String location, @PathVariable long sessionId){
+        Sessions session = sessionsRepository.getSessionsBySessionId(sessionId);
+        if(session == null){
+            throw new RuntimeException("Session not found");
+        }
+        session.setMeetingLocation(location);
+        return sessionsRepository.save(session);
+    }
+
     @GetMapping("/sessions/getMeetingDate/{sessionId}")
     public String getMeetingTime(@PathVariable long sessionId)
     {

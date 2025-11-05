@@ -30,10 +30,10 @@ public class TutorController
         return tutorRepository.findAll();
     }
 
-    @GetMapping("/tutors/info/{tutorID}")
-    public Tutor getTutor(@PathVariable long tutorID)
+    @GetMapping("/tutors/info/{tutorId}")
+    public Tutor getTutor(@PathVariable long tutorId)
     {
-        return tutorRepository.getTutorByTutorId(tutorID);
+        return tutorRepository.getTutorByTutorId(tutorId);
     }
 
     @PostMapping("/tutors/createTutor/{username}")
@@ -84,9 +84,9 @@ public class TutorController
     }
 
 
-    //@GetMapping("tutors/getTutorFromUserId/{userId}")
-    //public Tutor getTutorFromUserId(@PathVariable long userId)
-   // {
-   //     return tutorRepository.getTutorByUserId(userId);
-    //}
+    @GetMapping("tutors/getTutorFromUserId/{userId}")
+    public Tutor getTutorFromUserId(@PathVariable long userId)
+   {
+      return tutorRepository.getTutorByUserUserId(userId);
+   }
 }
