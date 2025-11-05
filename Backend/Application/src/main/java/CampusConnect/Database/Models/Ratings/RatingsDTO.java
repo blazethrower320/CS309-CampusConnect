@@ -7,7 +7,7 @@ public class RatingsDTO
     private long userId;
     private long tutorId;
 
-
+    public RatingsDTO() {}
     public RatingsDTO(int rating, String comments, long userId, long tutorId)
     {
         this.rating = rating;

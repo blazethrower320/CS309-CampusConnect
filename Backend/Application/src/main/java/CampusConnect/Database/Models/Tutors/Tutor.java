@@ -15,10 +15,10 @@ public class Tutor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long tutorId;
-    //private long userId;
     private int totalClasses;
+    @Column(name = "rating")
     private double totalRating = 5.0;
-
+    private double hourlyRate = 0;
     private String username;
 
     @OneToOne
@@ -60,6 +60,13 @@ public class Tutor {
     public User getUser(){
         return user;
     }
+    public double getHourlyRate(){
+        return hourlyRate;
+    }
+    public void setHourlyRate(Double rate){
+        this.hourlyRate = rate;
+    }
+
 
     public void setUser(User user){
         this.user = user;

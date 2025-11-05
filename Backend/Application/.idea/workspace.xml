@@ -5,18 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6d29c9f1-ee49-4c0f-98ba-fc2545596b57" name="Changes" comment="Added mapping for sessions feature. Sessions mapped with tutor and users table.">
-      <change afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Messages/Messages.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Messages/MessagesController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Messages/MessagesRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Messages/MessagesService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Messages/PrivateMessages.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Messages/PrivateMessagesRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/WebSockets/GroupChats/DirectMessageChatSocket.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/WebSockets/GroupChats/ChatSocket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/WebSockets/GroupChats/GroupChatSocket.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/WebSockets/GroupChats/Message.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/WebSockets/GroupChats/MessageRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/WebSockets/GroupChats/RepositoryProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/WebSockets/GroupChats/RepositoryProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Ratings/RatingsDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Ratings/RatingsDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Ratings/RatingsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Ratings/RatingsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/Tutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/Tutor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -8,6 +8,7 @@ import CampusConnect.Database.Models.Users.User;
 import CampusConnect.Database.Models.Users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,10 +24,14 @@ public class RatingsService {
     @Autowired
     private RatingsRepository ratingsRepository;
 
+    @Transactional
     public Ratings createRating(RatingsDTO ratingsDTO) {
         Tutor tutor = tutorRepository.getTutorByTutorId(ratingsDTO.getTutorId());
         User user = userRepository.getUserByUserId(ratingsDTO.getUserId());
 
+        if (tutor == null || user == null) {
+            throw new IllegalArgumentException("Tutor or User not found");
+        }
         Ratings rating = new Ratings(
                 tutor,
                 user,
