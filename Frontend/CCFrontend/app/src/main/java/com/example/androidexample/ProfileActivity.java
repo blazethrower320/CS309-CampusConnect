@@ -96,8 +96,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         //initialize user data
         //username = getIntent().getStringExtra("username");
         //userId = getIntent().getIntExtra("userId", -1);
-        //isAdmin = getIntent().getBooleanExtra("isAdmin", false);
-        //isTutor = getIntent().getBooleanExtra("isTutor", false);
+        isAdmin = getIntent().getBooleanExtra("isAdmin", false);
+        isTutor = getIntent().getBooleanExtra("isTutor", false);
         //password = getIntent().getStringExtra("password");
 
         //Menu Bar
@@ -111,20 +111,19 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         editProfileBtn.setOnClickListener(this);
 
         //Set text fields to have user data
-       // usernameText.setText("@" + username);
-        //if(isAdmin)
-        //{
-        //    roleText.setText("Admin");
-        //}
-        //else if(isTutor)
-        //{
-        //    roleText.setText("Tutor");
-        //}
-        //else
-        //{
-        //    roleText.setText("Student");
-        //}
-        //nameText.setText("First Last");
+        if(isAdmin)
+        {
+            roleText.setText("Admin");
+        }
+        else if(isTutor)
+        {
+            roleText.setText("Tutor");
+        }
+        else
+        {
+            roleText.setText("Student");
+        }
+        nameText.setText("First Last");
 
 
     }
