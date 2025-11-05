@@ -1,21 +1,11 @@
-package CampusConnect.WebSockets.GroupChats;
+package CampusConnect.Database.Models.Messages;
+
+import jakarta.persistence.*;
 
 import java.util.Date;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
-import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-
-
 @Entity
-@Table(name = "messages")
-public class Message {
+public class Messages {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,9 +20,9 @@ public class Message {
     private Date messageSent = new Date();
 
 
-    public Message() {};
+    public Messages() {};
 
-    public Message(long userId, long sessionId, String message, String username) {
+    public Messages(long userId, long sessionId, String message, String username) {
         this.userId = userId;
         this.sessionId = sessionId;
         this.message = message;
@@ -48,5 +38,3 @@ public class Message {
 
 
 }
-
-

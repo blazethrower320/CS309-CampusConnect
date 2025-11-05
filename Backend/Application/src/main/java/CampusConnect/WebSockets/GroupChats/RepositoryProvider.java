@@ -1,8 +1,9 @@
 package CampusConnect.WebSockets.GroupChats;
 
+import CampusConnect.Database.Models.Messages.MessagesRepository;
+import CampusConnect.Database.Models.Messages.PrivateMessagesRepository;
 import CampusConnect.Database.Models.Sessions.SessionsRepository;
 import CampusConnect.Database.Models.Users.UserRepository;
-import CampusConnect.WebSockets.GroupChats.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -10,20 +11,24 @@ import org.springframework.stereotype.Component;
 public class RepositoryProvider {
 
     private static UserRepository userRepository;
-    private static MessageRepository messageRepository;
+    private static MessagesRepository messageRepository;
     private static SessionsRepository sessionsRepository;
+    private static PrivateMessagesRepository privateMessagesRepository;
 
     @Autowired
     public void setUserRepository(UserRepository repo) { RepositoryProvider.userRepository = repo;}
 
     @Autowired
-    public void setMessageRepository(MessageRepository repo) {RepositoryProvider.messageRepository = repo;}
+    public void setMessageRepository(MessagesRepository repo) {RepositoryProvider.messageRepository = repo;}
     @Autowired
     public void setSessionsRepository(SessionsRepository repo) {RepositoryProvider.sessionsRepository = repo;}
 
+    @Autowired
+    public void setPrivateMessagesRepository(PrivateMessagesRepository repo) {RepositoryProvider.privateMessagesRepository = repo;}
 
     public static SessionsRepository getSessionsRepository() {return RepositoryProvider.sessionsRepository;}
     public static UserRepository getUserRepository() {return userRepository;}
 
-    public static MessageRepository getMessageRepository() {return messageRepository;}
+    public static MessagesRepository getMessageRepository() {return messageRepository;}
+    public static PrivateMessagesRepository getPrivateMessagesRepository() {return RepositoryProvider.privateMessagesRepository;}
 }

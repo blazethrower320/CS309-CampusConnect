@@ -3,10 +3,9 @@ package CampusConnect.WebSockets.GroupChats;
 import java.io.IOException;
 import java.util.*;
 
+import CampusConnect.Database.Models.Messages.Messages;
 import CampusConnect.Database.Models.Sessions.Sessions;
-import CampusConnect.Database.Models.Sessions.SessionsRepository;
 import CampusConnect.Database.Models.Users.User;
-import CampusConnect.WebSockets.GroupChats.RepositoryProvider;
 import jakarta.websocket.OnClose;
 import jakarta.websocket.OnError;
 import jakarta.websocket.OnMessage;
@@ -22,12 +21,12 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 @ServerEndpoint(value = "/groupChat/{sessionId}/{userId}")
-public class ChatSocket {
+public class GroupChatSocket {
 
     // Store all socket session and their corresponding username.
     private static Map<Long, Set<SocketDTO>> tutorSessionMaps = new Hashtable<>();
 
-    private final Logger logger = LoggerFactory.getLogger(ChatSocket.class);
+    private final Logger logger = LoggerFactory.getLogger(GroupChatSocket.class);
 
     @OnOpen
     public void onOpen(Session session, @PathParam("userId") long userId, @PathParam("sessionId") long sessionId)
@@ -78,7 +77,7 @@ public class ChatSocket {
 
         sendMessageToGroupChat(allConnectedUsers, userInfo.getUser().getUsername() + ": " + message);
 
-        RepositoryProvider.getMessageRepository().save(new Message(userId, sessionId, message, userInfo.getUser().getUsername()));
+        RepositoryProvider.getMessageRepository().save(new Messages(userId, sessionId, message, userInfo.getUser().getUsername()));
     }
 
 
@@ -162,11 +161,11 @@ public class ChatSocket {
 
 
     private String getChatHistory(long sessionId) {
-        List<Message> messages = RepositoryProvider.getMessageRepository().findAll();
+        List<Messages> messages = RepositoryProvider.getMessageRepository().findAll();
 
         StringBuilder sb = new StringBuilder();
         if(messages != null && messages.size() != 0) {
-            for (Message message : messages) {
+            for (Messages message : messages) {
                 if(message.getSessionId() == sessionId)
                 {
                     sb.append(message.getUsername() + ": " + message.getMessage() + "\n");
