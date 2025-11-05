@@ -59,7 +59,6 @@ public class DirectMessageChatSocket
             return;
         }
 
-
         PrivateMessages newMessage = new PrivateMessages(userId1, userId2, message, user1.getUsername(), receiver.getUsername());
         RepositoryProvider.getPrivateMessagesRepository().save(newMessage);
 
