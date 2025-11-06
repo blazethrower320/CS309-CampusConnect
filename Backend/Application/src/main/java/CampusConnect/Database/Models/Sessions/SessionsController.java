@@ -5,6 +5,7 @@ import CampusConnect.Database.Models.Tutors.Tutor;
 import CampusConnect.Database.Models.Tutors.TutorRepository;
 import CampusConnect.Database.Models.Users.User;
 import CampusConnect.Database.Models.Users.UserRepository;
+import CampusConnect.WebSockets.Push.PushSocket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -56,21 +57,24 @@ public class SessionsController
 
     @PostMapping("/sessions/joinSession/{username}/{sessionId}")
     public Sessions joinSession(@PathVariable String username, @PathVariable long sessionId) {
-        // Fetch session (can be null)
+
         Sessions session = sessionsRepository.findBySessionId(sessionId);
         if (session == null) {
             throw new RuntimeException("Session Not Found");
         }
 
-        // Fetch user
+
         User user = userRepository.findByUsername(username);    
         if (user == null) {
             throw new RuntimeException("User Not Found");
         }
 
-        // Add user
         sessionsService.addUser(username, sessionId);
         sessionsRepository.save(session);
+
+        Long tutorId = sessionsRepository.getSessionsBySessionId(sessionId).getTutor().getTutorID();
+        String message =  "User: " + user.getFirstName() + user.getLastName() + "joined your study session: " + session;
+        PushSocket.sendNotificationToTutor(tutorId, message);
 
         return session;
     }
