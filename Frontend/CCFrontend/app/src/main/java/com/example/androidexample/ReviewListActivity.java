@@ -27,7 +27,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReviewListActivity extends AppCompatActivity {
+public class ReviewListActivity extends AppCompatActivity implements TutorListAdapter.OnTutorClickListenerWithReviews {
 
     private ImageButton menuButton;
 
@@ -111,7 +111,7 @@ public class ReviewListActivity extends AppCompatActivity {
         });
 
         // RecyclerView setup
-        adapter = new TutorListAdapter(this, tutorList, this::onTutorReviewsClicked);
+        adapter = new TutorListAdapter(this, tutorList, (TutorListAdapter.OnTutorClickListenerWithReviews) this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
@@ -132,6 +132,26 @@ public class ReviewListActivity extends AppCompatActivity {
 
         loadTutors();
     }
+
+    @Override
+    public void onTutorClicked(TutorItem tutor) {
+        // What happens when the whole card is clicked
+        //Intent intent = new Intent(this, ProfileActivity.class);
+        //intent.putExtra("tutorId", tutor.tutorId);
+        //startActivity(intent);
+    }
+
+    @Override
+    public void onReviewsClicked(TutorItem tutor) {
+        // What happens when the "Reviews" button is clicked
+        Intent intent = new Intent(this, TutorReviewsActivity.class);
+        intent.putExtra("tutorId", tutor.tutorId);
+        intent.putExtra("username", username);
+        intent.putExtra("userId", userId);
+        startActivity(intent);
+    }
+
+
 
     private void loadTutors() {
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -156,8 +176,9 @@ public class ReviewListActivity extends AppCompatActivity {
                         List<TutorItem> newTutorList = new ArrayList<>();
                         for (int i = 0; i < arr.length(); i++) {
                             JSONObject t = arr.getJSONObject(i);
-                            int tutorId = t.optInt("id", t.optInt("userId", -1));
+                            int tutorId = t.optInt("tutorId", -1);
                             String uname = t.optString("username", t.optString("userName", ""));
+                            Log.d(TAG, "Parsed tutorId=" + tutorId + " for " + uname);
                             String first = t.optString("firstName", "");
                             String last = t.optString("lastName", "");
 

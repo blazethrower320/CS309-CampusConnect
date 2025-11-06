@@ -168,7 +168,7 @@ public class SessionActivity extends AppCompatActivity {
                 return;
             }
 
-            joinSession(session.getSessionId(), userId);
+            joinSession(session.getSessionId(), username);
         });
 
         sessionsRecycler.setAdapter(sessionAdapter);
@@ -210,40 +210,30 @@ public class SessionActivity extends AppCompatActivity {
         });
     }
 
-    private void joinSession(int sessionId, int userId) {
-        String url = BASE_URL + "/sessions/joinSession";
+    private void joinSession(int sessionId, String username) {
 
-        JSONObject body = new JSONObject();
-        try {
-            body.put("sessionId", sessionId);
-            body.put("userId", userId);
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Failed to create request", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        String url = BASE_URL + "/sessions/joinSession/" + username + "/" + sessionId;
 
-        JsonObjectRequest joinRequest = new JsonObjectRequest(Request.Method.POST, url, body,
+        JsonObjectRequest joinRequest = new JsonObjectRequest(Request.Method.POST, url, null,
                 response -> {
-                    Log.d("SessionActivity", "Joined session " + sessionId + ": " + response.toString());
-                    Toast.makeText(SessionActivity.this, "Joined session", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SessionActivity.this, "Joined", Toast.LENGTH_SHORT).show();
 
-                    // ✅ Mark session as joined
                     for (Session s : allSessions) {
                         if (s.getSessionId() == sessionId) {
                             s.setJoined(true);
                             break;
                         }
                     }
-                    sessionAdapter.notifyDataSetChanged(); // refresh UI
+                    sessionAdapter.notifyDataSetChanged();
                 },
                 error -> {
-                    Log.e("SessionActivity", "Failed to join session " + sessionId + ": " + error.getMessage());
                     Toast.makeText(SessionActivity.this, "Join failed", Toast.LENGTH_SHORT).show();
+                    Log.e("SessionActivity", "Join failed: " + error.toString());
                 });
 
         requestQueue.add(joinRequest);
     }
+
 
 
 
