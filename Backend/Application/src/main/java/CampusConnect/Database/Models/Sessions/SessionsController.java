@@ -5,6 +5,7 @@ import CampusConnect.Database.Models.Tutors.Tutor;
 import CampusConnect.Database.Models.Tutors.TutorRepository;
 import CampusConnect.Database.Models.Users.User;
 import CampusConnect.Database.Models.Users.UserRepository;
+import CampusConnect.WebSockets.Push.PushSocket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,9 +29,20 @@ public class SessionsController
     private UserRepository userRepository;
 
 
-    @GetMapping(path = "/sessions")
-    public List<Sessions> getAllSessions() {
-        return sessionsRepository.findAll();
+    @GetMapping(path = "/sessions/inactive")
+    public List<Sessions> getCurrentSessions() {
+        LocalDateTime currentTime = LocalDateTime.now();
+        return sessionsRepository.findAll().stream()
+                .filter(s -> s.getDateCreated().isAfter(currentTime.minusHours(1))) // not yet ended
+                .toList();
+    }
+
+    @GetMapping(path = "/sessions/inactive")
+    public List<Sessions> getPastSessions() {
+        LocalDateTime currentTime = LocalDateTime.now();
+        return sessionsRepository.findAll().stream()
+                .filter(s -> s.getDateCreated().isBefore(currentTime.minusHours(1))) // not yet ended
+                .toList();
     }
 
     @GetMapping("/sessions/users/{sessionId}")
@@ -56,21 +68,24 @@ public class SessionsController
 
     @PostMapping("/sessions/joinSession/{username}/{sessionId}")
     public Sessions joinSession(@PathVariable String username, @PathVariable long sessionId) {
-        // Fetch session (can be null)
+
         Sessions session = sessionsRepository.findBySessionId(sessionId);
         if (session == null) {
             throw new RuntimeException("Session Not Found");
         }
 
-        // Fetch user
+
         User user = userRepository.findByUsername(username);    
         if (user == null) {
             throw new RuntimeException("User Not Found");
         }
 
-        // Add user
         sessionsService.addUser(username, sessionId);
         sessionsRepository.save(session);
+
+        Long tutorId = sessionsRepository.getSessionsBySessionId(sessionId).getTutor().getTutorID();
+        String message =  user.getUsername() + "joined your study session: " + session.getClassName();
+        PushSocket.sendNotificationToTutor(tutorId, message);
 
         return session;
     }

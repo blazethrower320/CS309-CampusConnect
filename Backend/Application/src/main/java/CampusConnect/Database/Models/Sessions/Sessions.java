@@ -1,6 +1,5 @@
 package CampusConnect.Database.Models.Sessions;
 
-import CampusConnect.Database.Models.Classes.Classes;
 import CampusConnect.Database.Models.Users.User;
 import CampusConnect.Database.Models.Tutors.Tutor;
 import com.fasterxml.jackson.annotation.JsonIgnore;
