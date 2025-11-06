@@ -86,8 +86,19 @@ class Main {
                     LocalDateTime.now()
 
             );
+            Sessions session2 = new Sessions(
+                    tutor1,
+                    "Engineering",
+                    "EE",
+                    "Pearson",
+                    "3PM @ Friday",
+                    LocalDateTime.now()
+            );
+
 
             sessionsRepository.save(session1);
+            sessionsRepository.save(session2);
+
 
 
 

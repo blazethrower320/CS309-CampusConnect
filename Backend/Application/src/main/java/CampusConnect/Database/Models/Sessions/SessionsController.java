@@ -63,7 +63,7 @@ public class SessionsController
         }
 
         // Fetch user
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username);    
         if (user == null) {
             throw new RuntimeException("User Not Found");
         }

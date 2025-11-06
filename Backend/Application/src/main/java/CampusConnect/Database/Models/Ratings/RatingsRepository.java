@@ -13,5 +13,6 @@ public interface RatingsRepository extends JpaRepository<Ratings, Long>
 
 
     List<Ratings> getAllRatingsByTutor(Tutor tutor);
+    List<Ratings> getAllRatingsByTutorTutorId(Long tutorId);
     Ratings findById(long id);
 }
