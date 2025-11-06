@@ -58,13 +58,6 @@ public class UserController {
         return userRepository.findAll();
     }
 
-    @GetMapping("/users/getTutor/{userId}")
-    public Tutor getTutor(@PathVariable long userId)
-    {
-        User user = getUserById(userId);
-        return user.getTutor();
-    }
-
     @GetMapping(path = "/users/{id}")
     public User getUserById(@PathVariable Long id)
     {
@@ -211,21 +204,7 @@ public class UserController {
         return ResponseEntity.ok("User created successfully");
     }
 
-    /*
-    @PostMapping("/users/createUser")
-    public String createUser(@RequestBody User userBody) {
-        if (getAllUserByUsername(userBody.getUsername()).isEmpty()) {  //Assume no same usernames
-            User newUser = new User(userBody.getUsername(), userBody.getPassword(), false, false);
-            userRepository.save(newUser);
-            if(newUser.isAdmin()){
-                //CreateAdmin
-            }
-            return userCreated;
-        } else {
-            return userCreationFailed;
-        }
-    }
-    */
+
     //Only requires username and password currently.
     // Need to switch this to post
     @PostMapping("/users/deleteUser")
@@ -241,10 +220,10 @@ public class UserController {
         return "Deleted User";
     }
 
-    @GetMapping("/users/IsTutor/{userID}")
-    public boolean isUserTutor(@PathVariable long userID)
+    @GetMapping("/users/getTutor/{userId}")
+    public Tutor getTutor(@PathVariable long userId)
     {
-        return tutorRepository.findById(userID).isPresent();
+        return tutorRepository.findByUser_UserId(userId);
     }
 
     @GetMapping("/users/find/{username}")

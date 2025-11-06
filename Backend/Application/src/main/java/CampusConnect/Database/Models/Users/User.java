@@ -48,9 +48,9 @@ public class User {
     @JsonIgnore
     private Tutor tutor;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private Ratings ratings;
+    private Set<Ratings> ratings = new HashSet<>();
 
     /*
     @ManyToMany
@@ -62,7 +62,7 @@ public class User {
     private Set<Sessions> userSessions;     */
     @ManyToMany(mappedBy = "users")
     @JsonIgnore
-    private Set<Sessions> userSessions = new HashSet<>();
+    private Set<Sessions> Sessions = new HashSet<>();
 
 
     public User(String username, String password) {
@@ -128,12 +128,11 @@ public class User {
             tutor.setUser(this);
         }
     }
-    public Ratings getRatings(){ return ratings; }
-    public void setRatings(Ratings ratings){
+    public Set<Ratings> getRatings() {
+        return ratings;
+    }
+    public void setRatings(Set<Ratings> ratings) {
         this.ratings = ratings;
-        if(ratings != null && ratings.getUser() != this){
-            ratings.setUser(this);
-        }
     }
 
 }

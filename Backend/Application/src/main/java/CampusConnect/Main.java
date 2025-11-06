@@ -4,8 +4,6 @@ import CampusConnect.Database.Models.Admins.Admins;
 import CampusConnect.Database.Models.Admins.AdminsRepository;
 import CampusConnect.Database.Models.Classes.Classes;
 import CampusConnect.Database.Models.Classes.ClassesRepository;
-import CampusConnect.Database.Models.SessionMembers.SessionMembers;
-import CampusConnect.Database.Models.SessionMembers.SessionMembersRepository;
 import CampusConnect.Database.Models.Sessions.Sessions;
 import CampusConnect.Database.Models.Sessions.SessionsRepository;
 import CampusConnect.Database.Models.Tutors.Tutor;
@@ -40,15 +38,15 @@ class Main {
      * As mentioned in User.java just associating the Laptop object with the User will save it into the database because of the CascadeType
      */
     @Bean
-    CommandLineRunner initData(UserRepository userRepository, TutorRepository tutorRepository, ClassesRepository classesRepository, AdminsRepository adminsRepository, SessionMembersRepository sessionMembersRepository, SessionsRepository sessionsRepository) {
+    CommandLineRunner initData(UserRepository userRepository, TutorRepository tutorRepository, ClassesRepository classesRepository, AdminsRepository adminsRepository, SessionsRepository sessionsRepository) {
         return args -> {
             // Clear tables first
+            sessionsRepository.deleteAll();
             tutorRepository.deleteAll();
             classesRepository.deleteAll();
             userRepository.deleteAll();
             adminsRepository.deleteAll();
-            sessionsRepository.deleteAll();
-            sessionMembersRepository.deleteAll();
+
 
             User user1 = new User( "JohnZeet", "password");
             User user2 = new User( "Zach", "password");
@@ -80,20 +78,28 @@ class Main {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d',' yyyy");
             String date = LocalDate.now().format(formatter);
             Sessions session1 = new Sessions(
-                    user1.getUserId(),
+                    tutor1,
                     "Computer Science 309",
                     "COMS309",
                     "Pearson",
                     "3PM @ Friday",
-                    tutor1.getTutorID(),
                     LocalDateTime.now()
 
             );
+            Sessions session2 = new Sessions(
+                    tutor1,
+                    "Engineering",
+                    "EE",
+                    "Pearson",
+                    "3PM @ Friday",
+                    LocalDateTime.now()
+            );
+
 
             sessionsRepository.save(session1);
+            sessionsRepository.save(session2);
 
-            SessionMembers sessionMembers1 = new SessionMembers(user1.getUserId(), session1.getSessionId(), true);
-            sessionMembersRepository.save(sessionMembers1);
+
 
 
         };

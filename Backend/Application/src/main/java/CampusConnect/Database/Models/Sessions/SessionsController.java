@@ -1,10 +1,11 @@
 package CampusConnect.Database.Models.Sessions;
 
-import CampusConnect.Database.Models.SessionMembers.SessionMembers;
-import CampusConnect.Database.Models.SessionMembers.SessionMembersRepository;
+
 import CampusConnect.Database.Models.Tutors.Tutor;
 import CampusConnect.Database.Models.Tutors.TutorRepository;
+import CampusConnect.Database.Models.Users.User;
 import CampusConnect.Database.Models.Users.UserRepository;
+import CampusConnect.WebSockets.Push.PushSocket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,78 +14,87 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class SessionsController
 {
     @Autowired
-    SessionsRepository sessionsRepository;
+    private SessionsService sessionsService;
+    @Autowired
+    private SessionsRepository sessionsRepository;
     @Autowired
     private TutorRepository tutorRepository;
     @Autowired
-    private SessionMembersRepository participantsRepository;
-    @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private SessionMembersRepository sessionMembersRepository;
 
-    @GetMapping(path = "/sessions")
-    public List<Sessions> getAllSessions() {
-        return sessionsRepository.findAll();
+
+    @GetMapping(path = "/sessions/inactive")
+    public List<Sessions> getCurrentSessions() {
+        LocalDateTime currentTime = LocalDateTime.now();
+        return sessionsRepository.findAll().stream()
+                .filter(s -> s.getDateCreated().isAfter(currentTime.minusHours(1))) // not yet ended
+                .toList();
     }
 
+    @GetMapping(path = "/sessions/inactive")
+    public List<Sessions> getPastSessions() {
+        LocalDateTime currentTime = LocalDateTime.now();
+        return sessionsRepository.findAll().stream()
+                .filter(s -> s.getDateCreated().isBefore(currentTime.minusHours(1))) // not yet ended
+                .toList();
+    }
 
-    @PostMapping("/sessions/joinSession")
-    public ResponseEntity<Object> joinSession(@RequestBody Sessions session)
-    {
-        Sessions sessionExists = sessionsRepository.getSessionsBySessionId(session.getSessionId());
-        if(sessionExists == null)
-        {
-            return ResponseEntity.status(404).body("Session Not found");
+    @GetMapping("/sessions/users/{sessionId}")
+    public Set<User> getAllUsers(@PathVariable long sessionId){
+        Set<User> users = sessionsRepository.findById(sessionId).getUsers();
+        if (users != null){
+            return users;
+        }
+        else throw new RuntimeException("No users found");
+    }
+
+    @GetMapping("/sessions/user/{userId}")
+    public List<Sessions> getSessionsForUser(@PathVariable long userId){
+        List<Sessions> allSessions = sessionsRepository.findAllByUsers_UserId(userId);
+        return allSessions;
+    }
+
+    @GetMapping("/sessions/getSessionTutor/{sessionId}")
+    public Tutor getSessionTutor(@PathVariable long sessionId){
+        Tutor tutor = sessionsRepository.findById(sessionId).getTutor();
+        return tutor;
+    }
+
+    @PostMapping("/sessions/joinSession/{username}/{sessionId}")
+    public Sessions joinSession(@PathVariable String username, @PathVariable long sessionId) {
+
+        Sessions session = sessionsRepository.findBySessionId(sessionId);
+        if (session == null) {
+            throw new RuntimeException("Session Not Found");
         }
 
-        SessionMembers newMember = new SessionMembers
-                (
-                        session.getUserId(),
-                        sessionExists.getSessionId(),
-                        false
-                );
 
-        sessionMembersRepository.save(newMember);
-        return ResponseEntity.ok(newMember);
+        User user = userRepository.findByUsername(username);    
+        if (user == null) {
+            throw new RuntimeException("User Not Found");
+        }
+
+        sessionsService.addUser(username, sessionId);
+        sessionsRepository.save(session);
+
+        Long tutorId = sessionsRepository.getSessionsBySessionId(sessionId).getTutor().getTutorID();
+        String message =  user.getUsername() + "joined your study session: " + session.getClassName();
+        PushSocket.sendNotificationToTutor(tutorId, message);
+
+        return session;
     }
 
+
     @PostMapping("/sessions/createSession")
-    public ResponseEntity<Object> createSession(@RequestBody Sessions session)
+    public Sessions createSession(@RequestBody SessionsDTO sessionsDTO)
     {
-        // A group session
-        Tutor tutor = tutorRepository.getTutorByTutorId(session.getTutorId());
-        if(tutor == null)
-            return ResponseEntity.status(400).body("Tutor Not found");
-
-
-
-        Sessions newSession = new Sessions
-                (
-                        session.getUserId(),
-                        session.getClassName(),
-                        session.getClassCode(),
-                        session.getMeetingLocation(),
-                        session.getMeetingTime(),
-                        tutor.getTutorID(),
-                        LocalDateTime.now()
-                );
-        sessionsRepository.save(newSession);
-
-        SessionMembers newMember = new SessionMembers
-                (
-                        newSession.getUserId(),
-                        newSession.getSessionId(),
-                        true
-                );
-        sessionMembersRepository.save(newMember);
-
-        return ResponseEntity.ok(newSession);
+        return sessionsService.createSession(sessionsDTO);
     }
 
     @GetMapping("/sessions/getSession/{sessionId}")
@@ -96,16 +106,28 @@ public class SessionsController
         return ResponseEntity.ok(session);
     }
 
-    @GetMapping("/sessions/setMeetingTime")
-    public boolean setSessionDate(@RequestBody SessionEditRequest edit)
+    @PatchMapping("/sessions/setMeetingTime/{time}/{sessionId}")
+    public Sessions setTime(@PathVariable String time, @PathVariable long sessionId)
     {
-        Sessions session = sessionsRepository.getSessionsBySessionId(edit.getSessionId());
-        if(session == null)
-            return false;
-        session.setMeetingTime(edit.getMeetingTime());
-        sessionsRepository.save(session);
-        return true;
+        Sessions session = sessionsRepository.getSessionsBySessionId(sessionId);
+        if(session == null){
+            throw new RuntimeException("Session not found");
+        }
+        session.setMeetingTime(time);
+        return sessionsRepository.save(session);
+
     }
+
+    @PatchMapping("/sessions/setMeetingLocation/{location}/{sessionId}")
+    public Sessions setMeetingLocation(@PathVariable String location, @PathVariable long sessionId){
+        Sessions session = sessionsRepository.getSessionsBySessionId(sessionId);
+        if(session == null){
+            throw new RuntimeException("Session not found");
+        }
+        session.setMeetingLocation(location);
+        return sessionsRepository.save(session);
+    }
+
     @GetMapping("/sessions/getMeetingDate/{sessionId}")
     public String getMeetingTime(@PathVariable long sessionId)
     {
