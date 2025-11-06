@@ -69,16 +69,7 @@ public class TutorReviewsActivity extends AppCompatActivity {
         adapter = new RatingListAdapter(this, ratingList);
         recyclerView.setAdapter(adapter);
 
-        backButton.setOnClickListener(v -> {
-            Intent intent = new Intent(TutorReviewsActivity.this, ReviewListActivity.class);intent.putExtra("username", username);
-            intent.putExtra("userId", userId);
-            intent.putExtra("isAdmin", isAdmin);
-            intent.putExtra("isTutor", isTutor);
-            intent.putExtra("username", username);
-            intent.putExtra("password", password);
-            startActivity(intent);
-            finish();
-        });
+        backButton.setOnClickListener(v -> finish());
 
         if (isTutor) {
             submitButton.setEnabled(false);

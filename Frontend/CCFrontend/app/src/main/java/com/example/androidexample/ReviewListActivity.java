@@ -151,8 +151,11 @@ public class ReviewListActivity extends AppCompatActivity implements TutorListAd
         startActivity(intent);
     }
 
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadTutors();  // refresh when coming back
+    }
     private void loadTutors() {
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest req = new StringRequest(
@@ -176,7 +179,7 @@ public class ReviewListActivity extends AppCompatActivity implements TutorListAd
                         List<TutorItem> newTutorList = new ArrayList<>();
                         for (int i = 0; i < arr.length(); i++) {
                             JSONObject t = arr.getJSONObject(i);
-                            int tutorId = t.optInt("tutorId", -1);
+                            int tutorId = t.optInt("tutorID", -1);
                             String uname = t.optString("username", t.optString("userName", ""));
                             Log.d(TAG, "Parsed tutorId=" + tutorId + " for " + uname);
                             String first = t.optString("firstName", "");
@@ -189,7 +192,7 @@ public class ReviewListActivity extends AppCompatActivity implements TutorListAd
                                 displayName = (first + " " + last).trim();
                             }
 
-                            double rating = t.optDouble("rating", 3.5);
+                            double rating = t.optDouble("totalRating", 3.5);
 
                             TutorItem item = new TutorItem(tutorId, uname, displayName, rating);
                             newTutorList.add(item);
