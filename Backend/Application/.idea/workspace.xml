@@ -5,17 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6d29c9f1-ee49-4c0f-98ba-fc2545596b57" name="Changes" comment="Added mapping for sessions feature. Sessions mapped with tutor and users table.">
-      <change afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/WebSockets/Push/Push.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/WebSockets/Push/PushRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/WebSockets/Push/PushSocket.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/WebSockets/Push/PushSocketConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/WebSockets/Push/PushTestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Images/Images.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Images/Images.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Sessions/Sessions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Sessions/Sessions.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Sessions/SessionsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Sessions/SessionsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Experiments/PreetPatel/Unit3/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Experiments/PreetPatel/Unit3/.idea/misc.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

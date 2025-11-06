@@ -29,9 +29,20 @@ public class SessionsController
     private UserRepository userRepository;
 
 
-    @GetMapping(path = "/sessions")
-    public List<Sessions> getAllSessions() {
-        return sessionsRepository.findAll();
+    @GetMapping(path = "/sessions/inactive")
+    public List<Sessions> getCurrentSessions() {
+        LocalDateTime currentTime = LocalDateTime.now();
+        return sessionsRepository.findAll().stream()
+                .filter(s -> s.getDateCreated().isAfter(currentTime.minusHours(1))) // not yet ended
+                .toList();
+    }
+
+    @GetMapping(path = "/sessions/inactive")
+    public List<Sessions> getPastSessions() {
+        LocalDateTime currentTime = LocalDateTime.now();
+        return sessionsRepository.findAll().stream()
+                .filter(s -> s.getDateCreated().isBefore(currentTime.minusHours(1))) // not yet ended
+                .toList();
     }
 
     @GetMapping("/sessions/users/{sessionId}")
@@ -73,7 +84,7 @@ public class SessionsController
         sessionsRepository.save(session);
 
         Long tutorId = sessionsRepository.getSessionsBySessionId(sessionId).getTutor().getTutorID();
-        String message =  "User: " + user.getFirstName() + user.getLastName() + "joined your study session: " + session;
+        String message =  user.getUsername() + "joined your study session: " + session.getClassName();
         PushSocket.sendNotificationToTutor(tutorId, message);
 
         return session;
