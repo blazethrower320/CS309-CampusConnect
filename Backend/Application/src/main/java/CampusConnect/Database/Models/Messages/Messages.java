@@ -15,6 +15,7 @@ public class Messages {
     private long sessionId;
     @Lob
     private String message;
+    private String imageUrl;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "messageSent")
     private Date messageSent = new Date();
@@ -28,6 +29,13 @@ public class Messages {
         this.message = message;
         this.username = username;
     }
+    public Messages(long userId, long sessionId, String message, String username, String imageUrl) {
+        this.userId = userId;
+        this.sessionId = sessionId;
+        this.message = message;
+        this.username = username;
+        this.imageUrl = imageUrl;
+    }
 
     public String getUsername() { return username;}
     public Long getId() { return id; } public void setId(Long id) { this.id = id; }
@@ -35,6 +43,7 @@ public class Messages {
     public long getSessionId() { return sessionId; } public void setSessionId(long sessionId) { this.sessionId = sessionId; }
     public String getMessage() { return message; } public void setMessage(String message) { this.message = message; }
     public Date getMessageSent() { return messageSent; } public void setMessageSent(Date messageSent) { this.messageSent = messageSent; }
-
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+    public String getImageUrl() { return imageUrl; }
 
 }

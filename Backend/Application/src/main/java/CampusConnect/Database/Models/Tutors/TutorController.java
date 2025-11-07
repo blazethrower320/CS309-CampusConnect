@@ -84,7 +84,7 @@ public class TutorController
     }
 
 
-    @GetMapping("tutors/getTutorFromUserId/{userId}")
+    @GetMapping("/tutors/getTutorFromUserId/{userId}")
     public Tutor getTutorFromUserId(@PathVariable long userId)
    {
       return tutorRepository.getTutorByUserUserId(userId);

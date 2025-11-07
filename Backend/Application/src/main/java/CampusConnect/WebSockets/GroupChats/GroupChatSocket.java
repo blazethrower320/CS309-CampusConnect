@@ -3,9 +3,13 @@ package CampusConnect.WebSockets.GroupChats;
 import java.io.IOException;
 import java.util.*;
 
+import CampusConnect.Database.Models.Images.Images;
 import CampusConnect.Database.Models.Messages.Messages;
+import CampusConnect.Database.Models.Messages.PrivateMessages;
 import CampusConnect.Database.Models.Sessions.Sessions;
 import CampusConnect.Database.Models.Users.User;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.websocket.OnClose;
 import jakarta.websocket.OnError;
 import jakarta.websocket.OnMessage;
@@ -75,9 +79,56 @@ public class GroupChatSocket {
         SocketDTO userInfo = allConnectedUsers.stream().filter(c -> c.getUser().getUserId() == userId).findFirst().orElse(null);
         Sessions tutorSession = RepositoryProvider.getSessionsRepository().getSessionsBySessionId(userInfo.getSessions().getSessionId());
 
-        sendMessageToGroupChat(allConnectedUsers, userInfo.getUser().getUsername() + ": " + message);
 
-        RepositoryProvider.getMessageRepository().save(new Messages(userId, sessionId, message, userInfo.getUser().getUsername()));
+
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode json = mapper.readTree(message);
+
+        int type = json.get("type").asInt();  // 0=text, 1=image
+
+
+
+        Messages savedMessage = new Messages(userId, sessionId, message, userInfo.getUser().getUsername());
+        if (type == 1) {
+            int imageId = json.get("message").asInt();
+            Images img = RepositoryProvider.getImagesRepository().findById(imageId);
+
+            savedMessage.setMessage(null);
+            if (img != null) {
+                savedMessage.setImageUrl("/images/" + img.getId());
+            }
+        }
+        else
+        {
+            String messageText = json.get("message").asText();
+            savedMessage.setMessage(messageText);
+        }
+
+
+        RepositoryProvider.getMessageRepository().save(savedMessage);
+
+        String seenMessage;
+        if (savedMessage.getImageUrl() != null) {
+            seenMessage = userInfo.getUser().getUsername() + " sent an image: " + savedMessage.getImageUrl();
+        } else {
+            seenMessage = userInfo.getUser().getUsername() + ": " + savedMessage.getMessage();
+        }
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("messageId", savedMessage.getId());
+        response.put("type", type);
+        response.put("sender", userInfo.getUser().getUsername());
+        response.put("sessionId", sessionId);
+        response.put("message", savedMessage.getMessage());
+        response.put("imageUrl", savedMessage.getImageUrl() != null
+                ? "http://coms-3090-037.class.las.iastate.edu:8080" + savedMessage.getImageUrl()
+                : null);
+        response.put("timestamp", savedMessage.getMessageSent().toString());
+
+        String jsonResponse = mapper.writeValueAsString(response);
+
+        // Send JSON to all users
+        sendMessageToGroupChat(allConnectedUsers, jsonResponse);
     }
 
 
@@ -168,7 +219,14 @@ public class GroupChatSocket {
             for (Messages message : messages) {
                 if(message.getSessionId() == sessionId)
                 {
-                    sb.append(message.getUsername() + ": " + message.getMessage() + "\n");
+                    String seenMessage;
+                    if (message.getImageUrl() != null) {
+                        seenMessage = "http://coms-3090-037.class.las.iastate.edu:8080" + message.getImageUrl();
+                    } else {
+                        seenMessage = message.getMessage();
+                    }
+
+                    sb.append(message.getUsername()).append(": ").append(seenMessage).append("\n");
                 }
             }
         }

@@ -35,7 +35,7 @@ public class ImagesController
             image.setFilePath(destinationFile.getAbsolutePath());
             imageRepository.save(image);
 
-            return "File uploaded successfully: " + destinationFile.getAbsolutePath();
+            return destinationFile.getName();
         } catch (IOException e) {
             return "Failed to upload file: " + e.getMessage();
         }
