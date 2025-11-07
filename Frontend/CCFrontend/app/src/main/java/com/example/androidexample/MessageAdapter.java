@@ -31,7 +31,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position)
     {
         ChatMessage message = messageList.get(position);
-        holder.messageText.setText(message.getText());
+        holder.messageText.setText(message.getContent());
     }
 
     @Override
