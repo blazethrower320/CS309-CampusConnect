@@ -32,8 +32,6 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     private EditText bioText;
     private EditText majorText;
     private EditText classificationText;
-    private EditText contactInfoText;
-
     //Buttons
     private ImageButton confirmBtn; //Edit profile btn
     private ImageButton cancelBtn; //Three line btn
@@ -49,7 +47,6 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     private String bio;
     private String major;
     private String classification;
-    private String contactInfo;
     private String firstName;
     private String lastName;
 
@@ -67,7 +64,6 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         bioText = findViewById(R.id.edit_bio_text);
         majorText = findViewById(R.id.edit_major_text);
         classificationText = findViewById(R.id.edit_classification_text);
-        contactInfoText = findViewById(R.id.edit_contactInfo_text);
 
 
 
@@ -84,7 +80,6 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         bio = getIntent().getStringExtra("bio");
         major = getIntent().getStringExtra("major");
         classification = getIntent().getStringExtra("classification");
-        contactInfo = getIntent().getStringExtra("contactInfo");
         firstName = getIntent().getStringExtra("firstName");
         lastName = getIntent().getStringExtra("lastName");
 
@@ -110,7 +105,6 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         bioText.setText(bio);
         majorText.setText(major);
         classificationText.setText(classification);
-        contactInfoText.setText(contactInfo);
     }
 
     public void onClick(View v)
@@ -153,7 +147,6 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
             String updatedBio = bioText.getText().toString();
             String updatedMajor = majorText.getText().toString();
             String updatedClassification = classificationText.getText().toString();
-            String updatedContactInfo = contactInfoText.getText().toString();
 
             //Add info to JSON object
             requestBodyJson.put("firstName", firstName);
@@ -163,7 +156,6 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
             requestBodyJson.put("major", updatedMajor);
             requestBodyJson.put("bio", updatedBio);
             requestBodyJson.put("classification", updatedClassification);
-            requestBodyJson.put("contactInfo", updatedContactInfo);
 
 
 

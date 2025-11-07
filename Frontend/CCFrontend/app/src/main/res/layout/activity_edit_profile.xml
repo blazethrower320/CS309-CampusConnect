@@ -62,7 +62,7 @@
         <LinearLayout
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:paddingBottom="10dp"
+            android:paddingBottom="150dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -113,11 +113,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="30dp"
+                android:layout_marginBottom="15dp"
                 android:text="Username"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp" />
+
+
 
 
 
@@ -205,32 +207,7 @@
                 </EditText>
             </LinearLayout>
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:background="@drawable/nestedlayout_bg"
-                android:layout_width="match_parent"
-                android:layout_height="100dp">
 
-                <TextView
-                    android:paddingTop="5dp"
-                    android:layout_gravity="left"
-                    android:paddingLeft="15dp"
-                    android:layout_width="wrap_content"
-                    android:text="Contact Information:"
-                    android:textColor="@color/white"
-                    android:layout_height="wrap_content">
-
-                </TextView>
-                <EditText
-                    android:id="@+id/edit_contactInfo_text"
-                    android:layout_width="wrap_content"
-                    android:layout_marginLeft="12dp"
-                    android:layout_height="wrap_content"
-                    android:text="Enter Contact Information Here"
-                    android:textColor="@color/white"
-                    android:textSize="12dp">
-                </EditText>
-            </LinearLayout>
 
 
         </LinearLayout>
