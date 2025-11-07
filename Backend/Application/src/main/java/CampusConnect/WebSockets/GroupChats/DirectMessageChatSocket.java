@@ -73,7 +73,6 @@ public class DirectMessageChatSocket
         if (type == 1) {
             int imageId = json.get("message").asInt();
             Images img = RepositoryProvider.getImagesRepository().findById(imageId);
-
             newMessage.setMessage(null);
             if (img != null) {
                 newMessage.setImageUrl("/images/" + img.getId());

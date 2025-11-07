@@ -26,16 +26,16 @@ public class ImagesController
     }
 
     @PostMapping("/images")
-    public String handleFileUpload(@RequestParam("image") MultipartFile imageFile)  {
+    public String handleFileUpload(@RequestParam("image") MultipartFile imageFile) {
         try {
             File destinationFile = new File(directory + File.separator + imageFile.getOriginalFilename());
-            imageFile.transferTo(destinationFile);  // save file to disk
+            imageFile.transferTo(destinationFile);
 
             Images image = new Images();
             image.setFilePath(destinationFile.getAbsolutePath());
-            imageRepository.save(image);
+            Images savedImage = imageRepository.save(image);
 
-            return destinationFile.getName();
+            return String.valueOf(savedImage.getId());
         } catch (IOException e) {
             return "Failed to upload file: " + e.getMessage();
         }
