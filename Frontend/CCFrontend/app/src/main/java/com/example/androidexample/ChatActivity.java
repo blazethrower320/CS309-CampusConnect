@@ -80,16 +80,19 @@ public class ChatActivity extends AppCompatActivity implements WebSocketListener
         imagePickerLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null)
+                    {
                         Uri selectedImageUri = result.getData().getData();
-                        if (selectedImageUri != null) {
+                        if (selectedImageUri != null)
+                        {
                             // Start the upload process
                             uploadImageToServer(selectedImageUri);
                         }
                     }
                 });
 
-        imageBtn.setOnClickListener(v -> {
+        imageBtn.setOnClickListener(v ->
+        {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             imagePickerLauncher.launch(intent);
         });
@@ -101,13 +104,12 @@ public class ChatActivity extends AppCompatActivity implements WebSocketListener
                 if (!messageText.isEmpty()) {
                     // 1. Construct JSON to send to server
                     JSONObject messageJson = new JSONObject();
-                    messageJson.put("type", "TEXT");
-                    messageJson.put("senderId", userId);
-                    messageJson.put("content", messageText);
+                    messageJson.put("type", 0);
+                    messageJson.put("message", messageText);
                     WebSocketManager.getInstance().sendMessage(messageJson.toString());
 
                     // 2. Add to UI immediately (Local Echo)
-                    chatMessageList.add(new ChatMessage(messageText, true, "TEXT"));
+                    chatMessageList.add(new ChatMessage(messageText, true, 0));
                     messageAdapter.notifyItemInserted(chatMessageList.size() - 1);
                     messagesRecyclerView.scrollToPosition(chatMessageList.size() - 1);
 
@@ -127,7 +129,7 @@ public class ChatActivity extends AppCompatActivity implements WebSocketListener
         runOnUiThread(() -> {
             try {
                 JSONObject messageJson = new JSONObject(message);
-                String messageType = messageJson.optString("type", "TEXT");
+                String messageType = messageJson.optString("type", "0");
                 int senderId = messageJson.getInt("senderId");
 
                 // Ignore messages sent by the current user (server echo)
@@ -139,13 +141,13 @@ public class ChatActivity extends AppCompatActivity implements WebSocketListener
                 {
                     // It's an image message from the server, containing a URL
                     String imageUrl = messageJson.getString("url");
-                    chatMessageList.add(new ChatMessage(imageUrl, isSentByUser, "IMAGE"));
+                    chatMessageList.add(new ChatMessage(imageUrl, isSentByUser, 1));
                 }
                 else
                 {
                     // It's a standard text message
                     String content = messageJson.getString("content");
-                    chatMessageList.add(new ChatMessage(content, isSentByUser, "TEXT"));
+                    chatMessageList.add(new ChatMessage(content, isSentByUser, 0));
                 }
 
                 messageAdapter.notifyItemInserted(chatMessageList.size() - 1);
