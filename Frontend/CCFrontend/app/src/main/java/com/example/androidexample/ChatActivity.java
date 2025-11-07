@@ -67,7 +67,7 @@ public class ChatActivity extends AppCompatActivity implements WebSocketListener
             serverUrl = serverUrl.replace("{userId1}", String.valueOf(userId));
             Log.d("ChatActivity", "Current User ID: " + userId);
             //TODO get other user sending message to
-            serverUrl = serverUrl.replace("{userId2}", "789");
+            serverUrl = serverUrl.replace("{userId2}", "");
 
             WebSocketManager.getInstance().connectWebSocket(serverUrl);
         }
@@ -170,9 +170,8 @@ public class ChatActivity extends AppCompatActivity implements WebSocketListener
             String base64Image = bitmapToBase64(bitmap);
 
             JSONObject messageJson = new JSONObject();
-            messageJson.put("type", "IMAGE_UPLOAD");
-            messageJson.put("senderId", userId);
-            messageJson.put("imageData", base64Image);
+            messageJson.put("type", 1);
+            messageJson.put("message", base64Image);
 
             WebSocketManager.getInstance().sendMessage(messageJson.toString());
             Toast.makeText(this, "Uploading image...", Toast.LENGTH_SHORT).show();
@@ -181,7 +180,8 @@ public class ChatActivity extends AppCompatActivity implements WebSocketListener
         catch (IOException e)
         {
             Log.e("ImageUpload", "Error reading image file.", e);
-        } catch (JSONException e)
+        }
+        catch (JSONException e)
         {
             Log.e("ImageUpload", "Error creating JSON for image upload.", e);
         }
