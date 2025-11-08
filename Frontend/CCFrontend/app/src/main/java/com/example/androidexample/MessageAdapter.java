@@ -125,7 +125,9 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
 
         void bind(ChatMessage message) {
-            messageText.setText(message.getContent());
+            if (messageText != null) {
+                messageText.setText(message.getContent());
+            }
         }
     }
 
