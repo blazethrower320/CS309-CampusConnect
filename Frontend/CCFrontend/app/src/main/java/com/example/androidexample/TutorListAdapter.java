@@ -74,7 +74,7 @@ public class TutorListAdapter extends RecyclerView.Adapter<TutorListAdapter.Tuto
     }
 
     private void fetchTutorName(TutorItem tutor, TutorViewHolder holder) {
-        String url = BASE_URL + "/users/getTutor/" + tutor.tutorId;
+        String url = BASE_URL + "/tutor/info/" + tutor.tutorId;
         RequestQueue queue = Volley.newRequestQueue(context);
 
         JsonObjectRequest request = new JsonObjectRequest(

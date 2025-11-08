@@ -31,7 +31,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-public class ProfileActivity extends AppCompatActivity implements View.OnClickListener
+public class ProfileActivity extends AppCompatActivity implements View.OnClickListener, WebSocketListener
 {
     private RecyclerView pastSessionsRecyclerView;
     private PastSessionAdapter sessionAdapter;
@@ -61,6 +61,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     //Menu Bar buttons
     private LinearLayout homeBtn; //Home btn inside of menu bar
     private LinearLayout sessionsBtn; //Sessions btn inside of menu bar
+
+    private LinearLayout reviewsBtn; //Reviews btn inside of menu bar
 
     //User variables
     private boolean isTutor = false;   // cached tutor status
@@ -102,6 +104,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         homeBtn = findViewById(R.id.nav_home);
         sessionsBtn = findViewById(R.id.nav_sessions);
         editProfileBtn = findViewById(R.id.edit_profile_btn);
+        reviewsBtn = findViewById(R.id.nav_reviews);
 
         //Past Sessions
         pastSessionsRecyclerView = findViewById(R.id.past_sessions_recycler_view);
@@ -137,6 +140,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         logoutBtn.setOnClickListener(this);
         menuBtn.setOnClickListener(this);
         editProfileBtn.setOnClickListener(this);
+        reviewsBtn.setOnClickListener(this);
+
 
         //Set text fields to have user data
         if(isAdmin)
@@ -185,7 +190,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         if (id == R.id.logout_btn)
         {
             startActivity(new Intent(ProfileActivity.this, MainActivity.class));
-            finish();
         }
         if(id == R.id.menu_button)
         {
@@ -237,6 +241,54 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             startActivity(intent);
             finish();
         }
+        if(id == R.id.nav_reviews)
+        {
+            Intent intent = new Intent(ProfileActivity.this, ReviewListActivity.class);
+            intent.putExtra("username", username);
+            intent.putExtra("userId", userId);
+            intent.putExtra("isAdmin", isAdmin);
+            intent.putExtra("isTutor", isTutor);
+            intent.putExtra("password", password); // only if needed for certain calls
+            startActivity(intent);
+            finish();
+        }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        WebSocketManager.getInstance().setWebSocketListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        WebSocketManager.getInstance().removeWebSocketListener();
+    }
+
+    @Override
+    public void onWebSocketOpen(org.java_websocket.handshake.ServerHandshake handshakedata) {
+        Log.d("WebSocket", "Connected in ProfileActivity");
+    }
+
+    @Override
+    public void onWebSocketMessage(String message) {
+        Log.d("WebSocket", "Message: " + message);
+        runOnUiThread(() -> {
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            NotificationUtils.showPushNotification(this, "New Session Update", message);
+        });
+    }
+
+    @Override
+    public void onWebSocketClose(int code, String reason, boolean remote) {
+        Log.d("WebSocket", "Closed: " + reason);
+    }
+
+    @Override
+    public void onWebSocketError(Exception ex) {
+        Log.e("WebSocket", "Error", ex);
     }
 
     public void GetUserInfo(String username)
