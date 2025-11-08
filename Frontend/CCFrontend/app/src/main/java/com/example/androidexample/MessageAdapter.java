@@ -35,16 +35,25 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public int getItemViewType(int position) {
         ChatMessage message = chatMessageList.get(position);
-        if (message.isSentByUser()) {
-            if (message.getMessageType() == 0) { // Text message
+        if (message.isSentByUser())
+        {
+            if (message.getMessageType() == 0)
+            { // Text message
                 return VIEW_TYPE_TEXT_SENT;
-            } else { // Image message
+            }
+            else
+            { // Image message
                 return VIEW_TYPE_IMAGE_SENT;
             }
-        } else {
-            if (message.getMessageType() == 0) { // Text message
+        }
+        else
+        {
+            if (message.getMessageType() == 0)
+            { // Text message
                 return VIEW_TYPE_TEXT_RECEIVED;
-            } else { // Image message
+            }
+            else
+            { // Image message
                 return VIEW_TYPE_IMAGE_RECEIVED;
             }
         }
@@ -139,12 +148,14 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private static class SentImageViewHolder extends RecyclerView.ViewHolder {
         ImageView imageMessage;
 
-        SentImageViewHolder(View itemView) {
+        SentImageViewHolder(View itemView)
+        {
             super(itemView);
             imageMessage = itemView.findViewById(R.id.sent_image_view); // Make sure this ID matches your layout
         }
 
-        void bind(ChatMessage message) {
+        void bind(ChatMessage message)
+        {
             // Use Glide to load the image from the URL
             Glide.with(itemView.getContext())
                     .load(message.getContent()) // The content is the image URL
