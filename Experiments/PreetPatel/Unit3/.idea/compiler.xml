@@ -3,26 +3,11 @@
   <component name="CompilerConfiguration">
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
-      <profile name="Maven default annotation processors profile" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <module name="WebSocketServer" />
-        <module name="WebSocketServer (1)" />
-        <module name="websocket3" />
-        <module name="WebSocketServer (2)" />
-      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="WebSocketServer" target="17" />
+      <module name="WebSocketAndorid-service-approach.WebSocketAndorid.app" target="21" />
+      <module name="WebSocketAndorid-singleton-approach.WebSocketAndorid.app" target="21" />
+      <module name="WebSocketAndorid.app" target="21" />
     </bytecodeTargetLevel>
-  </component>
-  <component name="JavacSettings">
-    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="WebSocketServer" options="-parameters" />
-      <module name="WebSocketServer (1)" options="-parameters" />
-      <module name="WebSocketServer (2)" options="-parameters" />
-      <module name="websocket3" options="-parameters" />
-    </option>
   </component>
 </project>

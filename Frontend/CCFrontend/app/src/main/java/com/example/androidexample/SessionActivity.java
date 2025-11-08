@@ -13,6 +13,22 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import org.java_websocket.handshake.ServerHandshake;
+
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+
+import androidx.core.app.NotificationCompat;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -25,6 +41,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -34,7 +51,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 
-public class SessionActivity extends AppCompatActivity {
+public class SessionActivity extends AppCompatActivity implements WebSocketListener {
 
     private DrawerLayout drawerLayout;
     private ImageButton menuButton;
@@ -59,6 +76,8 @@ public class SessionActivity extends AppCompatActivity {
     private static final String BASE_URL = "http://coms-3090-037.class.las.iastate.edu:8080";
     private static final String SESSIONS_ENDPOINT = "/sessions";
 
+    private static final int NOTIFICATION_PERMISSION_CODE = 1001;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,9 +94,6 @@ public class SessionActivity extends AppCompatActivity {
         isTutor = getIntent().getBooleanExtra("isTutor", false);
         userId = getIntent().getIntExtra("userId", -1);
 
-        if (isTutor) {
-            createSession.setVisibility(View.VISIBLE);
-        }
 
         LinearLayout homeButton = findViewById(R.id.nav_home);
         homeButton.setOnClickListener(v -> {
@@ -173,13 +189,17 @@ public class SessionActivity extends AppCompatActivity {
 
         sessionsRecycler.setAdapter(sessionAdapter);
 
-        sessionsRecycler.setAdapter(sessionAdapter);
+        requestQueue = Volley.newRequestQueue(this);  // ✅ only once
 
-        // request queue
-        requestQueue = Volley.newRequestQueue(this);
 
-        // fetch sessions from API then show them
-        fetchSessionsFromBackend();
+        if (isTutor) {
+            createSession.setVisibility(View.VISIBLE);
+        }
+
+// fetch sessions from API then show them
+        fetchSessionsFromBackend(); // also uses the same requestQueue
+
+
 
         // Spinner selection listener - filter list whenever selection changes
         majorSpinner.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
@@ -210,9 +230,44 @@ public class SessionActivity extends AppCompatActivity {
         });
     }
 
-    private void joinSession(int sessionId, String username) {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        WebSocketManager.getInstance().setWebSocketListener(this);
+    }
 
-        String url = BASE_URL + "/sessions/joinSession/" + username + "/" + sessionId;
+    @Override
+    protected void onPause() {
+        super.onPause();
+        WebSocketManager.getInstance().removeWebSocketListener();
+    }
+
+    @Override
+    public void onWebSocketOpen(org.java_websocket.handshake.ServerHandshake handshakedata) {
+        Log.d("WebSocket", "Connected in ProfileActivity");
+    }
+
+    @Override
+    public void onWebSocketMessage(String message) {
+        Log.d("WebSocket", "Message: " + message);
+        runOnUiThread(() -> {
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            NotificationUtils.showPushNotification(this, "New Session Update", message);
+        });
+    }
+
+    @Override
+    public void onWebSocketClose(int code, String reason, boolean remote) {
+        Log.d("WebSocket", "Closed: " + reason);
+    }
+
+    @Override
+    public void onWebSocketError(Exception ex) {
+        Log.e("WebSocket", "Error", ex);
+    }
+
+    private void joinSession(int sessionId, String joiningUsername) {
+        String url = BASE_URL + "/sessions/joinSession/" + joiningUsername + "/" + sessionId;
 
         JsonObjectRequest joinRequest = new JsonObjectRequest(Request.Method.POST, url, null,
                 response -> {
@@ -221,17 +276,56 @@ public class SessionActivity extends AppCompatActivity {
                     for (Session s : allSessions) {
                         if (s.getSessionId() == sessionId) {
                             s.setJoined(true);
+                            sessionAdapter.notifyDataSetChanged();
+
+                            // --- Send push notification ---
+                            sendPushForSessionJoin(s, joiningUsername);
+
                             break;
                         }
                     }
-                    sessionAdapter.notifyDataSetChanged();
                 },
                 error -> {
                     Toast.makeText(SessionActivity.this, "Join failed", Toast.LENGTH_SHORT).show();
                     Log.e("SessionActivity", "Join failed: " + error.toString());
-                });
+                }
+        );
 
         requestQueue.add(joinRequest);
+    }
+
+
+    private void sendPushForSessionJoin(Session session, String joiningUsername) {
+        String url = BASE_URL + "/sessions/getSessionTutor/" + session.getSessionId();
+
+        JsonObjectRequest tutorRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                response -> {
+                    int tutorId = response.optInt("tutorId", -1);
+                    if (tutorId > 0) {
+                        sendTutorPush(session, joiningUsername, tutorId);
+                    } else {
+                        Log.e("SessionActivity", "Tutor ID not found for push for session " + session.getSessionId());
+                    }
+                },
+                error -> Log.e("SessionActivity", "Failed to fetch tutor ID for push: " + error.toString())
+        );
+
+        requestQueue.add(tutorRequest);
+    }
+
+
+    private void sendTutorPush(Session session, String joiningUsername, long tutorId) {
+        if (tutorId <= 0) return;
+
+        String message = "Class: " + session.getClassName() + ", Joined by: " + joiningUsername;
+        String url = BASE_URL + "/push/" + tutorId + "?msg=" + message;
+
+        StringRequest pushRequest = new StringRequest(Request.Method.GET, url,
+                response -> Log.d("SessionActivity", "Push sent successfully: " + response),
+                error -> Log.e("SessionActivity", "Failed to send push: " + error.toString())
+        );
+
+        requestQueue.add(pushRequest);
     }
 
 
@@ -261,8 +355,14 @@ public class SessionActivity extends AppCompatActivity {
                                 Session s = new Session(sessionId, className, classCode, meetingLocation, meetingTime, "Loading...");
                                 allSessions.add(s);
 
-                                // Fetch tutor username asynchronously
-                                fetchTutorForSession(s);
+                                // If the backend returns tutorId in the session JSON, use it directly:
+                                int tutorId = obj.optInt("tutorId", -1);
+                                if (tutorId > 0) {
+                                    fetchTutorUsernameById(s, tutorId);
+                                } else {
+                                    // Fallback if tutorId not present — use username lookup instead
+                                    fetchTutorForSession(s);
+                                }
                             }
                         } catch (JSONException e) {
                             Log.e("SessionActivity", "JSON parse error", e);
@@ -284,6 +384,8 @@ public class SessionActivity extends AppCompatActivity {
     }
 
 
+
+
     /**
      * Applies spinner + search filters to the full session list and updates the RecyclerView adapter.
      */
@@ -303,20 +405,120 @@ public class SessionActivity extends AppCompatActivity {
 
         sessionAdapter.updateList(filtered);
     }
+
+    private void fetchTutorUsernameById(Session session, int tutorId) {
+        String url = BASE_URL + "/tutors/info/" + tutorId;
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                response -> {
+                    Log.d("SessionActivity", "Tutor JSON: " + response.toString());
+                    String username = response.optString("username", "Unknown");
+                    session.setTutorUsername(username);
+                    sessionAdapter.notifyDataSetChanged();
+                },
+                error -> Log.e("SessionActivity", "Failed to fetch tutor username by ID", error)
+        );
+
+        requestQueue.add(request);
+    }
+
+    private void showPushNotification(String title, String message) {
+        String channelId = "session_notifications";
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // Create notification channel for Android 8.0+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(channelId,
+                    "Session Notifications",
+                    NotificationManager.IMPORTANCE_HIGH);
+            channel.setDescription("Notifications for session updates");
+            channel.setLockscreenVisibility(NotificationCompat.VISIBILITY_PRIVATE); // hide sensitive info on lock screen
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        // Clean up the message: remove URLs or unnecessary backend paths
+        String cleanMessage = message.replaceAll("http[s]?://\\S+", ""); // remove URLs
+        cleanMessage = cleanMessage.replaceAll("/sessions.*", ""); // remove backend endpoint paths if present
+
+        // Use BigTextStyle for longer content
+        NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle()
+                .bigText(cleanMessage)
+                .setBigContentTitle(title);
+
+        // Intent when notification is clicked (optional: open app)
+        Intent intent = new Intent(this, SessionActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId)
+                .setSmallIcon(R.drawable.ic_notification)
+                .setContentTitle(title)
+                .setContentText(cleanMessage)
+                .setStyle(bigTextStyle)
+                .setAutoCancel(true)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setTimeoutAfter(20000) // 20 seconds in milliseconds
+                .setContentIntent(pendingIntent);
+
+        checkNotificationPermission();
+        notificationManager.notify((int) System.currentTimeMillis(), builder.build());
+    }
+
+
+    private void checkNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // API 33+
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.POST_NOTIFICATIONS},
+                        NOTIFICATION_PERMISSION_CODE);
+            } else {
+                // Permission already granted, safe to post notification
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == NOTIFICATION_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, safe to post notifications
+                Log.d("Notifications", "Permission granted");
+            } else {
+                Toast.makeText(this, "Notification permission denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     private void fetchTutorForSession(Session session) {
         String url = BASE_URL + "/sessions/getSessionTutor/" + session.getSessionId();
 
         JsonObjectRequest tutorRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
-                    // The endpoint likely returns a Tutor object, extract username
-                    String username = response.optString("username", "Unknown Tutor");
-                    session.setTutorUsername(username);
-                    sessionAdapter.notifyDataSetChanged(); // update UI when fetched
+                    int tutorId = response.optInt("tutorId", -1);
+                    Log.d("SessionActivity", "Tutor JSON: " + response.toString());
+                    if (tutorId > 0) {
+                        // Now that we have the tutorId, fetch their username
+                        fetchTutorUsernameById(session, tutorId);
+                    } else {
+                        Log.e("SessionActivity", "Tutor ID not found for session " + session.getSessionId());
+                        session.setTutorUsername("Unknown Tutor");
+                        sessionAdapter.notifyDataSetChanged();
+                    }
                 },
-                error -> Log.e("SessionActivity", "Failed to fetch tutor for session " + session.getSessionId(), error)
+                error -> {
+                    Log.e("SessionActivity", "Failed to fetch tutor for session " + session.getSessionId(), error);
+                    session.setTutorUsername("Unknown Tutor");
+                    sessionAdapter.notifyDataSetChanged();
+                }
         );
 
         requestQueue.add(tutorRequest);
     }
+
+
+
+
 
 }

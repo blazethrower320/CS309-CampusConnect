@@ -107,6 +107,7 @@
 
  - ## Tutors
     - GET | `/tutors` - Returns a JSON of Tutors <br>
+    - GET | `/tutors/info/{tutorId}` - Returns Tutor with a tutor ID
     - POST | `/tutors/createTutor/{username}` - Creates a Tutor with the username (MUST ALREADY BE A USER) <br>
         Returns: <br>
             ``404`` - User not found <br>
@@ -123,9 +124,12 @@
             ``403`` - Tutor not found <br>
             ``ok`` Tutor updated <br>
     - GET | `/tutors/getTutorRating/{tutorID}` - Returns DOUBLE of the Tutors rating
+    - GET | `/tutors/getTutorFromUserId/{userId}` - Returns Tutor from userId
 
 - ## Sessions
     - GET | `/sessions` - Returns a JSON of Sessions <br>
+    - Get | `/sessions/inactive` - Returns a List<Sessions> of sessions that are past their meeting date<br>
+    - Get | `/sessions/active` - Returns a List<Sessions> of sessions that are before their meeting date<br>
     - POST | `/sessions/createSession` - Creates a New Session with the Tutor, Also includes them as a Member<br>
         ```json
         {
@@ -171,14 +175,62 @@
             ``200`` - Success<br>
 
 - ## Messages (Group)
-    - GET | `/messages` - returns a list of all the group messages
+    - GET | `/messages` - returns a list of all the group messages <br>
 
 - ## Private Messages (DMs)
-    - GET | `/privateMessages` - returns a list of all private messages
+    - GET | `/privateMessages` - returns a list of all private messages<br>
+
+- ## Images
+    - GET | `/images/{id}` - Returns a byte[] of the Image<br>
+    - POST | `/images` - Uses image key and file value with the image. Uploads to database<br>
 
 - ## WebSockets
     - Group Chat Socket | `/groupChat/{sessionId}/{userId}` <br>
+        Requires: <br>
+            `"type": 0` - Text Messages <br>
+            `"type": 1` - Image, Message is the Image ID <br>
+        ```json
+            { 
+                "type":1,
+                "message": 2
+            }
+        ```
+        Returns: <br>
+        ```json
+            {
+                "sender": "Zach",
+                "imageUrl": "http://coms-3090-037.class.las.iastate.edu:8080/images/2",
+                "messageId": 12,
+                "sessionId": 15,
+                "type": 1,
+                "message": null,
+                "timestamp": "Fri Nov 07 15:31:09 CST 2025"
+            }
+        ```
+
     - DM Chat Socket | `/DM/{userId1}/{userId2}` <br>
+        Requires: <br>
+            `"type": 0` - Text Messages <br>
+            `"type": 1` - Image, Message is the Image ID <br>
+        ```json
+            { 
+                "type":1,
+                "message": 2
+            }
+        ```
+        Returns: <br>
+        ```json
+            {
+                    "receiver": "Chase",
+                    "sender": "Zach",
+                    "imageUrl": "http://coms-3090-037.class.las.iastate.edu:8080/images/2",
+                    "messageId": 40,
+                    "type": 1,
+                    "message": null,
+                    "timestamp": "Fri Nov 07 14:56:52 CST 2025"
+                }
+        ```
+           
 
 
 

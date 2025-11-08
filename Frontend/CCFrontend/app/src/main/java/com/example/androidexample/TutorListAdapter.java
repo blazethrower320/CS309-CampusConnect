@@ -54,6 +54,7 @@ public class TutorListAdapter extends RecyclerView.Adapter<TutorListAdapter.Tuto
     public void onBindViewHolder(@NonNull TutorViewHolder holder, int position) {
         TutorItem tutor = tutorList.get(position);
         holder.usernameText.setText("@" + tutor.username);
+        holder.ratingValue.setText(String.format("%.1f", tutor.rating));
 
         // If first/last name are already set, display them
         if (tutor.displayName != null && !tutor.displayName.isEmpty()) {
@@ -73,7 +74,7 @@ public class TutorListAdapter extends RecyclerView.Adapter<TutorListAdapter.Tuto
     }
 
     private void fetchTutorName(TutorItem tutor, TutorViewHolder holder) {
-        String url = BASE_URL + "/users/getTutor/" + tutor.tutorId;
+        String url = BASE_URL + "/tutor/info/" + tutor.tutorId;
         RequestQueue queue = Volley.newRequestQueue(context);
 
         JsonObjectRequest request = new JsonObjectRequest(
@@ -171,13 +172,14 @@ public class TutorListAdapter extends RecyclerView.Adapter<TutorListAdapter.Tuto
 
     static class TutorViewHolder extends RecyclerView.ViewHolder {
 
-        TextView nameText, usernameText, reviewsButton;
+        TextView nameText, usernameText, reviewsButton, ratingValue;
 
         public TutorViewHolder(@NonNull View itemView) {
             super(itemView);
             nameText = itemView.findViewById(R.id.tutor_name);
             usernameText = itemView.findViewById(R.id.tutor_username);
             reviewsButton = itemView.findViewById(R.id.btn_reviews);
+            ratingValue = itemView.findViewById(R.id.tv_rating_value);
         }
 
     }

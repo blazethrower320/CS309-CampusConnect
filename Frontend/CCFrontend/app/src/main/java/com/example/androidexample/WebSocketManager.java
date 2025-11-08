@@ -98,6 +98,10 @@ public class WebSocketManager {
         }
     }
 
+    public boolean isConnected() {
+        return webSocketClient != null && webSocketClient.isOpen();
+    }
+
 
 
 
@@ -128,6 +132,7 @@ public class WebSocketManager {
                 webSocketListener.onWebSocketOpen(handshakedata);
             }
         }
+
 
         /**
          * Called when a WebSocket message is received from the server. This method is

@@ -14,10 +14,7 @@ import org.springframework.stereotype.Controller;
 
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller      // this is needed for this to be an endpoint to springboot
 @ServerEndpoint(value = "/push/{tutorId}")  // this is Websocket url
@@ -38,7 +35,7 @@ public class PushSocket {
      */
     @Autowired
     public void setMessageRepository(PushRepository repo) {
-        msgRepo = repo;  // we are setting the static variable
+        msgRepo = repo;
     }
 
     @Autowired
@@ -56,21 +53,30 @@ public class PushSocket {
 
     // Store all socket session and their corresponding username.
     private static Map<Long, Session> tutorIdSessionMap = new Hashtable<>();
+    private static Map<Session, Long> sessionTutorIdMap =  new Hashtable<>();
 
     private final Logger logger = LoggerFactory.getLogger(PushSocket.class);
 
     @OnOpen
-    public void onOpen(Session session, @PathParam("tutorId") long tutorId)
-            throws IOException {
+    public void onOpen(Session session, @PathParam("tutorId") long tutorId) throws IOException {
 
         logger.info("Tutor: " + tutorRep.getTutorByTutorId(tutorId));
 
         tutorIdSessionMap.put(tutorId, session);
+        sessionTutorIdMap.put(session, tutorId);
+
+        List<Push> unreadMessages = msgRepo.findAllByTutorIdAndReadFalseOrderByCreatedAtAsc(tutorId);
+        for (Push msg : unreadMessages) {
+            session.getBasicRemote().sendText(msg.getMessage());
+            msg.setRead(true); // mark as read
+            msgRepo.save(msg);
+        }
     }
 
     @OnClose
     public void onClose(Session session) {
-        tutorIdSessionMap.values().remove(session);
+        Long tutorId = sessionTutorIdMap.get(session);
+        tutorIdSessionMap.remove(tutorId);
         logger.info("Tutor disconnected");
     }
 
@@ -83,10 +89,16 @@ public class PushSocket {
     }
 
     public static void sendNotificationToTutor(long tutorId, String message) {
+        Push pushMessage = new Push(tutorId, message);
+        msgRepo.save(pushMessage);
+
         Session session = tutorIdSessionMap.get(tutorId);
+
         if (session != null && session.isOpen()) {
             try {
                 session.getBasicRemote().sendText(message);
+                pushMessage.setRead(true);
+                msgRepo.save(pushMessage);
             } catch (IOException e) {
                 e.printStackTrace();
             }

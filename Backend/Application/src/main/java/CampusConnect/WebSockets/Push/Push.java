@@ -2,7 +2,10 @@ package CampusConnect.WebSockets.Push;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -14,40 +17,28 @@ public class Push {
     private Long id;
 
     @Column
+    @Setter
+    @Getter
+    private long tutorId;
+
+    @Column
+    @Setter
+    @Getter
     private String message;
 
+    @Column(name = "is_read")
+    @Setter
+    @Getter
+    private boolean read = false;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt = LocalDateTime.now();
 
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "sent")
-    private Date sent = new Date();
-	
-	
-	public Push() {};
-	
-	public Push(String message) {
+    //private LocalDateTime createdAt;
+    public Push(long tutorId, String message){
+        this.tutorId = tutorId;
         this.message = message;
-	}
-
-    public Long getId() {
-        return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public Date getSent() {
-        return sent;
-    }
-
-    public void setSent(Date sent) {
-        this.sent = sent;
-    }
-
-    
 }

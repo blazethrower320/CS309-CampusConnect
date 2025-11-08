@@ -12,6 +12,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,13 +22,14 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReviewListActivity extends AppCompatActivity implements TutorListAdapter.OnTutorClickListenerWithReviews {
+public class ReviewListActivity extends AppCompatActivity implements TutorListAdapter.OnTutorClickListenerWithReviews, WebSocketListener {
 
     private ImageButton menuButton;
 
@@ -134,6 +136,37 @@ public class ReviewListActivity extends AppCompatActivity implements TutorListAd
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        WebSocketManager.getInstance().removeWebSocketListener();
+    }
+
+    @Override
+    public void onWebSocketOpen(ServerHandshake handshakedata) {
+        Log.d("WebSocket", "Connected in ProfileActivity");
+    }
+
+    @Override
+    public void onWebSocketMessage(String message) {
+        Log.d("WebSocket", "Message: " + message);
+        runOnUiThread(() -> {
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            NotificationUtils.showPushNotification(this, "New Session Update", message);
+        });
+    }
+
+    @Override
+    public void onWebSocketClose(int code, String reason, boolean remote) {
+        Log.d("WebSocket", "Closed: " + reason);
+    }
+
+    @Override
+    public void onWebSocketError(Exception ex) {
+        Log.e("WebSocket", "Error", ex);
+    }
+
+
+    @Override
     public void onTutorClicked(TutorItem tutor) {
         // What happens when the whole card is clicked
         //Intent intent = new Intent(this, ProfileActivity.class);
@@ -151,8 +184,12 @@ public class ReviewListActivity extends AppCompatActivity implements TutorListAd
         startActivity(intent);
     }
 
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        WebSocketManager.getInstance().setWebSocketListener(this);
+        loadTutors();  // refresh when coming back
+    }
     private void loadTutors() {
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest req = new StringRequest(
@@ -189,7 +226,7 @@ public class ReviewListActivity extends AppCompatActivity implements TutorListAd
                                 displayName = (first + " " + last).trim();
                             }
 
-                            double rating = t.optDouble("rating", 3.5);
+                            double rating = t.optDouble("totalRating", 3.5);
 
                             TutorItem item = new TutorItem(tutorId, uname, displayName, rating);
                             newTutorList.add(item);

@@ -52,10 +52,10 @@ public class TutorController
         return ResponseEntity.ok(tutor);
     }
 
-    @GetMapping("/tutors/getTutorRating/{tutorID}")
-    public double getTutorRating(@PathVariable long tutorID)
+    @GetMapping("/tutors/getTutorRating/{tutorId}")
+    public double getTutorRating(@PathVariable long tutorId)
     {
-        Tutor tutor = tutorRepository.getTutorByTutorId(tutorID);
+        Tutor tutor = tutorRepository.getTutorByTutorId(tutorId);
         return tutor.getTotalRating();
     }
 
@@ -84,7 +84,7 @@ public class TutorController
     }
 
 
-    @GetMapping("tutors/getTutorFromUserId/{userId}")
+    @GetMapping("/tutors/getTutorFromUserId/{userId}")
     public Tutor getTutorFromUserId(@PathVariable long userId)
    {
       return tutorRepository.getTutorByUserUserId(userId);
