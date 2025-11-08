@@ -10,7 +10,6 @@ import CampusConnect.Database.Models.Tutors.Tutor;
 import CampusConnect.Database.Models.Tutors.TutorRepository;
 import CampusConnect.Database.Models.Users.User;
 import CampusConnect.Database.Models.Users.UserRepository;
-import CampusConnect.Database.Models.Users.UserService;
 import com.mysql.cj.Session;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -31,12 +30,11 @@ class Main {
     }
 
     // Create 3 users with their machines
-
     /**
      *
      * @param userRepository repository for the User entity
-     *                       Creates a commandLine runner to enter dummy data into the database
-     *                       As mentioned in User.java just associating the Laptop object with the User will save it into the database because of the CascadeType
+     * Creates a commandLine runner to enter dummy data into the database
+     * As mentioned in User.java just associating the Laptop object with the User will save it into the database because of the CascadeType
      */
     @Bean
     CommandLineRunner initData(UserRepository userRepository, TutorRepository tutorRepository, ClassesRepository classesRepository, AdminsRepository adminsRepository, SessionsRepository sessionsRepository) {

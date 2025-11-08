@@ -2,6 +2,7 @@ package CampusConnect.Database.Models.Images;
 import jakarta.persistence.*;
 
 import java.util.Date;
+
 @Entity
 public class Images
 {
