@@ -74,7 +74,7 @@ public class TutorController
     @PutMapping("tutors/editTotalClasses")
     public ResponseEntity<Object> editTotalClasses(@RequestBody Tutor newTutor)
     {
-        Tutor tutor = tutorRepository.findByUsername(newTutor.getUsername());
+        Tutor tutor = tutorRepository.findByUsername(newTutor.getUser().getUsername());
         if (tutor != null) {
             tutor.setTotalClasses(newTutor.gettotalClasses());
             tutorRepository.save(tutor);

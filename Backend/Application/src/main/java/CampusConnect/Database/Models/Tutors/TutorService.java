@@ -22,7 +22,7 @@ public class TutorService {
 
     public String deleteAdmin(User user){
         Tutor tutor = tutorRepository.findByUser(user);
-        if(tutorRepository.existsByUsername(tutor.getUsername())){
+        if(tutorRepository.existsByUsername(tutor.getUser().getUsername())){
             tutorRepository.delete(tutor);
             return "Admin Deleted";
         }

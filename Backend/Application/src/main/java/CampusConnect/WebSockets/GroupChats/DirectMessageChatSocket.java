@@ -55,11 +55,13 @@ public class DirectMessageChatSocket
         User user1 = RepositoryProvider.getUserRepository().getUserByUserId(userId1);
         if(user1 == null)
         {
+            logger.info("User 1 not found");
             return;
         }
         User receiver = RepositoryProvider.getUserRepository().getUserByUserId(userId2);
         if(receiver == null)
         {
+            logger.info("Receiver is not found");
             return;
         }
 
