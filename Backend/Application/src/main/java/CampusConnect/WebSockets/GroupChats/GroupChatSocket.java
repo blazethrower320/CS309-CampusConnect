@@ -107,13 +107,6 @@ public class GroupChatSocket {
 
         RepositoryProvider.getMessageRepository().save(savedMessage);
 
-        String seenMessage;
-        if (savedMessage.getImageUrl() != null) {
-            seenMessage = userInfo.getUser().getUsername() + " sent an image: " + savedMessage.getImageUrl();
-        } else {
-            seenMessage = userInfo.getUser().getUsername() + ": " + savedMessage.getMessage();
-        }
-
         Map<String, Object> response = new HashMap<>();
         response.put("messageId", savedMessage.getId());
         response.put("type", type);
@@ -121,7 +114,7 @@ public class GroupChatSocket {
         response.put("sessionId", sessionId);
         response.put("message", savedMessage.getMessage());
         response.put("imageUrl", savedMessage.getImageUrl() != null
-                ? "http://coms-3090-037.class.las.iastate.edu:8080" + savedMessage.getImageUrl()
+                ? "http://coms-3090-037.class.las.iastate.edu:8080/images/" + savedMessage.getImageUrl()
                 : null);
         response.put("timestamp", savedMessage.getMessageSent().toString());
 

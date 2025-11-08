@@ -80,7 +80,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 finish();
             }
-
             String url = "http://coms-3090-037.class.las.iastate.edu:8080/users/login";
 
             JSONObject requestBody = new JSONObject();
