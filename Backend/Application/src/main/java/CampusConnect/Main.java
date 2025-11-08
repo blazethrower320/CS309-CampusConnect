@@ -10,7 +10,6 @@ import CampusConnect.Database.Models.Tutors.Tutor;
 import CampusConnect.Database.Models.Tutors.TutorRepository;
 import CampusConnect.Database.Models.Users.User;
 import CampusConnect.Database.Models.Users.UserRepository;
-import CampusConnect.Database.Models.Users.UserService;
 import com.mysql.cj.Session;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -37,65 +36,93 @@ class Main {
      * Creates a commandLine runner to enter dummy data into the database
      * As mentioned in User.java just associating the Laptop object with the User will save it into the database because of the CascadeType
      */
-
-    /*
     @Bean
-    CommandLineRunner initData(UserRepository userRepository, TutorRepository tutorRepository,
-                               ClassesRepository classesRepository, AdminsRepository adminsRepository,
-                               SessionsRepository sessionsRepository) {
+    CommandLineRunner initData(UserRepository userRepository, TutorRepository tutorRepository, ClassesRepository classesRepository, AdminsRepository adminsRepository, SessionsRepository sessionsRepository) {
         return args -> {
 
-            // Only proceed if there is no data
-            if (userRepository.count() == 0 && tutorRepository.count() == 0 &&
-                    classesRepository.count() == 0 && adminsRepository.count() == 0 &&
-                    sessionsRepository.count() == 0) {
+         /*   // Clear tables first
+            sessionsRepository.deleteAll();
+            tutorRepository.deleteAll();
+            classesRepository.deleteAll();
+            userRepository.deleteAll();
+            adminsRepository.deleteAll();
 
-                User user1 = new User("JohnZeet", "password");
-                User user2 = new User("Zach", "password");
-                User user3 = new User("Chase", "password");
 
-                userRepository.save(user1);
-                userRepository.save(user2);
-                userRepository.save(user3);
+            User user1 = new User( "JohnZeet", "password");
+            User user2 = new User( "Zach", "password");
+            User user3 = new User( "Chase", "password");
+            
+            userRepository.save(user1);
+            userRepository.save(user2);
+            userRepository.save(user3);
 
-                Admins admin1 = new Admins(user1, "All");
-                Admins admin2 = new Admins(user2, "All");
+            Admins admin1 = new Admins(user1, "All");
+            Admins admin2 = new Admins(user2, "All");
 
-                adminsRepository.save(admin1);
-                adminsRepository.save(admin2);
+            adminsRepository.save(admin1);
+            adminsRepository.save(admin2);
 
-                Tutor tutor1 = new Tutor(user1);
-                tutorRepository.save(tutor1);
+            Tutor tutor1 = new Tutor(user1);
 
-                Classes class1 = new Classes(1, 23, "Linear Algebra", "MATH207");
-                Classes class2 = new Classes(2, 0, "Differential Equations", "MATH267");
-                Classes class3 = new Classes(3, 17, "Calc 2", "MATH166");
 
-                classesRepository.save(class1);
-                classesRepository.save(class2);
-                classesRepository.save(class3);
+            tutorRepository.save(tutor1);
 
-                Sessions session1 = new Sessions(
-                        tutor1,
-                        "Computer Science 309",
-                        "COMS309",
-                        "Pearson",
-                        "3PM @ Friday",
-                        LocalDateTime.now()
-                );
-                Sessions session2 = new Sessions(
-                        tutor1,
-                        "Engineering",
-                        "EE",
-                        "Pearson",
-                        "3PM @ Friday",
-                        LocalDateTime.now()
-                );
+            Classes class1 = new Classes(1, 23, "Linear Algebra", "MATH207");
+            Classes class2 = new Classes(2, 0, "Differential Equations", "MATH267");
+            Classes class3 = new Classes(3, 17, "Calc 2", "MATH166");
 
-                sessionsRepository.save(session1);
-                sessionsRepository.save(session2);
-            }
+            classesRepository.save(class1);
+            classesRepository.save(class2);
+            classesRepository.save(class3);
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d',' yyyy");
+            String date = LocalDate.now().format(formatter);
+            Sessions session1 = new Sessions(
+                    tutor1,
+                    "Computer Science 309",
+                    "COMS309",
+                    "Pearson",
+                    "3PM @ Friday",
+                    LocalDateTime.now()
+
+            );
+            Sessions session2 = new Sessions(
+                    tutor1,
+                    "Engineering",
+                    "EE",
+                    "Pearson",
+                    "3PM @ Friday",
+                    LocalDateTime.now()
+            );
+
+
+            sessionsRepository.save(session1);
+            sessionsRepository.save(session2);
+
+
+
+
         };
     }
-    */
+          */
+/*
+    @Bean
+    CommandLineRunner initClasses(ClassesRepository classesRepository) {
+        return args -> {
+            Classes class1 = new Classes(1, 23, "Linear Algebra", "MATH207");
+            Classes class2 = new Classes(2, 0, "Differential Equations", "MATH267");
+            Classes class3 = new Classes(3, 17, "Calc 2", "MATH166");
+
+            classesRepository.deleteAll();
+            classesRepository.save(class1);
+            classesRepository.save(class2);
+            classesRepository.save(class3);
+        };
+    }
+
+ */
+
+
+        };
+    }
 }

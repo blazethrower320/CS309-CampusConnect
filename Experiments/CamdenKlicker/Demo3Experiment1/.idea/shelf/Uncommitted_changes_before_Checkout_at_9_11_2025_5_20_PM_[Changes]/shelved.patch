@@ -1,0 +1,50 @@
+Index: app/src/main/java/com/example/androidexample/MainActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.androidexample;\r\n\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport android.content.Intent;\r\nimport android.os.Bundle;\r\nimport android.view.View;\r\nimport android.widget.Button;\r\nimport android.widget.TextView;\r\n\r\nimport org.w3c.dom.Text;\r\n\r\npublic class MainActivity extends AppCompatActivity {\r\n\r\n    private TextView messageText;     // define message textview variable\r\n    private Button counterButton;     // define counter button variable\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_main);             // link to Main activity XML\r\n\r\n        /* initialize UI elements */\r\n        messageText = findViewById(R.id.main_msg_txt);      // link to message textview in the Main activity XML\r\n        counterButton = findViewById(R.id.main_counter_btn);// link to counter button in the Main activity XML\r\n\r\n        /* extract data passed into this activity from another activity */\r\n        Bundle extras = getIntent().getExtras();\r\n        if(extras == null) {\r\n            messageText.setText(\"Intent Example\");\r\n        } else {\r\n            String number = extras.getString(\"NUM\");  // this will come from LoginActivity\r\n            String number2 = extras.getString(\"NUM2\");  // this will come from LoginActivity\r\n            messageText.setText(\"The score was \" + number + \" to \" + number2);\r\n        }\r\n\r\n        /* click listener on counter button pressed */\r\n        counterButton.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n\r\n                /* when counter button is pressed, use intent to switch to Counter Activity */\r\n                Intent intent = new Intent(MainActivity.this, CounterActivity.class);\r\n                startActivity(intent);\r\n            }\r\n        });\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/androidexample/MainActivity.java b/app/src/main/java/com/example/androidexample/MainActivity.java
+--- a/app/src/main/java/com/example/androidexample/MainActivity.java	(revision 7fe1e07f860965c6b56f95a3b19bd49d9554459f)
++++ b/app/src/main/java/com/example/androidexample/MainActivity.java	(date 1757629076504)
+@@ -12,8 +12,7 @@
+ 
+ public class MainActivity extends AppCompatActivity {
+ 
+-    private TextView messageText;     // define message textview variable
+-    private Button counterButton;     // define counter button variable
++    private TextView messageText;   // define message textview variable
+ 
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+@@ -22,27 +21,6 @@
+ 
+         /* initialize UI elements */
+         messageText = findViewById(R.id.main_msg_txt);      // link to message textview in the Main activity XML
+-        counterButton = findViewById(R.id.main_counter_btn);// link to counter button in the Main activity XML
+-
+-        /* extract data passed into this activity from another activity */
+-        Bundle extras = getIntent().getExtras();
+-        if(extras == null) {
+-            messageText.setText("Intent Example");
+-        } else {
+-            String number = extras.getString("NUM");  // this will come from LoginActivity
+-            String number2 = extras.getString("NUM2");  // this will come from LoginActivity
+-            messageText.setText("The score was " + number + " to " + number2);
+-        }
+-
+-        /* click listener on counter button pressed */
+-        counterButton.setOnClickListener(new View.OnClickListener() {
+-            @Override
+-            public void onClick(View v) {
+-
+-                /* when counter button is pressed, use intent to switch to Counter Activity */
+-                Intent intent = new Intent(MainActivity.this, CounterActivity.class);
+-                startActivity(intent);
+-            }
+-        });
++        messageText.setText("Hello World");
+     }
+ }
+\ No newline at end of file

@@ -47,6 +47,7 @@ public class Tutor {
     public String getUsername(){ return username; }
     //public long getUserId() { return userId; }
     public long getTutorId() { return tutorId; }
+
     public int gettotalClasses() { return totalClasses; }
     public double getTotalRating() { return totalRating; }
 

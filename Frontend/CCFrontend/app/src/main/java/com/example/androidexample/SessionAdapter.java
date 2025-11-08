@@ -48,13 +48,13 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.ViewHold
         String tutor = s.getTutorUsername() != null ? s.getTutorUsername() : "Loading tutor...";
         holder.tutorUsername.setText("Tutor: " + tutor);
 
-        // 🧠 Join Button State Logic
+
         if (s.isJoined()) {
             holder.joinButton.setText("Joined");
             holder.joinButton.setEnabled(false);
             holder.joinButton.setAlpha(0.6f);
         } else {
-            holder.joinButton.setText("Join Session");
+            holder.joinButton.setText("Join");
             holder.joinButton.setEnabled(true);
             holder.joinButton.setAlpha(1f);
         }

@@ -62,7 +62,7 @@ public class CreateSessionActivity extends AppCompatActivity {
                 return;
             }
 
-            // ✅ Step 1: Fetch the tutorId using /users/getTutor/{userId}
+            //  Fetch the tutorId using /users/getTutor/{userId}
             String userUrl = BASE_URL + "/users/getTutor/" + userId;
 
             JsonObjectRequest userRequest = new JsonObjectRequest(Request.Method.GET, userUrl, null,
@@ -74,7 +74,7 @@ public class CreateSessionActivity extends AppCompatActivity {
                             //   "name": "John Doe",
                             //   ...
                             // }
-                            int tutorId = response.optInt("tutorID", -1);
+                            int tutorId = response.optInt("tutorId", -1);
 
                             if (tutorId != -1) {
                                 Log.d("CreateSession", "Fetched tutorId: " + tutorId);
@@ -108,7 +108,7 @@ public class CreateSessionActivity extends AppCompatActivity {
         });
     }
 
-    // ✅ Step 2: Use fetched tutorId to create a new session
+    //  Use fetched tutorId to create a new session
     private void createSession(int userId, int tutorId, String className, String classCode,
                                String meetingLocation, String meetingTime) {
 
@@ -117,12 +117,15 @@ public class CreateSessionActivity extends AppCompatActivity {
 
         JSONObject sessionData = new JSONObject();
         try {
-            sessionData.put("userId", userId);
             sessionData.put("tutorId", tutorId);
             sessionData.put("className", className);
             sessionData.put("classCode", classCode);
             sessionData.put("meetingLocation", meetingLocation);
             sessionData.put("meetingTime", meetingTime);
+
+            // recommended but optional — backend will usually generate
+            sessionData.put("dateCreated", java.time.LocalDateTime.now().toString());
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

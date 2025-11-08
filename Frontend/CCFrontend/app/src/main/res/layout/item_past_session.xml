@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="4dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@drawable/nestedlayout_bg">
+
+        <!-- Session Title / Course Name -->
+        <TextView
+            android:id="@+id/session_course_name_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="COM S 309"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <!-- Date of the Session -->
+        <TextView
+            android:id="@+id/session_date_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="October 26, 2025"
+            android:textColor="#CCCCCC"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp"/>
+
+        <!-- Optional: Session Summary or Notes -->
+        <TextView
+            android:id="@+id/session_summary_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Covered topics on Android Development and WebSockets."
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:layout_marginTop="8dp"
+            android:maxLines="2"
+            android:ellipsize="end"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
