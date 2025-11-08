@@ -1,18 +1,22 @@
 package com.example.androidexample;
 
 //Class for ChatMessage Objects(individual message bubbles)
-public class ChatMessage
-{
-    private String text;
+public class ChatMessage {
+    private String content;
+    private boolean isSentByUser;
+    private int messageType; // 0 for "TEXT", 1 for "IMAGE
 
-    public ChatMessage(String text)
+    public ChatMessage(String content, boolean isSentByUser, int messageType)
     {
-        this.text = text;
+        this.content = content;
+        this.isSentByUser = isSentByUser;
+        this.messageType = messageType;
     }
 
-    public String getText()
-    {
-        return text;
-    }
+    // Add getters for all three fields
+    public String getContent() { return content; }
+    public boolean isSentByUser() { return isSentByUser; }
+    public int getMessageType() { return messageType; }
 }
+
     

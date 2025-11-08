@@ -60,12 +60,16 @@ public class WebSocketManager {
      *
      * @param serverUrl The URL of the WebSocket server to connect to.
      */
-    public void connectWebSocket(String serverUrl) {
-        try {
+    public void connectWebSocket(String serverUrl)
+    {
+        try
+        {
             URI serverUri = URI.create(serverUrl);
             webSocketClient = new MyWebSocketClient(serverUri);
             webSocketClient.connect();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
@@ -88,7 +92,8 @@ public class WebSocketManager {
      * WebSocket server.
      */
     public void disconnectWebSocket() {
-        if (webSocketClient != null) {
+        if (webSocketClient != null)
+        {
             webSocketClient.close();
         }
     }
@@ -96,6 +101,8 @@ public class WebSocketManager {
     public boolean isConnected() {
         return webSocketClient != null && webSocketClient.isOpen();
     }
+
+
 
 
     /**
