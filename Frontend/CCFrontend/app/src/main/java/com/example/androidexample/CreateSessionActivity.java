@@ -55,7 +55,7 @@ public class CreateSessionActivity extends AppCompatActivity {
             String className = editClassName.getText().toString().trim();
             String classCode = editClassCode.getText().toString().trim();
             String meetingLocation = editMeetingLocation.getText().toString().trim();
-            String meetingTime = editMeetingTime.getText().toString().trim();
+            String meetingTime = editMeetingTime.getText().toString();
 
             if (className.isEmpty() || classCode.isEmpty() || meetingLocation.isEmpty() || meetingTime.isEmpty()) {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();

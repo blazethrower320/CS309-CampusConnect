@@ -42,8 +42,8 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.ViewHold
 
         holder.className.setText(s.getClassName());
         holder.classCode.setText(s.getClassCode());
-        holder.meetingLocation.setText("Location: " + s.getMeetingLocation());
-        holder.meetingTime.setText("Time: " + s.getMeetingTime());
+        holder.meetingLocation.setText(s.getMeetingLocation());
+        holder.meetingTime.setText(s.getMeetingTime());
 
         String tutor = s.getTutorUsername() != null ? s.getTutorUsername() : "Loading tutor...";
         holder.tutorUsername.setText("Tutor: " + tutor);
