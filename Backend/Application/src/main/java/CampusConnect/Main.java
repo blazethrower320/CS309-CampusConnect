@@ -31,16 +31,18 @@ class Main {
     }
 
     // Create 3 users with their machines
+
     /**
      *
      * @param userRepository repository for the User entity
-     * Creates a commandLine runner to enter dummy data into the database
-     * As mentioned in User.java just associating the Laptop object with the User will save it into the database because of the CascadeType
+     *                       Creates a commandLine runner to enter dummy data into the database
+     *                       As mentioned in User.java just associating the Laptop object with the User will save it into the database because of the CascadeType
      */
     @Bean
     CommandLineRunner initData(UserRepository userRepository, TutorRepository tutorRepository, ClassesRepository classesRepository, AdminsRepository adminsRepository, SessionsRepository sessionsRepository) {
         return args -> {
-            // Clear tables first
+
+         /*   // Clear tables first
             sessionsRepository.deleteAll();
             tutorRepository.deleteAll();
             classesRepository.deleteAll();
@@ -104,7 +106,8 @@ class Main {
 
         };
     }
-
+          */
+/*
     @Bean
     CommandLineRunner initClasses(ClassesRepository classesRepository) {
         return args -> {
@@ -116,6 +119,12 @@ class Main {
             classesRepository.save(class1);
             classesRepository.save(class2);
             classesRepository.save(class3);
+        };
+    }
+
+ */
+
+
         };
     }
 }

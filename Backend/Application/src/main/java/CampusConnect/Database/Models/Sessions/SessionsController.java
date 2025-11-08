@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Set;
 
@@ -28,20 +29,40 @@ public class SessionsController
     @Autowired
     private UserRepository userRepository;
 
-
-    @GetMapping(path = "/sessions/inactive")
-    public List<Sessions> getCurrentSessions() {
-        LocalDateTime currentTime = LocalDateTime.now();
-        return sessionsRepository.findAll().stream()
-                .filter(s -> s.getDateCreated().isAfter(currentTime.minusHours(1))) // not yet ended
-                .toList();
+    @GetMapping(path = "/sessions")
+    public List<Sessions> getSessions(){
+        return sessionsRepository.findAll();
     }
 
     @GetMapping(path = "/sessions/inactive")
-    public List<Sessions> getPastSessions() {
+    public List<Sessions> getPreviousSessions() {
         LocalDateTime currentTime = LocalDateTime.now();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a");
         return sessionsRepository.findAll().stream()
-                .filter(s -> s.getDateCreated().isBefore(currentTime.minusHours(1))) // not yet ended
+                .filter(s -> {
+                    try {
+                        if (s.getMeetingTime() == null) return false;
+                        return s.getMeetingTime().isBefore(currentTime) || s.getMeetingTime().isEqual(currentTime);
+                    } catch (Exception e) {
+                        return false;
+                    }
+                })
+                .toList();
+    }
+
+    @GetMapping(path = "/sessions/active")
+    public List<Sessions> getCurrentSessions() {
+        LocalDateTime currentTime = LocalDateTime.now();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a");
+        return sessionsRepository.findAll().stream()
+                .filter(s -> {
+                    try {
+                        if (s.getMeetingTime() == null) return false;
+                        return s.getMeetingTime().isAfter(currentTime);
+                    } catch (Exception e) {
+                        return false;
+                    }
+                })
                 .toList();
     }
 
@@ -83,8 +104,8 @@ public class SessionsController
         sessionsService.addUser(username, sessionId);
         sessionsRepository.save(session);
 
-        Long tutorId = sessionsRepository.getSessionsBySessionId(sessionId).getTutor().getTutorID();
-        String message =  user.getUsername() + "joined your study session: " + session.getClassName();
+        Long tutorId = sessionsRepository.getSessionsBySessionId(sessionId).getTutor().getTutorId();
+        String message =  user.getUsername() + " joined your study session: " + session.getClassName();
         PushSocket.sendNotificationToTutor(tutorId, message);
 
         return session;
@@ -113,9 +134,14 @@ public class SessionsController
         if(session == null){
             throw new RuntimeException("Session not found");
         }
-        session.setMeetingTime(time);
-        return sessionsRepository.save(session);
-
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a");
+        try {
+            LocalDateTime meetingTime = LocalDateTime.parse(time, formatter);
+            session.setMeetingTime(meetingTime);
+            return sessionsRepository.save(session);
+        } catch (DateTimeParseException e) {
+            throw new RuntimeException("Invalid date/time format. Use MM/dd/yyyy hh:mm a");
+        }
     }
 
     @PatchMapping("/sessions/setMeetingLocation/{location}/{sessionId}")
@@ -131,6 +157,12 @@ public class SessionsController
     @GetMapping("/sessions/getMeetingDate/{sessionId}")
     public String getMeetingTime(@PathVariable long sessionId)
     {
-        return sessionsRepository.getSessionsBySessionId(sessionId).getMeetingTime();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a");
+
+        Sessions session = sessionsRepository.getSessionsBySessionId(sessionId);
+        if(session == null || session.getMeetingTime() == null) {
+            throw new RuntimeException("Meeting time does not exist");
+        }
+        return session.getMeetingTime().format(format);
     }
 }

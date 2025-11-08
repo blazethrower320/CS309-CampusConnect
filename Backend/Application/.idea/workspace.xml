@@ -4,7 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d29c9f1-ee49-4c0f-98ba-fc2545596b57" name="Changes" comment="Added mapping for sessions feature. Sessions mapped with tutor and users table.">
+    <list default="true" id="6d29c9f1-ee49-4c0f-98ba-fc2545596b57" name="Changes" comment="Merge branch 'main' of https://git.las.iastate.edu/cs309/2025fall/3_hosen_1 into SessionsFeature&#10;&#10;# Conflicts:&#10;#&#9;Backend/Application/.idea/workspace.xml">
+      <change afterPath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/java/com/example/androidexample/ChatActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/java/com/example/androidexample/ChatMessage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/java/com/example/androidexample/MessageAdapter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/java/com/example/androidexample/PastSessionAdapter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/java/com/example/androidexample/RatingItem.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/java/com/example/androidexample/RatingListAdapter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/res/drawable/baseline_add_circle_24.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/res/drawable/ic_notification.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/res/drawable/message_bubble.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/res/drawable/sendbtn.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/res/drawable/star.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/res/layout/item_chat_message.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/res/layout/item_past_session.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/res/layout/item_rating.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/res/layout/messagespage.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../.idea/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../.idea/3_hosen_1.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../.idea/caches/deviceStreaming.xml" beforeDir="false" />
@@ -12,6 +27,7 @@
       <change beforePath="$PROJECT_DIR$/../../.idea/modules.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../.idea/vcs.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/TutorRequest.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/UserService.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/workspace.xml" beforeDir="false" />
@@ -905,8 +921,8 @@
       <change beforePath="$PROJECT_DIR$/../../Experiments/CarsonTorrey/tutorials-unit3_1_one_websocket/WebSocketAndorid/app/src/main/AndroidManifest.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Experiments/CarsonTorrey/tutorials-unit3_1_one_websocket/WebSocketAndorid/app/src/main/java/com/example/androidexample/ChatActivity.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Experiments/CarsonTorrey/tutorials-unit3_1_one_websocket/WebSocketAndorid/app/src/main/java/com/example/androidexample/MainActivity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Experiments/CarsonTorrey/tutorials-unit3_1_one_websocket/WebSocketAndorid/app/src/main/java/com/example/androidexample/WebSocketListener.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Experiments/CarsonTorrey/tutorials-unit3_1_one_websocket/WebSocketAndorid/app/src/main/java/com/example/androidexample/WebSocketManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Experiments/CarsonTorrey/tutorials-unit3_1_one_websocket/WebSocketAndorid/app/src/main/java/com/example/androidexample/WebSocketListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/java/com/example/androidexample/WebSocketListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Experiments/CarsonTorrey/tutorials-unit3_1_one_websocket/WebSocketAndorid/app/src/main/java/com/example/androidexample/WebSocketManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/java/com/example/androidexample/WebSocketManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Experiments/CarsonTorrey/tutorials-unit3_1_one_websocket/WebSocketAndorid/app/src/main/res/drawable/ic_launcher_background.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Experiments/CarsonTorrey/tutorials-unit3_1_one_websocket/WebSocketAndorid/app/src/main/res/drawable/ic_launcher_foreground.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Experiments/CarsonTorrey/tutorials-unit3_1_one_websocket/WebSocketAndorid/app/src/main/res/layout/activity_chat.xml" beforeDir="false" />
@@ -1070,7 +1086,7 @@
       <change beforePath="$PROJECT_DIR$/../../Experiments/CarsonTorrey/tutorials-unit3_2_websockets/websocket3/testClient.html" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Experiments/PreetPatel/Unit3/.idea/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Experiments/PreetPatel/Unit3/.idea/Unit3.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Experiments/PreetPatel/Unit3/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Experiments/PreetPatel/Unit3/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Experiments/PreetPatel/Unit3/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Experiments/PreetPatel/Unit3/.idea/encodings.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Experiments/PreetPatel/Unit3/.idea/gradle.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Experiments/PreetPatel/Unit3/.idea/jarRepositories.xml" beforeDir="false" />
@@ -2135,7 +2151,23 @@
       <change beforePath="$PROJECT_DIR$/../../Experiments/William_R/Mini_Demo3/tutorials-unit3_1_one_websocket/AndroidExample/.gradle/8.0/executionHistory/executionHistory.bin" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Experiments/William_R/Mini_Demo3/tutorials-unit3_1_one_websocket/AndroidExample/.gradle/8.0/executionHistory/executionHistory.lock" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Experiments/William_R/Mini_Demo3/tutorials-unit3_1_one_websocket/AndroidExample/.gradle/8.0/fileChanges/last-build.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/java/com/example/androidexample/CreateSessionActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/java/com/example/androidexample/CreateSessionActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/java/com/example/androidexample/EditProfileActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/java/com/example/androidexample/EditProfileActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/java/com/example/androidexample/ProfileActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/java/com/example/androidexample/ProfileActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/java/com/example/androidexample/ReviewListActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/java/com/example/androidexample/ReviewListActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/java/com/example/androidexample/SessionActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/java/com/example/androidexample/SessionActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/java/com/example/androidexample/SessionAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/java/com/example/androidexample/SessionAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/java/com/example/androidexample/TutorListAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/java/com/example/androidexample/TutorListAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/java/com/example/androidexample/TutorReviewsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/java/com/example/androidexample/TutorReviewsActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/res/layout/activity_edit_profile.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/res/layout/activity_edit_profile.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/res/layout/activity_main_menu.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/res/layout/activity_main_menu.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/res/layout/activity_profile.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/res/layout/activity_profile.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/res/layout/activity_tutor_reviews.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/res/layout/activity_tutor_reviews.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/res/layout/item_tutor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/res/layout/item_tutor.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/res/values/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Frontend/CCFrontend/app/src/main/res/values/styles.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -2189,8 +2221,9 @@
     "Application.Main.executor": "Run",
     "Maven.CampusConnect [package].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "William-Week10",
+    "git-widget-placeholder": "!65 on Merging SessionsFeature",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/messi/ComS309/3_hosen_1/Backend/Application/src/main/java/CampusConnect/WebSockets/Push",
     "node.js.detected.package.eslint": "true",
