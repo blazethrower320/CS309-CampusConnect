@@ -34,6 +34,7 @@ public class Push {
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    public Push(){}
 
     //private LocalDateTime createdAt;
     public Push(long tutorId, String message){
