@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2d2e7427-f596-4178-9bee-0be0d19f6703" name="Changes" comment="" />
+    <list default="true" id="2d2e7427-f596-4178-9bee-0be0d19f6703" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../../../Backend/Application/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../Backend/Application/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Backend/Application/src/main/java/CampusConnect/Database/Models/Tutors/TutorRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../Backend/Application/src/main/java/CampusConnect/Database/Models/Tutors/TutorRepository.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
