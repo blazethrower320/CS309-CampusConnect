@@ -128,6 +128,8 @@
 
 - ## Sessions
     - GET | `/sessions` - Returns a JSON of Sessions <br>
+    - Get | `/sessions/inactive` - Returns a List<Sessions> of sessions that are past their meeting date<br>
+    - Get | `/sessions/active` - Returns a List<Sessions> of sessions that are before their meeting date<br>
     - POST | `/sessions/createSession` - Creates a New Session with the Tutor, Also includes them as a Member<br>
         ```json
         {
