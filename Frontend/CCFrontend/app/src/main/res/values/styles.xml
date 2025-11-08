@@ -9,4 +9,9 @@
         <item name="android:textColorHint">#BBBBBB</item>
         <item name="android:background">@drawable/btn_outline</item>
     </style>
+
+    <style name="RatingBarTheme">
+        <item name="colorControlActivated">#FFD700</item> <!-- Gold when selected -->
+        <item name="colorControlNormal">#B0B0B0</item>    <!-- Gray when not selected -->
+    </style>
 </resources>

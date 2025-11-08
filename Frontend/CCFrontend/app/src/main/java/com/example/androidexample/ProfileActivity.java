@@ -22,12 +22,20 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener
 {
+    private RecyclerView pastSessionsRecyclerView;
+    private PastSessionAdapter sessionAdapter;
+    private List<Session> pastSessionList;
     //Text Fields
     private TextView roleText;
     private TextView nameText;
@@ -35,9 +43,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private TextView bioText;
     private TextView majorText;
     private TextView classificationText;
-    private TextView contactInfoText;
+
+    //Tutor Profile fields
+    private LinearLayout ratingLayout;
+    private TextView tutorRatingText;
+    private TextView tutorRatingValue;
 
     //Buttons
+    private Button msgBtn; //Message button on profile
     private Button logoutBtn; //Logout button
     private ImageButton editProfileBtn; //Edit profile btn
     private ImageButton menuBtn; //Three line btn
@@ -58,7 +71,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private String bio;
     private String major;
     private String classification;
-    private String contactInfo;
     private String firstName;
     private String lastName;
 
@@ -70,6 +82,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         //Initialize UI elements
 
+        //Tutor UI
+        ratingLayout = findViewById(R.id.rating_layout);
+        tutorRatingText = findViewById(R.id.tutor_rating_text);
+        tutorRatingValue = findViewById(R.id.rating_value);
+
         //Text Fields
         roleText = findViewById(R.id.role_text);
         nameText = findViewById(R.id.name_text);
@@ -77,14 +94,24 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         bioText = findViewById(R.id.bio_text);
         majorText = findViewById(R.id.major_text);
         classificationText = findViewById(R.id.classification_text);
-        contactInfoText = findViewById(R.id.contactInfo_text);
 
         //Buttons
+        msgBtn = findViewById(R.id.message_btn);
         menuBtn = findViewById(R.id.menu_button);
         logoutBtn = findViewById(R.id.logout_btn);
         homeBtn = findViewById(R.id.nav_home);
         sessionsBtn = findViewById(R.id.nav_sessions);
         editProfileBtn = findViewById(R.id.edit_profile_btn);
+
+        //Past Sessions
+        pastSessionsRecyclerView = findViewById(R.id.past_sessions_recycler_view);
+        pastSessionsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // In a real app, you would fetch this data from your backend
+        loadDummySessionData();
+
+        sessionAdapter = new PastSessionAdapter(pastSessionList);
+        pastSessionsRecyclerView.setAdapter(sessionAdapter);
 
 
         //Call GetUserInfo TODO IMPORTANT BUT COMPLETE!!!
@@ -94,16 +121,17 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         GetUserInfo(username);
 
         //initialize user data
-        //username = getIntent().getStringExtra("username");
-        //userId = getIntent().getIntExtra("userId", -1);
+        username = getIntent().getStringExtra("username");
+        userId = getIntent().getIntExtra("userId", -1);
         isAdmin = getIntent().getBooleanExtra("isAdmin", false);
         isTutor = getIntent().getBooleanExtra("isTutor", false);
-        //password = getIntent().getStringExtra("password");
+        password = getIntent().getStringExtra("password");
 
         //Menu Bar
         drawerLayout = findViewById(R.id.drawer_layout);
 
         //set button listeners to be active
+        msgBtn.setOnClickListener(this);
         homeBtn.setOnClickListener(this);
         sessionsBtn.setOnClickListener(this);
         logoutBtn.setOnClickListener(this);
@@ -114,14 +142,20 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         if(isAdmin)
         {
             roleText.setText("Admin");
+            ratingLayout.setVisibility(View.GONE);
+            tutorRatingText.setVisibility(View.GONE);
         }
         else if(isTutor)
         {
             roleText.setText("Tutor");
+            ratingLayout.setVisibility(View.VISIBLE);
+            tutorRatingText.setVisibility(View.VISIBLE);
         }
         else
         {
             roleText.setText("Student");
+            ratingLayout.setVisibility(View.GONE);
+            tutorRatingText.setVisibility(View.GONE);
         }
         nameText.setText("First Last");
 
@@ -131,6 +165,23 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v)
     {
         int id = v.getId();
+        if(id == R.id.message_btn)
+        {
+            //TODO not all fields needed
+            Intent intent = new Intent(ProfileActivity.this, ChatActivity.class);
+            intent.putExtra("username", username);
+            intent.putExtra("userId", userId);
+            intent.putExtra("isAdmin", isAdmin);
+            intent.putExtra("isTutor", isTutor);
+            intent.putExtra("bio", bio);
+            intent.putExtra("major", major);
+            intent.putExtra("classification", classification);
+            intent.putExtra("firstName", firstName);
+            intent.putExtra("lastName", lastName);
+            intent.putExtra("password", password);
+            startActivity(intent);
+            finish();
+        }
         if (id == R.id.logout_btn)
         {
             startActivity(new Intent(ProfileActivity.this, MainActivity.class));
@@ -158,7 +209,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             intent.putExtra("bio", bio);
             intent.putExtra("major", major);
             intent.putExtra("classification", classification);
-            intent.putExtra("contactInfo", contactInfo);
             intent.putExtra("firstName", firstName);
             intent.putExtra("lastName", lastName);
             intent.putExtra("password", password);
@@ -187,7 +237,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             startActivity(intent);
             finish();
         }
-
     }
 
     public void GetUserInfo(String username)
@@ -214,7 +263,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                             bio = response.optString("bio", "No bio available.");
                             major = response.optString("major", "Undeclared");
                             classification = response.optString("classification", "N/A");
-                            contactInfo = response.optString("contactInfo", "Not provided");
                             isTutor = response.optBoolean("isTutor", false);
                             isAdmin = response.optBoolean("isAdmin", false);
 
@@ -225,7 +273,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                             bioText.setText(bio);
                             majorText.setText(major);
                             classificationText.setText(classification);
-                            contactInfoText.setText(contactInfo);
 
                             // Optionally, update the role based on the fetched data for accuracy
                             if (isAdmin)
@@ -263,5 +310,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
             // Add the request to the queue to be executed
             queue.add(jsonObjectRequest);
+    }
+
+    //TODO Talk with Preet to load past session data
+    private void loadDummySessionData()
+    {
+        pastSessionList = new ArrayList<>();
+        //pastSessionList.add(new Session(1, "Software Dev Practices", "COM S 309", "Nov 4, 2025", "3:00", "TutorExample"));
+        //pastSessionList.add(new Session(2, "Math Class", "MATH 265", "Nov 1, 2025", "3:00", "TutorExample"));// Add more sessions as needed
     }
 }

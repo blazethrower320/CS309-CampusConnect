@@ -8,20 +8,19 @@
     android:background="#5B5B5B"
     tools:context=".TutorReviewsActivity">
 
-    <!-- Top bar container -->
+    <!-- Top bar -->
     <LinearLayout
         android:id="@+id/top_bar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center_vertical"
         android:padding="16dp"
+        android:gravity="center_vertical"
+        android:background="@drawable/menubar_layout"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/menubar_layout">
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Back button -->
         <ImageButton
             android:id="@+id/back_button"
             android:layout_width="40dp"
@@ -31,30 +30,69 @@
             android:contentDescription="Back"
             app:tint="#FFFFFF" />
 
-        <!-- Page title -->
         <TextView
             android:id="@+id/reviews_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="85dp"
-            android:text="Tutor Reviews"
+            android:layout_marginStart="16dp"
+            android:text="Rate a Tutor"
             android:textColor="#FFFFFF"
             android:textSize="20sp"
             android:textStyle="bold" />
     </LinearLayout>
 
-    <!-- Placeholder content area (for reviews list) -->
-    <TextView
-        android:id="@+id/placeholder_text"
-        android:layout_width="wrap_content"
+    <!-- Rating input area -->
+    <LinearLayout
+        android:id="@+id/input_area"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Reviews will appear here"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="#444"
         app:layout_constraintTop_toBottomOf="@id/top_bar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:stepSize="1.0"
+            android:isIndicator="false"
+            android:layout_gravity="center_horizontal"
+            android:theme="@style/RatingBarTheme"/>
+
+        <EditText
+            android:id="@+id/comment_box"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:hint="Write a comment..."
+            android:background="@drawable/btn_outline"
+            android:gravity="top|start"
+            android:padding="12dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#CCCCCC" />
+
+        <Button
+            android:id="@+id/submit_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Submit Rating"
+            android:backgroundTint="#FFC107"
+            android:textColor="#000000"
+            android:layout_marginTop="8dp" />
+    </LinearLayout>
+
+    <!-- Ratings list -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/reviewsRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="8dp"
+        app:layout_constraintTop_toBottomOf="@id/input_area"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:gravity="center" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

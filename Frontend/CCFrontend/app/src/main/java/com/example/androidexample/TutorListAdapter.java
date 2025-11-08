@@ -24,18 +24,23 @@ public class TutorListAdapter extends RecyclerView.Adapter<TutorListAdapter.Tuto
 
     private List<TutorItem> tutorList;
     private List<TutorItem> tutorListFull; // copy for filtering
-    private OnTutorClickListener listener;
+    private OnTutorClickListenerWithReviews listener;
     private Context context;
 
     private static final String BASE_URL = "http://coms-3090-037.class.las.iastate.edu:8080";
     private static final String TAG = "TutorListAdapter";
 
-    public TutorListAdapter(Context context, List<TutorItem> tutorList, OnTutorClickListener listener) {
-        this.context = context; // Set context here
+    public TutorListAdapter(Context context, List<TutorItem> tutorList, OnTutorClickListenerWithReviews listener) {
+        this.context = context;
         this.tutorList = tutorList;
         this.tutorListFull = new ArrayList<>(tutorList);
         this.listener = listener;
     }
+
+    public interface OnTutorClickListenerWithReviews extends OnTutorClickListener {
+        void onReviewsClicked(TutorItem tutor);
+    }
+
 
     @NonNull
     @Override
@@ -49,6 +54,7 @@ public class TutorListAdapter extends RecyclerView.Adapter<TutorListAdapter.Tuto
     public void onBindViewHolder(@NonNull TutorViewHolder holder, int position) {
         TutorItem tutor = tutorList.get(position);
         holder.usernameText.setText("@" + tutor.username);
+        holder.ratingValue.setText(String.format("%.1f", tutor.rating));
 
         // If first/last name are already set, display them
         if (tutor.displayName != null && !tutor.displayName.isEmpty()) {
@@ -59,6 +65,12 @@ public class TutorListAdapter extends RecyclerView.Adapter<TutorListAdapter.Tuto
         }
 
         holder.itemView.setOnClickListener(v -> listener.onTutorClicked(tutor));
+        holder.reviewsButton.setOnClickListener(v -> {
+            if (listener instanceof OnTutorClickListenerWithReviews) {
+                ((OnTutorClickListenerWithReviews) listener).onReviewsClicked(tutor);
+            }
+        });
+
     }
 
     private void fetchTutorName(TutorItem tutor, TutorViewHolder holder) {
@@ -159,13 +171,17 @@ public class TutorListAdapter extends RecyclerView.Adapter<TutorListAdapter.Tuto
     }
 
     static class TutorViewHolder extends RecyclerView.ViewHolder {
-        TextView nameText, usernameText;
+
+        TextView nameText, usernameText, reviewsButton, ratingValue;
 
         public TutorViewHolder(@NonNull View itemView) {
             super(itemView);
             nameText = itemView.findViewById(R.id.tutor_name);
             usernameText = itemView.findViewById(R.id.tutor_username);
+            reviewsButton = itemView.findViewById(R.id.btn_reviews);
+            ratingValue = itemView.findViewById(R.id.tv_rating_value);
         }
+
     }
 
     public interface OnTutorClickListener {
