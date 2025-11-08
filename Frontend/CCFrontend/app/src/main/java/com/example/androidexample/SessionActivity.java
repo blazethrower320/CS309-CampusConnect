@@ -94,9 +94,6 @@ public class SessionActivity extends AppCompatActivity implements WebSocketListe
         isTutor = getIntent().getBooleanExtra("isTutor", false);
         userId = getIntent().getIntExtra("userId", -1);
 
-        if (isTutor) {
-            createSession.setVisibility(View.VISIBLE);
-        }
 
         LinearLayout homeButton = findViewById(R.id.nav_home);
         homeButton.setOnClickListener(v -> {
@@ -157,10 +154,6 @@ public class SessionActivity extends AppCompatActivity implements WebSocketListe
             finish();
         });
 
-        WebSocketManager wsManager = WebSocketManager.getInstance();
-        wsManager.setWebSocketListener(this); // SessionActivity handles messages
-        wsManager.connectWebSocket("ws://coms-3090-037.class.las.iastate.edu:8080/ws"); // replace with actual WS UR }
-
 
         // --- New UI wiring ---
         majorSpinner = findViewById(R.id.major_spinner);
@@ -196,11 +189,17 @@ public class SessionActivity extends AppCompatActivity implements WebSocketListe
 
         sessionsRecycler.setAdapter(sessionAdapter);
 
-        // request queue
-        requestQueue = Volley.newRequestQueue(this);
+        requestQueue = Volley.newRequestQueue(this);  // ✅ only once
 
-        // fetch sessions from API then show them
-        fetchSessionsFromBackend();
+
+        if (isTutor) {
+            createSession.setVisibility(View.VISIBLE);
+        }
+
+// fetch sessions from API then show them
+        fetchSessionsFromBackend(); // also uses the same requestQueue
+
+
 
         // Spinner selection listener - filter list whenever selection changes
         majorSpinner.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
@@ -232,24 +231,29 @@ public class SessionActivity extends AppCompatActivity implements WebSocketListe
     }
 
     @Override
-    public void onWebSocketOpen(ServerHandshake handshakedata) {
-        Log.d("WebSocket", "Connected");
+    protected void onResume() {
+        super.onResume();
+        WebSocketManager.getInstance().setWebSocketListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        WebSocketManager.getInstance().removeWebSocketListener();
+    }
+
+    @Override
+    public void onWebSocketOpen(org.java_websocket.handshake.ServerHandshake handshakedata) {
+        Log.d("WebSocket", "Connected in ProfileActivity");
     }
 
     @Override
     public void onWebSocketMessage(String message) {
         Log.d("WebSocket", "Message: " + message);
-
-        // Example: parse JSON if your backend sends it
-        try {
-            JSONObject json = new JSONObject(message);
-            String title = json.optString("title", "Session Update");
-            String body = json.optString("body", message);
-
-            runOnUiThread(() -> showPushNotification(title, body));
-        } catch (JSONException e) {
-            runOnUiThread(() -> showPushNotification("Session Update", message));
-        }
+        runOnUiThread(() -> {
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            NotificationUtils.showPushNotification(this, "New Session Update", message);
+        });
     }
 
     @Override
@@ -291,7 +295,6 @@ public class SessionActivity extends AppCompatActivity implements WebSocketListe
     }
 
 
-
     private void sendPushForSessionJoin(Session session, String joiningUsername) {
         String url = BASE_URL + "/sessions/getSessionTutor/" + session.getSessionId();
 
@@ -315,7 +318,7 @@ public class SessionActivity extends AppCompatActivity implements WebSocketListe
         if (tutorId <= 0) return;
 
         String message = "Class: " + session.getClassName() + ", Joined by: " + joiningUsername;
-        String url = BASE_URL + "/testpush/" + tutorId + "?msg=" + message;
+        String url = BASE_URL + "/push/" + tutorId + "?msg=" + message;
 
         StringRequest pushRequest = new StringRequest(Request.Method.GET, url,
                 response -> Log.d("SessionActivity", "Push sent successfully: " + response),
@@ -381,6 +384,8 @@ public class SessionActivity extends AppCompatActivity implements WebSocketListe
     }
 
 
+
+
     /**
      * Applies spinner + search filters to the full session list and updates the RecyclerView adapter.
      */
@@ -426,25 +431,39 @@ public class SessionActivity extends AppCompatActivity implements WebSocketListe
                     "Session Notifications",
                     NotificationManager.IMPORTANCE_HIGH);
             channel.setDescription("Notifications for session updates");
+            channel.setLockscreenVisibility(NotificationCompat.VISIBILITY_PRIVATE); // hide sensitive info on lock screen
             notificationManager.createNotificationChannel(channel);
         }
+
+        // Clean up the message: remove URLs or unnecessary backend paths
+        String cleanMessage = message.replaceAll("http[s]?://\\S+", ""); // remove URLs
+        cleanMessage = cleanMessage.replaceAll("/sessions.*", ""); // remove backend endpoint paths if present
+
+        // Use BigTextStyle for longer content
+        NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle()
+                .bigText(cleanMessage)
+                .setBigContentTitle(title);
 
         // Intent when notification is clicked (optional: open app)
         Intent intent = new Intent(this, SessionActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId)
-                .setSmallIcon(R.drawable.ic_notification) // replace with your drawable
+                .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(title)
-                .setContentText(message)
+                .setContentText(cleanMessage)
+                .setStyle(bigTextStyle)
                 .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setTimeoutAfter(20000) // 20 seconds in milliseconds
                 .setContentIntent(pendingIntent);
 
         checkNotificationPermission();
         notificationManager.notify((int) System.currentTimeMillis(), builder.build());
     }
+
 
     private void checkNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // API 33+

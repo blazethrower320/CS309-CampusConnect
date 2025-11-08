@@ -2,7 +2,14 @@ package com.example.androidexample;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.app.MediaRouteButton;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -14,6 +21,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,6 +36,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -36,16 +47,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainMenuActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainMenuActivity extends AppCompatActivity implements View.OnClickListener, WebSocketListener {
     private static final String BASE_URL = "http://coms-3090-037.class.las.iastate.edu:8080";
     private static final String URL_DELETE_USER = BASE_URL + "/users/deleteUser";
 
+    private RequestQueue requestQueue;
+    private WebSocketManager wsManager;
     private Button logoutBtn;
     //private Button changeStatusBtn;
     //private Button setNumClassBtn;
     private TextView welcomeText;
 
     private Button deleteAccountBtn;
+
+    private static final int NOTIFICATION_PERMISSION_CODE = 1001;
 
     private ProgressBar loadingSpinner;
 
@@ -79,6 +94,8 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
         menuButton = findViewById(R.id.menu_button);
 
         loadingSpinner = findViewById(R.id.loading_spinner);
+
+        requestQueue = Volley.newRequestQueue(this);
 
         menuButton.setOnClickListener(v -> {
             if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -155,15 +172,14 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
 
         fetchUserSessions();
 
+
         // Admin-only buttons
         if (isAdmin)
         {
 
         }
-        else if (isTutor) // Tutor-only buttons
-        {
-            //numClassPanel.setVisibility(View.VISIBLE);
-            //changeStatusBtn.setVisibility(View.GONE);
+        else if (isTutor) {
+            connectWebSocketForTutor();
         }
         else
         {
@@ -173,10 +189,48 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
     }
 
     @Override
+    public void onWebSocketOpen(org.java_websocket.handshake.ServerHandshake handshakedata) {
+        Log.d("WebSocket", "Connected in MainMenuActivity");
+    }
+
+    @Override
+    public void onWebSocketMessage(String message) {
+        Log.d("WebSocket", "Received: " + message);
+        runOnUiThread(() -> showPushNotification("Session Update", message));
+    }
+
+    @Override
+    public void onWebSocketClose(int code, String reason, boolean remote) {
+        Log.d("WebSocket", "Closed: " + reason);
+    }
+
+    @Override
+    public void onWebSocketError(Exception ex) {
+        Log.e("WebSocket", "Error", ex);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        WebSocketManager.getInstance().setWebSocketListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        WebSocketManager.getInstance().removeWebSocketListener();
+    }
+
+
+
+    @Override
     public void onClick(View v) {
         if (v.getId() == R.id.logout_btn)
         {
             startActivity(new Intent(MainMenuActivity.this, MainActivity.class));
+            if (wsManager != null) {
+                wsManager.disconnectWebSocket();
+            }
             finish();
         }
         if (v.getId() == R.id.delete_account_btn)
@@ -283,6 +337,106 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
 
         Volley.newRequestQueue(this).add(request);
     }
+
+    private void checkNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // API 33+
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.POST_NOTIFICATIONS},
+                        NOTIFICATION_PERMISSION_CODE);
+            } else {
+                // Permission already granted, safe to post notification
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == NOTIFICATION_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, safe to post notifications
+                Log.d("Notifications", "Permission granted");
+            } else {
+                Toast.makeText(this, "Notification permission denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void showPushNotification(String title, String message) {
+        String channelId = "session_notifications";
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // Create notification channel for Android 8.0+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(channelId,
+                    "Session Notifications",
+                    NotificationManager.IMPORTANCE_HIGH);
+            channel.setDescription("Notifications for session updates");
+            channel.setLockscreenVisibility(NotificationCompat.VISIBILITY_PRIVATE); // hide sensitive info on lock screen
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        // Clean up the message: remove URLs or unnecessary backend paths
+        String cleanMessage = message.replaceAll("http[s]?://\\S+", ""); // remove URLs
+        cleanMessage = cleanMessage.replaceAll("/sessions.*", ""); // remove backend endpoint paths if present
+
+        // Use BigTextStyle for longer content
+        NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle()
+                .bigText(cleanMessage)
+                .setBigContentTitle(title);
+
+        // Intent when notification is clicked (optional: open app)
+        Intent intent = new Intent(this, SessionActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId)
+                .setSmallIcon(R.drawable.ic_notification)
+                .setContentTitle(title)
+                .setContentText(cleanMessage)
+                .setStyle(bigTextStyle)
+                .setAutoCancel(true)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setTimeoutAfter(20000) // 20 seconds in milliseconds
+                .setContentIntent(pendingIntent);
+
+        checkNotificationPermission();
+        notificationManager.notify((int) System.currentTimeMillis(), builder.build());
+    }
+
+    private void connectWebSocketForTutor() {
+        wsManager = WebSocketManager.getInstance();
+
+        // Only connect if not already connected
+        if (wsManager.isConnected()) {
+            wsManager.setWebSocketListener(this);
+            Log.d("WebSocket", "Already connected, listener set");
+            return;
+        }
+
+        String url = BASE_URL + "/tutors/getTutorFromUserId/" + userId; // API to get tutorId
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                response -> {
+                    int tutorId = response.optInt("tutorId", -1);
+                    if (tutorId > 0) {
+                        String wsUrl = "ws://coms-3090-037.class.las.iastate.edu:8080/push/" + tutorId;
+                        wsManager.setWebSocketListener(this);
+                        wsManager.connectWebSocket(wsUrl);
+                        Log.d("WebSocket", "Connecting to WS: " + wsUrl);
+                    } else {
+                        Log.e("WebSocket", "Tutor ID not found");
+                    }
+                },
+                error -> Log.e("WebSocket", "Failed to fetch tutor ID", error)
+        );
+
+        requestQueue.add(request);
+    }
+
+
 
 
     private void SetNumClasses() {
