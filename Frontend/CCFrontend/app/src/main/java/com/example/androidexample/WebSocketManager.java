@@ -92,7 +92,8 @@ public class WebSocketManager {
      * WebSocket server.
      */
     public void disconnectWebSocket() {
-        if (webSocketClient != null) {
+        if (webSocketClient != null)
+        {
             webSocketClient.close();
         }
     }

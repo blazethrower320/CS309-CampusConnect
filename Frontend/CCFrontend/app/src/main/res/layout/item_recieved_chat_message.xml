@@ -6,11 +6,11 @@
     android:padding="4dp">
 
     <TextView
-        android:id="@+id/message_text"
-        android:layout_gravity="right"
+        android:id="@+id/recieved_message_text"
+        android:layout_gravity="left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/message_bubble"
+        android:background="@drawable/recieved_message_bubble"
         android:padding="12dp"
         android:text="This is a sample message."
         android:textColor="@android:color/black"

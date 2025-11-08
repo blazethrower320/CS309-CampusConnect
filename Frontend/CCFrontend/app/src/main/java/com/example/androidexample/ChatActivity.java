@@ -11,11 +11,13 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.toolbox.Volley;
 
 import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONException;
@@ -23,9 +25,11 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class ChatActivity extends AppCompatActivity implements WebSocketListener {
 
@@ -37,13 +41,14 @@ public class ChatActivity extends AppCompatActivity implements WebSocketListener
     private List<ChatMessage> chatMessageList;
     private ActivityResultLauncher<Intent> imagePickerLauncher;
     int userId;
+    private String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.messagespage);
 
-        // Initialize UI elements
+        // Initialize UI
         sendBtn = findViewById(R.id.send_btn);
         imageBtn = findViewById(R.id.attatchment_btn);
         msgTxt = findViewById(R.id.message_edt);
@@ -51,177 +56,241 @@ public class ChatActivity extends AppCompatActivity implements WebSocketListener
 
         // Setup RecyclerView
         chatMessageList = new ArrayList<>();
-        // Assuming your MessageAdapter is updated for multiple view types
         messageAdapter = new MessageAdapter(chatMessageList);
         messagesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         messagesRecyclerView.setAdapter(messageAdapter);
 
-        // Connect to the WebSocket instance
+        // Get user info
+        userId = getIntent().getIntExtra("userId", -1);
+        username = "Chase"; // This should be dynamically loaded after login
+
+        // Setup WebSocket
         WebSocketManager.getInstance().setWebSocketListener(this);
-
-        // Connect to the WebSocket when the activity starts
-        try
-        {
+        try {
             String serverUrl = "ws://coms-3090-037.class.las.iastate.edu:8080/DM/{userId1}/{userId2}";
-            userId = getIntent().getIntExtra("userId", -1);
             serverUrl = serverUrl.replace("{userId1}", String.valueOf(userId));
-            Log.d("ChatActivity", "Current User ID: " + userId);
-            //TODO get other user sending message to
-            serverUrl = serverUrl.replace("{userId2}", "");
-
+            serverUrl = serverUrl.replace("{userId2}", "1"); // Placeholder for the other user
             WebSocketManager.getInstance().connectWebSocket(serverUrl);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        // --- IMAGE PICKER SETUP ---
+        // --- IMAGE PICKER LAUNCHER ---
         imagePickerLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    if (result.getResultCode() == RESULT_OK && result.getData() != null)
-                    {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         Uri selectedImageUri = result.getData().getData();
-                        if (selectedImageUri != null)
-                        {
-                            // Start the upload process
+                        if (selectedImageUri != null) {
+                            // Use the new HTTP upload method
                             uploadImageToServer(selectedImageUri);
                         }
                     }
                 });
 
-        imageBtn.setOnClickListener(v ->
-        {
+        imageBtn.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             imagePickerLauncher.launch(intent);
         });
 
-        // --- UPDATED SEND BUTTON LISTENER ---
+        // --- TEXT SEND BUTTON LISTENER ---
         sendBtn.setOnClickListener(v -> {
-            try {
-                String messageText = msgTxt.getText().toString();
-                if (!messageText.isEmpty()) {
-                    // 1. Construct JSON to send to server
+            String messageText = msgTxt.getText().toString();
+            if (!messageText.isEmpty()) {
+                try {
                     JSONObject messageJson = new JSONObject();
                     messageJson.put("type", 0);
                     messageJson.put("message", messageText);
                     WebSocketManager.getInstance().sendMessage(messageJson.toString());
 
-                    // 2. Add to UI immediately (Local Echo)
+                    // Add local echo for instant UI update
                     chatMessageList.add(new ChatMessage(messageText, true, 0));
                     messageAdapter.notifyItemInserted(chatMessageList.size() - 1);
                     messagesRecyclerView.scrollToPosition(chatMessageList.size() - 1);
-
-                    // 3. Clear input
                     msgTxt.setText("");
+                } catch (JSONException e) {
+                    Log.e("ChatActivity", "Error creating text JSON", e);
                 }
-            } catch (Exception e) {
-                Log.e("ExceptionSendMessage:", e.getMessage(), e);
             }
         });
     }
 
-    // --- UPDATED WEBSOCKET MESSAGE HANDLER ---
+    /**
+     * Handles uploading the image via HTTP multipart request.
+     * This is the industry-standard approach.
+     */
+    /**
+     * Handles uploading the image via HTTP multipart request.
+     * This is the industry-standard approach.
+     */
+    private void uploadImageToServer(Uri imageUri) {
+        // IMPORTANT: You need an HTTP endpoint from your backend team for this.
+        // This is NOT the WebSocket URL.
+        String uploadUrl = "http://coms-3090-037.class.las.iastate.edu:8080/images";
+
+        Toast.makeText(this, "Uploading...", Toast.LENGTH_SHORT).show();
+
+        VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, uploadUrl,
+                response -> {
+                    // SUCCESS: Server received the file and responded.
+                    try {
+                        Toast.makeText(getApplicationContext(), "Upload Success:", Toast.LENGTH_LONG).show();
+
+                        // The raw response from the server is a STRING (the URL)
+                        String imageUrl = new String(response.data);
+                        Log.d("HTTPUploadSuccess", "Server Response URL: " + imageUrl);
+                        // Now that we have the URL, send it over the WebSocket.
+                        sendImageUrlOverWebSocket(imageUrl);
+
+                    } catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), "Upload failed: Invalid server response", Toast.LENGTH_LONG).show();
+                        Log.e("HTTPUpload", "Response parsing error", e);
+                    }
+                },
+                error ->
+                {
+                    // ERROR: The HTTP upload failed.
+                    Toast.makeText(getApplicationContext(), "Upload failed: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                    Log.e("HTTPUpload", "Volley error", error);
+                })
+        {
+            /**
+             * ADDED: This method adds the extra text parameters to the request.
+             * The backend is expecting a 'type' field.
+             */
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                // Add the "type" parameter with the value "image"
+                // This key "type" and value "image" must match exactly what the backend expects.
+                params.put("type", "image");
+                return params;
+            }
+
+            @Override
+            protected Map<String, DataPart> getByteData()
+            {
+                Map<String, DataPart> params = new HashMap<>();
+                try
+                {
+                    // Get bytes from the image URI
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    // Compress to a reasonable quality. 80 is a good balance.
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
+                    byte[] imageData = stream.toByteArray();
+                    String fileName = "upload_" + System.currentTimeMillis() + ".jpg";
+
+                    // The key "file" must match what the server expects.
+                    params.put("image", new DataPart(fileName, imageData));
+                }
+                catch (IOException e)
+                {
+                    Log.e("HTTPUpload", "File processing error", e);
+                }
+                return params;
+            }
+        };
+
+        // Add the request to the Volley queue to execute it.
+        Volley.newRequestQueue(this).add(multipartRequest);
+    }
+
+
+    /**
+     * After a successful HTTP upload, this sends the image URL over the WebSocket.
+     */
+    private void sendImageUrlOverWebSocket(String imageUrl) {
+        try
+        {
+            JSONObject messageJson = new JSONObject();
+            // This type tells the receiver it's an image.
+            messageJson.put("type", 1);
+            // The content is now a URL, not Base64 data.
+            messageJson.put("message", imageUrl);
+
+            WebSocketManager.getInstance().sendMessage(messageJson.toString());
+
+            // Add local echo for the image to show it instantly.
+            chatMessageList.add(new ChatMessage(imageUrl, true, 1));
+            messageAdapter.notifyItemInserted(chatMessageList.size() - 1);
+            messagesRecyclerView.scrollToPosition(chatMessageList.size() - 1);
+
+        } catch (JSONException e) {
+            Log.e("WebSocketSend", "Error sending image URL", e);
+        }
+    }
+
     @Override
     public void onWebSocketMessage(String message)
     {
         runOnUiThread(() -> {
-            try {
+            if (message == null || message.trim().isEmpty()) {
+                return; // Ignore empty messages
+            }
+
+            try
+            {
                 JSONObject messageJson = new JSONObject(message);
-                String messageType = messageJson.optString("type", "0");
-                int senderId = messageJson.getInt("senderId");
+                String senderName = messageJson.optString("sender");
 
-                // Ignore messages sent by the current user (server echo)
-                if (senderId == userId) return;
-
-                boolean isSentByUser = false; // It's always from others here
-
-                if ("IMAGE".equals(messageType))
+                // If it's your own message (and you use local echo), ignore the server's broadcast.
+                if (Objects.equals(senderName, this.username))
                 {
-                    // It's an image message from the server, containing a URL
-                    String imageUrl = messageJson.getString("url");
-                    chatMessageList.add(new ChatMessage(imageUrl, isSentByUser, 1));
+                    return;
+                }
+
+                int messageType = messageJson.getInt("type");
+                String content;
+                boolean isSentByUser = false;
+
+                if (messageType == 1)
+                { // It's an image message from another user
+                    content = messageJson.getString("imageUrl");
                 }
                 else
-                {
-                    // It's a standard text message
-                    String content = messageJson.getString("content");
-                    chatMessageList.add(new ChatMessage(content, isSentByUser, 0));
+                { // It's a text message from another user
+                    content = messageJson.getString("message");
                 }
 
+                Log.d("WebSocketMessage", "Processing content: '" + content + "' for messageType: " + messageType);
+
+                chatMessageList.add(new ChatMessage(content, isSentByUser, messageType));
                 messageAdapter.notifyItemInserted(chatMessageList.size() - 1);
                 messagesRecyclerView.scrollToPosition(chatMessageList.size() - 1);
 
-            }
-            catch (JSONException e)
-            {
-                Log.e("WebSocket", "Could not parse JSON from received message: " + message, e);
+            } catch (JSONException e) {
+                // This will happen if the server sends a non-JSON string.
+                Log.w("WebSocket", "Received non-JSON message: " + message);
+                // Optionally, display it as a plain text message
+                chatMessageList.add(new ChatMessage(message, false, 0));
+                messageAdapter.notifyItemInserted(chatMessageList.size() - 1);
+                messagesRecyclerView.scrollToPosition(chatMessageList.size() - 1);
             }
         });
     }
 
-    // --- IMAGE UPLOAD METHODS ---
-    private void uploadImageToServer(Uri imageUri)
-    {
-        try
-        {
-            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-            String base64Image = bitmapToBase64(bitmap);
-
-            JSONObject messageJson = new JSONObject();
-            messageJson.put("type", 1);
-            messageJson.put("message", base64Image);
-
-            WebSocketManager.getInstance().sendMessage(messageJson.toString());
-            Toast.makeText(this, "Uploading image...", Toast.LENGTH_SHORT).show();
-
-        }
-        catch (IOException e)
-        {
-            Log.e("ImageUpload", "Error reading image file.", e);
-        }
-        catch (JSONException e)
-        {
-            Log.e("ImageUpload", "Error creating JSON for image upload.", e);
-        }
-    }
-
-    private String bitmapToBase64(Bitmap bitmap)
-    {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        // Compress the image to reduce its size. Adjust quality as needed.
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
-        byte[] byteArray = byteArrayOutputStream.toByteArray();
-        return Base64.encodeToString(byteArray, Base64.DEFAULT);
-    }
-
-    // --- OTHER WEBSOCKET METHODS ---
+    // --- Standard WebSocket Listener Methods ---
     @Override
     public void onWebSocketOpen(ServerHandshake handshakedata)
     {
-        Log.d("WebSocket", "Connection opened successfully!");
-        runOnUiThread(() -> Toast.makeText(ChatActivity.this, "Connection Successful!", Toast.LENGTH_SHORT).show());
+        Log.d("WebSocket", "Connection opened");
     }
 
     @Override
     public void onWebSocketClose(int code, String reason, boolean remote)
     {
-        Log.d("WebSocket", "Connection closed. Reason: " + reason);
+        Log.e("WebSocket", "Connection closed. Code: " + code + ", Reason: " + reason);
     }
 
     @Override
-    public void onWebSocketError(Exception ex)
-    {
-        Log.e("WebSocket", "An error occurred: " + ex.getMessage());
+    public void onWebSocketError(Exception ex) {
+        Log.e("WebSocket", "Error: " + ex.getMessage());
     }
 
-    // --- CLEAN UP THE CONNECTION ---
     @Override
-    protected void onDestroy()
-    {
+    protected void onDestroy() {
         super.onDestroy();
-        // Close the WebSocket connection to prevent memory and resource leaks
         WebSocketManager.getInstance().disconnectWebSocket();
     }
 }
