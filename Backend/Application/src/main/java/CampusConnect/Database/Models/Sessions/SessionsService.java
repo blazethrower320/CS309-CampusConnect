@@ -7,6 +7,9 @@ import CampusConnect.Database.Models.Users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @Service
 public class SessionsService {
 
@@ -21,12 +24,14 @@ public class SessionsService {
         Tutor tutor = tutorRepository.findById(sessionDTO.getTutorId())
                 .orElseThrow(() -> new RuntimeException("Tutor not found"));
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/dd/yyyy h:mm a");
+
         Sessions session = new Sessions(
                 tutor,
                 sessionDTO.getClassName(),
                 sessionDTO.getClassCode(),
                 sessionDTO.getMeetingLocation(),
-                sessionDTO.getMeetingTime(),
+                LocalDateTime.parse(sessionDTO.getMeetingTime(), formatter),
                 sessionDTO.getDateCreated()
         );
 
