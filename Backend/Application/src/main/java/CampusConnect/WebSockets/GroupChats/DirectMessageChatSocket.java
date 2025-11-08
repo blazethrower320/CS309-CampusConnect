@@ -86,16 +86,7 @@ public class DirectMessageChatSocket
 
 
 
-
-
         RepositoryProvider.getPrivateMessagesRepository().save(newMessage);
-        String seenMessage;
-        if (newMessage.getImageUrl() != null) {
-            String imageUrl = "http://coms-3090-037.class.las.iastate.edu:8080" + newMessage.getImageUrl();
-            seenMessage = user1.getUsername() + " sent an image: " + imageUrl;
-        } else {
-            seenMessage = user1.getUsername() + ": " + newMessage.getMessage();
-        }
 
         Map<String, Object> response = new HashMap<>();
         response.put("messageId", newMessage.getId());

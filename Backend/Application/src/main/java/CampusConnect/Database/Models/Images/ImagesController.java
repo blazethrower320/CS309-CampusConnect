@@ -25,20 +25,20 @@ public class ImagesController
         return Files.readAllBytes(imageFile.toPath());
     }
 
-    @PostMapping("/images")
-    public String handleFileUpload(@RequestParam("image") MultipartFile imageFile) {
-        try {
-            File destinationFile = new File(directory + File.separator + imageFile.getOriginalFilename());
-            imageFile.transferTo(destinationFile);
-
-            Images image = new Images();
-            image.setFilePath(destinationFile.getAbsolutePath());
-            Images savedImage = imageRepository.save(image);
-
-            return String.valueOf(savedImage.getId());
-        } catch (IOException e) {
-            return "Failed to upload file: " + e.getMessage();
+        @PostMapping("/images")
+        public String handleFileUpload(@RequestParam("image") MultipartFile imageFile) {
+            try {
+                File destinationFile = new File(directory + File.separator + imageFile.getOriginalFilename());
+                imageFile.transferTo(destinationFile);
+    
+                Images image = new Images();
+                image.setFilePath(destinationFile.getAbsolutePath());
+                Images savedImage = imageRepository.save(image);
+    
+                return String.valueOf(savedImage.getId());
+            } catch (IOException e) {
+                return "Failed to upload file: " + e.getMessage();
+            }
         }
-    }
 
 }

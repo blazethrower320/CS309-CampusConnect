@@ -95,7 +95,7 @@ public class GroupChatSocket {
 
             savedMessage.setMessage(null);
             if (img != null) {
-                savedMessage.setImageUrl("/images/" + img.getId());
+                savedMessage.setImageUrl(String.valueOf(img.getId()));
             }
         }
         else
