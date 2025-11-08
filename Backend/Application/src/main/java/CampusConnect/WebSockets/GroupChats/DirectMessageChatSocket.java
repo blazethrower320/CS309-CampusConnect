@@ -1,4 +1,5 @@
 package CampusConnect.WebSockets.GroupChats;
+import java.io.EOFException;
 import java.io.IOException;
 import java.util.*;
 
@@ -128,8 +129,13 @@ public class DirectMessageChatSocket
     }
     @OnError
     public void onError(Session session, Throwable throwable) {
-        logger.info("Entered into Error");
-        throwable.printStackTrace();
+        if (throwable instanceof EOFException)
+        {
+            logger.info("Client disconnected abruptly (EOF) — safe to ignore.");
+        } else
+        {
+            logger.error("Unexpected WebSocket error:", throwable);
+        }
     }
 
 

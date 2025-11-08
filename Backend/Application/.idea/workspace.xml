@@ -5,9 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6d29c9f1-ee49-4c0f-98ba-fc2545596b57" name="Changes" comment="Merge branch 'main' of https://git.las.iastate.edu/cs309/2025fall/3_hosen_1 into SessionsFeature&#10;&#10;# Conflicts:&#10;#&#9;Backend/Application/.idea/workspace.xml">
-      <change afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/UserService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Ratings/RatingsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Ratings/RatingsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/WebSockets/GroupChats/DirectMessageChatSocket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/WebSockets/GroupChats/DirectMessageChatSocket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/WebSockets/GroupChats/GroupChatSocket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/WebSockets/GroupChats/GroupChatSocket.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -135,7 +135,7 @@
       <workItem from="1762368344990" duration="22000" />
       <workItem from="1762374342282" duration="2787000" />
       <workItem from="1762542092732" duration="23453000" />
-      <workItem from="1762570444910" duration="361000" />
+      <workItem from="1762570444910" duration="4947000" />
     </task>
     <task id="LOCAL-00001" summary="Added mapping for sessions feature. Sessions mapped with tutor and users table.">
       <option name="closed" value="true" />
