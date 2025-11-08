@@ -38,7 +38,7 @@
 
         <!-- Optional: Session Summary or Notes -->
         <TextView
-            android:id="@+id/session_summary_text"
+            android:id="@+id/session_course_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Covered topics on Android Development and WebSockets."
