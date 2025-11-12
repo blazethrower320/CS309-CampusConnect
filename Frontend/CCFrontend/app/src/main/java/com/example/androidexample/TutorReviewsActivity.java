@@ -57,12 +57,15 @@ public class TutorReviewsActivity extends AppCompatActivity {
 
         queue = Volley.newRequestQueue(this);
 
-        username = getIntent().getStringExtra("username");
-        password = getIntent().getStringExtra("password");
-        isAdmin = getIntent().getBooleanExtra("isAdmin", false);
-        isTutor = getIntent().getBooleanExtra("isTutor", false);
-        userId = getIntent().getIntExtra("userId", -1);
+        User user = User.getInstance();
+        username = user.getUsername();
+        password = user.getPassword();
+        isTutor = user.isTutor();
+        isAdmin = user.isAdmin();
+        userId = user.getUserId();
         tutorId = getIntent().getIntExtra("tutorId", -1);
+
+        // Set up RecyclerView
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new RatingListAdapter(this, ratingList);
@@ -74,27 +77,10 @@ public class TutorReviewsActivity extends AppCompatActivity {
         disableRatingUI();
 
         if (isTutor) {
-            // Fetch the tutorId for the logged-in user
-            String url = BASE_URL + "/tutors/getTutorFromUserId/" + userId;
-            JsonObjectRequest request = new JsonObjectRequest(
-                    Request.Method.GET,
-                    url,
-                    null,
-                    response -> {
-                        try {
-                            int myTutorId = response.getInt("tutorId");
-                            if (myTutorId != tutorId) {
-                                enableRatingUI();
-                            } else {
-                                Toast.makeText(this, "You cannot review yourself", Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    },
-                    error -> Log.e("TutorReviewsActivity", "Error fetching tutor ID: " + error)
-            );
-            queue.add(request);
+            int CtutorId = User.getInstance().getTutorId();
+                if (CtutorId == tutorId) {
+                    Toast.makeText(this, "You cannot review yourself", Toast.LENGTH_SHORT).show();
+                }
         } else {
             // Non-tutors can rate immediately
             enableRatingUI();
@@ -108,33 +94,6 @@ public class TutorReviewsActivity extends AppCompatActivity {
         submitButton.setAlpha(1f);
         ratingBar.setEnabled(true);
         commentBox.setEnabled(true);
-
-        submitButton.setOnClickListener(v -> {
-            if (isTutor) {
-                String url = BASE_URL + "/tutors/getTutorFromUserId/" + userId;
-                JsonObjectRequest checkRequest = new JsonObjectRequest(
-                        Request.Method.GET,
-                        url,
-                        null,
-                        response -> {
-                            try {
-                                int myTutorId = response.getInt("tutorId");
-                                if (myTutorId != tutorId) {
-                                    submitRating();
-                                } else {
-                                    Toast.makeText(this, "You cannot review yourself", Toast.LENGTH_SHORT).show();
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        },
-                        error -> Log.e("TutorReviewsActivity", "Error fetching tutor ID: " + error)
-                );
-                queue.add(checkRequest);
-            } else {
-                submitRating();
-            }
-        });
     }
 
     private void disableRatingUI() {

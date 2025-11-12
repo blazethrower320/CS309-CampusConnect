@@ -2,18 +2,16 @@ package com.example.androidexample;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-
-import android.util.Log;
-import android.view.View;
-import android.widget.SearchView;
-import android.widget.Toast;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,79 +29,50 @@ import java.util.List;
 
 public class ReviewListActivity extends AppCompatActivity implements TutorListAdapter.OnTutorClickListenerWithReviews, WebSocketListener {
 
+    private static final String TAG = "ReviewListActivity";
+    private static final String URL_TUTORS = "http://coms-3090-037.class.las.iastate.edu:8080/tutors";
+
     private ImageButton menuButton;
-
     private DrawerLayout drawerLayout;
-
-    private boolean isTutor = false;   // cached tutor status
-    private boolean isAdmin = false;   // passed from login/signup
-
-    private int userId;                // must be passed from login/signup
-    private String username;
-    private String password;
 
     private RecyclerView recyclerView;
     private TutorListAdapter adapter;
     private List<TutorItem> tutorList = new ArrayList<>();
 
-    private static final String TAG = "ReviewListActivity";
-    private static final String URL_TUTORS = "http://coms-3090-037.class.las.iastate.edu:8080/tutors";
+    // User session info (via singleton)
+    private String username;
+    private String password;
+    private int userId;
+    private boolean isTutor;
+    private boolean isAdmin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_list);
 
+        // Drawer setup
         drawerLayout = findViewById(R.id.drawer_layout);
         menuButton = findViewById(R.id.menu_button);
+
+        // RecyclerView setup
         recyclerView = findViewById(R.id.reviewRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new TutorListAdapter(this, tutorList, this);
+        recyclerView.setAdapter(adapter);
 
-        username = getIntent().getStringExtra("username");
-        password = getIntent().getStringExtra("password");
-        isAdmin = getIntent().getBooleanExtra("isAdmin", false);
-        isTutor = getIntent().getBooleanExtra("isTutor", false);
-        userId = getIntent().getIntExtra("userId", -1);
+        // Load user data from singleton
+        User user = User.getInstance();
+        username = user.getUsername();
+        password = user.getPassword();
+        userId = user.getUserId();
+        isTutor = user.isTutor();
+        isAdmin = user.isAdmin();
 
-        LinearLayout homeButton = findViewById(R.id.nav_home);
-        homeButton.setOnClickListener(v -> {
-            Intent intent = new Intent(ReviewListActivity.this, MainMenuActivity.class);
-            intent.putExtra("username", username);
-            intent.putExtra("userId", userId);
-            intent.putExtra("isAdmin", isAdmin);
-            intent.putExtra("isTutor", isTutor);
-            intent.putExtra("password", password); // only if needed for certain calls
-            startActivity(intent);
-            finish();
-            drawerLayout.closeDrawer(GravityCompat.START);
-        });
+        // Nav menu buttons
+        setupNavButtons();
 
-        LinearLayout profileButton = findViewById(R.id.nav_profile);
-        profileButton.setOnClickListener(v -> {
-            Intent intent = new Intent(ReviewListActivity.this, ProfileActivity.class);
-            intent.putExtra("username", username);
-            intent.putExtra("userId", userId);
-            intent.putExtra("isAdmin", isAdmin);
-            intent.putExtra("isTutor", isTutor);
-            intent.putExtra("password", password); // only if needed for certain calls
-            startActivity(intent);
-            finish();
-            drawerLayout.closeDrawer(GravityCompat.START);
-        });
-
-        LinearLayout sessionsButton = findViewById(R.id.nav_sessions);
-        sessionsButton.setOnClickListener(v -> {
-            Intent intent = new Intent(ReviewListActivity.this, SessionActivity.class);
-            intent.putExtra("username", username);
-            intent.putExtra("userId", userId);
-            intent.putExtra("isAdmin", isAdmin);
-            intent.putExtra("isTutor", isTutor);
-            intent.putExtra("password", password); // only if needed for certain calls
-            startActivity(intent);
-            finish();
-            drawerLayout.closeDrawer(GravityCompat.START);
-        });
-
-        // Open sidebar when menu button clicked
+        // Menu open/close
         menuButton.setOnClickListener(v -> {
             if (drawerLayout.isDrawerOpen(findViewById(R.id.nav_view))) {
                 drawerLayout.closeDrawer(findViewById(R.id.nav_view));
@@ -112,11 +81,7 @@ public class ReviewListActivity extends AppCompatActivity implements TutorListAd
             }
         });
 
-        // RecyclerView setup
-        adapter = new TutorListAdapter(this, tutorList, (TutorListAdapter.OnTutorClickListenerWithReviews) this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
-
+        // Search bar functionality
         SearchView searchView = findViewById(R.id.tutor_search_bar);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -132,7 +97,33 @@ public class ReviewListActivity extends AppCompatActivity implements TutorListAd
             }
         });
 
+        // Load tutor data
         loadTutors();
+    }
+
+    private void setupNavButtons() {
+        LinearLayout homeButton = findViewById(R.id.nav_home);
+        homeButton.setOnClickListener(v -> navigateTo(MainMenuActivity.class));
+
+        LinearLayout profileButton = findViewById(R.id.nav_profile);
+        profileButton.setOnClickListener(v -> navigateTo(ProfileActivity.class));
+
+        LinearLayout sessionsButton = findViewById(R.id.nav_sessions);
+        sessionsButton.setOnClickListener(v -> navigateTo(SessionActivity.class));
+    }
+
+    private void navigateTo(Class<?> targetActivity) {
+        Intent intent = new Intent(ReviewListActivity.this, targetActivity);
+        startActivity(intent);
+        finish();
+        drawerLayout.closeDrawer(GravityCompat.START);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        WebSocketManager.getInstance().setWebSocketListener(this);
+        loadTutors(); // refresh when coming back
     }
 
     @Override
@@ -141,55 +132,6 @@ public class ReviewListActivity extends AppCompatActivity implements TutorListAd
         WebSocketManager.getInstance().removeWebSocketListener();
     }
 
-    @Override
-    public void onWebSocketOpen(ServerHandshake handshakedata) {
-        Log.d("WebSocket", "Connected in ProfileActivity");
-    }
-
-    @Override
-    public void onWebSocketMessage(String message) {
-        Log.d("WebSocket", "Message: " + message);
-        runOnUiThread(() -> {
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-            NotificationUtils.showPushNotification(this, "New Session Update", message);
-        });
-    }
-
-    @Override
-    public void onWebSocketClose(int code, String reason, boolean remote) {
-        Log.d("WebSocket", "Closed: " + reason);
-    }
-
-    @Override
-    public void onWebSocketError(Exception ex) {
-        Log.e("WebSocket", "Error", ex);
-    }
-
-
-    @Override
-    public void onTutorClicked(TutorItem tutor) {
-        // What happens when the whole card is clicked
-        //Intent intent = new Intent(this, ProfileActivity.class);
-        //intent.putExtra("tutorId", tutor.tutorId);
-        //startActivity(intent);
-    }
-
-    @Override
-    public void onReviewsClicked(TutorItem tutor) {
-        // What happens when the "Reviews" button is clicked
-        Intent intent = new Intent(this, TutorReviewsActivity.class);
-        intent.putExtra("tutorId", tutor.tutorId);
-        intent.putExtra("username", username);
-        intent.putExtra("userId", userId);
-        startActivity(intent);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        WebSocketManager.getInstance().setWebSocketListener(this);
-        loadTutors();  // refresh when coming back
-    }
     private void loadTutors() {
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest req = new StringRequest(
@@ -209,32 +151,22 @@ public class ReviewListActivity extends AppCompatActivity implements TutorListAd
                                 arr.put(obj);
                             }
                         }
-
                         List<TutorItem> newTutorList = new ArrayList<>();
                         for (int i = 0; i < arr.length(); i++) {
                             JSONObject t = arr.getJSONObject(i);
                             int tutorId = t.optInt("tutorId", -1);
                             String uname = t.optString("username", t.optString("userName", ""));
                             Log.d(TAG, "Parsed tutorId=" + tutorId + " for " + uname);
+
                             String first = t.optString("firstName", "");
                             String last = t.optString("lastName", "");
-
-                            String displayName;
-                            if ((first == null || first.isEmpty()) && (last == null || last.isEmpty())) {
-                                displayName = null; // Set to null so adapter will fetch names
-                            } else {
-                                displayName = (first + " " + last).trim();
-                            }
-
+                            String displayName = (!first.isEmpty() || !last.isEmpty()) ? (first + " " + last).trim() : null;
                             double rating = t.optDouble("totalRating", 3.5);
 
-                            TutorItem item = new TutorItem(tutorId, uname, displayName, rating);
-                            newTutorList.add(item);
+                            newTutorList.add(new TutorItem(tutorId, uname, displayName, rating));
                         }
 
-                        // Use the update method to refresh both lists
                         adapter.updateTutorList(newTutorList);
-
                     } catch (Exception e) {
                         Log.e(TAG, "Failed parse tutors: " + e.toString());
                     }
@@ -245,12 +177,41 @@ public class ReviewListActivity extends AppCompatActivity implements TutorListAd
         queue.add(req);
     }
 
-    private void onTutorReviewsClicked(TutorItem tutor) {
-        // Start an activity to show reviews for this tutor (implement later)
-        Intent i = new Intent(ReviewListActivity.this, TutorReviewsActivity.class);
-        i.putExtra("tutorId", tutor.tutorId);
-        i.putExtra("username", username);
-        i.putExtra("userId", userId);
-        startActivity(i);
+    // Clicks from TutorListAdapter
+    @Override
+    public void onTutorClicked(TutorItem tutor) {
+        // Could navigate to tutor profile if needed
+    }
+
+    @Override
+    public void onReviewsClicked(TutorItem tutor) {
+        Intent intent = new Intent(this, TutorReviewsActivity.class);
+        intent.putExtra("tutorId", tutor.tutorId);
+        startActivity(intent);
+    }
+
+    // WebSocketListener methods
+    @Override
+    public void onWebSocketOpen(ServerHandshake handshakedata) {
+        Log.d(TAG, "WebSocket connected in ReviewListActivity");
+    }
+
+    @Override
+    public void onWebSocketMessage(String message) {
+        Log.d(TAG, "WebSocket message: " + message);
+        runOnUiThread(() -> {
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            NotificationUtils.showPushNotification(this, "New Session Update", message);
+        });
+    }
+
+    @Override
+    public void onWebSocketClose(int code, String reason, boolean remote) {
+        Log.d(TAG, "WebSocket closed: " + reason);
+    }
+
+    @Override
+    public void onWebSocketError(Exception ex) {
+        Log.e(TAG, "WebSocket error", ex);
     }
 }

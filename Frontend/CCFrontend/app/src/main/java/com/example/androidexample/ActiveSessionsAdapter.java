@@ -40,6 +40,9 @@ public class ActiveSessionsAdapter extends RecyclerView.Adapter<ActiveSessionsAd
         holder.messagesBtn.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), ChatActivity.class);
             intent.putExtra("sessionId", session.getSessionId());
+            intent.putExtra("Username", User.getInstance().getUsername()); // pass data if needed)
+            intent.putExtra("userId", User.getInstance().getUserId());
+            intent.putExtra("isTutor", User.getInstance().isTutor());
             v.getContext().startActivity(intent);
         });
 

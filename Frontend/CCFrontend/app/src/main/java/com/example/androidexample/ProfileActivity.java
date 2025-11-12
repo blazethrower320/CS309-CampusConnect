@@ -1,90 +1,71 @@
 package com.example.androidexample;
 
 import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import android.widget.ImageButton;
-
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-public class ProfileActivity extends AppCompatActivity implements View.OnClickListener, WebSocketListener
-{
+
+public class ProfileActivity extends AppCompatActivity implements View.OnClickListener, WebSocketListener {
+
     private RecyclerView pastSessionsRecyclerView;
     private PastSessionAdapter sessionAdapter;
-    // UPDATED: The list now holds JSONObjects directly, not Session objects.
     private List<JSONObject> pastSessionList;
 
-    //Text Fields
-    private TextView roleText;
-    private TextView nameText;
-    private TextView usernameText;
-    private TextView bioText;
-    private TextView majorText;
-    private TextView classificationText;
-
-    //Tutor Profile fields
+    // Text fields
+    private TextView roleText, nameText, usernameText, bioText, majorText, classificationText;
     private LinearLayout ratingLayout;
-    private TextView tutorRatingText;
-    private TextView tutorRatingValue;
+    private TextView tutorRatingText, tutorRatingValue;
 
-    //Buttons
-    private Button msgBtn; //Message button on profile
-    private Button logoutBtn; //Logout button
-    private ImageButton editProfileBtn; //Edit profile btn
-    private ImageButton menuBtn; //Three line btn
+    // Buttons
+    private Button msgBtn, logoutBtn;
+    private ImageButton editProfileBtn, menuBtn;
+    private DrawerLayout drawerLayout;
+    private LinearLayout homeBtn, sessionsBtn, reviewsBtn;
 
-    private DrawerLayout drawerLayout; //Menu bar layout
+    // User info
+    private User user;
 
-    //Menu Bar buttons
-    private LinearLayout homeBtn; //Home btn inside of menu bar
-    private LinearLayout sessionsBtn; //Sessions btn inside of menu bar
+    private static final String BASE_URL = "http://coms-3090-037.class.las.iastate.edu:8080";
 
-    private LinearLayout reviewsBtn; //Reviews btn inside of menu bar
-
-    //User variables
-    private boolean isTutor = false;   // cached tutor status
-    private boolean isAdmin = false;   // passed from login/signup
-    private int userId;                // must be passed from login/signup
-    private String username;
-    private String password;           // pass this from login/signup if required
-    private String bio;
-    private String major;
-    private String classification;
-    private String firstName;
-    private String lastName;
-
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        //Initialize UI elements
+        // Load the current logged-in user
+        user = User.getInstance();
+        if (user == null) {
+            Toast.makeText(this, "User not logged in.", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(ProfileActivity.this, MainActivity.class));
+            finish();
+            return;
+        }
+
+        // Initialize UI
         ratingLayout = findViewById(R.id.rating_layout);
         tutorRatingText = findViewById(R.id.tutor_rating_text);
         tutorRatingValue = findViewById(R.id.rating_value);
@@ -97,133 +78,76 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         msgBtn = findViewById(R.id.message_btn);
         menuBtn = findViewById(R.id.menu_button);
         logoutBtn = findViewById(R.id.logout_btn);
-        homeBtn = findViewById(R.id.nav_home);
-        sessionsBtn = findViewById(R.id.nav_sessions);
         editProfileBtn = findViewById(R.id.edit_profile_btn);
         reviewsBtn = findViewById(R.id.nav_reviews);
+        homeBtn = findViewById(R.id.nav_home);
+        sessionsBtn = findViewById(R.id.nav_sessions);
+        drawerLayout = findViewById(R.id.drawer_layout);
 
-        //initialize user data from Intent
-        username = getIntent().getStringExtra("username");
-        userId = getIntent().getIntExtra("userId", -1);
-        isAdmin = getIntent().getBooleanExtra("isAdmin", false);
-        isTutor = getIntent().getBooleanExtra("isTutor", false);
-        password = getIntent().getStringExtra("password");
-
-        // Set up Past Sessions RecyclerView
+        // Load past sessions
         pastSessionsRecyclerView = findViewById(R.id.past_sessions_recycler_view);
         pastSessionsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        // Fetch data from the backend and populate the RecyclerView
         loadPastSessionData();
 
-        // Fetch user info and populate profile fields
-        GetUserInfo(username);
+        // Load user info
+        GetUserInfo(user.getUsername());
 
-        //set button listeners to be active
+        // Button listeners
         msgBtn.setOnClickListener(this);
-        homeBtn.setOnClickListener(this);
-        sessionsBtn.setOnClickListener(this);
         logoutBtn.setOnClickListener(this);
         menuBtn.setOnClickListener(this);
         editProfileBtn.setOnClickListener(this);
+        homeBtn.setOnClickListener(this);
+        sessionsBtn.setOnClickListener(this);
         reviewsBtn.setOnClickListener(this);
 
-
-        //Set text fields to have user data
-        if(isAdmin)
-        {
+        // Role-based UI
+        if (user.isAdmin()) {
             roleText.setText("Admin");
             ratingLayout.setVisibility(View.GONE);
-            tutorRatingText.setVisibility(View.GONE);
-        }
-        else if(isTutor)
-        {
+        } else if (user.isTutor()) {
             roleText.setText("Tutor");
             ratingLayout.setVisibility(View.VISIBLE);
-            tutorRatingText.setVisibility(View.VISIBLE);
-        }
-        else
-        {
+        } else {
             roleText.setText("Student");
             ratingLayout.setVisibility(View.GONE);
-            tutorRatingText.setVisibility(View.GONE);
         }
     }
 
-    public void onClick(View v)
-    {
+    @Override
+    public void onClick(View v) {
         int id = v.getId();
-        if(id == R.id.message_btn)
-        {
-            Intent intent = new Intent(ProfileActivity.this, ChatActivity.class);
-            intent.putExtra("username", username);
-            intent.putExtra("userId", userId);
-            startActivity(intent);
-        }
-        if (id == R.id.logout_btn)
-        {
-            startActivity(new Intent(ProfileActivity.this, MainActivity.class));
-        }
-        if(id == R.id.menu_button)
-        {
-            if (drawerLayout.isDrawerOpen(GravityCompat.START))
-            {
-                drawerLayout.closeDrawer(GravityCompat.START);
-            }
-            else
-            {
-                drawerLayout.openDrawer(GravityCompat.START);
-            }
-        }
-        if(id == R.id.edit_profile_btn)
-        {
-            Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
-            intent.putExtra("username", username);
-            intent.putExtra("userId", userId);
-            intent.putExtra("isAdmin", isAdmin);
-            intent.putExtra("isTutor", isTutor);
-            intent.putExtra("bio", bio);
-            intent.putExtra("major", major);
-            intent.putExtra("classification", classification);
-            intent.putExtra("firstName", firstName);
-            intent.putExtra("lastName", lastName);
-            intent.putExtra("password", password);
-            startActivity(intent);
-            finish();
-        }
-        if(id == R.id.nav_sessions)
-        {
-            Intent intent = new Intent(ProfileActivity.this, SessionActivity.class);
-            intent.putExtra("username", username);
-            intent.putExtra("userId", userId);
-            intent.putExtra("isAdmin", isAdmin);
-            intent.putExtra("isTutor", isTutor);
-            intent.putExtra("password", password);
-            startActivity(intent);
-            finish();
-        }
-        if(id == R.id.nav_home)
-        {
-            Intent intent = new Intent(ProfileActivity.this, MainMenuActivity.class);
-            intent.putExtra("username", username);
-            intent.putExtra("userId", userId);
-            intent.putExtra("isAdmin", isAdmin);
-            intent.putExtra("isTutor", isTutor);
-            intent.putExtra("password", password);
-            startActivity(intent);
-            finish();
-        }
-        if(id == R.id.nav_reviews)
-        {
-            Intent intent = new Intent(ProfileActivity.this, ReviewListActivity.class);
-            intent.putExtra("username", username);
-            intent.putExtra("userId", userId);
-            intent.putExtra("isAdmin", isAdmin);
-            intent.putExtra("isTutor", isTutor);
-            intent.putExtra("password", password); // only if needed for certain calls
-            startActivity(intent);
-            finish();
-        }
 
+        if (id == R.id.message_btn) {
+            startActivity(new Intent(this, ChatActivity.class));
+        }
+        if (id == R.id.logout_btn) {
+            User.clearInstance(); // clear singleton
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }
+        if (id == R.id.menu_button) {
+            if (drawerLayout.isDrawerOpen(GravityCompat.START))
+                drawerLayout.closeDrawer(GravityCompat.START);
+            else
+                drawerLayout.openDrawer(GravityCompat.START);
+        }
+        if (id == R.id.edit_profile_btn) {
+            startActivity(new Intent(this, EditProfileActivity.class));
+            finish();
+        }
+        if (id == R.id.nav_sessions) {
+            startActivity(new Intent(this, SessionActivity.class));
+            finish();
+        }
+        if (id == R.id.nav_home) {
+            startActivity(new Intent(this, MainMenuActivity.class));
+            finish();
+        }
+        if (id == R.id.nav_reviews) {
+            startActivity(new Intent(this, ReviewListActivity.class));
+            finish();
+        }
     }
 
     @Override
@@ -246,10 +170,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onWebSocketMessage(String message) {
         Log.d("WebSocket", "Message: " + message);
-        runOnUiThread(() -> {
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-            NotificationUtils.showPushNotification(this, "New Session Update", message);
-        });
+        runOnUiThread(() ->
+                NotificationUtils.showPushNotification(this, "New Session Update", message)
+        );
     }
 
     @Override
@@ -262,99 +185,60 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         Log.e("WebSocket", "Error", ex);
     }
 
-    public void GetUserInfo(String username)
-    {
-        final String URL_GET_USER = "http://coms-3090-037.class.las.iastate.edu:8080/users/find/" + username;
+    private void GetUserInfo(String username) {
+        String url = BASE_URL + "/users/find/" + username;
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.GET,
-                URL_GET_USER,
-                null,
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
-                    Log.d("Volley Success", "User Info Response: " + response.toString());
-                    try
-                    {
-                        firstName = response.optString("firstName", "N/A");
-                        lastName = response.optString("lastName", "N/A");
-                        bio = response.optString("bio", "No bio available.");
-                        major = response.optString("major", "Undeclared");
-                        classification = response.optString("classification", "N/A");
-                        isTutor = response.optBoolean("isTutor", false);
-                        isAdmin = response.optBoolean("isAdmin", false);
+                    Log.d("UserInfo", "Response: " + response);
+                    try {
+                        user.setFirstName(response.optString("firstName", ""));
+                        user.setLastName(response.optString("lastName", ""));
+                        user.setBio(response.optString("bio", "No bio available."));
+                        user.setMajor(response.optString("major", "Undeclared"));
+                        user.setClassification(response.optString("classification", "N/A"));
+                        user.setTutor(response.optBoolean("isTutor", false));
+                        user.setAdmin(response.optBoolean("isAdmin", false));
 
-                        usernameText.setText("@" + username);
-                        nameText.setText(firstName + " " + lastName);
-                        bioText.setText(bio);
-                        majorText.setText(major);
-                        classificationText.setText(classification);
-
-                        if (isAdmin) roleText.setText("Admin");
-                        else if (isTutor) roleText.setText("Tutor");
-                        else roleText.setText("Student");
-                    }
-                    catch (Exception e)
-                    {
+                        usernameText.setText("@" + user.getUsername());
+                        nameText.setText(user.getFirstName() + " " + user.getLastName());
+                        bioText.setText(user.getBio());
+                        majorText.setText(user.getMajor());
+                        classificationText.setText(user.getClassification());
+                    } catch (Exception e) {
                         e.printStackTrace();
-                        Toast.makeText(ProfileActivity.this, "Error parsing user data!", Toast.LENGTH_SHORT).show();
                     }
                 },
-                error -> {
-                    VolleyLog.e("Volley Error", error.getMessage());
-                    Toast.makeText(ProfileActivity.this, "Failed to fetch user data.", Toast.LENGTH_SHORT).show();
-                    if (error.networkResponse != null)
-                    {
-                        Log.e("Volley Error", "Status Code: " + error.networkResponse.statusCode);
-                    }
-                }
+                error -> Log.e("UserInfo", "Error fetching user info", error)
         );
-        queue.add(jsonObjectRequest);
+
+        queue.add(request);
     }
 
     private void loadPastSessionData() {
-        // Initialize the list and adapter first.
         pastSessionList = new ArrayList<>();
         sessionAdapter = new PastSessionAdapter(pastSessionList);
         pastSessionsRecyclerView.setAdapter(sessionAdapter);
 
-        final String URL_GET_SESSIONS = "http://coms-3090-037.class.las.iastate.edu:8080/sessions/inactive";
+        String url = BASE_URL + "/sessions/inactive";
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                Request.Method.GET,
-                URL_GET_SESSIONS,
-                null,
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 response -> {
-                    Log.d("Volley Success", "Past Sessions Response: " + response.toString());
-                    try {
-                        // Clear the list to prevent duplicates if this method is called again.
-                        pastSessionList.clear();
-
-                        // Loop through each JSON object from the server.
-                        for (int i = 0; i < response.length(); i++)
-                        {
-                            // UPDATED: Get the JSONObject and add it directly to the list.
-                            JSONObject sessionObject = response.getJSONObject(i);
-                            pastSessionList.add(sessionObject);
+                    pastSessionList.clear();
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            pastSessionList.add(response.getJSONObject(i));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                        // Notify the adapter that the underlying data has changed.
-                        sessionAdapter.notifyDataSetChanged();
                     }
-                    catch (JSONException e)
-                    {
-                        e.printStackTrace();
-                        Toast.makeText(ProfileActivity.this, "Error parsing session data!", Toast.LENGTH_SHORT).show();
-                    }
+                    sessionAdapter.notifyDataSetChanged();
                 },
-                error -> {
-                    VolleyLog.e("Volley Error", "Failed to fetch past sessions: " + error.getMessage());
-                    Toast.makeText(ProfileActivity.this, "Failed to fetch past sessions.", Toast.LENGTH_SHORT).show();
-                    if (error.networkResponse != null)
-                    {
-                        Log.e("Volley Error", "Status Code: " + error.networkResponse.statusCode);
-                    }
-                }
+                error -> Log.e("PastSessions", "Error fetching sessions", error)
         );
-        queue.add(jsonArrayRequest);
+
+        queue.add(request);
     }
 }
