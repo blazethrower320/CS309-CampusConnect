@@ -61,8 +61,8 @@ public class ChatActivity extends AppCompatActivity implements WebSocketListener
         messagesRecyclerView.setAdapter(messageAdapter);
 
         // Get user info
-        userId = getIntent().getIntExtra("userId", -1);
-        username = "Chase"; // This should be dynamically loaded after login
+        userId = User.getInstance().getUserId();
+        username = User.getInstance().getUsername(); // This should be dynamically loaded after login
 
         // Setup WebSocket
         WebSocketManager.getInstance().setWebSocketListener(this);

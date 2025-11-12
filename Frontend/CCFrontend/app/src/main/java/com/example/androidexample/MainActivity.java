@@ -70,13 +70,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //TODO remove when done with the project/can be uncommented to test app
             else if (username.equals("Test") && password.equals("Test"))
             {
+                // Initialize mock user data for offline/testing mode
+                User user = User.getInstance();
+                user.setUsername("Test");
+                user.setPassword("Test");
+                user.setAdmin(false);
+                user.setTutor(false);
+                user.setUserId(9999); // dummy ID
+
                 Intent intent = new Intent(MainActivity.this, MainMenuActivity.class);
-                intent.putExtra("username", username);
-                intent.putExtra("password", password);
-                intent.putExtra("isAdmin", false);
-                intent.putExtra("userId", 0);
-
-
                 startActivity(intent);
                 finish();
             }
@@ -111,13 +113,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                                         Log.i("LoginSuccess", "User logged in. isAdmin=" + isAdmin + ", isTutor=" + isTutor + ", userId=" + userId);
 
-                                        Intent intent = new Intent(MainActivity.this, MainMenuActivity.class);
-                                        intent.putExtra("username", username);
-                                        intent.putExtra("password", password);
-                                        intent.putExtra("isAdmin", isAdmin);
-                                        intent.putExtra("isTutor", isTutor);
-                                        intent.putExtra("userId", userId);
+                                        // Inside login success:
+                                        User user = User.getInstance();
+                                        user.setUsername(username);
+                                        user.setPassword(password);
+                                        user.setAdmin(isAdmin);
+                                        user.setTutor(isTutor);
+                                        user.setUserId(userId);
 
+                                        Intent intent = new Intent(MainActivity.this, MainMenuActivity.class);
                                         startActivity(intent);
                                         finish();
                                     },

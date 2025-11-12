@@ -15,6 +15,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class CreateAccountActivity extends AppCompatActivity {
 
     // UI components
@@ -49,17 +52,13 @@ public class CreateAccountActivity extends AppCompatActivity {
         confirmPassTxt = findViewById(R.id.create_password_confirm);
         msgResponse = findViewById(R.id.msgResponse);
 
-        // Initialize Volley queue (reuse it)
         queue = Volley.newRequestQueue(this);
 
-        // Back button action
         backBtn.setOnClickListener(v -> {
             startActivity(new Intent(CreateAccountActivity.this, MainActivity.class));
             finish();
-
         });
 
-        // Create Account button action
         createAccountBtn.setOnClickListener(v -> handleCreateAccount());
     }
 
@@ -86,7 +85,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         createUser(username, password);
     }
 
-    /** Generic user creation **/
+    /** Create user and update global User instance **/
     private void createUser(String username, String password) {
         StringRequest request = new StringRequest(
                 Request.Method.POST,
@@ -96,13 +95,32 @@ public class CreateAccountActivity extends AppCompatActivity {
                     msgResponse.setText("User Created Successfully");
                     showToast("User Created");
 
-                    // Chain next step depending on role
-                    if (isAdmin) {
-                        createRoleAccount(username, URL_CREATE_ADMIN, true, false);
-                    } else if (isTutor) {
-                        createRoleAccount(username, URL_CREATE_TUTOR, false, true);
-                    } else {
-                        goToMainMenu(username, password, false, false);
+                    // Attempt to parse returned user data
+                    try {
+                        JSONObject json = new JSONObject(response);
+                        int userId = json.optInt("userId", -1);
+
+                        // Set user data globally in User.java singleton
+                        User user = User.getInstance();
+                        user.setUsername(username);
+                        user.setPassword(password);
+                        user.setAdmin(isAdmin);
+                        user.setTutor(isTutor);
+                        user.setUserId(userId);
+
+                        Log.d("UserSingleton", "User saved globally: " + user.toString());
+
+                        if (isAdmin) {
+                            createRoleAccount(username, URL_CREATE_ADMIN, true, false);
+                        } else if (isTutor) {
+                            createRoleAccount(username, URL_CREATE_TUTOR, false, true);
+                        } else {
+                            goToMainMenu();
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        showToast("Error parsing user response");
                     }
                 },
                 error -> {
@@ -127,8 +145,7 @@ public class CreateAccountActivity extends AppCompatActivity {
     }
 
     /** Admin or Tutor account creation **/
-    private void createRoleAccount(String username, String baseUrl, boolean isAdmin, boolean isTutor)
-    {
+    private void createRoleAccount(String username, String baseUrl, boolean isAdmin, boolean isTutor) {
         StringRequest request = new StringRequest(
                 Request.Method.POST,
                 baseUrl + username,
@@ -137,7 +154,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                     Log.d(role + " Response", response);
                     msgResponse.setText(role + " Created Successfully!");
                     showToast(role + " Account Created");
-                    goToMainMenu(username, passwordTxt.getText().toString(), isAdmin, isTutor);
+                    goToMainMenu();
                 },
                 error -> {
                     String role = isAdmin ? "Admin" : "Tutor";
@@ -151,21 +168,14 @@ public class CreateAccountActivity extends AppCompatActivity {
     }
 
     /** Navigate to Main Menu **/
-    private void goToMainMenu(String username, String password, boolean isAdmin, boolean isTutor)
-    {
+    private void goToMainMenu() {
         Intent intent = new Intent(CreateAccountActivity.this, MainMenuActivity.class);
-        intent.putExtra("username", username);
-        intent.putExtra("password", password);
-        intent.putExtra("isAdmin", isAdmin);
-        intent.putExtra("isTutor", isTutor);
-        intent.putExtra("userId", -1);
         startActivity(intent);
         finish();
     }
 
     /** Utility: quick toast **/
-    private void showToast(String message)
-    {
+    private void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

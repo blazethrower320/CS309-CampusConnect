@@ -108,11 +108,6 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
         LinearLayout sessionsBtn = findViewById(R.id.nav_sessions);
         sessionsBtn.setOnClickListener(v -> {
             Intent intent = new Intent(MainMenuActivity.this, SessionActivity.class);
-            intent.putExtra("username", username);
-            intent.putExtra("userId", userId);
-            intent.putExtra("isAdmin", isAdmin);
-            intent.putExtra("isTutor", isTutor);
-            intent.putExtra("password", password); // only if needed for certain calls
             startActivity(intent);
             finish();
             drawerLayout.closeDrawer(GravityCompat.START);
@@ -121,11 +116,6 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
         LinearLayout profileBtn = findViewById(R.id.nav_profile);
         profileBtn.setOnClickListener(v -> {
             Intent intent = new Intent(MainMenuActivity.this, ProfileActivity.class);
-            intent.putExtra("username", username);
-            intent.putExtra("userId", userId);
-            intent.putExtra("isAdmin", isAdmin);
-            intent.putExtra("isTutor", isTutor);
-            intent.putExtra("password", password); // only if needed for certain calls
             startActivity(intent);
             finish();
             drawerLayout.closeDrawer(GravityCompat.START);
@@ -134,11 +124,6 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
         LinearLayout reviewsBtn = findViewById(R.id.nav_reviews);
         reviewsBtn.setOnClickListener(v -> {
             Intent intent = new Intent(MainMenuActivity.this, ReviewListActivity.class);
-            intent.putExtra("username", username);
-            intent.putExtra("userId", userId);
-            intent.putExtra("isAdmin", isAdmin);
-            intent.putExtra("isTutor", isTutor);
-            intent.putExtra("password", password);
             startActivity(intent);
             finish();
             drawerLayout.closeDrawer(GravityCompat.START);
@@ -146,11 +131,13 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
 
 
         // Get values passed from login/signup
-        username = getIntent().getStringExtra("username");
-        password = getIntent().getStringExtra("password");
-        isAdmin = getIntent().getBooleanExtra("isAdmin", false);
-        isTutor = getIntent().getBooleanExtra("isTutor", false);
-        userId = getIntent().getIntExtra("userId", -1);
+        User user = User.getInstance();
+        username = user.getUsername();
+        password = user.getPassword();
+        isTutor = user.isTutor();
+        isAdmin = user.isAdmin();
+        userId = user.getUserId();
+
 
         // UI
         welcomeText = findViewById(R.id.welcome_text);
@@ -231,6 +218,7 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
             if (wsManager != null) {
                 wsManager.disconnectWebSocket();
             }
+            User.getInstance().clearInstance();
             finish();
         }
         if (v.getId() == R.id.delete_account_btn)
@@ -408,31 +396,46 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void connectWebSocketForTutor() {
-        wsManager = WebSocketManager.getInstance();
+        if (wsManager == null) {
+            wsManager = WebSocketManager.getInstance();
+        }
 
-        // Only connect if not already connected
+        // Check if already connected — don’t reconnect or re-add listeners
         if (wsManager.isConnected()) {
-            wsManager.setWebSocketListener(this);
             Log.d("WebSocket", "Already connected, listener set");
+            wsManager.setWebSocketListener(this);
             return;
         }
 
-        String url = BASE_URL + "/tutors/getTutorFromUserId/" + userId; // API to get tutorId
+        // Check if tutorId is already known
+        if (User.getInstance().getTutorId() > 0) {
+            String wsUrl = "ws://coms-3090-037.class.las.iastate.edu:8080/push/" + User.getInstance().getTutorId();
+            wsManager.connectWebSocket(wsUrl);
+            wsManager.setWebSocketListener(this);
+            return;
+        }
+
+        // Otherwise, fetch tutor ID only once
+        String url = BASE_URL + "/tutors/getTutorFromUserId/" + userId;
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
                     int tutorId = response.optInt("tutorId", -1);
                     if (tutorId > 0) {
+                        User.getInstance().setTutorId(tutorId);
                         String wsUrl = "ws://coms-3090-037.class.las.iastate.edu:8080/push/" + tutorId;
-                        wsManager.setWebSocketListener(this);
-                        wsManager.connectWebSocket(wsUrl);
-                        Log.d("WebSocket", "Connecting to WS: " + wsUrl);
+
+                        // Only connect if not already connected
+                        if (!wsManager.isConnected()) {
+                            wsManager.connectWebSocket(wsUrl);
+                            wsManager.setWebSocketListener(this);
+                            Log.d("WebSocket", "Connected WS: " + wsUrl);
+                        }
                     } else {
                         Log.e("WebSocket", "Tutor ID not found");
                     }
                 },
                 error -> Log.e("WebSocket", "Failed to fetch tutor ID", error)
         );
-
         requestQueue.add(request);
     }
 

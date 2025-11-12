@@ -60,6 +60,11 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.ViewHold
         }
 
         // 🖱 Click handler
+        if (User.getInstance().isTutor()) {
+            holder.joinButton.setVisibility(View.GONE);
+        } else {
+            holder.joinButton.setVisibility(View.VISIBLE);
+        }
         holder.joinButton.setOnClickListener(v -> {
             if (joinListener != null && !s.isJoined()) {
                 joinListener.onJoinClick(s);
