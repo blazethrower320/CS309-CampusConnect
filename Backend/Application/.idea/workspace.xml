@@ -6,12 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="6d29c9f1-ee49-4c0f-98ba-fc2545596b57" name="Changes" comment="Merge branch 'main' of https://git.las.iastate.edu/cs309/2025fall/3_hosen_1 into SessionsFeature&#10;&#10;# Conflicts:&#10;#&#9;Backend/Application/.idea/workspace.xml">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Admins/AdminService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Admins/AdminService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Admins/Admins.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Admins/Admins.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Admins/AdminsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Admins/AdminsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Admins/AdminsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Admins/AdminsRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Images/ImagesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Images/ImagesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/WebSockets/GroupChats/DirectMessageChatSocket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/WebSockets/GroupChats/DirectMessageChatSocket.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -87,6 +84,11 @@
       <recent name="CampusConnect.WebSockets.Push" />
     </key>
   </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="/images" />
+    </option>
+  </component>
   <component name="RunManager" selected="Application.Main">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="CampusConnect.Main" />
@@ -143,7 +145,7 @@
       <workItem from="1762570444910" duration="4947000" />
       <workItem from="1762617883146" duration="33000" />
       <workItem from="1762617921674" duration="4289000" />
-      <workItem from="1763157333229" duration="2650000" />
+      <workItem from="1763157333229" duration="5203000" />
     </task>
     <task id="LOCAL-00001" summary="Added mapping for sessions feature. Sessions mapped with tutor and users table.">
       <option name="closed" value="true" />

@@ -78,7 +78,7 @@ public class DirectMessageChatSocket
             Images img = RepositoryProvider.getImagesRepository().findById(imageId);
             newMessage.setMessage(null);
             if (img != null) {
-                newMessage.setImageUrl("/images/" + img.getId());
+                newMessage.setImageUrl(String.valueOf(img.getId()));
             }
         }
         else
@@ -98,7 +98,7 @@ public class DirectMessageChatSocket
         response.put("receiver", receiver.getUsername());
         response.put("message", newMessage.getMessage());
         response.put("imageUrl", newMessage.getImageUrl() != null
-                ? "http://coms-3090-037.class.las.iastate.edu:8080" + newMessage.getImageUrl()
+                ? "http://coms-3090-037.class.las.iastate.edu:8080/" + newMessage.getImageUrl()
                 : null);
         response.put("timestamp", newMessage.getMessageSent().toString());
 
