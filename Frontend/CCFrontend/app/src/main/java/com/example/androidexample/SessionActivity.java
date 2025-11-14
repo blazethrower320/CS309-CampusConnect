@@ -8,12 +8,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.Spinner;
@@ -116,27 +119,88 @@ public class SessionActivity extends AppCompatActivity implements WebSocketListe
     }
 
     private void setupSearchAndSpinner() {
-        int id = classSearchView.getContext().getResources()
-                .getIdentifier("android:id/search_src_text", null, null);
-        TextView searchText = classSearchView.findViewById(id);
-        searchText.setTextColor(Color.WHITE);
-        searchText.setHintTextColor(Color.LTGRAY);
 
+        SearchView searchView = findViewById(R.id.class_search_view);
+        searchView.post(() -> styleSearchView(searchView));
+
+        // Setup spinner
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.majors_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         majorSpinner.setAdapter(adapter);
 
-        majorSpinner.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
-            @Override public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) { applyFilters(); }
-            @Override public void onNothingSelected(android.widget.AdapterView<?> parent) {}
+        majorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                applyFilters();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
         });
 
-        classSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override public boolean onQueryTextSubmit(String query) { applyFilters(); return true; }
-            @Override public boolean onQueryTextChange(String newText) { applyFilters(); return true; }
+        // Search listener
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                applyFilters();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                applyFilters();
+                return true;
+            }
         });
     }
+
+    private void styleSearchView(SearchView searchView) {
+
+        // Clear search_plate background
+        int plateId = searchView.getContext().getResources()
+                .getIdentifier("android:id/search_plate", null, null);
+        View plate = searchView.findViewById(plateId);
+        if (plate != null) {
+            plate.setBackgroundColor(Color.TRANSPARENT);
+        }
+
+        // Clear search_edit_frame background (NEW REQUIRED FIX)
+        int frameId = searchView.getContext().getResources()
+                .getIdentifier("android:id/search_edit_frame", null, null);
+        View frame = searchView.findViewById(frameId);
+        if (frame != null) {
+            frame.setBackgroundColor(Color.TRANSPARENT);
+        }
+
+        // Text
+        int textId = searchView.getContext().getResources()
+                .getIdentifier("android:id/search_src_text", null, null);
+        TextView searchText = searchView.findViewById(textId);
+        if (searchText != null) {
+            searchText.setHintTextColor(Color.parseColor("#FFFFFF"));
+            searchText.setTextColor(Color.WHITE);
+        }
+
+        // Magnifying glass
+        int magId = searchView.getContext().getResources()
+                .getIdentifier("android:id/search_mag_icon", null, null);
+        ImageView magIcon = searchView.findViewById(magId);
+        if (magIcon != null) {
+            magIcon.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
+        }
+
+        // Close (X)
+        int closeId = searchView.getContext().getResources()
+                .getIdentifier("android:id/search_close_btn", null, null);
+        ImageView closeIcon = searchView.findViewById(closeId);
+        if (closeIcon != null) {
+            closeIcon.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
+        }
+    }
+
+
+
 
     private void setupRecycler(String username) {
         sessionsRecycler.setLayoutManager(new LinearLayoutManager(this));

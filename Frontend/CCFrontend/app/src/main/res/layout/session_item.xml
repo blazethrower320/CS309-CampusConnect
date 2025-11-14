@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginVertical="8dp"
     android:layout_marginHorizontal="12dp"
-    app:cardCornerRadius="12dp"
+    app:cardCornerRadius="20dp"
     app:cardElevation="6dp"
     app:cardUseCompatPadding="true"
     app:cardPreventCornerOverlap="false">
@@ -15,7 +15,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:background="@drawable/session_item_background">
 
         <!-- Top Section: Class Name + Tutor + Join Button -->
         <LinearLayout
@@ -32,7 +33,7 @@
                 android:layout_weight="1"
                 android:text="COM S 309"
                 android:textStyle="bold"
-                android:textColor="#000000"
+                android:textColor="#FFFFFF"
                 android:textSize="20sp" />
 
             <TextView
@@ -41,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Tutor: Loading..."
-                android:textColor="#666666"
+                android:textColor="#FFFFFF"
                 android:textSize="14sp"
                 android:layout_marginStart="12dp" />
 
@@ -55,7 +56,7 @@
                 android:layout_marginStart="20dp"
                 android:text="Join"
                 android:gravity="center"
-                android:textColor="@color/black"
+                android:textColor="#FFFFFF"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 android:paddingStart="16dp"
@@ -68,7 +69,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Software Development Practices"
-            android:textColor="#333333"
+            android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:layout_marginTop="6dp" />
 
@@ -86,14 +87,14 @@
                 android:layout_height="18dp"
                 android:layout_marginEnd="4dp"
                 android:src="@drawable/outline_location"
-                app:tint="#444444"/>
+                app:tint="#FFFFFF"/>
 
             <TextView
                 android:id="@+id/meeting_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Coover 101"
-                android:textColor="#444444"
+                android:textColor="#FFFFFF"
                 android:textSize="15sp" />
 
             <!-- Space between location and time -->
@@ -107,14 +108,14 @@
                 android:layout_height="18dp"
                 android:layout_marginEnd="4dp"
                 android:src="@drawable/outline_alarm"
-                app:tint="#444444" />
+                app:tint="#FFFFFF" />
 
             <TextView
                 android:id="@+id/meeting_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Fridays 3:00 PM"
-                android:textColor="#444444"
+                android:textColor="#FFFFFF"
                 android:textSize="15sp" />
         </LinearLayout>
 
