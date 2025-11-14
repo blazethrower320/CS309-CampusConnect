@@ -52,10 +52,10 @@ public class TutorController
         return ResponseEntity.ok(tutor);
     }
 
-    @GetMapping("/tutors/getTutorRating/{tutorID}")
-    public double getTutorRating(@PathVariable long tutorID)
+    @GetMapping("/tutors/getTutorRating/{tutorId}")
+    public double getTutorRating(@PathVariable long tutorId)
     {
-        Tutor tutor = tutorRepository.getTutorByTutorId(tutorID);
+        Tutor tutor = tutorRepository.getTutorByTutorId(tutorId);
         return tutor.getTotalRating();
     }
 
@@ -74,7 +74,7 @@ public class TutorController
     @PutMapping("tutors/editTotalClasses")
     public ResponseEntity<Object> editTotalClasses(@RequestBody Tutor newTutor)
     {
-        Tutor tutor = tutorRepository.findByUsername(newTutor.getUsername());
+        Tutor tutor = tutorRepository.findByUsername(newTutor.getUser().getUsername());
         if (tutor != null) {
             tutor.setTotalClasses(newTutor.gettotalClasses());
             tutorRepository.save(tutor);
@@ -84,7 +84,7 @@ public class TutorController
     }
 
 
-    @GetMapping("tutors/getTutorFromUserId/{userId}")
+    @GetMapping("/tutors/getTutorFromUserId/{userId}")
     public Tutor getTutorFromUserId(@PathVariable long userId)
    {
       return tutorRepository.getTutorByUserUserId(userId);

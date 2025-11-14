@@ -5,7 +5,6 @@ import CampusConnect.Database.Models.Classes.ClassesRepository;
 import CampusConnect.Database.Models.Sessions.SessionsService;
 import CampusConnect.Database.Models.Tutors.Tutor;
 import CampusConnect.Database.Models.Tutors.TutorRepository;
-import CampusConnect.Database.Models.Tutors.TutorRequest;
 import CampusConnect.Database.Models.Users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

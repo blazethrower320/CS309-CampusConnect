@@ -10,7 +10,6 @@ import CampusConnect.Database.Models.Tutors.Tutor;
 import CampusConnect.Database.Models.Tutors.TutorRepository;
 import CampusConnect.Database.Models.Users.User;
 import CampusConnect.Database.Models.Users.UserRepository;
-import CampusConnect.Database.Models.Users.UserService;
 import com.mysql.cj.Session;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -40,7 +39,8 @@ class Main {
     @Bean
     CommandLineRunner initData(UserRepository userRepository, TutorRepository tutorRepository, ClassesRepository classesRepository, AdminsRepository adminsRepository, SessionsRepository sessionsRepository) {
         return args -> {
-            // Clear tables first
+
+         /*   // Clear tables first
             sessionsRepository.deleteAll();
             tutorRepository.deleteAll();
             classesRepository.deleteAll();
@@ -104,7 +104,8 @@ class Main {
 
         };
     }
-
+          */
+/*
     @Bean
     CommandLineRunner initClasses(ClassesRepository classesRepository) {
         return args -> {
@@ -116,6 +117,12 @@ class Main {
             classesRepository.save(class1);
             classesRepository.save(class2);
             classesRepository.save(class3);
+        };
+    }
+
+ */
+
+
         };
     }
 }

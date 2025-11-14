@@ -238,6 +238,12 @@ public class UserController {
         return userReq;
     }
 
+    @GetMapping("/users/getUserId/{username}")
+    public long getUserId(@PathVariable String username){
+        User user = userRepository.findByUsername(username);
+        return user.getUserId();
+    }
+
     @PutMapping("/users/update")
     public User updateUser(@RequestBody UserRequest updatedUser){
         if(!userRepository.existsByUsername(updatedUser.getUsername())){

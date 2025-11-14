@@ -23,22 +23,24 @@ public class CreateSessionActivity extends AppCompatActivity {
     private EditText editClassName, editClassCode, editMeetingLocation, editMeetingTime;
     private Button createButton;
     private ImageButton backButton;
-    private int userId;
-    private boolean isTutor;
-    private String username;
 
     private static final String BASE_URL = "http://coms-3090-037.class.las.iastate.edu:8080";
+
+    private User currentUser;  // store the current user object
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_session);
 
-        // Get data from intent
-        Intent intent = getIntent();
-        userId = intent.getIntExtra("userId", -1);
-        isTutor = intent.getBooleanExtra("isTutor", false);
-        username = intent.getStringExtra("username");
+        // Get current user
+        currentUser = User.getInstance();
+
+        if (currentUser == null) {
+            Toast.makeText(this, "Error: User not found.", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
         // Initialize views
         editClassName = findViewById(R.id.edit_class_name);
@@ -55,64 +57,37 @@ public class CreateSessionActivity extends AppCompatActivity {
             String className = editClassName.getText().toString().trim();
             String classCode = editClassCode.getText().toString().trim();
             String meetingLocation = editMeetingLocation.getText().toString().trim();
-            String meetingTime = editMeetingTime.getText().toString().trim();
+            String meetingTime = editMeetingTime.getText().toString();
 
             if (className.isEmpty() || classCode.isEmpty() || meetingLocation.isEmpty() || meetingTime.isEmpty()) {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            //  Fetch the tutorId using /users/getTutor/{userId}
-            String userUrl = BASE_URL + "/users/getTutor/" + userId;
+            int tutorId = currentUser.getTutorId();  // pull directly from User
+            int userId = currentUser.getUserId();
+            String username = currentUser.getUsername();
 
-            JsonObjectRequest userRequest = new JsonObjectRequest(Request.Method.GET, userUrl, null,
-                    response -> {
-                        try {
-                            // If the endpoint returns the tutor object directly like:
-                            // {
-                            //   "tutorId": 5,
-                            //   "name": "John Doe",
-                            //   ...
-                            // }
-                            int tutorId = response.optInt("tutorId", -1);
+            if (tutorId == -1) {
+                Toast.makeText(this, "Tutor ID not found for user.", Toast.LENGTH_SHORT).show();
+                Log.e("CreateSession", "Tutor ID missing for current user.");
+                return;
+            }
 
-                            if (tutorId != -1) {
-                                Log.d("CreateSession", "Fetched tutorId: " + tutorId);
-                                createSession(userId, tutorId, className, classCode, meetingLocation, meetingTime);
-                            } else {
-                                Toast.makeText(this, "Tutor ID not found in response.", Toast.LENGTH_SHORT).show();
-                                Log.e("CreateSession", "Tutor ID missing from response: " + response);
-                            }
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Toast.makeText(this, "Failed to parse tutor info", Toast.LENGTH_SHORT).show();
-                        }
-                    },
-                    error -> {
-                        Log.e("CreateSession", "Error fetching tutor info: " + error.toString());
-                        Toast.makeText(this, "Failed to fetch tutor info", Toast.LENGTH_SHORT).show();
-                    });
-
-            queue.add(userRequest);
+            createSession(queue, userId, tutorId, className, classCode, meetingLocation, meetingTime, username);
         });
 
         // Handle Back button
         backButton.setOnClickListener(v -> {
             Intent backIntent = new Intent(CreateSessionActivity.this, SessionActivity.class);
-            backIntent.putExtra("userId", userId);
-            backIntent.putExtra("isTutor", isTutor);
-            backIntent.putExtra("username", username);
             startActivity(backIntent);
             finish();
         });
     }
 
-    //  Use fetched tutorId to create a new session
-    private void createSession(int userId, int tutorId, String className, String classCode,
-                               String meetingLocation, String meetingTime) {
+    private void createSession(RequestQueue queue, int userId, int tutorId, String className, String classCode,
+                               String meetingLocation, String meetingTime, String username) {
 
-        RequestQueue queue = Volley.newRequestQueue(this);
         String url = BASE_URL + "/sessions/createSession";
 
         JSONObject sessionData = new JSONObject();
@@ -122,8 +97,6 @@ public class CreateSessionActivity extends AppCompatActivity {
             sessionData.put("classCode", classCode);
             sessionData.put("meetingLocation", meetingLocation);
             sessionData.put("meetingTime", meetingTime);
-
-            // recommended but optional — backend will usually generate
             sessionData.put("dateCreated", java.time.LocalDateTime.now().toString());
 
         } catch (JSONException e) {

@@ -57,13 +57,15 @@ public class TutorReviewsActivity extends AppCompatActivity {
 
         queue = Volley.newRequestQueue(this);
 
-        username = getIntent().getStringExtra("username");
-        password = getIntent().getStringExtra("password");
-        isAdmin = getIntent().getBooleanExtra("isAdmin", false);
-        isTutor = getIntent().getBooleanExtra("isTutor", false);
-        userId = getIntent().getIntExtra("userId", -1);
+        User user = User.getInstance();
+        username = user.getUsername();
+        password = user.getPassword();
+        isTutor = user.isTutor();
+        isAdmin = user.isAdmin();
+        userId = user.getUserId();
         tutorId = getIntent().getIntExtra("tutorId", -1);
 
+        // Set up RecyclerView
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new RatingListAdapter(this, ratingList);
@@ -71,16 +73,38 @@ public class TutorReviewsActivity extends AppCompatActivity {
 
         backButton.setOnClickListener(v -> finish());
 
+        // Disable UI by default
+        disableRatingUI();
+
         if (isTutor) {
-            submitButton.setEnabled(false);
-            submitButton.setAlpha(0.5f);
-            Toast.makeText(this, "Tutors cannot rate themselves", Toast.LENGTH_SHORT).show();
+            int CtutorId = User.getInstance().getTutorId();
+                if (CtutorId == tutorId) {
+                    Toast.makeText(this, "You cannot review yourself", Toast.LENGTH_SHORT).show();
+                }
+        } else {
+            // Non-tutors can rate immediately
+            enableRatingUI();
         }
 
         loadTutorRatings();
-
-        submitButton.setOnClickListener(v -> submitRating());
     }
+
+    private void enableRatingUI() {
+        submitButton.setEnabled(true);
+        submitButton.setAlpha(1f);
+        ratingBar.setEnabled(true);
+        commentBox.setEnabled(true);
+    }
+
+    private void disableRatingUI() {
+        submitButton.setEnabled(false);
+        submitButton.setAlpha(0.5f);
+        ratingBar.setEnabled(false);
+        commentBox.setEnabled(false);
+    }
+
+
+
 
     private void loadTutorRatings() {
         String url = BASE_URL + "/ratings/getTutorRatings/" + tutorId;

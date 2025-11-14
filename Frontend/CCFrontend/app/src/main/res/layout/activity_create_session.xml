@@ -36,25 +36,25 @@
         <EditText
             android:id="@+id/edit_class_name"
             style="@style/DarkInputField"
-            android:hint="Class Name"
+            android:hint="Class Name (e.g Computer Science 311)"
             android:inputType="text" />
 
         <EditText
             android:id="@+id/edit_class_code"
             style="@style/DarkInputField"
-            android:hint="Class Code"
+            android:hint="Class Code (e.g COMS311)"
             android:inputType="text" />
 
         <EditText
             android:id="@+id/edit_meeting_location"
             style="@style/DarkInputField"
-            android:hint="Meeting Location"
+            android:hint="Meeting Location (e.g Pearson Hall 203)"
             android:inputType="text" />
 
         <EditText
             android:id="@+id/edit_meeting_time"
             style="@style/DarkInputField"
-            android:hint="Meeting Time"
+            android:hint="Meeting Time (e.g mm/dd/yy hh:mm AM/PM)"
             android:inputType="text" />
 
         <!-- Create Session Button -->
@@ -63,10 +63,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Create Session"
+            android:textColor="@color/black"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="16dp"
-            android:backgroundTint="#2196F3"
-            android:textColor="#FFFFFF"
+            android:backgroundTint="#FFFF"
             android:textStyle="bold"
             android:elevation="4dp"
             android:padding="10dp" />

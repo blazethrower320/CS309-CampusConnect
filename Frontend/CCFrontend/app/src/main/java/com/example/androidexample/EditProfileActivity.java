@@ -4,224 +4,157 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-import org.json.JSONObject;
-
-
+import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONObject;
 
-public class EditProfileActivity extends AppCompatActivity implements View.OnClickListener
-{
-    //Text Fields
-    private TextView roleText;
-    private TextView nameText;
-    private TextView usernameText;
-    private EditText bioText;
-    private EditText majorText;
-    private EditText classificationText;
-    //Buttons
-    private ImageButton confirmBtn; //Edit profile btn
-    private ImageButton cancelBtn; //Three line btn
+public class EditProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
-    //User variables
-    private boolean isTutor = false;   // cached tutor status
-    private boolean isAdmin = false;   // passed from login/signup
-    private int userId;                // must be passed from login/signup
-    private String username;
-    private String password;           // pass this from login/signup if required
+    // UI
+    private TextView roleText, nameText, usernameText;
+    private EditText bioText, majorText, classificationText;
+    private ImageButton confirmBtn, cancelBtn;
 
-    //profile fields
-    private String bio;
-    private String major;
-    private String classification;
-    private String firstName;
-    private String lastName;
+    // Singleton user
+    private User user;
 
+    private static final String URL_UPDATE_USER = "http://coms-3090-037.class.las.iastate.edu:8080/users/update";
 
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
-        //Initialize UI elements
 
-        //Text Fields
+        // Initialize user singleton
+        user = User.getInstance();
+        if (user == null || user.getUsername() == null) {
+            Toast.makeText(this, "User not logged in.", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+            return;
+        }
+
+        // Initialize UI
         roleText = findViewById(R.id.role_text);
         nameText = findViewById(R.id.name_text);
         usernameText = findViewById(R.id.username_text);
         bioText = findViewById(R.id.edit_bio_text);
         majorText = findViewById(R.id.edit_major_text);
         classificationText = findViewById(R.id.edit_classification_text);
-
-
-
-        //Buttons
-        cancelBtn = findViewById(R.id.cancel_button);
         confirmBtn = findViewById(R.id.confirm_btn);
+        cancelBtn = findViewById(R.id.cancel_button);
 
-        //initialize user data
-        username = getIntent().getStringExtra("username");
-        userId = getIntent().getIntExtra("userId", -1);
-        isAdmin = getIntent().getBooleanExtra("isAdmin", false);
-        isTutor = getIntent().getBooleanExtra("isTutor", false);
-        password = getIntent().getStringExtra("password");
-        bio = getIntent().getStringExtra("bio");
-        major = getIntent().getStringExtra("major");
-        classification = getIntent().getStringExtra("classification");
-        firstName = getIntent().getStringExtra("firstName");
-        lastName = getIntent().getStringExtra("lastName");
-
-        //set button listeners to be active
-        cancelBtn.setOnClickListener(this);
         confirmBtn.setOnClickListener(this);
+        cancelBtn.setOnClickListener(this);
 
-        //Set text fields to have user data
-        usernameText.setText("@" + username);
-        if(isAdmin)
-        {
+        // Load user info into fields
+        populateFields();
+    }
+
+    private void populateFields() {
+        usernameText.setText("@" + user.getUsername());
+        nameText.setText(user.getFirstName() + " " + user.getLastName());
+        bioText.setText(user.getBio());
+        majorText.setText(user.getMajor());
+        classificationText.setText(user.getClassification());
+
+        if (user.isAdmin()) {
             roleText.setText("Admin");
-        }
-        else if(isTutor)
-        {
+        } else if (user.isTutor()) {
             roleText.setText("Tutor");
-        }
-        else
-        {
+        } else {
             roleText.setText("Student");
         }
-        nameText.setText(firstName + " " + lastName);
-        bioText.setText(bio);
-        majorText.setText(major);
-        classificationText.setText(classification);
     }
 
-    public void onClick(View v)
-    {
+    @Override
+    public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.confirm_btn)
-        {
-            UpdateProfile(username);
-            Intent intent = new Intent(EditProfileActivity.this, ProfileActivity.class);
-            intent.putExtra("username", username);
-            intent.putExtra("userId", userId);
-            intent.putExtra("isAdmin", isAdmin);
-            intent.putExtra("isTutor", isTutor);
-            intent.putExtra("password", password);
-            startActivity(intent);
-            finish();
-        }
-        if(id == R.id.cancel_button)
-        {
-            Intent intent = new Intent(EditProfileActivity.this, ProfileActivity.class);
-            intent.putExtra("username", username);
-            intent.putExtra("userId", userId);
-            intent.putExtra("isAdmin", isAdmin);
-            intent.putExtra("isTutor", isTutor);
-            intent.putExtra("password", password);
-            startActivity(intent);
+
+        if (id == R.id.confirm_btn) {
+            updateProfile();
+        } else if (id == R.id.cancel_button) {
+            startActivity(new Intent(this, ProfileActivity.class));
             finish();
         }
     }
-    public void UpdateProfile(String username)
-    {
-        //URL for put request
-        final String URL_UPDATE_USER = "http://coms-3090-037.class.las.iastate.edu:8080/users/update";
 
-        // Create a JSON object to hold the updated user data.
-        JSONObject requestBodyJson = new JSONObject();
-        try
-        {
-            //Get updated fields
+    private void updateProfile() {
+        try {
+            // Get updated values from text fields
             String updatedBio = bioText.getText().toString();
             String updatedMajor = majorText.getText().toString();
             String updatedClassification = classificationText.getText().toString();
 
-            //Add info to JSON object
-            requestBodyJson.put("firstName", firstName);
-            requestBodyJson.put("lastName", lastName);
-            requestBodyJson.put("username", username);
-            requestBodyJson.put("password", password);
-            requestBodyJson.put("major", updatedMajor);
-            requestBodyJson.put("bio", updatedBio);
-            requestBodyJson.put("classification", updatedClassification);
+            // Update singleton
+            user.setBio(updatedBio);
+            user.setMajor(updatedMajor);
+            user.setClassification(updatedClassification);
 
+            // Create JSON object
+            JSONObject body = new JSONObject();
+            body.put("userId", user.getUserId());
+            body.put("username", user.getUsername());
+            body.put("password", user.getPassword());
+            body.put("firstName", user.getFirstName());
+            body.put("lastName", user.getLastName());
+            body.put("bio", user.getBio());
+            body.put("major", user.getMajor());
+            body.put("classification", user.getClassification());
+            body.put("isTutor", user.isTutor());
+            body.put("isAdmin", user.isAdmin());
 
+            String requestBody = body.toString();
+            Log.d("EditProfile", "Request Body: " + requestBody);
 
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            // If there's an error creating the JSON, we can't proceed.
-            Toast.makeText(this, "Error creating update request.", Toast.LENGTH_SHORT).show();
-            return;
-        }
+            // Create Volley PUT request
+            StringRequest putRequest = new StringRequest(
+                    Request.Method.PUT,
+                    URL_UPDATE_USER,
+                    response -> {
+                        Log.d("Volley Success", "Profile updated: " + response);
+                        Toast.makeText(EditProfileActivity.this, "Profile updated successfully!", Toast.LENGTH_SHORT).show();
 
-        // Convert the JSON object to a string for the request body.
-        final String requestBody = requestBodyJson.toString();
-        Log.d("Volley UpdateProfile", "Request Body: " + requestBody);
-
-        //Create request
-        StringRequest putRequest = new StringRequest(
-                Request.Method.PUT,
-                URL_UPDATE_USER,
-                response -> {
-                    // This is the success listener.
-                    Log.d("Volley Success", "Profile updated: " + response);
-                    Toast.makeText(EditProfileActivity.this, "Profile updated successfully!", Toast.LENGTH_SHORT).show();
-                },
-                error -> {
-                    // This is the error listener.
-                   Log.e("Volley Error", "Failed to update profile: " + error.toString());
-
-                    // Providing more detailed error feedback is helpful for debugging.
-                    String responseBody = "";
-                    if (error.networkResponse != null)
-                    {
-                        try
-                        {
-                            responseBody = new String(error.networkResponse.data, "utf-8");
-                            Log.e("Volley Error", "Status Code: " + error.networkResponse.statusCode);
-                            Log.e("Volley Error", "Response Body: " + responseBody);
+                        // Go back to profile
+                        startActivity(new Intent(EditProfileActivity.this, ProfileActivity.class));
+                        finish();
+                    },
+                    error -> {
+                        Log.e("Volley Error", "Failed to update profile: " + error);
+                        String responseBody = "";
+                        if (error.networkResponse != null) {
+                            try {
+                                responseBody = new String(error.networkResponse.data, "utf-8");
+                                Log.e("Volley Error", "Response Body: " + responseBody);
+                            } catch (Exception ignored) {}
                         }
-                        catch (Exception e)
-                        {
-                            e.printStackTrace();
-                        }
+                        Toast.makeText(EditProfileActivity.this, "Update failed: " + responseBody, Toast.LENGTH_LONG).show();
                     }
-                    Toast.makeText(EditProfileActivity.this, "Update failed: " + responseBody, Toast.LENGTH_LONG).show();
+            ) {
+                @Override
+                public String getBodyContentType() {
+                    return "application/json; charset=utf-8";
                 }
-        ) {
-            //override for custom body
-            @Override
-            public String getBodyContentType()
-            {
-                return "application/json; charset=utf-8";
-            }
 
-            @Override
-            public byte[] getBody()
-            {
-                // Return the JSON object as a byte array.
-                return requestBody.getBytes();
-            }
-        };
+                @Override
+                public byte[] getBody() {
+                    return requestBody.getBytes();
+                }
+            };
 
-        //Request for volley
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(putRequest);
+            // Send request
+            RequestQueue queue = Volley.newRequestQueue(this);
+            queue.add(putRequest);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Error updating profile.", Toast.LENGTH_SHORT).show();
+        }
     }
-
-
 }
