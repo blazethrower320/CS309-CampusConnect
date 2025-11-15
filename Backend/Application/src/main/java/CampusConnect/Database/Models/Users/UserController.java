@@ -126,7 +126,7 @@ public class UserController {
         userRepository.save(user);
         return true;
     }
-
+    //
     @GetMapping("/users/major/{username}")
     public String getMajor(@PathVariable String username){
         return userRepository.getUserByUsername(username).getMajor();
@@ -263,7 +263,5 @@ public class UserController {
         userRepository.save(user);
         return user;
     }
-
-
 }
 
