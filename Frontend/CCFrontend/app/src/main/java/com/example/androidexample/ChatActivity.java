@@ -43,7 +43,7 @@ public class ChatActivity extends AppCompatActivity implements WebSocketListener
     private ActivityResultLauncher<Intent> imagePickerLauncher;
     //Id values
     int sessionId;
-    int otherUserId;
+    int tutorUserId;
     int userId;
     private String username;
 
@@ -69,52 +69,52 @@ public class ChatActivity extends AppCompatActivity implements WebSocketListener
         // Get user info
         userId = User.getInstance().getUserId();
         username = User.getInstance().getUsername(); // This should be dynamically loaded after login
-        otherUserId = getIntent().getIntExtra("otherUserId", 0);
+        tutorUserId = getIntent().getIntExtra("tutorUserId", 0);
         sessionId = getIntent().getIntExtra("sessionId", 0);
 
         // Setup WebSocket
         WebSocketManager.getInstance().setWebSocketListener(this);
         String serverUrl;
-        //if(sessionId==0) //If DM
-        //{
-        //    try
-        //    {
-        //        serverUrl = "ws://coms-3090-037.class.las.iastate.edu:8080/DM/{userId1}/{userId2}";
-        //        serverUrl = serverUrl.replace("{userId1}", String.valueOf(userId));
-        //        serverUrl = serverUrl.replace("{userId2}", String.valueOf(otherUserId)); // Placeholder for the other user
-        //        WebSocketManager.getInstance().connectWebSocket(serverUrl);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        e.printStackTrace();
-        //    }
-        //}
-        //else //If group chat
-        //{
-        //    try
-        //    {
-        //        serverUrl = "ws://coms-3090-037.class.las.iastate.edu:8080/groupChat/{sessionId}/{userId}";
-        //        serverUrl = serverUrl.replace("{userId}", String.valueOf(userId));
-        //        serverUrl = serverUrl.replace("{sessionId}", String.valueOf(sessionId)); // Placeholder for the other user
-        //        WebSocketManager.getInstance().connectWebSocket(serverUrl);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        e.printStackTrace();
-        //    }
-        //}
+        if(sessionId==0) //If DM
+        {
+            try
+            {
+                serverUrl = "ws://coms-3090-037.class.las.iastate.edu:8080/DM/{userId1}/{userId2}";
+                serverUrl = serverUrl.replace("{userId1}", String.valueOf(userId));
+                serverUrl = serverUrl.replace("{userId2}", String.valueOf(tutorUserId)); // Placeholder for the other user
+                WebSocketManager.getInstance().connectWebSocket(serverUrl);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        else //If group chat
+        {
+            try
+            {
+                serverUrl = "ws://coms-3090-037.class.las.iastate.edu:8080/groupChat/{sessionId}/{userId}";
+                serverUrl = serverUrl.replace("{userId}", String.valueOf(userId));
+                serverUrl = serverUrl.replace("{sessionId}", String.valueOf(sessionId)); // Placeholder for the other user
+                WebSocketManager.getInstance().connectWebSocket(serverUrl);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
         //TODO Remove after done testing
-        try
-        {
-            serverUrl = "ws://coms-3090-037.class.las.iastate.edu:8080/groupChat/{sessionId}/{userId}";
-            serverUrl = serverUrl.replace("{userId}", String.valueOf(userId));
-            serverUrl = serverUrl.replace("{sessionId}", String.valueOf(1)); // Placeholder for the other user
-            WebSocketManager.getInstance().connectWebSocket(serverUrl);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+        //try
+        //{
+        //    serverUrl = "ws://coms-3090-037.class.las.iastate.edu:8080/groupChat/{sessionId}/{userId}";
+        //    serverUrl = serverUrl.replace("{userId}", String.valueOf(userId));
+        //    serverUrl = serverUrl.replace("{sessionId}", String.valueOf(1)); // Placeholder for the other user
+        //    WebSocketManager.getInstance().connectWebSocket(serverUrl);
+        //}
+        //catch (Exception e)
+        //{
+        //    e.printStackTrace();
+        //}
         
 
         // --- IMAGE PICKER LAUNCHER ---
