@@ -233,7 +233,10 @@ public class UserController {
         }
         User user = userRepository.findByUsername(username);
         boolean isTutor = tutorRepository.existsByUsername(username);
-        boolean isAdmin = adminRepository.existsByUsername(username);
+        Admins admin = adminRepository.findByUser(user);
+        boolean isAdmin = false;
+        if(admin != null)
+            isAdmin = true;
         UserRequest userReq = new UserRequest(user.getFirstName(), user.getLastName(), user.getUsername(), user.getPassword(), isTutor, isAdmin, user.getMajor(), user.getClassification(), user.getBio(), user.getContractInfo());
         return userReq;
     }

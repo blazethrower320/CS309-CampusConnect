@@ -68,9 +68,19 @@ public class User {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
-        major = null;
-        classification = null;
-        bio = null;
+        major = "N/A";
+        classification = "N/A";
+        bio = "N/A";
+    }
+    public User(String username, String password, String firstName, String lastName)
+    {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        major = "N/A";
+        classification = "N/A";
+        bio = "";
     }
 
 
