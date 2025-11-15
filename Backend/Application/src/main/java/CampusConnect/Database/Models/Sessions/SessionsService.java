@@ -48,6 +48,22 @@ public class SessionsService {
             throw new RuntimeException("User not found");
         }
         newSession.addUser(newUser);
+        sessionsRepository.save(newSession);
+    }
+
+    public void removeUser(long userId, long sessionId){
+        Sessions session = sessionsRepository.findBySessionId(sessionId);
+        if(session == null) {
+            throw new RuntimeException("Session Not Found");
+        }
+
+        User user = userRepository.getUserByUserId(userId);
+        if(user == null){
+            throw new RuntimeException("User Not Found");
+        }
+
+        session.removeUser(user);
+        sessionsRepository.save(session);
     }
 
 
