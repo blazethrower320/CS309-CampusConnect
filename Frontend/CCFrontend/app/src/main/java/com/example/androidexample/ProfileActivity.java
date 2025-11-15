@@ -52,6 +52,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     // User info
     private User user;
+    private User otherUser;
+    private String tutorUsername;
 
     private static final String BASE_URL = "http://coms-3090-037.class.las.iastate.edu:8080";
 
@@ -120,16 +122,24 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         sessionsBtn.setOnClickListener(this);
         reviewsBtn.setOnClickListener(this);
 
-        // Role-based UI
-        if (user.isAdmin()) {
+
+        if(user.isAdmin())
+        {
             roleText.setText("Admin");
             ratingLayout.setVisibility(View.GONE);
-        } else if (user.isTutor()) {
+            tutorRatingText.setVisibility(View.GONE);
+        }
+        else if(user.isTutor())
+        {
             roleText.setText("Tutor");
             ratingLayout.setVisibility(View.VISIBLE);
-        } else {
+            tutorRatingText.setVisibility(View.VISIBLE);
+        }
+        else
+        {
             roleText.setText("Student");
             ratingLayout.setVisibility(View.GONE);
+            tutorRatingText.setVisibility(View.GONE);
         }
 
         if (tutorUsername != null && !tutorUsername.isEmpty()) {

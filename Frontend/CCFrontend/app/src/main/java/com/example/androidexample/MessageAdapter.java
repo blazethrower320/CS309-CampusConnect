@@ -176,16 +176,20 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     // ViewHolder for received image messages
     private static class ReceivedImageViewHolder extends RecyclerView.ViewHolder {
         ImageView imageMessage;
-        // You can also add TextView for sender name here if you want
+
+        TextView senderText;
 
         ReceivedImageViewHolder(View itemView)
         {
             super(itemView);
             imageMessage = itemView.findViewById(R.id.recieved_image_view); // Make sure this ID matches your layout
+            senderText = itemView.findViewById(R.id.sender_text);
+
         }
 
         void bind(ChatMessage message)
         {
+            senderText.setText(message.getSenderName());
             // Use Glide to load the image from the URL
             Glide.with(itemView.getContext())
                     .load(message.getContent()) // The content is the image URL
