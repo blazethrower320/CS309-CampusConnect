@@ -40,11 +40,15 @@ public class ChatActivity extends AppCompatActivity implements WebSocketListener
     private MessageAdapter messageAdapter;
     private List<ChatMessage> chatMessageList;
     private ActivityResultLauncher<Intent> imagePickerLauncher;
+    //Id values
+    int sessionId;
+    int otherUserId;
     int userId;
     private String username;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.messagespage);
 
@@ -63,17 +67,41 @@ public class ChatActivity extends AppCompatActivity implements WebSocketListener
         // Get user info
         userId = User.getInstance().getUserId();
         username = User.getInstance().getUsername(); // This should be dynamically loaded after login
+        otherUserId = getIntent().getIntExtra("otherUserId", 0);
+        sessionId = getIntent().getIntExtra("sessionId", 0);
 
         // Setup WebSocket
         WebSocketManager.getInstance().setWebSocketListener(this);
-        try {
-            String serverUrl = "ws://coms-3090-037.class.las.iastate.edu:8080/DM/{userId1}/{userId2}";
-            serverUrl = serverUrl.replace("{userId1}", String.valueOf(userId));
-            serverUrl = serverUrl.replace("{userId2}", "1"); // Placeholder for the other user
-            WebSocketManager.getInstance().connectWebSocket(serverUrl);
-        } catch (Exception e) {
-            e.printStackTrace();
+        String serverUrl;
+        if(sessionId==0) //If DM
+        {
+            try
+            {
+                serverUrl = "ws://coms-3090-037.class.las.iastate.edu:8080/DM/{userId1}/{userId2}";
+                serverUrl = serverUrl.replace("{userId1}", String.valueOf(userId));
+                serverUrl = serverUrl.replace("{userId2}", String.valueOf(otherUserId)); // Placeholder for the other user
+                WebSocketManager.getInstance().connectWebSocket(serverUrl);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
+        else //If group chat
+        {
+            try
+            {
+                serverUrl = "ws://coms-3090-037.class.las.iastate.edu:8080/groupChat/{sessionId}/{userId}";
+                serverUrl = serverUrl.replace("{userId}", String.valueOf(userId));
+                serverUrl = serverUrl.replace("{sessionId}", String.valueOf(sessionId)); // Placeholder for the other user
+                WebSocketManager.getInstance().connectWebSocket(serverUrl);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        
 
         // --- IMAGE PICKER LAUNCHER ---
         imagePickerLauncher = registerForActivityResult(
@@ -96,7 +124,8 @@ public class ChatActivity extends AppCompatActivity implements WebSocketListener
         // --- TEXT SEND BUTTON LISTENER ---
         sendBtn.setOnClickListener(v -> {
             String messageText = msgTxt.getText().toString();
-            if (!messageText.isEmpty()) {
+            if (!messageText.isEmpty())
+            {
                 try {
                     JSONObject messageJson = new JSONObject();
                     messageJson.put("type", 0);
