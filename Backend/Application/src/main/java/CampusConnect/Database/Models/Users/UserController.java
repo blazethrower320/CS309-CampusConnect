@@ -127,6 +127,7 @@ public class UserController {
         return true;
     }
     //
+    //
     @GetMapping("/users/major/{username}")
     public String getMajor(@PathVariable String username){
         return userRepository.getUserByUsername(username).getMajor();
