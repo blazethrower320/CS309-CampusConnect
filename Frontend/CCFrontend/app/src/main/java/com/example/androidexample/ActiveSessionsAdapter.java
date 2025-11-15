@@ -36,15 +36,20 @@ public class ActiveSessionsAdapter extends RecyclerView.Adapter<ActiveSessionsAd
         holder.meetingInfo.setText(session.getClassName() + " — " + session.getMeetingTime());
         holder.sessionLocation.setText(session.getMeetingLocation());
 
-        // CAMDEN HERE
         holder.messagesBtn.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), ChatActivity.class);
+
             intent.putExtra("sessionId", session.getSessionId());
-            intent.putExtra("Username", User.getInstance().getUsername()); // pass data if needed)
+            intent.putExtra("tutorUserId", session.getTutorUserId());
+            intent.putExtra("tutorUsername", session.getTutorUsername());
+
+            // Current user info
             intent.putExtra("userId", User.getInstance().getUserId());
-            intent.putExtra("isTutor", User.getInstance().isTutor());
+            intent.putExtra("username", User.getInstance().getUsername());
+
             v.getContext().startActivity(intent);
         });
+
 
         // CAMDEN HERE
         holder.profilePic.setOnClickListener(v -> {
