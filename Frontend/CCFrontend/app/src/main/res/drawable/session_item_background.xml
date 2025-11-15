@@ -2,13 +2,13 @@
     android:shape="rectangle">
 
     <!-- Light grey background -->
-    <solid android:color="#F2F2F2" />
+    <solid android:color="#5B5B5B" />
 
     <!-- Rounded corners for the “pill” look -->
-    <corners android:radius="24dp" />
+    <corners android:radius="12dp" />
 
     <!-- Thin border -->
     <stroke
-        android:width="1.5dp"
-        android:color="#D0D0D0" />
+        android:width="9dp"
+        android:color="#CC673AB7" />
 </shape>

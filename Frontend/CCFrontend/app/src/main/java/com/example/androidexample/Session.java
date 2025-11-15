@@ -4,13 +4,15 @@ public class Session {
     private int sessionId;
     private String className;
     private String classCode;
+    private int tutorUserId;
     private String meetingLocation;
     private String meetingTime;
     private String tutorUsername;
     private boolean joined;
 
-    public Session(int sessionId, String className, String classCode, String meetingLocation, String meetingTime, String tutorUsername) {
+    public Session(int sessionId, String className, String classCode, String meetingLocation, int tutorUserId, String meetingTime, String tutorUsername) {
         this.sessionId = sessionId;
+        this.tutorUserId = tutorUserId;
         this.className = className;
         this.classCode = classCode;
         this.meetingLocation = meetingLocation;
@@ -24,6 +26,10 @@ public class Session {
     public String getClassCode() { return classCode; }
     public String getMeetingLocation() { return meetingLocation; }
     public String getMeetingTime() { return meetingTime; }
+
+    public int getTutorUserId() { return tutorUserId; }
+
+    public void setTutorUserId(int tutorUserId) { this.tutorUserId = tutorUserId; }
 
     public String getTutorUsername() { return tutorUsername; }
     public void setTutorUsername(String tutorUsername) { this.tutorUsername = tutorUsername; }
