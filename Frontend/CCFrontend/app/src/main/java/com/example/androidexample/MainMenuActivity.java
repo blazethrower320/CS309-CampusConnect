@@ -307,10 +307,20 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
                             String meetingTime = obj.optString("meetingTime", "");
                             JSONObject tutorObj = obj.optJSONObject("tutor");
 
-                            String tutorName = tutorObj != null ? tutorObj.optString("username", "Unknown Tutor") : "Unknown Tutor";
+                            String tutorName = "Unknown Tutor";
+                            int tutorUserId = -1;
 
-                            Session s = new Session(sessionId, className, "", meetingLocation, meetingTime, tutorName);
+                            if (tutorObj != null) {
+                                tutorName = tutorObj.optString("username", "Unknown Tutor");
+                                JSONObject userObj = tutorObj.optJSONObject("user");
+                                if (userObj != null) {
+                                    tutorUserId = userObj.optInt("userId", -1);
+                                }
+                            }
+
+                            Session s = new Session(sessionId, className, "", meetingLocation, tutorUserId, meetingTime, tutorName);
                             activeSessions.add(s);
+
                         }
                     } catch (JSONException e) {
                         Log.e("MainMenu", "JSON parse error", e);

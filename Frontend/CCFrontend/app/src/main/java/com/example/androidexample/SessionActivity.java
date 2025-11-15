@@ -307,7 +307,7 @@ public class SessionActivity extends AppCompatActivity implements WebSocketListe
                             String classCode = obj.optString("classCode", "");
                             String location = obj.optString("meetingLocation", "");
                             String time = obj.optString("meetingTime", "");
-                            Session s = new Session(sessionId, className, classCode, location, time, "Loading...");
+                            Session s = new Session(sessionId, className, classCode, location, -1, time, "Loading...");
                             allSessions.add(s);
 
                             int tutorId = obj.optInt("tutorId", -1);
@@ -326,16 +326,31 @@ public class SessionActivity extends AppCompatActivity implements WebSocketListe
 
     private void fetchTutorUsernameById(Session session, int tutorId) {
         String url = BASE_URL + "/tutors/info/" + tutorId;
+
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
                     String username = response.optString("username", "Unknown");
+
+                    // Nested user object
+                    JSONObject userObj = response.optJSONObject("user");
+                    int tutorUserId = -1;
+                    if (userObj != null) {
+                        tutorUserId = userObj.optInt("userId", -1);
+                    }
+
                     session.setTutorUsername(username);
+                    session.setTutorUserId(tutorUserId);
+
+                    Log.e("tutorUserId", String.valueOf(tutorUserId));
                     sessionAdapter.notifyDataSetChanged();
                 },
                 error -> Log.e("SessionActivity", "Tutor fetch failed", error)
         );
+
         requestQueue.add(request);
     }
+
+
 
     private void fetchTutorForSession(Session session) {
         String url = BASE_URL + "/sessions/getSessionTutor/" + session.getSessionId();
@@ -343,12 +358,19 @@ public class SessionActivity extends AppCompatActivity implements WebSocketListe
                 response -> {
                     int tutorId = response.optInt("tutorId", -1);
                     if (tutorId > 0) fetchTutorUsernameById(session, tutorId);
-                    else session.setTutorUsername("Unknown Tutor");
+                    else {
+                        session.setTutorUsername("Unknown Tutor");
+                        session.setTutorUserId(-1); // <-- ADD THIS
+                    }
                 },
-                error -> session.setTutorUsername("Unknown Tutor")
+                error -> {
+                    session.setTutorUsername("Unknown Tutor");
+                    session.setTutorUserId(-1); // <-- ADD THIS
+                }
         );
         requestQueue.add(request);
     }
+
 
     // ---------- Filtering ----------
     private void applyFilters() {
