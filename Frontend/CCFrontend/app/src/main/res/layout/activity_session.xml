@@ -4,7 +4,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#5B5B5B">
+    android:background="@drawable/login_bg_image2">
 
     <!-- Main content -->
     <LinearLayout
@@ -34,7 +34,7 @@
                 android:id="@+id/title_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="100dp"
+                android:layout_marginStart="105dp"
                 android:text="Sessions"
                 android:textStyle="bold"
                 android:textColor="#FFFFFF"
@@ -60,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_marginTop="8dp"
-            android:background="#FFFFFF" />
+            android:background="#CC673AB7" />
 
         <!-- Filter row: Spinner (Major) + SearchView -->
         <LinearLayout
@@ -77,7 +77,7 @@
                 android:layout_weight="0.35"
                 android:layout_height="48dp"
                 android:background="@android:drawable/btn_dropdown"
-                android:popupBackground="#FFFFFF"/>
+                android:popupBackground="#BA91FB"/>
 
             <SearchView
                 android:id="@+id/class_search_view"
@@ -86,7 +86,7 @@
                 android:layout_weight="0.65"
                 android:layout_height="48dp"
                 android:queryHint="Search (ex: COM S 309)"
-                android:textColorHint="@color/white"
+                android:textColorHint="#FFFFFF"
                 android:iconifiedByDefault="false"
                 android:layout_marginStart="8dp"/>
         </LinearLayout>
@@ -94,8 +94,8 @@
         <!-- Divider -->
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#C0C0C0"/>
+            android:layout_height="2dp"
+            android:background="#CC673AB7"/>
 
         <!-- Sessions list placeholder -->
         <androidx.recyclerview.widget.RecyclerView

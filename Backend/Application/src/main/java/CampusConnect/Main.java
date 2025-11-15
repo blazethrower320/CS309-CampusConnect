@@ -29,6 +29,10 @@ class Main {
         SpringApplication.run(Main.class, args);
     }
 
+
+
+
+
     // Create 3 users with their machines
     /**
      *
@@ -36,11 +40,12 @@ class Main {
      * Creates a commandLine runner to enter dummy data into the database
      * As mentioned in User.java just associating the Laptop object with the User will save it into the database because of the CascadeType
      */
+    /*
     @Bean
     CommandLineRunner initData(UserRepository userRepository, TutorRepository tutorRepository, ClassesRepository classesRepository, AdminsRepository adminsRepository, SessionsRepository sessionsRepository) {
         return args -> {
 
-         /*   // Clear tables first
+            // Clear tables first
             sessionsRepository.deleteAll();
             tutorRepository.deleteAll();
             classesRepository.deleteAll();
@@ -56,8 +61,8 @@ class Main {
             userRepository.save(user2);
             userRepository.save(user3);
 
-            Admins admin1 = new Admins(user1, "All");
-            Admins admin2 = new Admins(user2, "All");
+            Admins admin1 = new Admins(user1);
+            Admins admin2 = new Admins(user2);
 
             adminsRepository.save(admin1);
             adminsRepository.save(admin2);
@@ -75,14 +80,14 @@ class Main {
             classesRepository.save(class2);
             classesRepository.save(class3);
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d',' yyyy");
-            String date = LocalDate.now().format(formatter);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a");
+            LocalDateTime meetingTime = LocalDateTime.parse("10/05/2025 04:00 PM", formatter);
             Sessions session1 = new Sessions(
                     tutor1,
                     "Computer Science 309",
                     "COMS309",
                     "Pearson",
-                    "3PM @ Friday",
+                    meetingTime,
                     LocalDateTime.now()
 
             );
@@ -91,7 +96,7 @@ class Main {
                     "Engineering",
                     "EE",
                     "Pearson",
-                    "3PM @ Friday",
+                    meetingTime,
                     LocalDateTime.now()
             );
 
@@ -104,7 +109,8 @@ class Main {
 
         };
     }
-          */
+    */
+
 /*
     @Bean
     CommandLineRunner initClasses(ClassesRepository classesRepository) {
@@ -124,5 +130,3 @@ class Main {
 
 
         };
-    }
-}

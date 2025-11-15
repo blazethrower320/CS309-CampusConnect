@@ -11,32 +11,25 @@ public class Admins {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long adminId;
-
-    private String permissions;
-
-    private boolean isActive = true;
+    private int nukedUsersCount = 0;
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
-    private String username;
-
     public Admins() {}
 
-    public Admins(User user, String permissions) {
+    public Admins(User user) {
         this.user = user;
-        this.username = user.getUsername();
-        this.permissions = permissions;
-        this.isActive = true;
     }
 
-    public String getUsername() { return username; }
+    public int getNukedUsersCount() { return nukedUsersCount; }
+    public void setNukedUsersCount(int nukedUsersCount)
+    {
+        nukedUsersCount = nukedUsersCount + 1;
+    }
+    public int incrementNukedUsersCount() { return nukedUsersCount + 1; }
     public long getAdminId() { return adminId; }
-    //public long getUserId() { return userId; }
-    public String getPermissions() { return permissions; }
-    public boolean getIsActive() { return isActive; }
-    public void setIsActive(boolean isActive) { this.isActive = isActive; }
     public User getUser(){
         return user;
     }

@@ -29,48 +29,17 @@ public class AdminsController {
         return adminsRepository.findAll();
     }
 
-    /*
-    @PostMapping("/admin/createAdmin/{username}")
-     /*
-    public ResponseEntity<Object> CreateAdmin(@PathVariable String username)
-    {
-        User user = userRepository.findByUsername(username);
-        if(user == null)
-            return ResponseEntity.status(404).body(userNotFound);
-
-        boolean exists = adminsRepository.existsByUsername(username);
-        if(exists)
-        {
-            return ResponseEntity.status(403).body(adminAlreadyExists);
-        }
-
-        Admins admin = new Admins(user, "All");
-
-        adminsRepository.save(admin);
-
-        return ResponseEntity.ok(admin);
-    }
-    */
-
-
-
     public ResponseEntity<Object> CreateAdmin(User user)
     {
         if(user == null)
             return ResponseEntity.status(404).body(userNotFound);
 
-        //boolean exists = adminsRepository.existsByUsername(username);
-        //if(exists)
-        //{
-        //    return ResponseEntity.status(403).body(adminAlreadyExists);
-        //}
-
-        Admins admin = new Admins(user, "All");
+        Admins admin = new Admins(user);
 
         adminsRepository.save(admin);
-
         return ResponseEntity.ok(admin);
     }
+
 
     @PostMapping("/admin/updateRatingsTutor/{username}/{rating}")
     public boolean UpdateRatings(@PathVariable String username, @PathVariable double rating)
@@ -87,45 +56,38 @@ public class AdminsController {
         return true;
     }
 
-    @PostMapping("/admin/deleteAdmin/{username}")
-    public boolean DeleteAdmin(@PathVariable String username)
+    @PostMapping("/admin/deleteAdmin/{userId}")
+    public boolean DeleteAdmin(@PathVariable long userId)
     {
-        boolean exists = adminsRepository.existsByUsername(username);
-        if(!exists)
+        User user = userRepository.getUserByUserId(userId);
+        Admins admin = adminsRepository.findByUser(user);
+        if(admin == null)
         {
             return false;
         }
-        Admins admin = adminsRepository.findByUsername(username);
         adminsRepository.delete(admin);
         return true;
     }
 
-    @GetMapping("/admin/getPermissions/{username}")
-    public String getAdminPermissions(@PathVariable String username)
+    @GetMapping("/admin/incrementNukedUsers")
+    public boolean incrementNukedUsers(@RequestBody User user)
     {
-        boolean exists = adminsRepository.existsByUsername(username);
-        if(!exists)
-        {
-            return null;
-        }
-        Admins admin = adminsRepository.findByUsername(username);
-        return admin.getPermissions();
-    }
-    @PatchMapping("/admin/updateStatus/{username}")
-    public ResponseEntity<Object> updateAdminStatus(@PathVariable String username)
-    {
-        User user = userRepository.findByUsername(username);
-        if(user == null)
-            return ResponseEntity.status(404).body(userNotFound);
-        boolean exists = adminsRepository.existsByUsername(username);
-        if(!exists)
-        {
-            return ResponseEntity.status(403).body(adminNotFound);
-        }
-        Admins admin = adminsRepository.findByUsername(username);
-        admin.setIsActive(!admin.getIsActive());
+        Admins admin = adminsRepository.findByUser(user);
+        if(admin == null)
+            return false;
 
-        adminsRepository.save(admin);
-        return ResponseEntity.ok(admin.getIsActive());
+        admin.incrementNukedUsersCount();
+        return true;
     }
+
+    @GetMapping("/admin/getAdminNukedUsers")
+    public int getAdminNukedUsers(@RequestBody User user)
+    {
+        Admins admin = adminsRepository.findByUser(user);
+        if(admin == null)
+            return 0;
+
+        return admin.getNukedUsersCount();
+    }
+
 }

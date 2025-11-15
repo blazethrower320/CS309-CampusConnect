@@ -60,6 +60,10 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
 
     private Button deleteAccountBtn;
 
+    private TextView statusText, sessionCountBadge, tutorStatClasses, tutorStatRating;
+    private LinearLayout tutorStatsCard;
+
+
     private static final int NOTIFICATION_PERMISSION_CODE = 1001;
 
     private ProgressBar loadingSpinner;
@@ -130,6 +134,7 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
         });
 
 
+
         // Get values passed from login/signup
         User user = User.getInstance();
         username = user.getUsername();
@@ -142,6 +147,11 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
         // UI
         welcomeText = findViewById(R.id.welcome_text);
         welcomeText.setText("Welcome, " + username + "!");
+
+        statusText = findViewById(R.id.status_text);
+        tutorStatsCard = findViewById(R.id.tutor_stats_card);
+        tutorStatClasses = findViewById(R.id.tutor_stat_classes);
+        tutorStatRating = findViewById(R.id.tutor_stat_rating);
 
         logoutBtn = findViewById(R.id.logout_btn);
         logoutBtn.setOnClickListener(this);
@@ -163,15 +173,17 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
         // Admin-only buttons
         if (isAdmin)
         {
-
+            statusText.setText("Status: Admin");
         }
         else if (isTutor) {
             connectWebSocketForTutor();
+            statusText.setText("Status: Tutor");
+            loadTutorStats();
+            tutorStatsCard.setVisibility(View.VISIBLE);
         }
         else
         {
-            //changeStatusBtn.setVisibility(View.GONE);
-            //numClassPanel.setVisibility(View.GONE);
+            statusText.setText("Status: Student");
         }
     }
 
@@ -295,10 +307,20 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
                             String meetingTime = obj.optString("meetingTime", "");
                             JSONObject tutorObj = obj.optJSONObject("tutor");
 
-                            String tutorName = tutorObj != null ? tutorObj.optString("username", "Unknown Tutor") : "Unknown Tutor";
+                            String tutorName = "Unknown Tutor";
+                            int tutorUserId = -1;
 
-                            Session s = new Session(sessionId, className, "", meetingLocation, meetingTime, tutorName);
+                            if (tutorObj != null) {
+                                tutorName = tutorObj.optString("username", "Unknown Tutor");
+                                JSONObject userObj = tutorObj.optJSONObject("user");
+                                if (userObj != null) {
+                                    tutorUserId = userObj.optInt("userId", -1);
+                                }
+                            }
+
+                            Session s = new Session(sessionId, className, "", meetingLocation, tutorUserId, meetingTime, tutorName);
                             activeSessions.add(s);
+
                         }
                     } catch (JSONException e) {
                         Log.e("MainMenu", "JSON parse error", e);
@@ -325,6 +347,24 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
 
         Volley.newRequestQueue(this).add(request);
     }
+
+    private void loadTutorStats() {
+        String url = BASE_URL + "/tutors/getTutorFromUserId/" + userId;
+
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, url, null,
+                response -> {
+                    int totalClasses = response.optInt("totalClasses", -1);
+                    double rating = response.optDouble("rating", -1);
+
+                    tutorStatClasses.setText("Classes: " + (totalClasses >= 0 ? totalClasses : "--"));
+                    tutorStatRating.setText("Rating: " + (rating >= 0 ? rating : "--"));
+                },
+                error -> Log.e("TutorStats", "Error", error)
+        );
+
+        requestQueue.add(req);
+    }
+
 
     private void checkNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // API 33+
