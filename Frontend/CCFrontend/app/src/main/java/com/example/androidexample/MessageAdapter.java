@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -134,15 +135,19 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     // ViewHolder for received text messages
     private static class ReceivedTextViewHolder extends RecyclerView.ViewHolder {
         TextView messageText;
+        TextView senderText;
         // You can also add TextView for sender name here if you want
 
-        ReceivedTextViewHolder(View itemView) {
+        ReceivedTextViewHolder(View itemView)
+        {
             super(itemView);
-            messageText = itemView.findViewById(R.id.recieved_message_text); // Make sure this ID matches your layout
+            messageText = itemView.findViewById(R.id.recieved_message_text);
+            senderText = itemView.findViewById(R.id.sender_text);
         }
 
         void bind(ChatMessage message) {
             messageText.setText(message.getContent());
+            senderText.setText(message.getSenderName());
         }
     }
 
@@ -158,9 +163,11 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         void bind(ChatMessage message)
         {
+            String imageId = message.getContent();
+            String imageUrl = "http://coms-3090-037.class.las.iastate.edu:8080/images/" + imageId.toString();
             // Use Glide to load the image from the URL
             Glide.with(itemView.getContext())
-                    .load(message.getContent()) // The content is the image URL
+                    .load(imageUrl) // The content is the image URL
                     .placeholder(R.drawable.image_placeholder) // Optional: create a placeholder drawable
                     .into(imageMessage);
         }

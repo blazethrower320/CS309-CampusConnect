@@ -35,6 +35,7 @@ public class ChatActivity extends AppCompatActivity implements WebSocketListener
 
     private ImageButton sendBtn;
     private ImageButton imageBtn;
+    private ImageButton backBtn;
     private EditText msgTxt;
     private RecyclerView messagesRecyclerView;
     private MessageAdapter messageAdapter;
@@ -55,6 +56,7 @@ public class ChatActivity extends AppCompatActivity implements WebSocketListener
         // Initialize UI
         sendBtn = findViewById(R.id.send_btn);
         imageBtn = findViewById(R.id.attatchment_btn);
+        backBtn = findViewById(R.id.back_btn);
         msgTxt = findViewById(R.id.message_edt);
         messagesRecyclerView = findViewById(R.id.messages_recycler_view);
 
@@ -73,33 +75,45 @@ public class ChatActivity extends AppCompatActivity implements WebSocketListener
         // Setup WebSocket
         WebSocketManager.getInstance().setWebSocketListener(this);
         String serverUrl;
-        if(sessionId==0) //If DM
+        //if(sessionId==0) //If DM
+        //{
+        //    try
+        //    {
+        //        serverUrl = "ws://coms-3090-037.class.las.iastate.edu:8080/DM/{userId1}/{userId2}";
+        //        serverUrl = serverUrl.replace("{userId1}", String.valueOf(userId));
+        //        serverUrl = serverUrl.replace("{userId2}", String.valueOf(otherUserId)); // Placeholder for the other user
+        //        WebSocketManager.getInstance().connectWebSocket(serverUrl);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        e.printStackTrace();
+        //    }
+        //}
+        //else //If group chat
+        //{
+        //    try
+        //    {
+        //        serverUrl = "ws://coms-3090-037.class.las.iastate.edu:8080/groupChat/{sessionId}/{userId}";
+        //        serverUrl = serverUrl.replace("{userId}", String.valueOf(userId));
+        //        serverUrl = serverUrl.replace("{sessionId}", String.valueOf(sessionId)); // Placeholder for the other user
+        //        WebSocketManager.getInstance().connectWebSocket(serverUrl);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        e.printStackTrace();
+        //    }
+        //}
+        //TODO Remove after done testing
+        try
         {
-            try
-            {
-                serverUrl = "ws://coms-3090-037.class.las.iastate.edu:8080/DM/{userId1}/{userId2}";
-                serverUrl = serverUrl.replace("{userId1}", String.valueOf(userId));
-                serverUrl = serverUrl.replace("{userId2}", String.valueOf(otherUserId)); // Placeholder for the other user
-                WebSocketManager.getInstance().connectWebSocket(serverUrl);
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
+            serverUrl = "ws://coms-3090-037.class.las.iastate.edu:8080/groupChat/{sessionId}/{userId}";
+            serverUrl = serverUrl.replace("{userId}", String.valueOf(userId));
+            serverUrl = serverUrl.replace("{sessionId}", String.valueOf(1)); // Placeholder for the other user
+            WebSocketManager.getInstance().connectWebSocket(serverUrl);
         }
-        else //If group chat
+        catch (Exception e)
         {
-            try
-            {
-                serverUrl = "ws://coms-3090-037.class.las.iastate.edu:8080/groupChat/{sessionId}/{userId}";
-                serverUrl = serverUrl.replace("{userId}", String.valueOf(userId));
-                serverUrl = serverUrl.replace("{sessionId}", String.valueOf(sessionId)); // Placeholder for the other user
-                WebSocketManager.getInstance().connectWebSocket(serverUrl);
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
+            e.printStackTrace();
         }
         
 
@@ -119,6 +133,12 @@ public class ChatActivity extends AppCompatActivity implements WebSocketListener
         imageBtn.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             imagePickerLauncher.launch(intent);
+        });
+
+        backBtn.setOnClickListener(v ->
+        {
+            //TODO Ensure previous intent will still be active
+            finish();
         });
 
         // --- TEXT SEND BUTTON LISTENER ---
@@ -284,7 +304,7 @@ public class ChatActivity extends AppCompatActivity implements WebSocketListener
 
                 Log.d("WebSocketMessage", "Processing content: '" + content + "' for messageType: " + messageType);
 
-                chatMessageList.add(new ChatMessage(content, isSentByUser, messageType));
+                chatMessageList.add(new ChatMessage(content, isSentByUser, messageType, senderName));
                 messageAdapter.notifyItemInserted(chatMessageList.size() - 1);
                 messagesRecyclerView.scrollToPosition(chatMessageList.size() - 1);
 
