@@ -15,7 +15,7 @@ public class AdminService {
         if (adminsRepository.existsByUser(user)) {
             throw new RuntimeException("Admin already exists");
         }
-        Admins admin = new Admins(user, "All");
+        Admins admin = new Admins(user);
         admin.setUser(user);
         //user.setisAdmin(true);
         return adminsRepository.save(admin);
@@ -23,7 +23,8 @@ public class AdminService {
 
     public String deleteAdmin(User user){
         Admins admin = adminsRepository.findByUser(user);
-        if(adminsRepository.existsByUsername(admin.getUsername())){
+        if(admin != null)
+        {
             adminsRepository.delete(admin);
             return "Admin Deleted";
         }

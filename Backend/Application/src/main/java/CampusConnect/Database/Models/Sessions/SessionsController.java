@@ -111,6 +111,10 @@ public class SessionsController
         return session;
     }
 
+    @PostMapping("/sessions/leaveSession/{userId}/{sessionId}")
+    public void leaveSession(@PathVariable long userId, @PathVariable long sessionId){
+        sessionsService.removeUser(userId, sessionId);
+    }
 
     @PostMapping("/sessions/createSession")
     public Sessions createSession(@RequestBody SessionsDTO sessionsDTO)

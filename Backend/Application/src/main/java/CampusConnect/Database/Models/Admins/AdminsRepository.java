@@ -8,10 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface AdminsRepository extends JpaRepository<Admins, Long> {
     @Transactional
     void deleteById(Long id);
-
-    boolean existsByUsername(String username);
-    void deleteByUsername(String username);
-    Admins findByUsername(String username);
+    Admins getAdminByAdminId(Long id);
     Admins findByUser(User user);
     boolean existsByUser(User user);
 

@@ -82,4 +82,10 @@ public class Sessions
         }
     }
 
+    public void removeUser(User user){
+        if(!users.remove(user)){
+            throw new RuntimeException("User couldn't be added");
+        }
+    }
+
 }
