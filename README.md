@@ -130,15 +130,15 @@
     - GET | `/sessions` - Returns a JSON of Sessions <br>
     - Get | `/sessions/inactive` - Returns a List<Sessions> of sessions that are past their meeting date<br>
     - Get | `/sessions/active` - Returns a List<Sessions> of sessions that are before their meeting date<br>
+    - Get | `/sessions/{classId}
     - POST | `/sessions/leaveSession/{userId}/{sessionId}` - Removes user from the session<br>
     - POST | `/sessions/createSession` - Creates a New Session with the Tutor, Also includes them as a Member<br>
         ```json
         {
-            "tutorId": 1111
-            "className": "Computer Science 309",
-            "classCode": "COMS309",
+            "tutorId": 1111,
+            "classId" : "2",
             "meetingLocation": "Pearson",
-            "meetingTime": "Friday",
+            "meetingTime": "MM/DD/YYYY hh/mm PM",
             "dateCreated": "2025-10-29T19:00:00"    
         }
         ```
