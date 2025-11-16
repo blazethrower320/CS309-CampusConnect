@@ -67,5 +67,15 @@ public class SessionsService {
         sessionsRepository.save(session);
     }
 
+    public void deleteSession(long sessionId){
+        Sessions session = sessionsRepository.findById(sessionId);
+        sessionsRepository.delete(session);
+
+        Tutor tutor = session.getTutor();
+        if(tutor != null){
+            tutor.getTutorSessions().remove(session);
+        }
+    }
+
 
 }

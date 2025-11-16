@@ -92,4 +92,19 @@ public class Tutor {
     public void setRatings(Set<Ratings> ratings) {
         this.ratings = ratings;
     }
+
+    public Set<Classes> getClasses() {
+        return classes;
+    }
+
+    public void addClasses(Classes classes){
+        this.classes.add(classes);
+        classes.getTutors().add(this);
+    }
+
+    public Set<Sessions> getTutorSessions(){
+        return tutorSessions;
+    }
 }
+
+

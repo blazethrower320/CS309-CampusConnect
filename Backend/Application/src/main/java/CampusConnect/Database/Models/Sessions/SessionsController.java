@@ -171,4 +171,13 @@ public class SessionsController
         }
         return session.getMeetingTime().format(format);
     }
+
+    @PostMapping("/sessions/deleteSession/{sessionId}")
+    public void deleteSession(@PathVariable long sessionId){
+        Sessions session = sessionsRepository.getSessionsBySessionId(sessionId);
+        if(session == null){
+            throw new RuntimeException("No session found");
+        }
+        sessionsService.deleteSession(sessionId);
+    }
 }

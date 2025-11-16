@@ -5,6 +5,7 @@ import CampusConnect.Database.Models.Tutors.Tutor;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -40,6 +41,10 @@ public class Classes {
 
     public void setClassCode(String classCode){
         this.classCode = classCode;
+    }
+
+    public Set<Tutor> getTutors (){
+        return tutors;
     }
 
 
