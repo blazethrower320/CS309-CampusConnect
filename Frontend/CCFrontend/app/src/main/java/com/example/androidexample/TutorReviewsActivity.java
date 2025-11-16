@@ -74,19 +74,22 @@ public class TutorReviewsActivity extends AppCompatActivity {
         backButton.setOnClickListener(v -> finish());
 
         // Disable UI by default
-        disableRatingUI();
+        submitButton.setOnClickListener(v -> submitRating());
 
+        // Then control UI access
         if (isTutor) {
             int CtutorId = User.getInstance().getTutorId();
-                if (CtutorId == tutorId) {
-                    Toast.makeText(this, "You cannot review yourself", Toast.LENGTH_SHORT).show();
-                }
+            if (CtutorId == tutorId) {
+                // Cannot review yourself
+                disableRatingUI();
+                Toast.makeText(this, "You cannot review yourself", Toast.LENGTH_SHORT).show();
+            } else {
+                enableRatingUI(); // Tutors reviewing others can rate
+            }
         } else {
-            // Non-tutors can rate immediately
-            enableRatingUI();
+            enableRatingUI(); // Normal users can rate
         }
 
-        loadTutorRatings();
     }
 
     private void enableRatingUI() {

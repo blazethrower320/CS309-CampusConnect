@@ -32,9 +32,10 @@ public class User {
     }
 
     public static User fromJson(JSONObject obj) {
-        User u = new User();
+        User u = User.getInstance();
         u.setUserId(obj.optInt("userId", -1));
         u.setUsername(obj.optString("username", ""));
+        u.setPassword(obj.optString("password", ""));
         u.setFirstName(obj.optString("firstName", ""));
         u.setLastName(obj.optString("lastName", ""));
         u.setBio(obj.optString("bio", ""));
