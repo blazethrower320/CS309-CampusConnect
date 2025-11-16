@@ -4,11 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c61a590-19c3-44ac-8580-6af6959c8b90" name="Changes" comment="Merge branch 'main' of https://git.las.iastate.edu/cs309/2025fall/3_hosen_1&#10;&#10;# Conflicts:&#10;#&#9;Backend/Application/.idea/workspace.xml">
+    <list default="true" id="0c61a590-19c3-44ac-8580-6af6959c8b90" name="Changes" comment="Leave sessions backend code is implemented.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Classes/Classes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Classes/Classes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Classes/ClassesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Classes/ClassesController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Sessions/Sessions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Sessions/Sessions.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Sessions/SessionsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Sessions/SessionsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Sessions/SessionsDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Sessions/SessionsDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Sessions/SessionsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Sessions/SessionsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/TutorClasses/TutorClasses.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/TutorClasses/TutorClassesController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/TutorClasses/TutorClassesRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/Tutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/Tutor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/TutorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/TutorController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,7 +52,19 @@
       <option name="project" value="LOCAL" />
       <updated>1763157968369</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Leave sessions backend code is implemented.">
+      <option name="closed" value="true" />
+      <created>1763159366704</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1763159366704</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Leave sessions backend code is implemented." />
+    <option name="LAST_COMMIT_MESSAGE" value="Leave sessions backend code is implemented." />
   </component>
 </project>

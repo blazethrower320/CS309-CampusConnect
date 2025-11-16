@@ -1,5 +1,6 @@
 package CampusConnect.Database.Models.Sessions;
 
+import CampusConnect.Database.Models.Classes.ClassesRepository;
 import CampusConnect.Database.Models.Tutors.Tutor;
 import CampusConnect.Database.Models.Tutors.TutorRepository;
 import CampusConnect.Database.Models.Users.User;
@@ -19,6 +20,8 @@ public class SessionsService {
     private UserRepository userRepository;
     @Autowired
     private SessionsRepository sessionsRepository;
+    @Autowired
+    private ClassesRepository classesRepository;
 
     public Sessions createSession(SessionsDTO sessionDTO) {
         Tutor tutor = tutorRepository.findById(sessionDTO.getTutorId())
@@ -28,13 +31,11 @@ public class SessionsService {
 
         Sessions session = new Sessions(
                 tutor,
-                sessionDTO.getClassName(),
-                sessionDTO.getClassCode(),
                 sessionDTO.getMeetingLocation(),
                 LocalDateTime.parse(sessionDTO.getMeetingTime(), formatter),
                 sessionDTO.getDateCreated()
         );
-
+        session.setClassEntity(classesRepository.findById(sessionDTO.getClassId()).orElseThrow(()-> new RuntimeException("Class not found")));
         return sessionsRepository.save(session);
     }
 
