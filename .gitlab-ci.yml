@@ -8,6 +8,8 @@ maven-build:
     - preet_runner      # <-- change to your runner's tag
   script:
     - cd Backend/Application        # change 'Backend' to to where you have the pom.xml (do not add / in the beginning)
+    - export JAVA_HOME=/usr/lib/jvm/jdk-21.0.8   # path to JDK 21 on the runner
+    - export PATH=$JAVA_HOME/bin:$PATH
     - java -version
     - javac -version
 
@@ -25,6 +27,8 @@ maven-test:
     - preet_runner     # <-- change to your runner's tag
   script:
     - cd Backend/Application       # change 'Backend' to to where you have the pom.xml (do not add / in the beginning)
+    - export JAVA_HOME=/usr/lib/jvm/jdk-21.0.8   # path to JDK 21 on the runner
+    - export PATH=$JAVA_HOME/bin:$PATH
     - mvn test
   only:
     refs:
