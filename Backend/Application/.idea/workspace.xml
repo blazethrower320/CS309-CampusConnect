@@ -5,8 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6d29c9f1-ee49-4c0f-98ba-fc2545596b57" name="Changes" comment="Merge branch 'main' of https://git.las.iastate.edu/cs309/2025fall/3_hosen_1 into SessionsFeature&#10;&#10;# Conflicts:&#10;#&#9;Backend/Application/.idea/workspace.xml">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Images/ImagesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Images/ImagesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Admins/AdminsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Admins/AdminsController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,7 +61,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "Carson-Week11",
+    "git-widget-placeholder": "Carson__CICD",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/messi/ComS309/3_hosen_1/Backend/Application/src/main/java/CampusConnect/WebSockets/Push",
     "node.js.detected.package.eslint": "true",
