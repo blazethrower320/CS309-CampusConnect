@@ -8,6 +8,9 @@ maven-build:
     - preet_runner      # <-- change to your runner's tag
   script:
     - cd Backend/Application        # change 'Backend' to to where you have the pom.xml (do not add / in the beginning)
+    - java -version
+    - javac -version
+
     - mvn package
   only:
     refs:
