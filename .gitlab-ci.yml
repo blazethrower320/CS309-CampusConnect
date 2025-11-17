@@ -2,18 +2,12 @@ stages:
   - mavenbuild
   - maventest
 
-variables:
-  JAVA_HOME: "/usr/lib/jvm/jdk-21.0.8"   # adjust to the actual JDK 21 path on your server
-  PATH: "$JAVA_HOME/bin:$PATH"
 
 maven-build:
   stage: mavenbuild
   tags:
     - Carson_Runner
   script:
-    - java -version        # debug: confirm JDK version
-    - javac -version       # debug: confirm compiler version
-    - mvn -version         # debug: confirm Maven sees JDK 21
     - cd Backend/Application
     - mvn package
   only:
@@ -27,9 +21,6 @@ maven-test:
   tags:
     - Carson_Runner
   script:
-    - java -version
-    - javac -version
-    - mvn -version
     - cd Backend/Application
     - mvn test
   only:
