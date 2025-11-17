@@ -58,6 +58,9 @@
         <activity
             android:name=".TutorReviewsActivity"
             android:exported="false" />
+        <activity
+            android:name=".AllMessages"
+            android:exported="false" />
 
         <activity
             android:name=".MainActivity"

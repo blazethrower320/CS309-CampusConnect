@@ -21,6 +21,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
         </ImageButton>
+        <TextView
+            android:text="All Messages"
+            android:paddingLeft="125dp"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
     </LinearLayout>
 
 
