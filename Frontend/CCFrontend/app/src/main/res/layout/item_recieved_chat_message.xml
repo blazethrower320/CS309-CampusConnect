@@ -4,6 +4,12 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="4dp">
+    <TextView
+        android:id="@+id/sender_text"
+        android:text="Sender Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </TextView>
 
     <TextView
         android:id="@+id/recieved_message_text"

@@ -8,6 +8,22 @@
     android:background="#F0F2F5"
     tools:context=".ChatActivity">
 
+    <LinearLayout
+        android:background="@drawable/menubar_layout"
+        android:paddingLeft="5dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/back_btn"
+            android:paddingLeft="12dp"
+            android:layout_gravity="left"
+            android:src="@drawable/ic_arrow_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </ImageButton>
+    </LinearLayout>
+
+
     <!-- This RecyclerView will display the list of messages -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/messages_recycler_view"
