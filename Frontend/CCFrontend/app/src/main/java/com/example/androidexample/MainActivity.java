@@ -120,6 +120,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                         user.setAdmin(isAdmin);
                                         user.setTutor(isTutor);
                                         user.setUserId(userId);
+                                        user.setLastName(userResponse.optString("lastName", ""));
+                                        user.setFirstName(userResponse.optString("firstName", ""));
+                                        user.setBio(userResponse.optString("bio", ""));
+                                        user.setMajor(userResponse.optString("major", ""));
+                                        user.setClassification(userResponse.optString("classification", ""));
 
                                         Intent intent = new Intent(MainActivity.this, MainMenuActivity.class);
                                         startActivity(intent);

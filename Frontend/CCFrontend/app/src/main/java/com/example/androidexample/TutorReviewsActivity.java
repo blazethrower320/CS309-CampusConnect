@@ -74,7 +74,6 @@ public class TutorReviewsActivity extends AppCompatActivity {
         backButton.setOnClickListener(v -> finish());
 
         // Disable UI by default
-        submitButton.setOnClickListener(v -> submitRating());
 
         // Then control UI access
         if (isTutor) {
@@ -90,9 +89,12 @@ public class TutorReviewsActivity extends AppCompatActivity {
             enableRatingUI(); // Normal users can rate
         }
 
+        loadTutorRatings();
+
     }
 
     private void enableRatingUI() {
+        submitButton.setOnClickListener(v -> submitRating());
         submitButton.setEnabled(true);
         submitButton.setAlpha(1f);
         ratingBar.setEnabled(true);

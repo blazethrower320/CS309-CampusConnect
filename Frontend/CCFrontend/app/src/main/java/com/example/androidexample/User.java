@@ -32,15 +32,14 @@ public class User {
     }
 
     public static User fromJson(JSONObject obj) {
-        User u = User.getInstance();
+        User u = new User();
         u.setUserId(obj.optInt("userId", -1));
         u.setUsername(obj.optString("username", ""));
-        u.setPassword(obj.optString("password", ""));
         u.setFirstName(obj.optString("firstName", ""));
         u.setLastName(obj.optString("lastName", ""));
         u.setBio(obj.optString("bio", ""));
         u.setMajor(obj.optString("major", ""));
-        u.setClassification(obj.optString("classification", ""));
+    u.setClassification(obj.optString("classification", ""));
         u.setTutor(obj.optBoolean("isTutor", false));
         u.setAdmin(obj.optBoolean("isAdmin", false));
         return u;
