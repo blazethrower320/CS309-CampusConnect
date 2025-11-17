@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="6d29c9f1-ee49-4c0f-98ba-fc2545596b57" name="Changes" comment="Merge branch 'main' of https://git.las.iastate.edu/cs309/2025fall/3_hosen_1 into SessionsFeature&#10;&#10;# Conflicts:&#10;#&#9;Backend/Application/.idea/workspace.xml">
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Models/editUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Models/editUser.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
