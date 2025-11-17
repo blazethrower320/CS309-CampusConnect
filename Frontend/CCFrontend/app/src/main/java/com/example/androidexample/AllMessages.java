@@ -1,4 +1,6 @@
 package com.example.androidexample;
 
-public class AllMessages {
+public class AllMessages
+{
+    
 }
