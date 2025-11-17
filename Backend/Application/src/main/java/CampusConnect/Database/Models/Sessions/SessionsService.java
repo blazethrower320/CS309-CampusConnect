@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class SessionsService {
@@ -71,10 +74,15 @@ public class SessionsService {
         Sessions session = sessionsRepository.findById(sessionId);
         sessionsRepository.delete(session);
 
-        Tutor tutor = session.getTutor();
-        if(tutor != null){
-            tutor.getTutorSessions().remove(session);
+        Tutor tutor = tutorRepository.findById(session.getTutor().getTutorId()).orElseThrow(() -> new RuntimeException("Tutor not found"));
+        tutor.removeSessions(session);
+
+        Set<User> users = session.getUsers();
+        for (User u : new HashSet<>(session.getUsers())) {
+            u.removeSession(session);
+            session.getUsers().remove(u);
         }
+
     }
 
 

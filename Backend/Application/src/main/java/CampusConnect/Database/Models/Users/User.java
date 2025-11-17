@@ -145,4 +145,9 @@ public class User {
         this.ratings = ratings;
     }
 
+    public void removeSession(Sessions session){
+        if (!Sessions.remove(session)){
+            throw new RuntimeException("Could not remove session");
+        }
+    }
 }

@@ -19,15 +19,5 @@ public class TutorService {
         tutor.setUser(user);
         return tutorRepository.save(tutor);
     }
-
-    public String deleteAdmin(User user){
-        Tutor tutor = tutorRepository.findByUser(user);
-        if(tutorRepository.existsByUsername(tutor.getUser().getUsername())){
-            tutorRepository.delete(tutor);
-            return "Admin Deleted";
-        }
-        else {
-            return "Admin Does Not Exist";
-        }
-    }
+    
 }

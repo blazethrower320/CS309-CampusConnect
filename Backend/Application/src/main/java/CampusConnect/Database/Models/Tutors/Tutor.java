@@ -102,6 +102,11 @@ public class Tutor {
         classes.getTutors().add(this);
     }
 
+    public void removeSessions(Sessions session){
+        if (!this.tutorSessions.remove(session)){
+            throw new RuntimeException("Class not removed");
+        }
+    }
     public Set<Sessions> getTutorSessions(){
         return tutorSessions;
     }
