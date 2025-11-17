@@ -5,13 +5,13 @@ stages:
 maven-build:            
   stage: mavenbuild
   tags:
-    - preet_runner      # <-- change to your runner's tag
+    - Carson_Runner      # <-- change to your runner's tag
   script:
     - cd Backend/Application        # change 'Backend' to to where you have the pom.xml (do not add / in the beginning)
     - mvn package
   only:
     refs:
-      - preet_CICD
+      - Carson_CICD
     changes:
       - Backend/**/*
 
@@ -19,7 +19,7 @@ maven-build:
 maven-test:             
   stage: maventest
   tags:
-    - preet_runner     # <-- change to your runner's tag
+    - Carson_Runner     # <-- change to your runner's tag
   script:
     - cd Backend/Application       # change 'Backend' to to where you have the pom.xml (do not add / in the beginning)
     - mvn test
