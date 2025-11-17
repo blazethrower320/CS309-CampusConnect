@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c61a590-19c3-44ac-8580-6af6959c8b90" name="Changes" comment="Updated SessionsDTO to take in classId, updated and added functions to create session effectively.">
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-    </list>
+    <list default="true" id="0c61a590-19c3-44ac-8580-6af6959c8b90" name="Changes" comment="Updated pom file to fix error possibly." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -100,7 +98,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763421716328</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Updated pom file to fix error possibly.">
+      <option name="closed" value="true" />
+      <created>1763422064991</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1763422064991</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -117,6 +123,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Leave sessions backend code is implemented." />
     <MESSAGE value="Updated SessionsDTO to take in classId, updated and added functions to create session effectively." />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated SessionsDTO to take in classId, updated and added functions to create session effectively." />
+    <MESSAGE value="Updated pom file to fix error possibly." />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated pom file to fix error possibly." />
   </component>
 </project>
