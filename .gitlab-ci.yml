@@ -1,30 +1,35 @@
+
 stages:
   - mavenbuild
   - maventest
-
-
-maven-build:
+  
+maven-build:            
   stage: mavenbuild
   tags:
-    - Carson_Runner
+    - Carson_Runner      # <-- change to your runner's tag
   script:
-    - cd Backend/Application
+    - cd Backend/Application        # change 'Backend' to to where you have the pom.xml (do not add / in the beginning)
+    - export JAVA_HOME=/usr/lib/jvm/jdk-21.0.8   # path to JDK 21 on the runner
+    - export PATH=$JAVA_HOME/bin:$PATH
+    - java -version
+    - javac -version
     - mvn package
   only:
     refs:
       - Carson_CICD
     changes:
       - Backend/**/*
-
-maven-test:
+maven-test:             
   stage: maventest
   tags:
-    - Carson_Runner
+    - Carson_Runner     # <-- change to your runner's tag
   script:
-    - cd Backend/Application
+    - cd Backend/Application       # change 'Backend' to to where you have the pom.xml (do not add / in the beginning)
+    - export JAVA_HOME=/usr/lib/jvm/jdk-21.0.8   # path to JDK 21 on the runner
+    - export PATH=$JAVA_HOME/bin:$PATH
     - mvn test
   only:
     refs:
-      - preet_CICD
+      - Carson_CICD
     changes:
       - Backend/**/*
