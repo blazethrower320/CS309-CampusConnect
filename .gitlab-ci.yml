@@ -6,16 +6,12 @@ android-build:
   image: afirefly/android-ci:java17
   stage: androidbuild
   tags:
-    - William_Runner
-  before_script:
+    - William_Runner                   # <-- change to your runner's tag
+  before_script:                    # change 'Frontend' to where you have 'gradlew'
     - export GRADLE_USER_HOME=`pwd`/.gradle
     - chmod +x ./Frontend/CCFrontend/gradlew
-    - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64   # set JAVA_HOME for Java 17
-    - export PATH=$JAVA_HOME/bin:$PATH
-    - java -version
-    - javac -version
   script:
-    - cd Frontend/CCFrontend
+    - cd Frontend/CCFrontend                   # change 'Frontend' to where you have 'gradlew' (do not add / in the beginning)
     - ./gradlew build
   only:
     refs:
@@ -23,20 +19,15 @@ android-build:
     changes:
       - Frontend/**/*
 
-
 android-test:
   image: afirefly/android-ci:java17
   stage: androidtest
   tags:
-    - William_Runner
-  before_script:
+    - William_Runner                  # <-- change to your runner's tag
+  before_script:                   # change 'Frontend' to where you have 'gradlew'
     - chmod +x ./Frontend/CCFrontend/gradlew
-    - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-    - export PATH=$JAVA_HOME/bin:$PATH
-    - java -version
-    - javac -version
   script:
-    - cd Frontend/CCFrontend
+    - cd Frontend/CCFrontend            # change 'Frontend' to where you have 'gradlew' (do not add / in the beginning)
     - ./gradlew test
   only:
     refs:
