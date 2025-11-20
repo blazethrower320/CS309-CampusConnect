@@ -1,5 +1,6 @@
 package CampusConnect.Database.Models.Sessions;
 
+import CampusConnect.Database.Models.Classes.Classes;
 import CampusConnect.Database.Models.Users.User;
 import CampusConnect.Database.Models.Tutors.Tutor;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -19,8 +20,6 @@ public class Sessions
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long sessionId;
-    private String className;
-    private String classCode;
     private String meetingLocation;
 
     @JsonFormat(pattern = "M/dd/yyyy h:mm a")
@@ -41,13 +40,14 @@ public class Sessions
     @JoinColumn(name = "tutor_id")
     private Tutor tutor;
 
+    @ManyToOne
+    @JoinColumn(name = "class_id")
+    private Classes classEntity;
 
     public Sessions(){}
 
-    public Sessions(Tutor tutor, String className, String classCode, String meetingLocation, LocalDateTime meetingTime, LocalDateTime date) {
+    public Sessions(Tutor tutor, String meetingLocation, LocalDateTime meetingTime, LocalDateTime date) {
         this.tutor = tutor;
-        this.className = className;
-        this.classCode = classCode;
         this.meetingLocation = meetingLocation;
         this.meetingTime = meetingTime;
         this.dateCreated = date;
@@ -63,9 +63,6 @@ public class Sessions
 
     public long getSessionId() { return sessionId; }
 
-    public String getClassName() { return className; }
-
-    public String getClassCode() { return classCode; }
 
     public LocalDateTime getDateCreated() { return dateCreated; }
 
@@ -88,4 +85,19 @@ public class Sessions
         }
     }
 
+    public Classes getClassEntity(){
+        return classEntity;
+    }
+
+
+    public void setClassEntity(Classes classes){
+        this.classEntity = classes;
+    }
+
+    public void removeClass(Classes classes){
+        if(classes.equals(classEntity)){
+            this.classEntity = null;
+        }
+        else throw new RuntimeException("Class does not match");
+    }
 }

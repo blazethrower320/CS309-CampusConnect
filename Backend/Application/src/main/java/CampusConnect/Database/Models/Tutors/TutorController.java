@@ -1,5 +1,7 @@
 package CampusConnect.Database.Models.Tutors;
 import CampusConnect.Database.Models.Admins.Admins;
+import CampusConnect.Database.Models.Classes.Classes;
+import CampusConnect.Database.Models.Classes.ClassesRepository;
 import org.hibernate.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -16,6 +18,9 @@ public class TutorController
     TutorRepository tutorRepository;
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    ClassesRepository classesRepository;
 
     private String userNotFound = "User not found";
     private String tutorNotFound = "Tutor not found";
@@ -34,6 +39,11 @@ public class TutorController
     public Tutor getTutor(@PathVariable long tutorId)
     {
         return tutorRepository.getTutorByTutorId(tutorId);
+    }
+
+    @GetMapping("/tutors/getClasses/{tutorId}")
+    public List<Classes> getTutorClasses(@PathVariable long tutorId){
+        return classesRepository.findAll();
     }
 
     @PostMapping("/tutors/createTutor/{username}")
