@@ -36,8 +36,6 @@ public class TutorListAdapter extends RecyclerView.Adapter<TutorListAdapter.Tuto
         this.tutorListFull = new ArrayList<>(tutorList);
         this.listener = listener;
     }
-    //Commentssssss
-    //Comment again
 
     public interface OnTutorClickListenerWithReviews extends OnTutorClickListener {
         void onReviewsClicked(TutorItem tutor);
