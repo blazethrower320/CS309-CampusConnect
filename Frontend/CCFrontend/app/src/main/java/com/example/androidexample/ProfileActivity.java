@@ -163,7 +163,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                         + profileUser.getUserId() + ", tutorUsername: " + profileUser.getUsername());
                 v.getContext().startActivity(intent);
         }
-        if (id == R.id.logout_btn) {
+        if (id == R.id.logout_btn)
+        {
             User.clearInstance(); // clear singleton
             startActivity(new Intent(this, MainActivity.class));
             finish();
