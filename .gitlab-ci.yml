@@ -8,7 +8,7 @@ stages:             # these stages (jobs) forms the CICD pipeline
 maven-build:            
   stage: mavenbuild     # one of the stages listed above
   tags:                 # to specify which runner to execute this job
-    - springboot_tag    # change to your runner's tag
+    - main_backend    # change to your runner's tag
   script:               # what to execute for this job
     - cd Backend/Application       # change 'Backend' to to where you have the pom.xml (do not add / in the beginning)
     - mvn package       # maven package
@@ -24,7 +24,7 @@ maven-build:
 maven-test:             
   stage: maventest     # one of the stages listed above
   tags:
-     - springboot_tag   # change to your runner's tag
+     - main_backend   # change to your runner's tag
   script:
      - cd Backend/Application       # change 'Backend' to to where you have the pom.xml (do not add / in the beginning)
      - mvn test         # maven test
@@ -37,7 +37,7 @@ maven-test:
 auto-deploy:
   stage: mavendeploy    # one of the stages listed above
   tags:
-  - springboot_tag      # change to your runner's tag
+  - main_backend      # change to your runner's tag
   script:               # script to run the deployment service you created
     - cd Backend/Application        # change 'Backend' to to where you have the pom.xml (do not add / in the beginning)
     - sudo mv target/*.jar /home/target/CampusConnect-1.0.0.jar 
@@ -53,7 +53,7 @@ android-build:
   image: afirefly/android-ci:java17 # Docker image that has Android environments installed     gjandres/android-ci:latest
   stage: androidbuild               # one of the stages listed above
   tags:
-   - android_tag                    # change to your runner's tag
+   - main_frontend                    # change to your runner's tag
   before_script:                    # enable gradlew, change 'Frontend' to where you have 'gradlew'
     - export GRADLE_USER_HOME=`pwd`/.gradle
     - chmod +x ./Frontend/CCFrontend/gradlew
@@ -70,7 +70,7 @@ android-test:
   image: afirefly/android-ci:java17
   stage: androidtest               # one of the stages listed above
   tags:
-    - android_tag                   # change to your runner's tag
+    - main_frontend                   # change to your runner's tag
   before_script:                   # enable gradlew, change 'Frontend' to where you have 'gradlew'
      - export GRADLE_USER_HOME=`pwd`/.gradle
      - chmod +x ./Frontend/CCFrontend/gradlew

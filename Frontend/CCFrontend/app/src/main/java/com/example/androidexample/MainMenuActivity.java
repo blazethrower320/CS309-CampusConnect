@@ -53,7 +53,7 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
 
     private RequestQueue requestQueue;
     private WebSocketManager wsManager;
-    private Button logoutBtn;
+    private ImageButton msgBtn;
     //private Button changeStatusBtn;
     //private Button setNumClassBtn;
     private TextView welcomeText;
@@ -153,8 +153,8 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
         tutorStatClasses = findViewById(R.id.tutor_stat_classes);
         tutorStatRating = findViewById(R.id.tutor_stat_rating);
 
-        logoutBtn = findViewById(R.id.logout_btn);
-        logoutBtn.setOnClickListener(this);
+        msgBtn = findViewById(R.id.msg_btn);
+        msgBtn.setOnClickListener(this);
         //setNumClassBtn.setOnClickListener(this);
 
         deleteAccountBtn.setOnClickListener(v -> DeleteUser());
@@ -224,14 +224,14 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.logout_btn)
+        if (v.getId() == R.id.msg_btn)
         {
-            startActivity(new Intent(MainMenuActivity.this, MainActivity.class));
+            startActivity(new Intent(MainMenuActivity.this, AllMessages.class));
             if (wsManager != null) {
                 wsManager.disconnectWebSocket();
             }
-            User.getInstance().clearInstance();
-            finish();
+            //User.getInstance().clearInstance();
+            //finish();
         }
         if (v.getId() == R.id.delete_account_btn)
         {

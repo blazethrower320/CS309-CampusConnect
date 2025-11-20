@@ -34,7 +34,28 @@
   }
 }</component>
   <component name="TaskManager">
-    <task id="LOCAL-00001" summary="Merge branch 'main' of https://git.las.iastate.edu/cs309/2025fall/3_hosen_1&#10;&#10;# Conflicts:&#10;#&#9;Backend/Application/.idea/workspace.xml">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6d29c9f1-ee49-4c0f-98ba-fc2545596b57" name="Changes" comment="" />
+      <created>1761170715555</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1761170715555</updated>
+      <workItem from="1761174159648" duration="3748000" />
+      <workItem from="1761598067136" duration="170000" />
+      <workItem from="1761598938472" duration="1179000" />
+      <workItem from="1761618302587" duration="28000" />
+      <workItem from="1762054027270" duration="2514000" />
+      <workItem from="1762196912934" duration="8741000" />
+      <workItem from="1762306779393" duration="2439000" />
+      <workItem from="1762368344990" duration="22000" />
+      <workItem from="1762374342282" duration="2787000" />
+      <workItem from="1762542092732" duration="23453000" />
+      <workItem from="1762570444910" duration="4947000" />
+      <workItem from="1762617883146" duration="33000" />
+      <workItem from="1762617921674" duration="4289000" />
+      <workItem from="1763157333229" duration="11548000" />
+    </task>
+    <task id="LOCAL-00001" summary="Added mapping for sessions feature. Sessions mapped with tutor and users table.">
       <option name="closed" value="true" />
       <created>1763157968369</created>
       <option name="number" value="00001" />

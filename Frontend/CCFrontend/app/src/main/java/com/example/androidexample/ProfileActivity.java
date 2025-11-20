@@ -21,6 +21,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
@@ -38,6 +39,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     // Text fields
     private TextView roleText, nameText, usernameText, bioText, majorText, classificationText;
     private LinearLayout ratingLayout;
+
+    private User loggedInUser;   // represents the current logged-in user
+    private User profileUser;    // represents the profile we are displaying
     private TextView tutorRatingText, tutorRatingValue;
 
     // Buttons
@@ -48,6 +52,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     // User info
     private User user;
+    private User otherUser;
+    private String tutorUsername;
 
     private static final String BASE_URL = "http://coms-3090-037.class.las.iastate.edu:8080";
 
@@ -55,6 +61,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
 
         // Load the current logged-in user
         user = User.getInstance();
@@ -84,13 +91,27 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         sessionsBtn = findViewById(R.id.nav_sessions);
         drawerLayout = findViewById(R.id.drawer_layout);
 
+        msgBtn.setEnabled(false);
+
+        loggedInUser = User.getInstance();
+
+        // Determine which profile to show
+        String tutorUsername = getIntent().getStringExtra("tutorUsername");
+        if (tutorUsername != null && !tutorUsername.isEmpty()) {
+            // Viewing tutor's profile
+            GetUserInfo(tutorUsername);          // populates profileUser fields
+            fetchUserIdByUsername(tutorUsername); // fetch numeric userId
+        } else {
+            // Viewing own profile
+            GetUserInfo(loggedInUser.getUsername());
+        }
+
+
         // Load past sessions
         pastSessionsRecyclerView = findViewById(R.id.past_sessions_recycler_view);
         pastSessionsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         loadPastSessionData();
 
-        // Load user info
-        GetUserInfo(user.getUsername());
 
         // Button listeners
         msgBtn.setOnClickListener(this);
@@ -101,16 +122,29 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         sessionsBtn.setOnClickListener(this);
         reviewsBtn.setOnClickListener(this);
 
-        // Role-based UI
-        if (user.isAdmin()) {
+
+        if(user.isAdmin())
+        {
             roleText.setText("Admin");
             ratingLayout.setVisibility(View.GONE);
-        } else if (user.isTutor()) {
+            tutorRatingText.setVisibility(View.GONE);
+        }
+        else if(user.isTutor())
+        {
             roleText.setText("Tutor");
             ratingLayout.setVisibility(View.VISIBLE);
-        } else {
+            tutorRatingText.setVisibility(View.VISIBLE);
+        }
+        else
+        {
             roleText.setText("Student");
             ratingLayout.setVisibility(View.GONE);
+            tutorRatingText.setVisibility(View.GONE);
+        }
+
+        if (tutorUsername != null && !tutorUsername.isEmpty()) {
+            editProfileBtn.setVisibility(View.GONE);
+            msgBtn.setVisibility(View.VISIBLE); // maybe allow messaging
         }
     }
 
@@ -119,7 +153,15 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         int id = v.getId();
 
         if (id == R.id.message_btn) {
-            startActivity(new Intent(this, ChatActivity.class));
+                Intent intent = new Intent(v.getContext(), ChatActivity.class);
+                intent.putExtra("sessionId", 0);
+                intent.putExtra("tutorUserId", profileUser.getUserId());
+                intent.putExtra("tutorUsername", profileUser.getUsername());
+                intent.putExtra("userId", loggedInUser.getUserId());
+                intent.putExtra("username", loggedInUser.getUsername());
+                Log.d("ProfileActivity", "Starting ChatActivity with tutorUserId: "
+                        + profileUser.getUserId() + ", tutorUsername: " + profileUser.getUsername());
+                v.getContext().startActivity(intent);
         }
         if (id == R.id.logout_btn) {
             User.clearInstance(); // clear singleton
@@ -149,6 +191,39 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             finish();
         }
     }
+
+    private void updateUIWithProfileUser() {
+        if (profileUser == null) return;
+
+        usernameText.setText("@" + profileUser.getUsername());
+        nameText.setText(profileUser.getFirstName() + " " + profileUser.getLastName());
+        bioText.setText(profileUser.getBio());
+        majorText.setText(profileUser.getMajor());
+        classificationText.setText(profileUser.getClassification());
+
+        // Role-based UI
+        if (profileUser.isAdmin()) {
+            roleText.setText("Admin");
+            ratingLayout.setVisibility(View.GONE);
+        } else if (profileUser.isTutor()) {
+            roleText.setText("Tutor");
+            ratingLayout.setVisibility(View.VISIBLE);
+        } else {
+            roleText.setText("Student");
+            ratingLayout.setVisibility(View.GONE);
+        }
+
+        // Buttons visibility
+        if (!profileUser.getUsername().equals(loggedInUser.getUsername())) {
+            editProfileBtn.setVisibility(View.GONE);
+            msgBtn.setVisibility(View.VISIBLE);
+        } else {
+            editProfileBtn.setVisibility(View.VISIBLE);
+            msgBtn.setVisibility(View.GONE);
+        }
+    }
+
+
 
     @Override
     protected void onResume() {
@@ -191,21 +266,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
-                    Log.d("UserInfo", "Response: " + response);
                     try {
-                        user.setFirstName(response.optString("firstName", ""));
-                        user.setLastName(response.optString("lastName", ""));
-                        user.setBio(response.optString("bio", "No bio available."));
-                        user.setMajor(response.optString("major", "Undeclared"));
-                        user.setClassification(response.optString("classification", "N/A"));
-                        user.setTutor(response.optBoolean("isTutor", false));
-                        user.setAdmin(response.optBoolean("isAdmin", false));
-
-                        usernameText.setText("@" + user.getUsername());
-                        nameText.setText(user.getFirstName() + " " + user.getLastName());
-                        bioText.setText(user.getBio());
-                        majorText.setText(user.getMajor());
-                        classificationText.setText(user.getClassification());
+                        profileUser = User.fromJson(response); // create a new User object
+                        updateUIWithProfileUser(); // update UI after network call
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -215,6 +278,33 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         queue.add(request);
     }
+
+    private void fetchUserIdByUsername(String username) {
+        String url = BASE_URL + "/users/getUserId/" + username;
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        StringRequest request = new StringRequest(Request.Method.GET, url,
+                response -> {
+                    try {
+                        int userId = Integer.parseInt(response.trim());
+                        if (profileUser != null) {
+                            profileUser.setUserId(userId);
+                        }
+                        Log.d("ProfileActivity", "Fetched userId: " + userId);
+                        msgBtn.setEnabled(true);
+                    } catch (NumberFormatException e) {
+                        Log.e("ProfileActivity", "Failed to parse userId: " + response, e);
+                    }
+                },
+                error -> Log.e("ProfileActivity", "Failed to fetch userId for username: " + username, error)
+        );
+
+        queue.add(request);
+    }
+
+
+
 
     private void loadPastSessionData() {
         pastSessionList = new ArrayList<>();
