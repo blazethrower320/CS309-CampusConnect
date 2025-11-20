@@ -11,7 +11,7 @@ android-build:
     - export GRADLE_USER_HOME=`pwd`/.gradle
     - chmod +x ./Frontend/CCFrontend/gradlew
   script:
-    - cd Frontend/CCFrontend/gradlew                   # change 'Frontend' to where you have 'gradlew' (do not add / in the beginning)
+    - cd Frontend/CCFrontend                  # change 'Frontend' to where you have 'gradlew' (do not add / in the beginning)
     - ./gradlew build
   only:
     refs:
@@ -28,7 +28,7 @@ android-test:
     - export GRADLE_USER_HOME=`pwd`/.gradle
     - chmod +x ./Frontend/CCFrontend/gradlew
   script:
-    - cd Frontend/CCFrontend/gradlew                  # change 'Frontend' to where you have 'gradlew' (do not add / in the beginning)
+    - cd Frontend/CCFrontend                  # change 'Frontend' to where you have 'gradlew' (do not add / in the beginning)
     - ./gradlew test
   only:
     refs:
