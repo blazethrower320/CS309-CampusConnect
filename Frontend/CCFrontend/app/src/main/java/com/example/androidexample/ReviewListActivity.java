@@ -27,25 +27,64 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Activity that displays a list of tutors and allows the user to view reviews.
+ * <p>
+ * Users can search for tutors, open the navigation drawer to navigate to other
+ * activities, and view tutor reviews by clicking on the review button. This activity
+ * also listens for WebSocket messages for real-time updates.
+ * </p>
+ *
+ * Implements {@link TutorListAdapter.OnTutorClickListenerWithReviews} to handle tutor
+ * clicks and review clicks, and {@link WebSocketListener} to handle WebSocket events.
+ *
+ * @author William Rossow
+ */
 public class ReviewListActivity extends AppCompatActivity implements TutorListAdapter.OnTutorClickListenerWithReviews, WebSocketListener {
 
+    /** Log tag for debugging */
     private static final String TAG = "ReviewListActivity";
+
+    /** URL for fetching tutors */
     private static final String URL_TUTORS = "http://coms-3090-037.class.las.iastate.edu:8080/tutors";
 
+    /** Button to open the navigation drawer */
     private ImageButton menuButton;
+
+    /** Drawer layout for navigation */
     private DrawerLayout drawerLayout;
 
+    /** RecyclerView for displaying tutors */
     private RecyclerView recyclerView;
+
+    /** Adapter for the RecyclerView */
     private TutorListAdapter adapter;
+
+    /** List of tutors displayed */
     private List<TutorItem> tutorList = new ArrayList<>();
 
-    // User session info (via singleton)
+    /** Current user's username */
     private String username;
+
+    /** Current user's password */
     private String password;
+
+    /** Current user's ID */
     private int userId;
+
+    /** Whether the current user is a tutor */
     private boolean isTutor;
+
+    /** Whether the current user is an admin */
     private boolean isAdmin;
 
+    /**
+     * Called when the activity is first created.
+     * Initializes the navigation drawer, RecyclerView, search functionality,
+     * loads user session info, sets up nav buttons, and loads tutor data.
+     *
+     * @param savedInstanceState Bundle containing activity state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +140,9 @@ public class ReviewListActivity extends AppCompatActivity implements TutorListAd
         loadTutors();
     }
 
+    /**
+     * Sets up the navigation drawer buttons to navigate to other activities.
+     */
     private void setupNavButtons() {
         LinearLayout homeButton = findViewById(R.id.nav_home);
         homeButton.setOnClickListener(v -> navigateTo(MainMenuActivity.class));
@@ -112,6 +154,11 @@ public class ReviewListActivity extends AppCompatActivity implements TutorListAd
         sessionsButton.setOnClickListener(v -> navigateTo(SessionActivity.class));
     }
 
+    /**
+     * Navigates to the specified activity and closes the navigation drawer.
+     *
+     * @param targetActivity Activity class to navigate to
+     */
     private void navigateTo(Class<?> targetActivity) {
         Intent intent = new Intent(ReviewListActivity.this, targetActivity);
         startActivity(intent);
@@ -119,6 +166,9 @@ public class ReviewListActivity extends AppCompatActivity implements TutorListAd
         drawerLayout.closeDrawer(GravityCompat.START);
     }
 
+    /**
+     * Called when activity resumes. Sets the WebSocket listener and refreshes tutor data.
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -126,12 +176,18 @@ public class ReviewListActivity extends AppCompatActivity implements TutorListAd
         loadTutors(); // refresh when coming back
     }
 
+    /**
+     * Called when activity pauses. Removes the WebSocket listener.
+     */
     @Override
     protected void onPause() {
         super.onPause();
         WebSocketManager.getInstance().removeWebSocketListener();
     }
 
+    /**
+     * Loads the list of tutors from the server and updates the RecyclerView.
+     */
     private void loadTutors() {
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest req = new StringRequest(
@@ -177,12 +233,22 @@ public class ReviewListActivity extends AppCompatActivity implements TutorListAd
         queue.add(req);
     }
 
-    // Clicks from TutorListAdapter
+    /**
+     * Called when a tutor item is clicked.
+     *
+     * @param tutor TutorItem that was clicked
+     */
     @Override
     public void onTutorClicked(TutorItem tutor) {
         // Could navigate to tutor profile if needed
     }
 
+    /**
+     * Called when the review button of a tutor item is clicked.
+     * Navigates to the TutorReviewsActivity.
+     *
+     * @param tutor TutorItem whose reviews are requested
+     */
     @Override
     public void onReviewsClicked(TutorItem tutor) {
         Intent intent = new Intent(this, TutorReviewsActivity.class);
@@ -190,12 +256,21 @@ public class ReviewListActivity extends AppCompatActivity implements TutorListAd
         startActivity(intent);
     }
 
-    // WebSocketListener methods
+    /**
+     * Called when WebSocket connection opens.
+     *
+     * @param handshakedata WebSocket handshake data
+     */
     @Override
     public void onWebSocketOpen(ServerHandshake handshakedata) {
         Log.d(TAG, "WebSocket connected in ReviewListActivity");
     }
 
+    /**
+     * Called when a WebSocket message is received.
+     *
+     * @param message Message content
+     */
     @Override
     public void onWebSocketMessage(String message) {
         Log.d(TAG, "WebSocket message: " + message);
@@ -205,11 +280,23 @@ public class ReviewListActivity extends AppCompatActivity implements TutorListAd
         });
     }
 
+    /**
+     * Called when the WebSocket connection closes.
+     *
+     * @param code WebSocket close code
+     * @param reason Close reason
+     * @param remote Whether the closure was initiated by the remote host
+     */
     @Override
     public void onWebSocketClose(int code, String reason, boolean remote) {
         Log.d(TAG, "WebSocket closed: " + reason);
     }
 
+    /**
+     * Called when there is an error in the WebSocket connection.
+     *
+     * @param ex Exception encountered
+     */
     @Override
     public void onWebSocketError(Exception ex) {
         Log.e(TAG, "WebSocket error", ex);

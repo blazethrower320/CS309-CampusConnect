@@ -46,6 +46,12 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/**
+ * SessionActivity displays all tutoring sessions, handles filtering,
+ * joining sessions, navigation drawer actions, and real-time WebSocket updates.
+ *
+ * @author William Rossow
+ */
 public class SessionActivity extends AppCompatActivity implements WebSocketListener {
 
     private DrawerLayout drawerLayout;
@@ -62,6 +68,11 @@ public class SessionActivity extends AppCompatActivity implements WebSocketListe
     private static final String SESSIONS_ENDPOINT = "/sessions";
     private static final int NOTIFICATION_PERMISSION_CODE = 1001;
 
+
+    /**
+     * Initializes the UI, loads user info, configures navigation,
+     * sets up search filters and populates the session list.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +86,7 @@ public class SessionActivity extends AppCompatActivity implements WebSocketListe
         sessionsRecycler = findViewById(R.id.sessions_recycler);
         requestQueue = Volley.newRequestQueue(this);
 
-        // --- Get user info from singleton ---
+        // Retrieve logged-in user info
         User user = User.getInstance();
         String username = user.getUsername();
         boolean isTutor = user.isTutor();
@@ -85,6 +96,7 @@ public class SessionActivity extends AppCompatActivity implements WebSocketListe
         setupSearchAndSpinner();
         setupRecycler(username);
 
+        // Tutors can create sessions
         if (isTutor) createSession.setVisibility(View.VISIBLE);
         createSession.setOnClickListener(v -> {
             startActivity(new Intent(this, CreateSessionActivity.class));
@@ -94,6 +106,9 @@ public class SessionActivity extends AppCompatActivity implements WebSocketListe
         fetchSessionsFromBackend();
     }
 
+    /**
+     * Configures navigation drawer buttons and hamburger icon behavior.
+     */
     private void setupNavigation() {
         LinearLayout homeButton = findViewById(R.id.nav_home);
         LinearLayout profileButton = findViewById(R.id.nav_profile);
@@ -112,12 +127,18 @@ public class SessionActivity extends AppCompatActivity implements WebSocketListe
         });
     }
 
+    /**
+     * Starts the selected Activity and closes the navigation drawer.
+     */
     private void navigateTo(Class<?> target) {
         startActivity(new Intent(SessionActivity.this, target));
         finish();
         drawerLayout.closeDrawer(GravityCompat.START);
     }
 
+    /**
+     * Initializes the SearchView, filter spinner, and attaches listeners.
+     */
     private void setupSearchAndSpinner() {
 
         SearchView searchView = findViewById(R.id.class_search_view);
@@ -155,6 +176,9 @@ public class SessionActivity extends AppCompatActivity implements WebSocketListe
         });
     }
 
+    /**
+     * Applies visual styling to the SearchView components.
+     */
     private void styleSearchView(SearchView searchView) {
 
         // Clear search_plate background
@@ -201,7 +225,9 @@ public class SessionActivity extends AppCompatActivity implements WebSocketListe
 
 
 
-
+    /**
+     * Configures the RecyclerView and handling for joining sessions.
+     */
     private void setupRecycler(String username) {
         sessionsRecycler.setLayoutManager(new LinearLayoutManager(this));
         sessionAdapter = new SessionAdapter(allSessions, session -> {
@@ -214,23 +240,30 @@ public class SessionActivity extends AppCompatActivity implements WebSocketListe
         sessionsRecycler.setAdapter(sessionAdapter);
     }
 
+    /**
+     * Registers as the WebSocket listener when resuming the Activity.
+     */
     @Override
     protected void onResume() {
         super.onResume();
         WebSocketManager.getInstance().setWebSocketListener(this);
     }
 
+    /**
+     * Unregisters WebSocket listener when Activity is paused.
+     */
     @Override
     protected void onPause() {
         super.onPause();
         WebSocketManager.getInstance().removeWebSocketListener();
     }
 
-    // ---------- WebSocket Methods ----------
+    /** WebSocket callback: connection opened. */
     @Override public void onWebSocketOpen(ServerHandshake handshakedata) {
         Log.d("WebSocket", "Connected in SessionActivity");
     }
 
+    /** WebSocket callback: message received. */
     @Override public void onWebSocketMessage(String message) {
         Log.d("WebSocket", "Message: " + message);
         runOnUiThread(() -> {
@@ -239,15 +272,19 @@ public class SessionActivity extends AppCompatActivity implements WebSocketListe
         });
     }
 
+    /** WebSocket callback: connection closed. */
     @Override public void onWebSocketClose(int code, String reason, boolean remote) {
         Log.d("WebSocket", "Closed: " + reason);
     }
 
+    /** WebSocket callback: error occurred. */
     @Override public void onWebSocketError(Exception ex) {
         Log.e("WebSocket", "Error", ex);
     }
 
-    // ---------- Session Joining + Push ----------
+    /**
+     * Sends join request to backend and updates UI state when successful.
+     */
     private void joinSession(int sessionId, String joiningUsername) {
         String url = BASE_URL + "/sessions/joinSession/" + joiningUsername + "/" + sessionId;
 
@@ -268,6 +305,9 @@ public class SessionActivity extends AppCompatActivity implements WebSocketListe
         requestQueue.add(joinRequest);
     }
 
+    /**
+     * Retrieves tutor ID for the session and triggers push notification.
+     */
     private void sendPushForSessionJoin(Session session, String joiningUsername) {
         String url = BASE_URL + "/sessions/getSessionTutor/" + session.getSessionId();
 
@@ -281,6 +321,9 @@ public class SessionActivity extends AppCompatActivity implements WebSocketListe
         requestQueue.add(tutorRequest);
     }
 
+    /**
+     * Sends backend request to notify the tutor about a student joining.
+     */
     private void sendTutorPush(Session session, String joiningUsername, long tutorId) {
         if (tutorId <= 0) return;
         String message = "Class: " + session.getClassName() + ", Joined by: " + joiningUsername;
@@ -293,7 +336,10 @@ public class SessionActivity extends AppCompatActivity implements WebSocketListe
         requestQueue.add(pushRequest);
     }
 
-    // ---------- Session Fetching ----------
+    /**
+     * Fetches all tutoring sessions from the backend and updates the UI.
+     * Populates the allSessions list and triggers tutor lookup per session.
+     */
     private void fetchSessionsFromBackend() {
         String url = BASE_URL + SESSIONS_ENDPOINT;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
@@ -324,6 +370,9 @@ public class SessionActivity extends AppCompatActivity implements WebSocketListe
         requestQueue.add(jsonArrayRequest);
     }
 
+    /**
+     * Fetches tutor username associated with a given tutor ID.
+     */
     private void fetchTutorUsernameById(Session session, int tutorId) {
         String url = BASE_URL + "/tutors/info/" + tutorId;
 
@@ -351,7 +400,9 @@ public class SessionActivity extends AppCompatActivity implements WebSocketListe
     }
 
 
-
+    /**
+     * Fetches tutor information for a session when tutor ID was not present initially.
+     */
     private void fetchTutorForSession(Session session) {
         String url = BASE_URL + "/sessions/getSessionTutor/" + session.getSessionId();
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -372,7 +423,9 @@ public class SessionActivity extends AppCompatActivity implements WebSocketListe
     }
 
 
-    // ---------- Filtering ----------
+    /**
+     * Applies search and major-based filters to the visible session list.
+     */
     private void applyFilters() {
         String selectedMajor = majorSpinner.getSelectedItem() == null ? "All" :
                 majorSpinner.getSelectedItem().toString();
@@ -393,7 +446,9 @@ public class SessionActivity extends AppCompatActivity implements WebSocketListe
         sessionAdapter.updateList(filtered);
     }
 
-    // ---------- Notifications ----------
+    /**
+     * Displays a push notification related to session updates.
+     */
     private void showPushNotification(String title, String message) {
         String channelId = "session_notifications";
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -423,6 +478,9 @@ public class SessionActivity extends AppCompatActivity implements WebSocketListe
         manager.notify((int) System.currentTimeMillis(), builder.build());
     }
 
+    /**
+     * Requests the POST_NOTIFICATIONS permission on Android 13+ if not yet granted.
+     */
     private void checkNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
                 ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
