@@ -22,28 +22,66 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * TutorReviewsActivity displays all ratings for a selected tutor,
+ * allows users to submit new reviews, and handles enabling/disabling
+ * the rating UI based on role permissions (user, tutor, or admin).
+ *
+ * <p>This activity loads tutor ratings from the backend, initializes
+ * a RecyclerView for displaying reviews, and validates review actions
+ * to prevent tutors from reviewing themselves.
+ *
+ * @author William Rossow
+ */
 public class TutorReviewsActivity extends AppCompatActivity {
 
+    /** Base URL for API requests */
     private static final String BASE_URL = "http://coms-3090-037.class.las.iastate.edu:8080";
+
+    /** ID of the tutor/user being reviewed */
     private int tutorId, userId;
+
+    /** Whether the user is a tutor */
     private boolean isTutor;
 
+    /** RecyclerView for displaying tutor ratings */
     private RecyclerView recyclerView;
+
+    /** Adapter for the RecyclerView */
     private RatingListAdapter adapter;
+
+    /** List of ratings displayed */
     private List<RatingItem> ratingList = new ArrayList<>();
 
+    /** Current user's username */
     private String username;
+    /** Current user's password */
     private String password;
-
+    /** Whether the current user is an admin */
     private boolean isAdmin;
 
+    /** Rating bar input */
     private RatingBar ratingBar;
+
+    /** Comment input box */
     private EditText commentBox;
+
+    /** Button to submit a rating */
     private Button submitButton;
+
+    /** Button to go back */
     private ImageButton backButton;
 
+    /** Volley request queue */
     private RequestQueue queue;
 
+    /**
+     * Called when the activity is first created.
+     * Initializes UI components, sets up the RecyclerView,
+     * and loads tutor ratings.
+     *
+     * @param savedInstanceState Bundle containing activity state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +131,9 @@ public class TutorReviewsActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Enables the rating UI so the user can submit ratings.
+     */
     private void enableRatingUI() {
         submitButton.setOnClickListener(v -> submitRating());
         submitButton.setEnabled(true);
@@ -101,6 +142,9 @@ public class TutorReviewsActivity extends AppCompatActivity {
         commentBox.setEnabled(true);
     }
 
+    /**
+     * Disables the rating UI, preventing the user from submitting ratings.
+     */
     private void disableRatingUI() {
         submitButton.setEnabled(false);
         submitButton.setAlpha(0.5f);
@@ -110,7 +154,9 @@ public class TutorReviewsActivity extends AppCompatActivity {
 
 
 
-
+    /**
+     * Loads all ratings for the tutor from the server and updates the RecyclerView.
+     */
     private void loadTutorRatings() {
         String url = BASE_URL + "/ratings/getTutorRatings/" + tutorId;
 
@@ -136,6 +182,9 @@ public class TutorReviewsActivity extends AppCompatActivity {
         queue.add(request);
     }
 
+    /**
+     * Submits a rating for the tutor to the server.
+     */
     private void submitRating() {
         String comment = commentBox.getText().toString().trim();
         int ratingValue = (int) ratingBar.getRating();
