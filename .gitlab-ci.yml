@@ -11,6 +11,8 @@ maven-build:
     - main_backend    # change to your runner's tag
   script:               # what to execute for this job
     - cd Backend/Application       # change 'Backend' to to where you have the pom.xml (do not add / in the beginning)
+    - export JAVA_HOME=/usr/lib/jvm/jdk-21.0.8   # path to JDK 21 on the runner
+    - export PATH=$JAVA_HOME/bin:$PATH
     - mvn package       # maven package
   artifacts:            # where to output the packaged jar file, change 'Backend' to to where you have the pom.xml
     paths:
@@ -27,6 +29,8 @@ maven-test:
      - main_backend   # change to your runner's tag
   script:
      - cd Backend/Application       # change 'Backend' to to where you have the pom.xml (do not add / in the beginning)
+     - export JAVA_HOME=/usr/lib/jvm/jdk-21.0.8   # path to JDK 21 on the runner
+     - export PATH=$JAVA_HOME/bin:$PATH
      - mvn test         # maven test
   only:
     refs:
@@ -40,6 +44,8 @@ auto-deploy:
   - main_backend      # change to your runner's tag
   script:               # script to run the deployment service you created
     - cd Backend/Application        # change 'Backend' to to where you have the pom.xml (do not add / in the beginning)
+    - export JAVA_HOME=/usr/lib/jvm/jdk-21.0.8   # path to JDK 21 on the runner
+    - export PATH=$JAVA_HOME/bin:$PATH
     - sudo mv target/*.jar /home/target/CampusConnect-1.0.0.jar 
     - sudo systemctl stop system-web-demo
     - sudo systemctl start system-web-demo

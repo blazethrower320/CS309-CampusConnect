@@ -2,6 +2,7 @@ package CampusConnect.Database.Models.Classes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -17,10 +18,10 @@ public class ClassesController {
         return ClassesRepository.findAll();
     }
 
-    //Returns the class given from the class id.
-    @GetMapping(path = "/classes/{id}")
-    public Classes getClassById(@PathVariable Long id) {
-        return ClassesRepository.findById(id).orElse(null);
+    //Returns the class given from the class Id.
+    @GetMapping(path = "/classes/{classId}")
+    public Classes getClassById(@PathVariable Long Id) {
+        return ClassesRepository.findById(Id).orElse(null);
     }
 
 
@@ -29,6 +30,11 @@ public class ClassesController {
     public String getClassCode(@PathVariable String className){
         String currentClass = ClassesRepository.findByclassName(className).getclassCode();
         return currentClass;
+    }
+
+    @PostMapping(path = "/clses/delete/{classId}")
+    public void deleteClass(@PathVariable long classId){
+        ClassesRepository.findById(classId);
     }
 
 

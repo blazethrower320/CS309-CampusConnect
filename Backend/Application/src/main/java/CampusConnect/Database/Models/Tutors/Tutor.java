@@ -1,6 +1,7 @@
 package CampusConnect.Database.Models.Tutors;
 
 
+import CampusConnect.Database.Models.Classes.Classes;
 import CampusConnect.Database.Models.Ratings.Ratings;
 import CampusConnect.Database.Models.Sessions.Sessions;
 import CampusConnect.Database.Models.Users.User;
@@ -33,6 +34,16 @@ public class Tutor {
     @OneToMany(mappedBy = "tutor")
     @JsonIgnore
     private Set<Sessions> tutorSessions = new HashSet<>();
+
+
+    @ManyToMany
+    @JoinTable(
+            name = "tutor_classes",
+            joinColumns = @JoinColumn(name = "tutorId"),
+            inverseJoinColumns = @JoinColumn(name = "classId")
+    )
+    private Set<Classes> classes = new HashSet<>();
+
 
     public Tutor() {}
 
@@ -81,4 +92,19 @@ public class Tutor {
     public void setRatings(Set<Ratings> ratings) {
         this.ratings = ratings;
     }
+
+    public Set<Classes> getClasses() {
+        return classes;
+    }
+
+    public void addClasses(Classes classes){
+        this.classes.add(classes);
+        classes.getTutors().add(this);
+    }
+
+    public Set<Sessions> getTutorSessions(){
+        return tutorSessions;
+    }
 }
+
+

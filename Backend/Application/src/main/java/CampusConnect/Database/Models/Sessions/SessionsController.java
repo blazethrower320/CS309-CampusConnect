@@ -66,6 +66,8 @@ public class SessionsController
                 .toList();
     }
 
+
+
     @GetMapping("/sessions/users/{sessionId}")
     public Set<User> getAllUsers(@PathVariable long sessionId){
         Set<User> users = sessionsRepository.findById(sessionId).getUsers();
@@ -105,7 +107,7 @@ public class SessionsController
         sessionsRepository.save(session);
 
         Long tutorId = sessionsRepository.getSessionsBySessionId(sessionId).getTutor().getTutorId();
-        String message =  user.getUsername() + " joined your study session: " + session.getClassName();
+        String message =  user.getUsername() + " joined your study session: " + session.getClassEntity().getclassName();
         PushSocket.sendNotificationToTutor(tutorId, message);
 
         return session;
@@ -168,5 +170,14 @@ public class SessionsController
             throw new RuntimeException("Meeting time does not exist");
         }
         return session.getMeetingTime().format(format);
+    }
+
+    @PostMapping("/sessions/deleteSession/{sessionId}")
+    public void deleteSession(@PathVariable long sessionId){
+        Sessions session = sessionsRepository.getSessionsBySessionId(sessionId);
+        if(session == null){
+            throw new RuntimeException("No session found");
+        }
+        sessionsService.deleteSession(sessionId);
     }
 }
