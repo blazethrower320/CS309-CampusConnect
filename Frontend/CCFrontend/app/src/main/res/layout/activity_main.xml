@@ -7,135 +7,146 @@
     android:layout_width="match_parent"
     android:background="@drawable/login_bg_image2">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingBottom="40dp">
 
-        <!-- Main Login Panel -->
         <LinearLayout
-            android:layout_width="325dp"
-            android:layout_height="wrap_content"
+            android:layout_width="343dp"
+            android:layout_height="540dp"
             android:layout_gravity="center"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="60dp"
             android:background="@drawable/layout_bg"
+            android:backgroundTint="#282828"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="25dp"
-                android:layout_marginBottom="50dp"
-                android:text="CampusConnect"
-                android:textColor="#FFFFFF"
-                android:textSize="30dp"
-                android:textStyle="bold" />
-
+            <!-- Main Login Panel -->
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="325dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:background="@drawable/text_editor_panel"
-                android:orientation="horizontal"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp">
+                android:layout_marginTop="10dp"
+                android:background="@drawable/layout_bg"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Username: "
-                    android:textColor="#000000"
-                    android:textSize="20dp" />
+                    android:layout_gravity="center"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginBottom="50dp"
+                    android:text="CampusConnect"
+                    android:textColor="#FFFFFF"
+                    android:textSize="30dp"
+                    android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/login_username_edt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:hint="Enter Username Here" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="25dp"
-                android:background="@drawable/text_editor_panel"
-                android:orientation="horizontal"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp">
-
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Password: "
-                    android:textColor="#000000"
-                    android:textSize="20dp" />
+                    android:layout_gravity="center"
+                    android:background="@drawable/text_editor_panel"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
 
-                <EditText
-                    android:id="@+id/login_password_edt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:hint="Enter Password Here"
-                    android:inputType="textPassword" />
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Username: "
+                        android:textColor="#000000"
+                        android:textSize="20dp" />
 
-            <Button
-                android:id="@+id/forgotp_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@drawable/clear_btn"
-                android:paddingLeft="15dp"
-                android:text="Forgot Password?"
-                android:textColor="#A1A1FF"
-                android:textSize="15sp" />
+                    <EditText
+                        android:id="@+id/login_username_edt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:hint="Enter Username Here" />
+                </LinearLayout>
 
-            <Button
-                android:id="@+id/login_btn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:background="@drawable/btn_primary"
-                android:gravity="center"
-                android:text="Login"
-                android:textColor="#ffffff"
-                android:textSize="15sp" />
-
-            <!-- Create Account Section -->
-            <!-- Create Account Section -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="52dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="80dp"
-                android:background="@drawable/create_acct_panel"
-                android:orientation="horizontal"
-                android:padding="15dp">
-
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="10dp"
-                    android:text="New to Campus Connect?"
-                    android:textColor="#ffffff"
-                    android:textSize="14sp" />
+                    android:layout_gravity="center"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/text_editor_panel"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Password: "
+                        android:textColor="#000000"
+                        android:textSize="20dp" />
+
+                    <EditText
+                        android:id="@+id/login_password_edt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:hint="Enter Password Here"
+                        android:inputType="textPassword" />
+                </LinearLayout>
 
                 <Button
-                    android:id="@+id/signup_btn"
-                    android:layout_width="157dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="-10dp"
+                    android:id="@+id/forgotp_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:background="@drawable/clear_btn"
-                    android:ellipsize="none"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:text="Create Account"
+                    android:paddingLeft="15dp"
+                    android:text="Forgot Password?"
                     android:textColor="#A1A1FF"
-                    android:textSize="13sp" />
+                    android:textSize="15sp" />
+
+                <Button
+                    android:id="@+id/login_btn"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="50dp"
+                    android:background="@drawable/btn_primary"
+                    android:gravity="center"
+                    android:text="Login"
+                    android:textColor="#ffffff"
+                    android:textSize="15sp" />
+
+                <!-- Create Account Section -->
+                <LinearLayout
+                    android:layout_width="315dp"
+                    android:layout_height="52dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="80dp"
+                    android:background="@drawable/create_acct_panel"
+                    android:orientation="horizontal"
+                    android:padding="15dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="10dp"
+                        android:text="New to Campus Connect?"
+                        android:textColor="#ffffff"
+                        android:textSize="14sp" />
+
+                    <Button
+                        android:id="@+id/signup_btn"
+                        android:layout_width="157dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="-30dp"
+                        android:background="@drawable/clear_btn"
+                        android:ellipsize="none"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:text="Create Account"
+                        android:textColor="#A1A1FF"
+                        android:textSize="13sp" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

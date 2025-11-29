@@ -57,6 +57,42 @@ public class ActiveSessionsAdapter extends RecyclerView.Adapter<ActiveSessionsAd
             intent.putExtra("tutorUsername", session.getTutorUsername()); // pass data if needed
             v.getContext().startActivity(intent);
         });
+
+        holder.leaveBtn.setOnClickListener(v -> {
+            int userId = User.getInstance().getUserId();
+            int sessionId = session.getSessionId();
+
+            leaveSessionRequest(userId, sessionId, holder.getAdapterPosition(), v);
+        });
+    }
+
+    private void leaveSessionRequest(int userId, int sessionId, int position, View view) {
+        String url = "http://coms-3090-037.class.las.iastate.edu:8080/sessions/leaveSession/"
+                + userId + "/" + sessionId;
+
+        com.android.volley.RequestQueue queue =
+                com.android.volley.toolbox.Volley.newRequestQueue(view.getContext());
+
+        com.android.volley.toolbox.StringRequest request =
+                new com.android.volley.toolbox.StringRequest(
+                        com.android.volley.Request.Method.POST,
+                        url,
+                        response -> {
+                            // Remove session from list
+                            sessions.remove(position);
+                            notifyItemRemoved(position);
+                            notifyItemRangeChanged(position, sessions.size());
+                        },
+                        error -> {
+                            android.widget.Toast.makeText(
+                                    view.getContext(),
+                                    "Error leaving session",
+                                    android.widget.Toast.LENGTH_SHORT
+                            ).show();
+                        }
+                );
+
+        queue.add(request);
     }
 
 
@@ -70,9 +106,12 @@ public class ActiveSessionsAdapter extends RecyclerView.Adapter<ActiveSessionsAd
         Button messagesBtn;
         ImageView profilePic;
 
+        Button leaveBtn;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tutorName = itemView.findViewById(R.id.tutor_name);
+            leaveBtn = itemView.findViewById(R.id.btn_leave);
             meetingInfo = itemView.findViewById(R.id.meeting_info);
             sessionLocation = itemView.findViewById(R.id.session_location);
             messagesBtn = itemView.findViewById(R.id.btn_messages);
