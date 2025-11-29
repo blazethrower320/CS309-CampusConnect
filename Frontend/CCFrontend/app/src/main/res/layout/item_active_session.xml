@@ -3,74 +3,102 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:padding="17dp"
-    android:orientation="horizontal"
     android:background="@drawable/session_item_background"
     android:backgroundTint="#3F4C95"
     android:layout_marginVertical="6dp"
     android:elevation="2dp">
 
-    <ImageView
-        android:id="@+id/profile_pic"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/account_circle"
-        android:contentDescription="Profile picture"
-        android:layout_marginEnd="10dp"
-        android:clickable="true"
-        android:focusable="true"
-        app:tint="@android:color/white" />
-
+    <!-- TOP ROW: Profile | Info | Location -->
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tutor_name"
-            android:layout_width="wrap_content"
+        <!-- Profile Picture -->
+        <ImageView
+            android:id="@+id/profile_pic"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/account_circle"
+            android:contentDescription="Profile picture"
+            android:layout_marginEnd="12dp"
+            app:tint="@android:color/white" />
+
+        <!-- Name + Meeting Info -->
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Elynn Lee"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/meeting_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Software Development Practices — 2:30 PM"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="14sp" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tutor_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-    <!-- right side vertical -->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center_vertical|end">
+            <TextView
+                android:id="@+id/meeting_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Software Development Practices — 2:30 PM"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="14sp" />
+        </LinearLayout>
 
+        <!-- Location on the right -->
         <TextView
             android:id="@+id/session_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pearson Hall"
+            android:layout_gravity="center_vertical"
+            android:text="Location"
             android:textColor="@android:color/white"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:gravity="end"
+            android:layout_marginStart="12dp" />
+
+    </LinearLayout>
+
+    <!-- BUTTON ROW -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="5dp">
 
         <Button
             android:id="@+id/btn_messages"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="70dp"
+            android:layout_marginStart="25dp"
+            android:layout_weight="1"
+            android:backgroundTint="@android:color/white"
+            android:paddingVertical="4dp"
             android:text="Messages"
+            android:textAllCaps="false"
+            android:textColor="#000000" />
+
+        <Button
+            android:id="@+id/btn_leave"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:text="Leave"
+            android:layout_marginEnd="25dp"
             android:textAllCaps="false"
             android:textColor="#000000"
             android:backgroundTint="@android:color/white"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="0dp"
-            android:layout_marginTop="6dp" />
+            android:paddingVertical="4dp"
+            android:layout_marginStart="8dp"/>
+
     </LinearLayout>
 
 </LinearLayout>
