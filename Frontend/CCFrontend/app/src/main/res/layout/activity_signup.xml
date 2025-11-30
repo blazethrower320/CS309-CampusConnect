@@ -42,7 +42,7 @@
         android:layout_height="500dp"
         android:orientation="vertical"
         android:layout_gravity="center"
-        android:background="#282828"
+        android:background="@drawable/layout_bg"
         android:layout_marginTop="100dp">
 
 
@@ -146,22 +146,20 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginTop="20dp">
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="70dp">
 
         <CheckBox
             android:id="@+id/tutor_checkbox"
-            android:layout_width="wrap_content"
+            android:layout_width="141dp"
             android:layout_height="wrap_content"
-            android:text="Create Admin Profile"
-            android:layout_marginStart="120dp"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            android:layout_gravity="center" />
+            android:text="Create Tutor Account"
+            android:textColor="#FFFFFF" />
     </LinearLayout>
 
-
-    <Button
+            <Button
                 android:id="@+id/signup_btn"
                 android:background="@drawable/btn_primary"
                 android:layout_width="200dp"
