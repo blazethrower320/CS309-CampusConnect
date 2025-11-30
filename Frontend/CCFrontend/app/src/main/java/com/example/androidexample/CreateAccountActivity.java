@@ -22,7 +22,7 @@ public class CreateAccountActivity extends AppCompatActivity {
 
     // UI components
     private Button backBtn, createAccountBtn;
-    private TextView usernameTxt, passwordTxt, confirmPassTxt, msgResponse;
+    private TextView usernameTxt, passwordTxt, confirmPassTxt, msgResponse, firstNameTxt, lastNameTxt;;
     private CheckBox  tutorCheckBox;
 
     // Flags
@@ -48,6 +48,8 @@ public class CreateAccountActivity extends AppCompatActivity {
         tutorCheckBox = findViewById(R.id.tutor_checkbox);
         usernameTxt = findViewById(R.id.create_username);
         passwordTxt = findViewById(R.id.create_password);
+        firstNameTxt = findViewById(R.id.create_first_name);
+        lastNameTxt = findViewById(R.id.create_last_name);
         confirmPassTxt = findViewById(R.id.create_password_confirm);
         msgResponse = findViewById(R.id.msgResponse);
 
@@ -63,10 +65,18 @@ public class CreateAccountActivity extends AppCompatActivity {
 
     /** Validate inputs and create user **/
     private void handleCreateAccount() {
+        String firstName = firstNameTxt.getText().toString().trim();
+        String lastName = lastNameTxt.getText().toString().trim();
         String username = usernameTxt.getText().toString().trim();
         String password = passwordTxt.getText().toString().trim();
         String confirmPass = confirmPassTxt.getText().toString().trim();
         isTutor = tutorCheckBox.isChecked();
+
+        if (firstName.isEmpty() || lastName.isEmpty()) {
+            showToast("Please enter your first and last name");
+            msgResponse.setText("First and Last name required");
+            return;
+        }
 
         if (username.isEmpty() || password.isEmpty() || confirmPass.isEmpty()) {
             showToast("Please fill out all fields");
@@ -81,6 +91,9 @@ public class CreateAccountActivity extends AppCompatActivity {
         }
 
         createUser(username, password);
+        User user = User.getInstance();
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
     }
 
     /** Create user and update global User instance **/
