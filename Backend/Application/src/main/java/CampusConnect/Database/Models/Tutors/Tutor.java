@@ -102,6 +102,9 @@ public class Tutor {
         classes.getTutors().add(this);
     }
 
+    public void removeClass(Classes classes){
+        this.classes.remove(classes);
+    }
     public Set<Sessions> getTutorSessions(){
         return tutorSessions;
     }
