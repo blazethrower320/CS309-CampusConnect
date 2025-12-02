@@ -41,9 +41,10 @@ public class ClassesController {
 
     @PostMapping(path = "/classes/create")
     public void createClass(@RequestBody Classes classEntity){
-        if(classesRepository.save(classEntity);
+        if(!classesRepository.existsByclassName(classEntity.getclassName()) &&  !classesRepository.existsByclassCode(classEntity.getclassCode())){
+            classesRepository.save(classEntity);
+        }
     }
-
 
 
 }

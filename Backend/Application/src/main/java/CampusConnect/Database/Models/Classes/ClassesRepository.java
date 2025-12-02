@@ -9,5 +9,5 @@ public interface ClassesRepository extends JpaRepository<Classes, Long> {
 
     Classes findByclassName(String name);
     boolean existsByclassName(String className);
-    boolean exstsByclassCode(String classCode);
+    boolean existsByclassCode(String classCode);
 }

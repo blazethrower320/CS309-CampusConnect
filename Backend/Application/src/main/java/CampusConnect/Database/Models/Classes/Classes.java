@@ -2,6 +2,7 @@ package CampusConnect.Database.Models.Classes;
 
 import CampusConnect.Database.Models.Sessions.Sessions;
 import CampusConnect.Database.Models.Tutors.Tutor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -22,6 +23,7 @@ public class Classes {
     private Set<Sessions> sessions;
 
     @ManyToMany(mappedBy = "classes")
+    @JsonIgnore
     private Set<Tutor> tutors = new HashSet<>();
 
     public Classes(){}
