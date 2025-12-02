@@ -23,7 +23,7 @@ public class CreateAccountActivity extends AppCompatActivity {
     // UI components
     private Button backBtn, createAccountBtn;
     private TextView usernameTxt, passwordTxt, confirmPassTxt, msgResponse;
-    private CheckBox adminCheckBox, tutorCheckBox;
+    private CheckBox  tutorCheckBox;
 
     // Flags
     private boolean isAdmin = false;
@@ -45,7 +45,6 @@ public class CreateAccountActivity extends AppCompatActivity {
         // Initialize UI
         backBtn = findViewById(R.id.back_btn);
         createAccountBtn = findViewById(R.id.signup_btn);
-        adminCheckBox = findViewById(R.id.admin_checkbox);
         tutorCheckBox = findViewById(R.id.tutor_checkbox);
         usernameTxt = findViewById(R.id.create_username);
         passwordTxt = findViewById(R.id.create_password);
@@ -67,7 +66,6 @@ public class CreateAccountActivity extends AppCompatActivity {
         String username = usernameTxt.getText().toString().trim();
         String password = passwordTxt.getText().toString().trim();
         String confirmPass = confirmPassTxt.getText().toString().trim();
-        isAdmin = adminCheckBox.isChecked();
         isTutor = tutorCheckBox.isChecked();
 
         if (username.isEmpty() || password.isEmpty() || confirmPass.isEmpty()) {
