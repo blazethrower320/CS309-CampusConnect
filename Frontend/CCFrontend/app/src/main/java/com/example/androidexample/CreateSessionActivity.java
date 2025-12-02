@@ -1,5 +1,7 @@
 package com.example.androidexample;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +19,8 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Calendar;
 
 public class CreateSessionActivity extends AppCompatActivity {
 
@@ -53,13 +57,14 @@ public class CreateSessionActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
 
         // Handle Create Session button
+        editMeetingTime.setOnClickListener(v -> showDatePicker());
         createButton.setOnClickListener(v -> {
             String className = editClassName.getText().toString().trim();
             String classCode = editClassCode.getText().toString().trim();
             String meetingLocation = editMeetingLocation.getText().toString().trim();
-            String meetingTime = editMeetingTime.getText().toString();
+            String meetingTime = editMeetingTime.getText().toString().trim();
 
-            if (className.isEmpty() || classCode.isEmpty() || meetingLocation.isEmpty() || meetingTime.isEmpty()) {
+            if (className.isEmpty() || classCode.isEmpty() || meetingLocation.isEmpty()) {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -84,6 +89,48 @@ public class CreateSessionActivity extends AppCompatActivity {
             finish();
         });
     }
+
+    private void showDatePicker() {
+        final Calendar calendar = Calendar.getInstance();
+
+        DatePickerDialog datePicker = new DatePickerDialog(
+                this,
+                (view, year, month, day) -> showTimePicker(year, month, day),
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+        );
+
+        datePicker.show();
+    }
+
+    private void showTimePicker(int year, int month, int day) {
+
+        final Calendar calendar = Calendar.getInstance();
+
+        TimePickerDialog timePicker = new TimePickerDialog(
+                this,
+                (view, hourOfDay, minute) -> {
+                    // Convert to 12-hour format
+                    String amPm = (hourOfDay >= 12) ? "PM" : "AM";
+                    int hour = hourOfDay % 12;
+                    if (hour == 0) hour = 12;
+
+                    // Format date + time together
+                    String formatted = String.format("%02d/%02d/%04d %02d:%02d %s",
+                            month + 1,   // months are 0-based
+                            day, year, hour, minute, amPm );
+
+                    editMeetingTime.setText(formatted);
+                },
+                calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.MINUTE),
+                false // Use 12-hour format
+        );
+
+        timePicker.show();
+    }
+
 
     private void createSession(RequestQueue queue, int userId, int tutorId, String className, String classCode,
                                String meetingLocation, String meetingTime, String username) {

@@ -54,8 +54,11 @@
         <EditText
             android:id="@+id/edit_meeting_time"
             style="@style/DarkInputField"
-            android:hint="Meeting Time (e.g mm/dd/yy hh:mm AM/PM)"
-            android:inputType="text" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Select Meeting Time"
+            android:focusable="false"
+            android:clickable="true" />
 
         <!-- Create Session Button -->
         <Button
