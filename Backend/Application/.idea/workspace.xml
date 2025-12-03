@@ -6,8 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="0c61a590-19c3-44ac-8580-6af6959c8b90" name="Changes" comment="testing CI/CD">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Messages/DisplayChat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Messages/DisplayChat.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Messages/MessagesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Messages/MessagesController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Messages/MessagesRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Messages/MessagesRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Messages/PrivateMessagesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Messages/PrivateMessagesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/User.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

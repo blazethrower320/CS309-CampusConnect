@@ -26,37 +26,4 @@ public class PrivateMessagesController {
     public List<PrivateMessages> getMessagesForUser(@PathVariable long userId) {
         return privateMessagesRepository.findByUserIdOrReceiverUserId(userId, userId);
     }
-
-    @GetMapping("/messages/getDMs/{userId}")
-    public List<DisplayChat> getDMChatsForUser(@PathVariable long userId) {
-        List<PrivateMessages> messages = privateMessagesRepository.findByUserIdOrReceiverUserId(userId, userId);
-        Map<Long, String> otherUsers = new HashMap<>();
-        for (PrivateMessages msg : messages)
-        {
-            if (msg.getUserId() != userId)
-            {
-                otherUsers.put(msg.getUserId(), msg.getUserUsername());
-            } else if (msg.getReceiverUserId() != userId)
-            {
-                User receiver = userRepository.findByUsername(msg.getReceiverUsername());
-                if (receiver != null)
-                {
-                    otherUsers.put(receiver.getUserId(), receiver.getUsername());
-                }
-            }
-        }
-
-        List<DisplayChat> chatList = new ArrayList<>();
-        for (Map.Entry<Long, String> entry : otherUsers.entrySet())
-        {
-            DisplayChat chat = new DisplayChat();
-            chat.Id = entry.getKey().intValue();
-            chat.Name = entry.getValue();
-            chat.isGroupChat = false;
-
-            chatList.add(chat);
-        }
-
-        return chatList;
-    }
 }
