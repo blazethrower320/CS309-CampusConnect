@@ -39,6 +39,8 @@ public class PrivateMessages {
         this.receiverUsername = receiverUsername;
         this.imageUrl = imageUrl;
     }
+    public long getReceiverUserId() { return receiverUserId; }
+    public void setReceiverUserId(long receiverUserId) { this.receiverUserId = receiverUserId; }
     public String getUserUsername() { return userUsername;}
     public String getReceiverUsername() { return receiverUsername;}
     public Long getId() { return id; } public void setId(Long id) { this.id = id; }
