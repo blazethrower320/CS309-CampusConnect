@@ -42,18 +42,17 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:gravity="center"
-                android:text="My Profile"
+                android:text="View All Users"
                 android:textColor="#FFFFFF"
                 android:textSize="20sp" />
 
             <!-- FIX: Removed unnecessary margins -->
             <ImageButton
-                android:id="@+id/edit_profile_btn"
+                android:id="@+id/spacer"
                 android:layout_width="30dp"
-                android:clickable="true"
+                android:clickable="false"
                 android:layout_height="30dp"
                 android:background="@drawable/clear_btn"
-                android:src="@drawable/baseline_edit_24"
                 app:tint="@color/white"/>
         </LinearLayout>
 
@@ -63,187 +62,50 @@
             android:paddingRight="10dp"
             android:paddingBottom="10dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:orientation="vertical"
             android:layout_marginTop="10dp"
             android:gravity="center_horizontal"
             android:background="@drawable/layout_bg">
 
-            <!-- Role -->
-            <TextView
-                android:id="@+id/role_text"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:text="Role"
-                android:textAlignment="center"
-                android:textColor="#FFFFFF"
-                android:textSize="24sp"/>
-            <!-- Profile Picture -->
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profile_image"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="16dp"
-                android:src="@drawable/baseline_account_circle_24"
-                app:civ_border_width="2dp"
-                app:civ_border_color="#FFFFFF"/>
-            <!-- END: ADDED PROFILE PICTURE -->
 
 
-            <!-- Name -->
-            <TextView
-                android:id="@+id/name_text"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="FirstName Lastname"
-                android:textAlignment="center"
-                android:textColor="#FFFFFF"
-                android:textSize="24sp" />
-
-            <!-- Username -->
-            <TextView
-                android:id="@+id/username_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="15dp"
-                android:text="Username"
-                android:textAlignment="center"
-                android:textColor="#FFFFFF"
-                android:textSize="16sp" />
+            <!-- Layouts for text fields-->
             <LinearLayout
-                android:id="@+id/rating_layout"
+                android:id="@+id/filter_row"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/rating_value"
-                    android:textAlignment="center"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    android:text="0.0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                </TextView>
-                <TextView
-                    android:id="@+id/tutor_rating_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="15dp"
-                    android:text="/5.0"
-                    android:textAlignment="center"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp" />
+                android:padding="12dp"
+                android:layout_marginTop="12dp">
 
+                <Spinner
+                    android:id="@+id/role_spinner"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.39"
+                    android:layout_height="48dp"
+                    android:background="@android:drawable/btn_dropdown"
+                    android:popupBackground="#BA91FB"/>
 
-
+                <SearchView
+                    android:id="@+id/user_search_view"
+                    style="@style/DarkInputField"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.65"
+                    android:layout_height="48dp"
+                    android:queryHint="Search Username"
+                    android:textColorHint="#FFFFFF"
+                    android:iconifiedByDefault="false"
+                    android:layout_marginStart="8dp"/>
             </LinearLayout>
-            <Button
-                android:id="@+id/message_btn"
-                android:text="Message"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
 
-            </Button>
-
-
-
-
-        <!-- Layouts for text fields-->
-            <LinearLayout
-                android:orientation="vertical"
-                android:background="@drawable/nestedlayout_bg"
-                android:layout_width="match_parent"
-                android:layout_marginBottom="5dp"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:paddingTop="5dp"
-                    android:layout_gravity="left"
-                    android:paddingLeft="15dp"
-                    android:layout_width="wrap_content"
-                    android:text="Bio: "
-                    android:textColor="@color/white"
-                    android:layout_height="wrap_content">
-                </TextView>
-                <TextView
-                    android:id="@+id/bio_text"
-                    android:layout_width="wrap_content"
-                    android:text="Bio Text here"
-                    android:textColor="@color/white"
-                    android:layout_marginLeft="15dp"
-                    android:textSize="12dp"
-                    android:layout_height="wrap_content">
-
-                </TextView>
-            </LinearLayout>
-        <LinearLayout
-            android:background="@drawable/nestedlayout_bg"
-            android:layout_width="match_parent"
-            android:layout_marginBottom="5dp"
-            android:layout_height="30dp">
-
-            <TextView
-                android:paddingTop="5dp"
-                android:layout_gravity="left"
-                android:paddingLeft="15dp"
-                android:layout_width="wrap_content"
-                android:text="Major: "
-                android:textColor="@color/white"
-                android:layout_height="wrap_content">
-            </TextView>
-            <TextView
-                android:id="@+id/major_text"
-                android:layout_width="wrap_content"
-                android:text="Major Here"
-                android:textColor="@color/white"
-                android:layout_gravity="center"
-                android:textSize="12dp"
-                android:layout_height="wrap_content">
-
-            </TextView>
-        </LinearLayout>
-
-            <LinearLayout
-                android:background="@drawable/nestedlayout_bg"
-                android:layout_width="match_parent"
-                android:layout_marginBottom="5dp"
-                android:layout_height="30dp">
-
-                <TextView
-                    android:paddingTop="5dp"
-                    android:layout_gravity="left"
-                    android:paddingLeft="15dp"
-                    android:layout_width="wrap_content"
-                    android:text="Classification: "
-                    android:textColor="@color/white"
-                    android:layout_height="wrap_content">
-                </TextView>
-                <TextView
-                    android:id="@+id/classification_text"
-                    android:layout_width="wrap_content"
-                    android:text="Classification Here"
-                    android:textColor="@color/white"
-                    android:layout_gravity="center"
-                    android:textSize="12dp"
-                    android:layout_height="wrap_content">
-
-                </TextView>
-            </LinearLayout>
 
             <!-- START: NEW PAST SESSIONS SECTION -->
             <LinearLayout
                 android:orientation="vertical"
                 android:background="@drawable/nestedlayout_bg"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="500dp"
                 android:layout_marginBottom="5dp">
 
                 <TextView
@@ -252,7 +114,7 @@
                     android:layout_gravity="left"
                     android:paddingLeft="15dp"
                     android:layout_width="wrap_content"
-                    android:text="Past Sessions:"
+                    android:text="Users:"
                     android:textColor="@color/white"
                     android:layout_height="wrap_content"/>
 
@@ -268,15 +130,7 @@
             </LinearLayout>
             <!-- END: NEW PAST SESSIONS SECTION -->
 
-            <Button
-                android:id="@+id/logout_btn"
-                android:layout_marginTop="2dp"
-                android:backgroundTint="@color/red"
-                android:layout_width="100dp"
-                android:text="Logout"
-                android:layout_height="38dp">
 
-            </Button>
 
         </LinearLayout>
     </LinearLayout>
