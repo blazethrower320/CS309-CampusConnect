@@ -31,11 +31,12 @@ public class SessionsService {
 
         Sessions session = new Sessions(
                 tutor,
+                sessionDTO.getClassName(),
+                sessionDTO.getClassCode(),
                 sessionDTO.getMeetingLocation(),
                 LocalDateTime.parse(sessionDTO.getMeetingTime(), formatter),
                 sessionDTO.getDateCreated()
         );
-        session.setClassEntity(classesRepository.findById(sessionDTO.getClassId()).orElseThrow(()-> new RuntimeException("Class not found")));
         return sessionsRepository.save(session);
     }
 
@@ -75,6 +76,22 @@ public class SessionsService {
         if(tutor != null){
             tutor.getTutorSessions().remove(session);
         }
+    }
+
+    public Sessions editSession(SessionsDTO sessionDTO, long sessionId){
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a");
+        LocalDateTime meetingTime = LocalDateTime.parse(sessionDTO.getMeetingTime(), format);
+
+        Sessions session = sessionsRepository.findById(sessionId);
+        Tutor setTutor = tutorRepository.findById(sessionDTO.getTutorId()).orElseThrow(()-> new RuntimeException("Tutor not found"));
+
+        session.setClassName(sessionDTO.getClassName());
+        session.setClassCode(sessionDTO.getClassCode());
+        session.setTutor(setTutor);
+        session.setMeetingTime(meetingTime);
+        session.setMeetingLocation(sessionDTO.getMeetingLocation());
+        sessionsRepository.save(session);
+        return session;
     }
 
 

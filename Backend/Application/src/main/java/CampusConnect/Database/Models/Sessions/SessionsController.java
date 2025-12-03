@@ -1,6 +1,8 @@
 package CampusConnect.Database.Models.Sessions;
 
 
+import CampusConnect.Database.Models.Classes.Classes;
+import CampusConnect.Database.Models.Classes.ClassesRepository;
 import CampusConnect.Database.Models.Tutors.Tutor;
 import CampusConnect.Database.Models.Tutors.TutorRepository;
 import CampusConnect.Database.Models.Users.User;
@@ -28,6 +30,8 @@ public class SessionsController
     private TutorRepository tutorRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ClassesRepository classesRepository;
 
     @GetMapping(path = "/sessions")
     public List<Sessions> getSessions(){
@@ -107,7 +111,7 @@ public class SessionsController
         sessionsRepository.save(session);
 
         Long tutorId = sessionsRepository.getSessionsBySessionId(sessionId).getTutor().getTutorId();
-        String message =  user.getUsername() + " joined your study session: " + session.getClassEntity().getclassName();
+        String message =  user.getUsername() + " joined your study session: " + session.getClassName();
         PushSocket.sendNotificationToTutor(tutorId, message);
 
         return session;
@@ -179,5 +183,10 @@ public class SessionsController
             throw new RuntimeException("No session found");
         }
         sessionsService.deleteSession(sessionId);
+    }
+
+    @PutMapping("/sessions/editSession/{sessionId}")
+    public Sessions editSession(@RequestBody SessionsDTO sessionDTO, @PathVariable long sessionId){
+        return sessionsService.editSession(sessionDTO, sessionId);
     }
 }
