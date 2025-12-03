@@ -17,13 +17,11 @@ public class AllMessagesAdapter extends RecyclerView.Adapter<AllMessagesAdapter.
     private final OnItemClickListener listener;
 
     // Interface for click events
-    public interface OnItemClickListener
-    {
+    public interface OnItemClickListener {
         void onItemClick(MessageGroup messageGroup);
     }
 
-    public AllMessagesAdapter(Context context, List<MessageGroup> messageGroupList, OnItemClickListener listener)
-    {
+    public AllMessagesAdapter(Context context, List<MessageGroup> messageGroupList, OnItemClickListener listener) {
         this.context = context;
         this.messageGroupList = messageGroupList;
         this.listener = listener;
@@ -31,15 +29,13 @@ public class AllMessagesAdapter extends RecyclerView.Adapter<AllMessagesAdapter.
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
-    {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_messagesgroup, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position)
-    {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Get the data for the current position
         MessageGroup currentGroup = messageGroupList.get(position);
         // Bind the data to the views in the ViewHolder
@@ -47,32 +43,25 @@ public class AllMessagesAdapter extends RecyclerView.Adapter<AllMessagesAdapter.
     }
 
     @Override
-    public int getItemCount()
-    {
+    public int getItemCount() {
         return messageGroupList.size();
     }
 
     // ViewHolder class to hold the views for each item
-    public static class ViewHolder extends RecyclerView.ViewHolder
-    {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView groupNameText;
-        TextView lastMessageText;
         TextView messageTimeText;
 
-        public ViewHolder(@NonNull View itemView)
-        {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             // Find the views from your item_messagesgroup.xml layout
             groupNameText = itemView.findViewById(R.id.session_course_name_text);
-            lastMessageText = itemView.findViewById(R.id.last_message_text);
             messageTimeText = itemView.findViewById(R.id.message_sent_time);
         }
 
-        public void bind(final MessageGroup messageGroup, final OnItemClickListener listener)
-        {
+        public void bind(final MessageGroup messageGroup, final OnItemClickListener listener) {
             // Set the data to the views
             groupNameText.setText(messageGroup.getGroupName());
-            lastMessageText.setText(messageGroup.getLastMessage());
             messageTimeText.setText(messageGroup.getMessageTime());
 
             // Set the click listener on the whole item view
