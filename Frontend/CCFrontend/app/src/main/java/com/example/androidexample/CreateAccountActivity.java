@@ -44,7 +44,7 @@ public class CreateAccountActivity extends AppCompatActivity {
 
         // Initialize UI
         backBtn = findViewById(R.id.back_btn);
-        createAccountBtn = findViewById(R.id.signup_btn);
+        createAccountBtn = findViewById(R.id.create_account_btn);
         tutorCheckBox = findViewById(R.id.tutor_checkbox);
         usernameTxt = findViewById(R.id.create_username);
         passwordTxt = findViewById(R.id.create_password);
@@ -72,15 +72,15 @@ public class CreateAccountActivity extends AppCompatActivity {
         String confirmPass = confirmPassTxt.getText().toString().trim();
         isTutor = tutorCheckBox.isChecked();
 
-        if (firstName.isEmpty() || lastName.isEmpty()) {
-            showToast("Please enter your first and last name");
-            msgResponse.setText("First and Last name required");
-            return;
-        }
-
         if (username.isEmpty() || password.isEmpty() || confirmPass.isEmpty()) {
             showToast("Please fill out all fields");
             msgResponse.setText("Incomplete Field(s)");
+            return;
+        }
+
+        if (firstName.isEmpty() || lastName.isEmpty()) {
+            showToast("First and Last name required");
+            msgResponse.setText("First and Last name required");
             return;
         }
 
@@ -90,14 +90,11 @@ public class CreateAccountActivity extends AppCompatActivity {
             return;
         }
 
-        createUser(username, password);
-        User user = User.getInstance();
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
+        createUser(username, password, firstName, lastName);
     }
 
     /** Create user and update global User instance **/
-    private void createUser(String username, String password) {
+    private void createUser(String username, String password, String firstName, String lastName) {
         StringRequest request = new StringRequest(
                 Request.Method.POST,
                 URL_CREATE_USER,
@@ -118,6 +115,8 @@ public class CreateAccountActivity extends AppCompatActivity {
                         user.setAdmin(isAdmin);
                         user.setTutor(isTutor);
                         user.setUserId(userId);
+                        user.setFirstName(firstName);
+                        user.setLastName(lastName);
 
                         Log.d("UserSingleton", "User saved globally: " + user.toString());
 

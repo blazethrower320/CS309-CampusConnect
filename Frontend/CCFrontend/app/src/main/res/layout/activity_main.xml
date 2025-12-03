@@ -16,7 +16,7 @@
 
         <LinearLayout
             android:layout_width="343dp"
-            android:layout_height="540dp"
+            android:layout_height="476dp"
             android:layout_gravity="center"
             android:layout_marginTop="90dp"
             android:background="@drawable/layout_bg"
@@ -116,33 +116,25 @@
 
                 <!-- Create Account Section -->
                 <LinearLayout
-                    android:layout_width="315dp"
-                    android:layout_height="52dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="80dp"
-                    android:background="@drawable/create_acct_panel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:orientation="horizontal"
-                    android:padding="15dp">
+                    android:padding="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="10dp"
                         android:text="New to Campus Connect?"
                         android:textColor="#ffffff"
                         android:textSize="14sp" />
 
                     <Button
                         android:id="@+id/signup_btn"
-                        android:layout_width="157dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="-30dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:background="@drawable/clear_btn"
-                        android:ellipsize="none"
-                        android:maxLines="1"
-                        android:singleLine="true"
+                        android:lines="1"
                         android:text="Create Account"
                         android:textColor="#A1A1FF"
                         android:textSize="13sp" />
