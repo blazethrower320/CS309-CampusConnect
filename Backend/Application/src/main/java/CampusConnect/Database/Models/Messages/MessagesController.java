@@ -21,4 +21,5 @@ public class MessagesController
     public List<Messages> getAllMessages() {
         return messagesRepository.findAll();
     }
+
 }

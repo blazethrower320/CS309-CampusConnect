@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface PrivateMessagesRepository extends JpaRepository<PrivateMessages, Long>{
     List<PrivateMessages> findAllByUserIdAndReceiverUserId(long userId, long receiverUserId);
+    List<PrivateMessages> findByUserIdOrReceiverUserId(long userId, long receiverUserId);
 }
