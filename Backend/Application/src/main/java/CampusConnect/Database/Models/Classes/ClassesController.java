@@ -32,7 +32,7 @@ public class ClassesController {
         return currentClass;
     }
 
-    @PostMapping(path = "/clses/delete/{classId}")
+    @PostMapping(path = "/classes/delete/{classId}")
     public void deleteClass(@PathVariable long classId){
         ClassesRepository.findById(classId);
     }
