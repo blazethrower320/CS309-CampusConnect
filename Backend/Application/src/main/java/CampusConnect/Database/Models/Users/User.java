@@ -83,7 +83,10 @@ public class User {
         bio = "";
     }
 
-
+    public Set<Sessions> getSessions()
+    {
+        return Sessions;
+    }
 
     public User(){
 
