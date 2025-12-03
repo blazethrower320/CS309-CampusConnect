@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="4dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@drawable/nestedlayout_bg">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/baseline_account_circle_24"
+                app:civ_border_width="2dp"
+                app:civ_border_color="#FFFFFF"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/first_last_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="First Last"
+                    android:textColor="@color/white"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="\@username"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"/>
+
+            </LinearLayout>
+            <Button
+                android:id="@+id/logout_btn"
+                android:layout_weight="0.1"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="12.5dp"
+                android:backgroundTint="@color/red"
+                android:layout_width="100dp"
+                android:text="Delete"
+                android:layout_height="75dp">
+
+            </Button>
+        </LinearLayout>
+
+        <!-- Date of the Session -->
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
