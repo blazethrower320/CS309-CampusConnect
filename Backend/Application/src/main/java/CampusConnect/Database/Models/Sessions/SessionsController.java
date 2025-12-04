@@ -192,10 +192,10 @@ public class SessionsController
         LocalDateTime meetingTime = LocalDateTime.parse(sessionDTO.getMeetingTime(), format);
 
         Sessions session = sessionsRepository.findById(sessionId);
-        Classes setClass = classesRepository.findById(sessionDTO.getClassId()).orElseThrow(()-> new RuntimeException("Class not found"));
         Tutor setTutor = tutorRepository.findById(sessionDTO.getTutorId()).orElseThrow(()-> new RuntimeException("Tutor not found"));
 
-        session.setClassEntity(setClass);
+        session.setClassCode(sessionDTO.getClassCode());
+        session.setClassName(sessionDTO.getClassName());
         session.setTutor(setTutor);
         session.setMeetingTime(meetingTime);
         session.setMeetingLocation(sessionDTO.getMeetingLocation());
