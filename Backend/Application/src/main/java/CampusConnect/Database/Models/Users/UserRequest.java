@@ -25,7 +25,7 @@ public class UserRequest {
         this.bio = bio;
         this.contactInfo = contactInfo;
     }
-
+    public UserRequest() {}
 
     public String getfirstName() {return firstName; }
 
@@ -40,7 +40,7 @@ public class UserRequest {
     }
 
     public boolean getisTutor() {
-        return isTutor;
+            return isTutor;
     }
 
     public boolean getisAdmin(){

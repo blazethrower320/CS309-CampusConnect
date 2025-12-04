@@ -171,7 +171,10 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
 
 
         // Admin-only buttons
-        if (isAdmin)
+        Log.d("MainMenu", "isAdmin: " + isAdmin);
+        Log.d("MainMenu", "isTutor: " + isTutor);
+
+        if (user.isAdmin())
         {
             statusText.setText("Status: Admin");
         }

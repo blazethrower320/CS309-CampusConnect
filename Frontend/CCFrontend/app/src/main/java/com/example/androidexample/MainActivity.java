@@ -118,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                         user.setUsername(username);
                                         user.setPassword(password);
                                         user.setAdmin(isAdmin);
+                                        //Log.i("LoginSuccess", "isAdmin=" + isAdmin);
                                         user.setTutor(isTutor);
                                         user.setUserId(userId);
                                         user.setLastName(userResponse.optString("lastName", ""));

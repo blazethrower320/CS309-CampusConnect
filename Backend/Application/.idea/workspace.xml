@@ -16,6 +16,13 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
@@ -146,7 +153,12 @@
       <workItem from="1762617883146" duration="33000" />
       <workItem from="1762617921674" duration="4289000" />
       <workItem from="1763157333229" duration="11548000" />
-      <workItem from="1763679796758" duration="210000" />
+      <workItem from="1763679796758" duration="814000" />
+      <workItem from="1764787018268" duration="1198000" />
+      <workItem from="1764788952343" duration="1026000" />
+      <workItem from="1764793099416" duration="102000" />
+      <workItem from="1764793211391" duration="157000" />
+      <workItem from="1764793885785" duration="5320000" />
     </task>
     <task id="LOCAL-00001" summary="Added mapping for sessions feature. Sessions mapped with tutor and users table.">
       <option name="closed" value="true" />

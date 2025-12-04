@@ -19,8 +19,8 @@ public class Classes {
     private String classCode;
 
 
-    @OneToMany(mappedBy = "classEntity")
-    private Set<Sessions> sessions;
+    //@OneToMany(mappedBy = "classEntity")
+    //private Set<Sessions> sessions;
 
     @ManyToMany(mappedBy = "classes")
     @JsonIgnore

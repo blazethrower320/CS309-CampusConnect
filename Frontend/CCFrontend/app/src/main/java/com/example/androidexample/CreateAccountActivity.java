@@ -22,7 +22,7 @@ public class CreateAccountActivity extends AppCompatActivity {
 
     // UI components
     private Button backBtn, createAccountBtn;
-    private TextView usernameTxt, passwordTxt, confirmPassTxt, msgResponse;
+    private TextView usernameTxt, passwordTxt, confirmPassTxt, msgResponse, firstNameTxt, lastNameTxt;;
     private CheckBox  tutorCheckBox;
 
     // Flags
@@ -44,10 +44,12 @@ public class CreateAccountActivity extends AppCompatActivity {
 
         // Initialize UI
         backBtn = findViewById(R.id.back_btn);
-        createAccountBtn = findViewById(R.id.signup_btn);
+        createAccountBtn = findViewById(R.id.create_account_btn);
         tutorCheckBox = findViewById(R.id.tutor_checkbox);
         usernameTxt = findViewById(R.id.create_username);
         passwordTxt = findViewById(R.id.create_password);
+        firstNameTxt = findViewById(R.id.create_first_name);
+        lastNameTxt = findViewById(R.id.create_last_name);
         confirmPassTxt = findViewById(R.id.create_password_confirm);
         msgResponse = findViewById(R.id.msgResponse);
 
@@ -63,6 +65,8 @@ public class CreateAccountActivity extends AppCompatActivity {
 
     /** Validate inputs and create user **/
     private void handleCreateAccount() {
+        String firstName = firstNameTxt.getText().toString().trim();
+        String lastName = lastNameTxt.getText().toString().trim();
         String username = usernameTxt.getText().toString().trim();
         String password = passwordTxt.getText().toString().trim();
         String confirmPass = confirmPassTxt.getText().toString().trim();
@@ -74,17 +78,23 @@ public class CreateAccountActivity extends AppCompatActivity {
             return;
         }
 
+        if (firstName.isEmpty() || lastName.isEmpty()) {
+            showToast("First and Last name required");
+            msgResponse.setText("First and Last name required");
+            return;
+        }
+
         if (!password.equals(confirmPass)) {
             showToast("Passwords do not match");
             msgResponse.setText("Passwords do not match");
             return;
         }
 
-        createUser(username, password);
+        createUser(username, password, firstName, lastName);
     }
 
     /** Create user and update global User instance **/
-    private void createUser(String username, String password) {
+    private void createUser(String username, String password, String firstName, String lastName) {
         StringRequest request = new StringRequest(
                 Request.Method.POST,
                 URL_CREATE_USER,
@@ -105,6 +115,8 @@ public class CreateAccountActivity extends AppCompatActivity {
                         user.setAdmin(isAdmin);
                         user.setTutor(isTutor);
                         user.setUserId(userId);
+                        user.setFirstName(firstName);
+                        user.setLastName(lastName);
 
                         Log.d("UserSingleton", "User saved globally: " + user.toString());
 
