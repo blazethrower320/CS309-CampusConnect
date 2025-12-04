@@ -32,11 +32,11 @@ public class ClassesService {
             tutor.removeClass(givenClass);
         }
 
-        List<Sessions> sessions = sessionsRepository.findAllByClassEntity_ClassId(classId);
+       /* List<Sessions> sessions = sessionsRepository.findAllByClassEntity_ClassId(classId);
         for(Sessions session: sessions){
             session.removeClass(givenClass);
         }
-
+*/
         classesRepository.deleteById(classId);
     }
 
