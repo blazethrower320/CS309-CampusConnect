@@ -29,35 +29,9 @@ public class PreetSystemTest {
         RestAssured.port = port;
         RestAssured.baseURI = "http://localhost";
     }
-/*
+
     @Test
-    public void reverseTest() {
-        // Send request and receive response
-        Response response = RestAssured.given().
-                header("Content-Type", "text/plain").
-                header("charset","utf-8").
-                body("hello").
-                when().
-                post("/reverse");
-
-
-        // Check status code
-        int statusCode = response.getStatusCode();
-        assertEquals(200, statusCode);
-
-        // Check response body for correct response
-        String returnString = response.getBody().asString();
-        try {
-            JSONArray returnArr = new JSONArray(returnString);
-            JSONObject returnObj = returnArr.getJSONObject(returnArr.length()-1);
-            assertEquals("olleh", returnObj.get("data"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-*/
-    @Test
-    public void sessionTutorTest() throws JSONException {
+    public void sessionCreateTest() throws JSONException {
         // Send request and receive response
         Response response = RestAssured.given().
                 header("Content-Type", "application/json").
@@ -94,4 +68,117 @@ public class PreetSystemTest {
         }
 
     }
+
+    @Test
+    public void editSession() throws JSONException {
+        // Send request and receive response
+        Response response = RestAssured.given().
+                header("Content-Type", "application/json").
+                header("charset","utf-8").
+                body("""
+                {
+                    "tutorId": 2,
+                    "className": "Development",
+                    "classCode": "Coms309",
+                    "meetingLocation": "SIC",
+                    "meetingTime": "12/03/2025 02:55 PM",
+                    "dateCreated": "2025-12-07T19:00:00"
+                }
+                """).
+                when().
+                put("/sessions/editSession/2");
+
+
+        // Check status code
+        int statusCode = response.getStatusCode();
+        assertEquals(200, statusCode);
+
+        // Check response body for correct response
+        JSONObject obj = new JSONObject(response.getBody().asString());
+        try {
+            assertEquals("Development", obj.getString("className"));
+            assertEquals("Coms309", obj.getString("classCode"));
+            assertEquals("SIC", obj.getString("meetingLocation"));
+            assertEquals("12/03/2025 2:55 PM", obj.getString("meetingTime"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Test
+    public void deleteSession() throws JSONException {
+        // Send request and receive response
+        Response response = RestAssured.given().
+                header("Content-Type", "application/json").
+                header("charset","utf-8").
+                body("""
+                {
+                    "tutorId": 2,
+                    "className": "Development",
+                    "classCode": "Coms309",
+                    "meetingLocation": "SIC",
+                    "meetingTime": "12/03/2025 02:55 PM",
+                    "dateCreated": "2025-12-07T19:00:00"
+                }
+                """).
+                when().
+                put("/sessions/editSession/2");
+
+        Response response2 = RestAssured.given().
+                header("Content-Type", "application/json").
+                header("charset","utf-8").
+                when().
+                post("/sessions/deleteSession/1");
+
+        // Check status code
+        int statusCode = response.getStatusCode();
+        assertEquals(200, statusCode);
+    }
+
+    @Test
+    public void addUser() throws JSONException {
+        // Send request and receive response
+        Response response = RestAssured.given().
+                header("Content-Type", "application/json").
+                header("charset","utf-8").
+                body("""
+                {
+                    "tutorId": 2,
+                    "className": "Physics",
+                    "classCode": "Phys123",
+                    "meetingLocation": "Carver",
+                    "meetingTime": "12/02/2025 12:55 PM",
+                    "dateCreated": "2025-10-29T19:00:00"
+                }
+                """).
+                when().
+                post("/sessions/createSession");
+
+        Response response3 = RestAssured.given().
+                header("Content-Type", "application/json").
+                header("charset","utf-8").
+                body("""
+                {
+                    "username": "Chet",
+                    "password": "1234",
+                    "isTutor": false,
+                    "isAdmin": false,
+                }
+                """).
+                when().
+                put("/user/createUser");
+
+        Response response2 = RestAssured.given().
+                header("Content-Type", "application/json").
+                header("charset","utf-8").
+                when().
+                post("/sessions/joinSession/Chet/1");
+
+        // Check status code
+        int statusCode = response.getStatusCode();
+        assertEquals(200, statusCode);
+    }
+
+
 }
