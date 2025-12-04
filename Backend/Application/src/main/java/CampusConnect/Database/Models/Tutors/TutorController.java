@@ -98,4 +98,12 @@ public class TutorController
    {
       return tutorRepository.getTutorByUserUserId(userId);
    }
+
+   @PatchMapping("tutors/addClass/{tutorId}/{classId}")
+    public Tutor addClassToTutor(@PathVariable long tutorId, @PathVariable long classId){
+        Tutor tutor = tutorRepository.findById(tutorId).orElseThrow(()-> new RuntimeException("Tutor not found"));
+        Classes setClass = classesRepository.findById(classId).orElseThrow(()-> new RuntimeException("Class not found"));
+        tutor.addClasses(setClass);
+        return tutorRepository.save(tutor);
+    }
 }
