@@ -8,4 +8,6 @@ public interface ClassesRepository extends JpaRepository<Classes, Long> {
     void deleteById(Long id);
 
     Classes findByclassName(String name);
+    boolean existsByclassName(String className);
+    boolean existsByclassCode(String classCode);
 }
