@@ -1,0 +1,164 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > UserRequest</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">CampusConnect.Database.Models.Users</a>
+</div>
+
+<h1>Coverage Summary for Class: UserRequest (CampusConnect.Database.Models.Users)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UserRequest</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    41.7%
+  </span>
+  <span class="absValue">
+    (5/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    22.7%
+  </span>
+  <span class="absValue">
+    (5/22)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package CampusConnect.Database.Models.Users;
+&nbsp;
+&nbsp;public class UserRequest {
+&nbsp;    private String firstName;
+&nbsp;    private String lastName;
+&nbsp;    private String username;
+&nbsp;    private String password;
+&nbsp;    private boolean isTutor;
+&nbsp;    private boolean isAdmin;
+&nbsp;    private String bio;
+&nbsp;    private String major;
+&nbsp;    private String classification;
+&nbsp;    private String contactInfo;
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;    public UserRequest(String firstName, String lastName, String username, String password, boolean isTutor, boolean isAdmin, String major, String classification, String bio, String contactInfo){</b>
+<b class="nc">&nbsp;        this.firstName = firstName;</b>
+<b class="nc">&nbsp;        this.lastName = lastName;</b>
+<b class="nc">&nbsp;        this.username = username;</b>
+<b class="nc">&nbsp;        this.password = password;</b>
+<b class="nc">&nbsp;        this.isTutor = isTutor;</b>
+<b class="nc">&nbsp;        this.isAdmin = isAdmin;</b>
+<b class="nc">&nbsp;        this.major = major;</b>
+<b class="nc">&nbsp;        this.classification = classification;</b>
+<b class="nc">&nbsp;        this.bio = bio;</b>
+<b class="nc">&nbsp;        this.contactInfo = contactInfo;</b>
+&nbsp;    }
+<b class="fc">&nbsp;    public UserRequest() {}</b>
+&nbsp;
+<b class="nc">&nbsp;    public String getfirstName() {return firstName; }</b>
+&nbsp;
+<b class="nc">&nbsp;    public String getlastName() {return lastName; }</b>
+&nbsp;
+&nbsp;    public String getUsername(){
+<b class="fc">&nbsp;        return username;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getPassword(){
+<b class="fc">&nbsp;        return password;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean getisTutor() {
+<b class="fc">&nbsp;            return isTutor;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean getisAdmin(){
+<b class="fc">&nbsp;        return isAdmin;</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    public String getMajor() { return major; }</b>
+&nbsp;
+<b class="nc">&nbsp;    public String getClassification() { return classification; }</b>
+&nbsp;
+<b class="nc">&nbsp;    public String getBio() { return bio; }</b>
+&nbsp;
+<b class="nc">&nbsp;    public String getContactInfo() { return contactInfo; }</b>
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-12-05 14:17</div>
+</div>
+</body>
+</html>

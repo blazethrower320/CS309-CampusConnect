@@ -1,0 +1,288 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > User</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">CampusConnect.Database.Models.Users</a>
+</div>
+
+<h1>Coverage Summary for Class: User (CampusConnect.Database.Models.Users)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">User</td>
+<td class="coverageStat">
+  <span class="percent">
+    51.9%
+  </span>
+  <span class="absValue">
+    (14/27)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    46.7%
+  </span>
+  <span class="absValue">
+    (21/45)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">User$HibernateInstantiator$wwBlRKuJ</td>
+  </tr>
+  <tr>
+    <td class="name">User$HibernateProxy$XInoQi2a</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    51.9%
+  </span>
+  <span class="absValue">
+    (14/27)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    46.7%
+  </span>
+  <span class="absValue">
+    (21/45)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package CampusConnect.Database.Models.Users;
+&nbsp;
+&nbsp;import CampusConnect.Database.Models.Admins.Admins;
+&nbsp;import CampusConnect.Database.Models.Ratings.Ratings;
+&nbsp;import CampusConnect.Database.Models.Sessions.Sessions;
+&nbsp;import CampusConnect.Database.Models.Tutors.Tutor;
+&nbsp;import com.fasterxml.jackson.annotation.JsonIgnore;
+&nbsp;import jakarta.persistence.*;
+&nbsp;
+&nbsp;import java.util.HashSet;
+&nbsp;import java.util.Set;
+&nbsp;
+&nbsp;@Entity
+&nbsp;public class User {
+&nbsp;    @Id
+&nbsp;    @GeneratedValue(strategy = GenerationType.IDENTITY)
+&nbsp;    private long userId;
+&nbsp;
+&nbsp;    @Column(name = &quot;first_name&quot;)
+&nbsp;    private String firstName;
+&nbsp;
+&nbsp;    @Column(name = &quot;last_name&quot;)
+&nbsp;    private String lastName;
+&nbsp;
+&nbsp;    @Column(name = &quot;username&quot;, unique=true)
+&nbsp;    private String username;
+&nbsp;
+&nbsp;    @Column(name = &quot;password&quot;)
+&nbsp;    private String password;
+&nbsp;
+&nbsp;    @Column(name = &quot;major&quot;)
+&nbsp;    private String major;
+&nbsp;
+&nbsp;    @Column(name = &quot;classification&quot;)
+&nbsp;    private String classification;
+&nbsp;
+&nbsp;    @Column(name = &quot;contact_info&quot;)
+&nbsp;    private String contractInfo;
+&nbsp;
+&nbsp;    @Column(name = &quot;bio&quot;)
+&nbsp;    private String bio;
+&nbsp;
+&nbsp;    @OneToOne(mappedBy = &quot;user&quot;, cascade = CascadeType.ALL, orphanRemoval = true)
+&nbsp;    @JsonIgnore
+&nbsp;    private Admins admin;
+&nbsp;
+&nbsp;    @OneToOne(mappedBy = &quot;user&quot;, cascade = CascadeType.ALL, orphanRemoval = true)
+&nbsp;    @JsonIgnore
+&nbsp;    private Tutor tutor;
+&nbsp;
+<b class="fc">&nbsp;    @OneToMany(mappedBy = &quot;user&quot;, cascade = CascadeType.ALL, orphanRemoval = true)</b>
+&nbsp;    @JsonIgnore
+&nbsp;    private Set&lt;Ratings&gt; ratings = new HashSet&lt;&gt;();
+&nbsp;
+&nbsp;    /*
+&nbsp;    @ManyToMany
+&nbsp;    @JoinTable(
+&nbsp;            name = &quot;User_Sessions&quot;,
+&nbsp;            joinColumns = @JoinColumn(name = &quot;user_id&quot;),
+&nbsp;            inverseJoinColumns = @JoinColumn(name = &quot;session_id&quot;)
+&nbsp;    )
+&nbsp;    private Set&lt;Sessions&gt; userSessions;     */
+<b class="fc">&nbsp;    @ManyToMany(mappedBy = &quot;users&quot;)</b>
+&nbsp;    @JsonIgnore
+&nbsp;    private Set&lt;Sessions&gt; Sessions = new HashSet&lt;&gt;();
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;    public User(String username, String password) {</b>
+<b class="fc">&nbsp;        this.username = username;</b>
+<b class="fc">&nbsp;        this.password = password;</b>
+<b class="fc">&nbsp;        major = &quot;N/A&quot;;</b>
+<b class="fc">&nbsp;        classification = &quot;N/A&quot;;</b>
+<b class="fc">&nbsp;        bio = &quot;N/A&quot;;</b>
+&nbsp;    }
+&nbsp;    public User(String username, String password, String firstName, String lastName)
+<b class="nc">&nbsp;    {</b>
+<b class="nc">&nbsp;        this.username = username;</b>
+<b class="nc">&nbsp;        this.password = password;</b>
+<b class="nc">&nbsp;        this.firstName = firstName;</b>
+<b class="nc">&nbsp;        this.lastName = lastName;</b>
+<b class="nc">&nbsp;        major = &quot;N/A&quot;;</b>
+<b class="nc">&nbsp;        classification = &quot;N/A&quot;;</b>
+<b class="nc">&nbsp;        bio = &quot;&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Set&lt;Sessions&gt; getSessions()
+&nbsp;    {
+<b class="fc">&nbsp;        return Sessions;</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public User(){</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public long getUserId() { return userId; }</b>
+&nbsp;
+<b class="fc">&nbsp;    public String getFirstName() { return firstName; }</b>
+<b class="nc">&nbsp;    public void setFirstName(String firstName){ this.firstName = firstName; }</b>
+&nbsp;
+<b class="fc">&nbsp;    public String getLastName() { return lastName; }</b>
+<b class="nc">&nbsp;    public void setLastName(String lastName) { this.lastName = lastName; }</b>
+&nbsp;
+<b class="fc">&nbsp;    public String getUsername() { return username; }</b>
+<b class="fc">&nbsp;    public void setUsername(String username) { this.username = username; }</b>
+&nbsp;
+<b class="fc">&nbsp;    public String getPassword() { return password; }</b>
+<b class="fc">&nbsp;    public void setPassword(String password) { this.password = password; }</b>
+&nbsp;
+<b class="nc">&nbsp;    public void setMajor(String major){this.major = major; }</b>
+<b class="fc">&nbsp;    public String getMajor() { return major; }</b>
+&nbsp;
+<b class="nc">&nbsp;    public void setClassification(String classification){ this.classification = classification; }</b>
+<b class="fc">&nbsp;    public String getClassification() { return classification; }</b>
+&nbsp;
+<b class="nc">&nbsp;    public void setBio(String bio){ this.bio = bio; }</b>
+<b class="fc">&nbsp;    public String getBio() { return bio; }</b>
+&nbsp;
+<b class="nc">&nbsp;    public void setContractInfo(String contactInfo){ this.contractInfo =contactInfo; }</b>
+<b class="fc">&nbsp;    public String getContractInfo(){ return contractInfo; }</b>
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    public Admins getAdmin(){
+<b class="nc">&nbsp;        return admin;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setAdmin(Admins admin) {
+<b class="nc">&nbsp;        this.admin = admin;</b>
+<b class="nc">&nbsp;        if (admin != null &amp;&amp; admin.getUser() != this){</b>
+<b class="nc">&nbsp;            admin.setUser(this);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public Tutor getTutor(){
+<b class="nc">&nbsp;        return tutor;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setTutor(Tutor tutor){
+<b class="nc">&nbsp;        this.tutor = tutor;</b>
+<b class="nc">&nbsp;        if(tutor != null &amp;&amp; tutor.getUser() != this){</b>
+<b class="nc">&nbsp;            tutor.setUser(this);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;    public Set&lt;Ratings&gt; getRatings() {
+<b class="nc">&nbsp;        return ratings;</b>
+&nbsp;    }
+&nbsp;    public void setRatings(Set&lt;Ratings&gt; ratings) {
+<b class="nc">&nbsp;        this.ratings = ratings;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-12-05 14:17</div>
+</div>
+</body>
+</html>

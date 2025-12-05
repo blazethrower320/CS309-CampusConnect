@@ -1,0 +1,384 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > UserController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">CampusConnect.Database.Models.Users</a>
+</div>
+
+<h1>Coverage Summary for Class: UserController (CampusConnect.Database.Models.Users)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UserController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    18.5%
+  </span>
+  <span class="absValue">
+    (5/27)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    23.3%
+  </span>
+  <span class="absValue">
+    (7/30)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    28.4%
+  </span>
+  <span class="absValue">
+    (27/95)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package CampusConnect.Database.Models.Users;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;import CampusConnect.Database.Models.Admins.AdminService;
+&nbsp;import CampusConnect.Database.Models.Admins.Admins;
+&nbsp;import CampusConnect.Database.Models.Admins.AdminsRepository;
+&nbsp;import CampusConnect.Database.Models.Tutors.Tutor;
+&nbsp;import CampusConnect.Database.Models.Tutors.TutorRepository;
+&nbsp;import CampusConnect.Database.Models.Tutors.TutorService;
+&nbsp;import CampusConnect.Models.editUser;
+&nbsp;import CampusConnect.Database.Models.Users.UserRequest;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;
+&nbsp;
+&nbsp;@RestController
+<b class="fc">&nbsp;public class UserController {</b>
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private AdminService adminService;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private TutorService tutorService;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private UserService userService;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    UserRepository userRepository;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    TutorRepository tutorRepository;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    AdminsRepository adminRepository;
+&nbsp;
+<b class="fc">&nbsp;    private String success = &quot;{\&quot;message\&quot;:\&quot;success\&quot;}&quot;;</b>
+<b class="fc">&nbsp;    private String failure = &quot;{\&quot;message\&quot;:\&quot;failure\&quot;}&quot;;</b>
+<b class="fc">&nbsp;    private String userNotFound = &quot;User not found&quot;;</b>
+<b class="fc">&nbsp;    private String wrongUsernamePassword = &quot;Wrong username or password&quot;;</b>
+<b class="fc">&nbsp;    private String userCreated = &quot;New user created&quot;;</b>
+<b class="fc">&nbsp;    private String userCreationFailed = &quot;New user failed to create&quot;;</b>
+<b class="fc">&nbsp;    private String userDNE = &quot;User does not exist&quot;;</b>
+<b class="fc">&nbsp;    private String userDeleted = &quot;User deleted&quot;;</b>
+&nbsp;
+<b class="nc">&nbsp;    public String getUserNotFound() {return userNotFound;}</b>
+<b class="nc">&nbsp;    public String getUserCreated() {return userCreated;}</b>
+<b class="nc">&nbsp;    public String getUserCreationFailed() {return userCreationFailed;}</b>
+<b class="nc">&nbsp;    public String getUserDNE() {return userDNE;}</b>
+<b class="nc">&nbsp;    public String getUserDeleted() {return userDeleted;}</b>
+&nbsp;
+&nbsp;    @GetMapping(path = &quot;/users&quot;)
+&nbsp;    public List&lt;User&gt; getAllUsers()
+&nbsp;    {
+<b class="nc">&nbsp;        return userRepository.findAll();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(path = &quot;/users/{id}&quot;)
+&nbsp;    public User getUserById(@PathVariable Long id)
+&nbsp;    {
+<b class="nc">&nbsp;        return userRepository.findById(id).orElse(null);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/users/findUsername/{username}&quot;)
+&nbsp;    public List&lt;User&gt; getAllUserByUsername(@PathVariable String username)
+&nbsp;    {
+<b class="fc">&nbsp;        return userRepository.findAllByUsername(username);</b>
+&nbsp;    }
+&nbsp;    @GetMapping(&quot;/users/findUser/{name}&quot;)
+&nbsp;    public List&lt;User&gt; getUserByFirstName(@PathVariable String name)
+&nbsp;    {
+<b class="nc">&nbsp;        return userRepository.findAllByFirstName(name);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostMapping(&quot;/users/login&quot;)
+&nbsp;    public ResponseEntity&lt;Object&gt; loginUser(@RequestBody User userBody)
+&nbsp;    {
+<b class="fc">&nbsp;        String username = userBody.getUsername();</b>
+<b class="fc">&nbsp;        String password = userBody.getPassword();</b>
+&nbsp;
+<b class="fc">&nbsp;        User user = userRepository.findByUsername(username);</b>
+<b class="pc">&nbsp;        if(user == null)</b>
+&nbsp;        {
+<b class="nc">&nbsp;            return ResponseEntity.status(404).body(userNotFound);</b>
+&nbsp;        }
+&nbsp;
+<b class="pc">&nbsp;        if(!user.getPassword().equals(password))</b>
+&nbsp;        {
+&nbsp;            // Dah wrong password
+<b class="nc">&nbsp;            return ResponseEntity.status(403).body(wrongUsernamePassword);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // Username and Password is correct
+<b class="fc">&nbsp;        return ResponseEntity.ok(user);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PatchMapping(&quot;/users/editUsername&quot;)
+&nbsp;    public boolean editUsername(@RequestBody editUser userBody)
+&nbsp;    {
+<b class="nc">&nbsp;        String newUsername = userBody.getNewUsername();</b>
+<b class="nc">&nbsp;        long userID = userBody.getUserID();</b>
+&nbsp;
+<b class="nc">&nbsp;        User user = userRepository.findById(userID).orElse(null);</b>
+&nbsp;
+<b class="nc">&nbsp;        if(user == null)</b>
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;
+<b class="nc">&nbsp;        user.setUsername(newUsername);</b>
+<b class="nc">&nbsp;        userRepository.save(user);</b>
+<b class="nc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PatchMapping(&quot;/users/editPassword&quot;)
+&nbsp;    public boolean editPassword(@RequestBody editUser userBody)
+&nbsp;    {
+<b class="nc">&nbsp;        String newPassword = userBody.getNewPassword();</b>
+<b class="nc">&nbsp;        User user = userRepository.findByUsername(userBody.getNewUsername());</b>
+&nbsp;
+<b class="nc">&nbsp;        if(user == null)</b>
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;
+<b class="nc">&nbsp;        user.setPassword(newPassword);</b>
+<b class="nc">&nbsp;        userRepository.save(user);</b>
+<b class="nc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;    //
+&nbsp;    //
+&nbsp;    @GetMapping(&quot;/users/major/{username}&quot;)
+&nbsp;    public String getMajor(@PathVariable String username){
+<b class="nc">&nbsp;        return userRepository.getUserByUsername(username).getMajor();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PatchMapping(&quot;/users/editMajor/{username}/{major}&quot;)
+&nbsp;    public void editMajor(@PathVariable String username, @PathVariable String major){
+<b class="nc">&nbsp;        userService.updateMajor(username, major);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/users/bio/{username}&quot;)
+&nbsp;    public String getBio(@PathVariable String username){
+<b class="nc">&nbsp;        return userRepository.getUserByUsername(username).getBio();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PatchMapping(&quot;/users/editBio/{username}/{bio}&quot;)
+&nbsp;    public void editBio(@PathVariable String username, @PathVariable String bio){
+<b class="nc">&nbsp;        userService.updateBio(username, bio);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/users/classification/{username}&quot;)
+&nbsp;    public String getClassification(@PathVariable String username){
+<b class="nc">&nbsp;        return userRepository.getUserByUsername(username).getClassification();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PatchMapping(&quot;/users/editClassification/{username}/{classification}&quot;)
+&nbsp;    public void editClassification(@PathVariable String username, @PathVariable String classification){
+<b class="nc">&nbsp;        userService.updateClassification(username, classification);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    // Returns the list of usernames
+&nbsp;    @GetMapping(&quot;/usernames&quot;)
+&nbsp;    public List&lt;String&gt; getAllUsernames()
+&nbsp;    {
+<b class="nc">&nbsp;        ArrayList&lt;String&gt; usernamesReturn = new ArrayList&lt;String&gt;();</b>
+<b class="nc">&nbsp;        for(User user : getAllUsers())</b>
+&nbsp;        {
+<b class="nc">&nbsp;            usernamesReturn.add(user.getUsername());</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return usernamesReturn;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/users/password/{username}&quot;)
+&nbsp;    public String getPasswordByUsername(@PathVariable String username){
+<b class="nc">&nbsp;        return userRepository.findByUsername(username).getPassword();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostMapping(&quot;/users/createUser&quot;)
+&nbsp;    public ResponseEntity&lt;String&gt; createUser(@RequestBody UserRequest userReq) {
+&nbsp;        // Check if username already exists
+<b class="fc">&nbsp;        if (!getAllUserByUsername(userReq.getUsername()).isEmpty()) {</b>
+<b class="fc">&nbsp;            return ResponseEntity.status(400).body(&quot;Username already exists&quot;);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // Save the User
+<b class="fc">&nbsp;        User newUser = new User(userReq.getUsername(), userReq.getPassword());</b>
+<b class="fc">&nbsp;        newUser = userRepository.save(newUser);</b>
+&nbsp;
+&nbsp;        // If the user should also be an admin, create Admin entity
+<b class="pc">&nbsp;        if (userReq.getisAdmin()) {</b>
+<b class="nc">&nbsp;            Admins admin = adminService.createAdmin(newUser);</b>
+<b class="nc">&nbsp;            if (admin == null) {</b>
+<b class="nc">&nbsp;                return ResponseEntity.status(400).body(&quot;Admin already exists for this user&quot;);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="pc">&nbsp;        if (userReq.getisTutor()) {</b>
+<b class="nc">&nbsp;            Tutor tutor = tutorService.createTutor(newUser);</b>
+<b class="nc">&nbsp;            if (tutor == null){</b>
+<b class="nc">&nbsp;                return ResponseEntity.status(401).body(&quot;Tutor already exists for this user&quot;);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        return ResponseEntity.ok(&quot;User created successfully&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    //Only requires username and password currently.
+&nbsp;    // Need to switch this to post
+&nbsp;    @PostMapping(&quot;/users/deleteUser&quot;)
+&nbsp;    public String deleteUser(@RequestBody User userBody) {
+<b class="fc">&nbsp;        User user = userRepository.findByUsername(userBody.getUsername());</b>
+<b class="pc">&nbsp;        if (user == null) {    //Username does not match an existing one.</b>
+<b class="nc">&nbsp;            return userDNE;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        userRepository.delete(user);</b>
+&nbsp;       // if(user.isAdmin()){
+&nbsp;        //    adminService.deleteAdmin(user);
+&nbsp;        //}
+<b class="fc">&nbsp;        return &quot;Deleted User&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/users/getTutor/{userId}&quot;)
+&nbsp;    public Tutor getTutor(@PathVariable long userId)
+&nbsp;    {
+<b class="nc">&nbsp;        return tutorRepository.findByUser_UserId(userId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/users/find/{username}&quot;)
+&nbsp;    public UserRequest findUser(@PathVariable String username){
+<b class="nc">&nbsp;        if(!userRepository.existsByUsername(username)){</b>
+<b class="nc">&nbsp;            throw new RuntimeException(&quot;No user found.&quot;);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        User user = userRepository.findByUsername(username);</b>
+<b class="nc">&nbsp;        boolean isTutor = tutorRepository.existsByUsername(username);</b>
+<b class="nc">&nbsp;        Admins admin = adminRepository.findByUser(user);</b>
+<b class="nc">&nbsp;        boolean isAdmin = false;</b>
+<b class="nc">&nbsp;        if(admin != null)</b>
+<b class="nc">&nbsp;            isAdmin = true;</b>
+<b class="nc">&nbsp;        UserRequest userReq = new UserRequest(user.getFirstName(), user.getLastName(), user.getUsername(), user.getPassword(), isTutor, isAdmin, user.getMajor(), user.getClassification(), user.getBio(), user.getContractInfo());</b>
+<b class="nc">&nbsp;        return userReq;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/users/getUserId/{username}&quot;)
+&nbsp;    public long getUserId(@PathVariable String username){
+<b class="nc">&nbsp;        User user = userRepository.findByUsername(username);</b>
+<b class="nc">&nbsp;        return user.getUserId();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PutMapping(&quot;/users/update&quot;)
+&nbsp;    public User updateUser(@RequestBody UserRequest updatedUser){
+<b class="nc">&nbsp;        if(!userRepository.existsByUsername(updatedUser.getUsername())){</b>
+<b class="nc">&nbsp;            throw new RuntimeException(&quot;No user found.&quot;);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        User user = userRepository.findByUsername(updatedUser.getUsername());</b>
+<b class="nc">&nbsp;        user.setFirstName(updatedUser.getfirstName());</b>
+<b class="nc">&nbsp;        user.setLastName(updatedUser.getlastName());</b>
+<b class="nc">&nbsp;        if (updatedUser.getPassword() != null) {user.setPassword(updatedUser.getPassword());}</b>
+<b class="nc">&nbsp;        user.setMajor(updatedUser.getMajor());</b>
+<b class="nc">&nbsp;        user.setClassification(updatedUser.getClassification());</b>
+<b class="nc">&nbsp;        user.setBio(updatedUser.getBio());</b>
+<b class="nc">&nbsp;        user.setContractInfo(updatedUser.getContactInfo());</b>
+<b class="nc">&nbsp;        userRepository.save(user);</b>
+<b class="nc">&nbsp;        return user;</b>
+&nbsp;    }
+&nbsp;}
+&nbsp;
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-12-05 14:17</div>
+</div>
+</body>
+</html>

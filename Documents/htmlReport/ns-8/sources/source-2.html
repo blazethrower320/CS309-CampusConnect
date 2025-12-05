@@ -1,0 +1,217 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > TutorController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">CampusConnect.Database.Models.Tutors</a>
+</div>
+
+<h1>Coverage Summary for Class: TutorController (CampusConnect.Database.Models.Tutors)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TutorController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    11.1%
+  </span>
+  <span class="absValue">
+    (1/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    18.8%
+  </span>
+  <span class="absValue">
+    (6/32)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package CampusConnect.Database.Models.Tutors;
+&nbsp;import CampusConnect.Database.Models.Admins.Admins;
+&nbsp;import CampusConnect.Database.Models.Classes.Classes;
+&nbsp;import CampusConnect.Database.Models.Classes.ClassesRepository;
+&nbsp;import org.hibernate.annotations.Parameter;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.data.repository.query.Param;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;import CampusConnect.Database.Models.Users.User;
+&nbsp;import CampusConnect.Database.Models.Users.UserRepository;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;@RestController
+<b class="fc">&nbsp;public class TutorController</b>
+&nbsp;{
+&nbsp;    @Autowired
+&nbsp;    TutorRepository tutorRepository;
+&nbsp;    @Autowired
+&nbsp;    UserRepository userRepository;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    ClassesRepository classesRepository;
+&nbsp;
+<b class="fc">&nbsp;    private String userNotFound = &quot;User not found&quot;;</b>
+<b class="fc">&nbsp;    private String tutorNotFound = &quot;Tutor not found&quot;;</b>
+<b class="fc">&nbsp;    private String tutorAlreadyExists = &quot;Tutor already exists&quot;;</b>
+<b class="fc">&nbsp;    private String tutorRemoved = &quot;Tutor removed&quot;;</b>
+<b class="fc">&nbsp;    private String tutorUpdated = &quot;Tutor updated&quot;;</b>
+&nbsp;
+&nbsp;
+&nbsp;    @GetMapping(path = &quot;/tutors&quot;)
+&nbsp;    public List&lt;Tutor&gt; getAllTutors()
+&nbsp;    {
+<b class="nc">&nbsp;        return tutorRepository.findAll();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/tutors/info/{tutorId}&quot;)
+&nbsp;    public Tutor getTutor(@PathVariable long tutorId)
+&nbsp;    {
+<b class="nc">&nbsp;        return tutorRepository.getTutorByTutorId(tutorId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/tutors/getClasses/{tutorId}&quot;)
+&nbsp;    public List&lt;Classes&gt; getTutorClasses(@PathVariable long tutorId){
+<b class="nc">&nbsp;        return classesRepository.findAll();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostMapping(&quot;/tutors/createTutor/{username}&quot;)
+&nbsp;    public ResponseEntity&lt;Object&gt; createTutor(@PathVariable String username)
+&nbsp;    {
+<b class="nc">&nbsp;        User givenUser = userRepository.findByUsername(username);</b>
+<b class="nc">&nbsp;        if(givenUser == null){</b>
+<b class="nc">&nbsp;            return ResponseEntity.status(404).body(userNotFound);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        boolean exists = tutorRepository.existsByUsername(username);</b>
+<b class="nc">&nbsp;        if (exists){</b>
+<b class="nc">&nbsp;            return ResponseEntity.status(403).body(tutorAlreadyExists);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        Tutor tutor =  new Tutor(givenUser);</b>
+<b class="nc">&nbsp;        tutorRepository.save(tutor);</b>
+<b class="nc">&nbsp;        return ResponseEntity.ok(tutor);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/tutors/getTutorRating/{tutorId}&quot;)
+&nbsp;    public double getTutorRating(@PathVariable long tutorId)
+&nbsp;    {
+<b class="nc">&nbsp;        Tutor tutor = tutorRepository.getTutorByTutorId(tutorId);</b>
+<b class="nc">&nbsp;        return tutor.getTotalRating();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostMapping(&quot;/tutors/deleteTutor/{username}&quot;)
+&nbsp;    public ResponseEntity&lt;Object&gt; deleteTutor(@PathVariable String username)
+&nbsp;    {
+<b class="nc">&nbsp;        Tutor tutor = tutorRepository.findByUsername(username);</b>
+<b class="nc">&nbsp;        if(tutor != null){</b>
+<b class="nc">&nbsp;            tutorRepository.delete(tutor);</b>
+<b class="nc">&nbsp;            return ResponseEntity.ok(tutorRemoved);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        return ResponseEntity.status(403).body(tutorNotFound);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PutMapping(&quot;tutors/editTotalClasses&quot;)
+&nbsp;    public ResponseEntity&lt;Object&gt; editTotalClasses(@RequestBody Tutor newTutor)
+&nbsp;    {
+<b class="nc">&nbsp;        Tutor tutor = tutorRepository.findByUsername(newTutor.getUser().getUsername());</b>
+<b class="nc">&nbsp;        if (tutor != null) {</b>
+<b class="nc">&nbsp;            tutor.setTotalClasses(newTutor.gettotalClasses());</b>
+<b class="nc">&nbsp;            tutorRepository.save(tutor);</b>
+<b class="nc">&nbsp;            return ResponseEntity.ok(tutorUpdated);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return ResponseEntity.status(403).body(tutorNotFound);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/tutors/getTutorFromUserId/{userId}&quot;)
+&nbsp;    public Tutor getTutorFromUserId(@PathVariable long userId)
+&nbsp;   {
+<b class="nc">&nbsp;      return tutorRepository.getTutorByUserUserId(userId);</b>
+&nbsp;   }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-12-05 14:17</div>
+</div>
+</body>
+</html>
