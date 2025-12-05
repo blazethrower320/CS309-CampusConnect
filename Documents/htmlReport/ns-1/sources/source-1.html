@@ -1,0 +1,246 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > Main</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">CampusConnect</a>
+</div>
+
+<h1>Coverage Summary for Class: Main (CampusConnect)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Main</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/2)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Main$$SpringCGLIB$$0</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/2)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package CampusConnect;
+&nbsp;
+&nbsp;import CampusConnect.Database.Models.Admins.Admins;
+&nbsp;import CampusConnect.Database.Models.Admins.AdminsRepository;
+&nbsp;import CampusConnect.Database.Models.Classes.Classes;
+&nbsp;import CampusConnect.Database.Models.Classes.ClassesRepository;
+&nbsp;import CampusConnect.Database.Models.Sessions.Sessions;
+&nbsp;import CampusConnect.Database.Models.Sessions.SessionsRepository;
+&nbsp;import CampusConnect.Database.Models.Tutors.Tutor;
+&nbsp;import CampusConnect.Database.Models.Tutors.TutorRepository;
+&nbsp;import CampusConnect.Database.Models.Users.User;
+&nbsp;import CampusConnect.Database.Models.Users.UserRepository;
+&nbsp;import com.mysql.cj.Session;
+&nbsp;import org.springframework.boot.CommandLineRunner;
+&nbsp;import org.springframework.boot.SpringApplication;
+&nbsp;import org.springframework.boot.autoconfigure.SpringBootApplication;
+&nbsp;import org.springframework.context.annotation.Bean;
+&nbsp;import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+&nbsp;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.time.LocalDateTime;
+&nbsp;import java.time.format.DateTimeFormatter;
+&nbsp;
+&nbsp;@SpringBootApplication
+&nbsp;@EnableJpaRepositories
+<b class="fc">&nbsp;class Main {</b>
+&nbsp;
+&nbsp;    public static void main(String[] args) {
+<b class="nc">&nbsp;        SpringApplication.run(Main.class, args);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    // Create 3 users with their machines
+&nbsp;    /**
+&nbsp;     *
+&nbsp;     * @param userRepository repository for the User entity
+&nbsp;     * Creates a commandLine runner to enter dummy data into the database
+&nbsp;     * As mentioned in User.java just associating the Laptop object with the User will save it into the database because of the CascadeType
+&nbsp;     */
+&nbsp;    /*
+&nbsp;    @Bean
+&nbsp;    CommandLineRunner initData(UserRepository userRepository, TutorRepository tutorRepository, ClassesRepository classesRepository, AdminsRepository adminsRepository, SessionsRepository sessionsRepository) {
+&nbsp;        return args -&gt; {
+&nbsp;
+&nbsp;            // Clear tables first
+&nbsp;            sessionsRepository.deleteAll();
+&nbsp;            tutorRepository.deleteAll();
+&nbsp;            classesRepository.deleteAll();
+&nbsp;            userRepository.deleteAll();
+&nbsp;            adminsRepository.deleteAll();
+&nbsp;
+&nbsp;
+&nbsp;            User user1 = new User( &quot;JohnZeet&quot;, &quot;password&quot;);
+&nbsp;            User user2 = new User( &quot;Zach&quot;, &quot;password&quot;);
+&nbsp;            User user3 = new User( &quot;Chase&quot;, &quot;password&quot;);
+&nbsp;            
+&nbsp;            userRepository.save(user1);
+&nbsp;            userRepository.save(user2);
+&nbsp;            userRepository.save(user3);
+&nbsp;
+&nbsp;            Admins admin1 = new Admins(user1);
+&nbsp;            Admins admin2 = new Admins(user2);
+&nbsp;
+&nbsp;            adminsRepository.save(admin1);
+&nbsp;            adminsRepository.save(admin2);
+&nbsp;
+&nbsp;            Tutor tutor1 = new Tutor(user1);
+&nbsp;
+&nbsp;
+&nbsp;            tutorRepository.save(tutor1);
+&nbsp;
+&nbsp;            Classes class1 = new Classes(1, 23, &quot;Linear Algebra&quot;, &quot;MATH207&quot;);
+&nbsp;            Classes class2 = new Classes(2, 0, &quot;Differential Equations&quot;, &quot;MATH267&quot;);
+&nbsp;            Classes class3 = new Classes(3, 17, &quot;Calc 2&quot;, &quot;MATH166&quot;);
+&nbsp;
+&nbsp;            classesRepository.save(class1);
+&nbsp;            classesRepository.save(class2);
+&nbsp;            classesRepository.save(class3);
+&nbsp;
+&nbsp;            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;MM/dd/yyyy hh:mm a&quot;);
+&nbsp;            LocalDateTime meetingTime = LocalDateTime.parse(&quot;10/05/2025 04:00 PM&quot;, formatter);
+&nbsp;            Sessions session1 = new Sessions(
+&nbsp;                    tutor1,
+&nbsp;                    &quot;Computer Science 309&quot;,
+&nbsp;                    &quot;COMS309&quot;,
+&nbsp;                    &quot;Pearson&quot;,
+&nbsp;                    meetingTime,
+&nbsp;                    LocalDateTime.now()
+&nbsp;
+&nbsp;            );
+&nbsp;            Sessions session2 = new Sessions(
+&nbsp;                    tutor1,
+&nbsp;                    &quot;Engineering&quot;,
+&nbsp;                    &quot;EE&quot;,
+&nbsp;                    &quot;Pearson&quot;,
+&nbsp;                    meetingTime,
+&nbsp;                    LocalDateTime.now()
+&nbsp;            );
+&nbsp;
+&nbsp;
+&nbsp;            sessionsRepository.save(session1);
+&nbsp;            sessionsRepository.save(session2);
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;        };
+&nbsp;    }
+&nbsp;    */
+&nbsp;
+&nbsp;/*
+&nbsp;    @Bean
+&nbsp;    CommandLineRunner initClasses(ClassesRepository classesRepository) {
+&nbsp;        return args -&gt; {
+&nbsp;            Classes class1 = new Classes(1, 23, &quot;Linear Algebra&quot;, &quot;MATH207&quot;);
+&nbsp;            Classes class2 = new Classes(2, 0, &quot;Differential Equations&quot;, &quot;MATH267&quot;);
+&nbsp;            Classes class3 = new Classes(3, 17, &quot;Calc 2&quot;, &quot;MATH166&quot;);
+&nbsp;
+&nbsp;            classesRepository.deleteAll();
+&nbsp;            classesRepository.save(class1);
+&nbsp;            classesRepository.save(class2);
+&nbsp;            classesRepository.save(class3);
+&nbsp;        };
+&nbsp;    }
+&nbsp;
+&nbsp; */
+&nbsp;
+&nbsp;
+&nbsp;        };
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-12-05 14:17</div>
+</div>
+</body>
+</html>
