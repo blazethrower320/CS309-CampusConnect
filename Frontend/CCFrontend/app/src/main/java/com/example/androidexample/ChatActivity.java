@@ -72,6 +72,17 @@ public class ChatActivity extends AppCompatActivity implements WebSocketListener
         tutorUserId = getIntent().getIntExtra("tutorUserId", 0);
         sessionId = getIntent().getIntExtra("sessionId", 0);
 
+        //Group chat detection from AllMessages class
+        if(getIntent().getIntExtra("isGroupChat", 0)==1) //FROM ALLMESSAGES
+        {
+            sessionId = getIntent().getIntExtra("sessionId", 0);
+        }
+        else
+        {
+            sessionId = 0;
+            tutorUserId = getIntent().getIntExtra("sessionId", 0);
+        }
+
         // Setup WebSocket
         WebSocketManager.getInstance().setWebSocketListener(this);
         String serverUrl;
@@ -173,8 +184,6 @@ public class ChatActivity extends AppCompatActivity implements WebSocketListener
      * This is the industry-standard approach.
      */
     private void uploadImageToServer(Uri imageUri) {
-        // IMPORTANT: You need an HTTP endpoint from your backend team for this.
-        // This is NOT the WebSocket URL.
         String uploadUrl = "http://coms-3090-037.class.las.iastate.edu:8080/images";
 
         Toast.makeText(this, "Uploading...", Toast.LENGTH_SHORT).show();
