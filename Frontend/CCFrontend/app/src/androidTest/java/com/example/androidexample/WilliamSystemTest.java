@@ -79,12 +79,12 @@ public class WilliamSystemTest {
         // Launch MainActivity
         ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
 
-        TestUtils.sleep(2000);
+        TestUtils.sleep(1000);
 
         // Correct: let MainActivity handle the click to open CreateAccountActivity
         onView(withId(R.id.signup_btn)).perform(click());
 
-        TestUtils.sleep(2000);
+        TestUtils.sleep(1000);
 
         // Now click "Create Account"
         onView(withId(R.id.create_account_btn)).perform(click());

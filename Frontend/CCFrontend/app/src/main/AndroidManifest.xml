@@ -34,6 +34,11 @@
             android:name=".SessionActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".EditSessionActivity"
+            android:exported="false" />
+
+
         <!-- Main launcher activity -->
         <activity
             android:name=".CreateAccountActivity"
