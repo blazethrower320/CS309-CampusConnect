@@ -6,16 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="0c61a590-19c3-44ac-8580-6af6959c8b90" name="Changes" comment="testing CI/CD">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Messages/DisplayChat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Messages/DisplayChat.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Messages/MessagesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Messages/MessagesController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Messages/MessagesRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Messages/MessagesRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Messages/PrivateMessagesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Messages/PrivateMessagesController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/User.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExportToHTMLSettings">
+    <option name="OPEN_IN_BROWSER" value="true" />
+    <option name="OUTPUT_DIRECTORY" value="C:\Users\blaze\Desktop\COMS309\3_hosen_1\Backend\Application\htmlReport" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -48,7 +48,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "JUnit.CarsonSystemTest.executor": "Run",
+    "JUnit.CarsonSystemTest.executor": "Coverage",
     "Maven.CampusConnect [package].executor": "Run",
     "RequestMappingsPanelOrder0": "0",
     "RequestMappingsPanelOrder1": "1",
@@ -69,7 +69,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Spring Boot.Main">
+  <component name="RunManager" selected="JUnit.CarsonSystemTest">
     <configuration name="CarsonSystemTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="CampusConnect" />
       <extension name="coverage">
@@ -134,6 +134,8 @@
       <workItem from="1764793099416" duration="102000" />
       <workItem from="1764793211391" duration="157000" />
       <workItem from="1764793885785" duration="5320000" />
+      <workItem from="1764959877624" duration="980000" />
+      <workItem from="1764965395735" duration="593000" />
     </task>
     <task id="LOCAL-00001" summary="Added mapping for sessions feature. Sessions mapped with tutor and users table.">
       <option name="closed" value="true" />
@@ -178,5 +180,10 @@
     <MESSAGE value="Updated SessionsDTO to take in classId, updated and added functions to create session effectively." />
     <MESSAGE value="testing CI/CD" />
     <option name="LAST_COMMIT_MESSAGE" value="testing CI/CD" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Application$CarsonSystemTest.ic" NAME="CarsonSystemTest Coverage Results" MODIFIED="1764965658960" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>CampusConnect.*</FILTER>
+    </SUITE>
   </component>
 </project>

@@ -1,21 +1,15 @@
 package CampusConnect.Database.Models.Messages;
 
-import CampusConnect.Database.Models.Ratings.Ratings;
-import CampusConnect.Database.Models.Ratings.RatingsRepository;
-import CampusConnect.Database.Models.Ratings.RatingsService;
 import CampusConnect.Database.Models.Sessions.Sessions;
 import CampusConnect.Database.Models.Sessions.SessionsRepository;
-import CampusConnect.Database.Models.Tutors.TutorRepository;
 import CampusConnect.Database.Models.Users.User;
 import CampusConnect.Database.Models.Users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 public class MessagesController
@@ -36,66 +30,60 @@ public class MessagesController
 
     @GetMapping("/messages/getAllChats/{userId}")
     public List<DisplayChat> getAllChatsForUser(@PathVariable long userId) {
-        List<DisplayChat> combinedChats = new ArrayList<>();
 
+        List<DisplayChat> combinedChats = new ArrayList<>();
         List<PrivateMessages> privateMessages = privateMessagesRepository.findByUserIdOrReceiverUserId(userId, userId);
-        Map<Long, String> combinedMessagesUsers = new HashMap<>();
-        for (PrivateMessages msg : privateMessages)
-        {
-            long otherUserID;
-            String otherName;
+        Set<Long> privateChatOtherIds = new HashSet<>();
+
+        for (PrivateMessages msg : privateMessages) {
+            long otherUserId;
+            String otherUsername;
+
             if (msg.getUserId() == userId)
             {
-                otherUserID = msg.getReceiverUserId();
-                otherName = msg.getReceiverUsername();
+                otherUserId = msg.getReceiverUserId();
+                otherUsername = msg.getReceiverUsername();
             }
             else
             {
-                otherUserID = msg.getUserId();
-                otherName = msg.getUserUsername();
+                otherUserId = msg.getUserId();
+                otherUsername = msg.getUserUsername();
             }
 
-            if (!combinedMessagesUsers.containsKey(otherUserID))
+            if (!privateChatOtherIds.contains(otherUserId))
             {
-                if (otherName == null || otherName.isEmpty())
+
+                if (otherUsername == null || otherUsername.isEmpty())
                 {
-                    User user = userRepository.findById(otherUserID).orElse(null);
-                    if (user != null) otherName = user.getUsername();
+                    User user = userRepository.findById(otherUserId).orElse(null);
+                    if (user != null)
+                    {
+                        otherUsername = user.getUsername();
+                    }
+                    else
+                    {
+                        otherUsername = "user was not found";
+                    }
                 }
 
-                if (otherName != null)
-                {
-                    combinedMessagesUsers.put(otherUserID, otherName);
-                }
+                DisplayChat chat = new DisplayChat();
+                chat.Id = otherUserId;
+                chat.Name = otherUsername;
+                chat.isGroupChat = false;
+                combinedChats.add(chat);
+
+                privateChatOtherIds.add(otherUserId);
             }
         }
 
-        // Putting it into the Display Chat for Cam
-        for (Map.Entry<Long, String> entry : combinedMessagesUsers.entrySet())
+        List<Sessions> userSessions = sessionsRepository.findAllByUsers_UserId(userId);
+        for (Sessions session : userSessions)
         {
             DisplayChat chat = new DisplayChat();
-            chat.Id = entry.getKey();
-            chat.Name = entry.getValue();
-            chat.isGroupChat = false;
+            chat.Id = session.getSessionId();
+            chat.Name = session.getClassName();
+            chat.isGroupChat = true;
             combinedChats.add(chat);
-        }
-        List<Messages> userGroupMessages = messagesRepository.findByUserId(userId);
-        Set<Long> sessionIdsList = new HashSet<>();
-        for (Messages msg : userGroupMessages)
-        {
-            sessionIdsList.add(msg.getSessionId());
-        }
-
-        for (Long sessionId : sessionIdsList)
-        {
-            Sessions session = sessionsRepository.findById(sessionId).orElse(null);
-            if (session != null) {
-                DisplayChat chat = new DisplayChat();
-                chat.Id =session.getSessionId();
-                chat.Name = session.getClassName();
-                chat.isGroupChat = true;
-                combinedChats.add(chat);
-            }
         }
 
         return combinedChats;
