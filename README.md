@@ -132,6 +132,17 @@
     - Get | `/sessions/active` - Returns a List<Sessions> of sessions that are before their meeting date<br>
     - Get | `/sessions/{classId}
     - POST | `/sessions/leaveSession/{userId}/{sessionId}` - Removes user from the session<br>
+    - PUT | `/sessions/editSession/{sessionId}` - Edits Session details<br>
+        ```json
+        {
+            "tutorId": 1111,
+            "className" : "2",
+            "classCode" : "COMs309",
+            "meetingLocation": "Pearson",
+            "meetingTime": "MM/DD/YYYY hh/mm PM",
+            "dateCreated": "2025-10-29T19:00:00"    
+        }
+        ```
     - POST | `/sessions/createSession` - Creates a New Session with the Tutor, Also includes them as a Member<br>
         ```json
         {
