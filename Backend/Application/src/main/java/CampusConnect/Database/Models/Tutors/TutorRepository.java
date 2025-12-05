@@ -4,6 +4,7 @@ import CampusConnect.Database.Models.Users.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface TutorRepository extends JpaRepository<Tutor, Long> {
@@ -19,6 +20,6 @@ public interface TutorRepository extends JpaRepository<Tutor, Long> {
     Tutor getTutorByUsername(String username);
     boolean existsByUser(User user);
     Tutor findByUser(User user);
-
+    ArrayList<Tutor> findAllByClasses_ClassId(long classId);
     Tutor findByUser_UserId(long userId);
 }

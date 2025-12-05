@@ -28,7 +28,7 @@ public class Classes {
 
     public Classes(){}
 
-    public Classes(String classCode, String className) {
+    public Classes(String className,String classCode) {
         this.className = className;
         this.classCode = classCode;
     }

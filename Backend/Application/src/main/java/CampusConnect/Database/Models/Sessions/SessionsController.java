@@ -8,6 +8,7 @@ import CampusConnect.Database.Models.Tutors.TutorRepository;
 import CampusConnect.Database.Models.Users.User;
 import CampusConnect.Database.Models.Users.UserRepository;
 import CampusConnect.WebSockets.Push.PushSocket;
+import com.mysql.cj.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -187,6 +188,18 @@ public class SessionsController
 
     @PutMapping("/sessions/editSession/{sessionId}")
     public Sessions editSession(@RequestBody SessionsDTO sessionDTO, @PathVariable long sessionId){
-        return sessionsService.editSession(sessionDTO, sessionId);
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a");
+        LocalDateTime meetingTime = LocalDateTime.parse(sessionDTO.getMeetingTime(), format);
+
+        Sessions session = sessionsRepository.findById(sessionId);
+        Tutor setTutor = tutorRepository.findById(sessionDTO.getTutorId()).orElseThrow(()-> new RuntimeException("Tutor not found"));
+
+        session.setClassCode(sessionDTO.getClassCode());
+        session.setClassName(sessionDTO.getClassName());
+        session.setTutor(setTutor);
+        session.setMeetingTime(meetingTime);
+        session.setMeetingLocation(sessionDTO.getMeetingLocation());
+        sessionsRepository.save(session);
+        return session;
     }
 }
