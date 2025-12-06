@@ -165,6 +165,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
         if (id == R.id.logout_btn) {
             User.clearInstance(); // clear singleton
+            WebSocketManager.getInstance().disconnectWebSocket();
             startActivity(new Intent(this, MainActivity.class));
             finish();
         }
@@ -268,6 +269,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 response -> {
                     try {
                         profileUser = User.fromJson(response); // create a new User object
+                        if(profileUser.getTutorId()!=0)
+                        {
+                            getTutorRating(user.getUserId());
+                        }
                         updateUIWithProfileUser(); // update UI after network call
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -305,8 +310,40 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
 
 
+    private void getTutorRating(int tutorId) {
+        String url = BASE_URL + "/tutors/getTutorRating/" + tutorId;
+        RequestQueue queue = Volley.newRequestQueue(this);
 
-    private void loadPastSessionData() {
+        // Since the endpoint returns a plain string (the double), a StringRequest is appropriate.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                response -> {
+                    try
+                    {
+                        // The response is the rating, e.g., "4.5"
+                        double rating = Double.parseDouble(response.trim());
+                        // Format the rating to one decimal place and set it to the TextView
+                        tutorRatingValue.setText(String.format("%.1f", rating));
+                        tutorRatingText.setVisibility(View.VISIBLE);
+                        Log.d("GetTutorRating", "Successfully fetched rating: " + rating);
+                    }
+                    catch (NumberFormatException e)
+                    {
+                        Log.e("GetTutorRating", "Failed to parse rating from response: " + response, e);
+                        tutorRatingValue.setText("N/A"); // Show 'Not Available' on parsing error
+                    }
+                },
+                error -> {
+                    Log.e("GetTutorRating", "Error fetching tutor rating for ID " + tutorId, error);
+                    tutorRatingValue.setText("N/A"); // Show 'Not Available' on network error
+                });
+
+        queue.add(stringRequest);
+    }
+
+
+
+
+        private void loadPastSessionData() {
         pastSessionList = new ArrayList<>();
         sessionAdapter = new PastSessionAdapter(pastSessionList);
         pastSessionsRecyclerView.setAdapter(sessionAdapter);
