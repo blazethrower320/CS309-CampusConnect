@@ -70,7 +70,7 @@ public class UserController {
         return userRepository.findAllByUsername(username);
     }
     @GetMapping("/users/findUser/{name}")
-    public List<User> getUserByFirstName(@PathVariable String name)
+    public User getUserByFirstName(@PathVariable String name)
     {
         return userRepository.findAllByFirstName(name);
     }
