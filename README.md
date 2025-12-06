@@ -42,7 +42,7 @@
         Returns: <br>
             ``true`` - If it was successfully changed <br>
             ``false`` - If the user does not exists <br>
-    - DELETE | `/users/deleteUser` - Deletes a User from the database
+    - POST | `/users/deleteUser` - Deletes a User from the database
         ```json
         {
             "username": "username",
