@@ -159,7 +159,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 intent.putExtra("tutorUsername", profileUser.getUsername());
                 intent.putExtra("userId", loggedInUser.getUserId());
                 intent.putExtra("username", loggedInUser.getUsername());
-                Log.d("ProfileActivity", "Starting ChatActivity with tutorUserId: "
+                intent.putExtra("chatName", profileUser.getFirstName());
+
+            Log.d("ProfileActivity", "Starting ChatActivity with tutorUserId: "
                         + profileUser.getUserId() + ", tutorUsername: " + profileUser.getUsername());
                 v.getContext().startActivity(intent);
         }
@@ -217,9 +219,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         // Buttons visibility
         if (!profileUser.getUsername().equals(loggedInUser.getUsername())) {
             editProfileBtn.setVisibility(View.GONE);
+            logoutBtn.setVisibility(View.GONE);
             msgBtn.setVisibility(View.VISIBLE);
         } else {
             editProfileBtn.setVisibility(View.VISIBLE);
+            logoutBtn.setVisibility(View.VISIBLE);
             msgBtn.setVisibility(View.GONE);
         }
     }

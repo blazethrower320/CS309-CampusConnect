@@ -74,6 +74,7 @@ public class AllMessages extends AppCompatActivity {
             chatIntent.putExtra("sessionId", messageGroup.getId());
             chatIntent.putExtra("isGroupChat", messageGroup.isGroupChat());
 
+            chatIntent.putExtra("chatName", messageGroup.getName());
             startActivity(chatIntent);
         });
         recyclerView.setAdapter(adapter);

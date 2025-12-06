@@ -8,22 +8,38 @@
     android:background="#F0F2F5"
     tools:context=".ChatActivity">
 
+    <!-- This is the top toolbar -->
     <LinearLayout
         android:background="@color/msgbg"
-        android:paddingTop="5dp"
-        android:paddingLeft="5dp"
-        android:paddingBottom="5dp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:padding="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <!-- Back Button -->
         <ImageButton
             android:id="@+id/back_btn"
-            android:paddingLeft="0dp"
-            android:layout_gravity="left"
             android:background="@drawable/btn_secondary"
             android:src="@drawable/ic_arrow_back"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content">
-        </ImageButton>
+            android:layout_width="40dp"
+            android:layout_height="40dp" />
+        <TextView
+            android:id="@+id/chat_name_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Chat Name"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <!-- This is an invisible "spacer" view to balance the layout -->
+        <View
+            android:layout_width="40dp"
+            android:layout_height="40dp" />
+
     </LinearLayout>
 
 

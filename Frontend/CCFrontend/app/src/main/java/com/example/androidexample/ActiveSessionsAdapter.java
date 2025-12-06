@@ -42,6 +42,7 @@ public class ActiveSessionsAdapter extends RecyclerView.Adapter<ActiveSessionsAd
             intent.putExtra("sessionId", session.getSessionId());
             intent.putExtra("tutorUserId", session.getTutorUserId());
             intent.putExtra("tutorUsername", session.getTutorUsername());
+            intent.putExtra("chatName", session.getClassName());
 
             // Current user info
             intent.putExtra("userId", User.getInstance().getUserId());

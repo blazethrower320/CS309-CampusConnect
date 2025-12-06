@@ -14,6 +14,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -43,11 +44,15 @@ public class ChatActivity extends AppCompatActivity implements WebSocketListener
     private List<ChatMessage> chatMessageList;
     private ActivityResultLauncher<Intent> imagePickerLauncher;
 
+    private TextView chatNameTxt;
+
+
     private boolean hasHistoryLoaded = false;
 
     //Id values
     int sessionId;
     int userId;
+    private String chatName;
     private String username;
 
     @Override
@@ -74,6 +79,11 @@ public class ChatActivity extends AppCompatActivity implements WebSocketListener
 
         boolean isGroupChat = getIntent().getBooleanExtra("isGroupChat", false);
         sessionId = getIntent().getIntExtra("sessionId", -1);
+        chatName = getIntent().getStringExtra("chatName");
+
+        chatNameTxt = findViewById(R.id.chat_name_title);
+        chatNameTxt.setText(chatName);
+
 
         if (sessionId == -1) {
             Toast.makeText(this, "Error: Chat ID missing.", Toast.LENGTH_LONG).show();
