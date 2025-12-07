@@ -13,21 +13,9 @@ public class TutorService {
     public Tutor createTutor(User user) {
         // Check if the admin already exists
         if (tutorRepository.existsByUser(user)) {
-            throw new RuntimeException("Admin already exists");
+            throw new RuntimeException("Tutor already exists");
         }
         Tutor tutor = new Tutor(user);
-        tutor.setUser(user);
         return tutorRepository.save(tutor);
-    }
-
-    public String deleteAdmin(User user){
-        Tutor tutor = tutorRepository.findByUser(user);
-        if(tutorRepository.existsByUsername(tutor.getUser().getUsername())){
-            tutorRepository.delete(tutor);
-            return "Admin Deleted";
-        }
-        else {
-            return "Admin Does Not Exist";
-        }
     }
 }

@@ -16,7 +16,6 @@ public class Tutor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long tutorId;
-    private int totalClasses;
     @Column(name = "rating")
     private double totalRating = 5.0;
     private double hourlyRate = 0;
@@ -59,12 +58,8 @@ public class Tutor {
     //public long getUserId() { return userId; }
     public long getTutorId() { return tutorId; }
 
-    public int gettotalClasses() { return totalClasses; }
     public double getTotalRating() { return totalRating; }
 
-    public void setTotalClasses(int totalClasses) {
-        this.totalClasses = totalClasses;
-    }
     public void setTotalRating(double rating) {
         this.totalRating = rating;
     }
@@ -79,13 +74,14 @@ public class Tutor {
         this.hourlyRate = rate;
     }
 
-
+    /*
     public void setUser(User user){
         this.user = user;
         if(user != null && user.getTutor() != this){
             user.setTutor(this);
         }
     }
+     */
     public Set<Ratings> getRatings() {
         return ratings;
     }

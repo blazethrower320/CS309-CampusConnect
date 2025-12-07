@@ -5,13 +5,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="01ee6f06-2b84-458c-b6cc-b4de62b6eadf" name="Changes" comment="Need to redploy unmapped classes for database.">
+      <change afterPath="$PROJECT_DIR$/src/test/java/CampusConnect/ClassesSystemTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/CampusConnect/PushSystemTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/CampusConnect/SessionsSystemTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/CampusConnect/TutorSystemTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Messages/MessagesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Messages/MessagesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Classes/Classes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Classes/Classes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Classes/ClassesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Classes/ClassesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Sessions/SessionsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Sessions/SessionsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/Tutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/Tutor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/TutorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/TutorController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/TutorRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/TutorRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/TutorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/TutorService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/WebSockets/Push/Push.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/WebSockets/Push/Push.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/WebSockets/Push/PushTestController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/CampusConnect/PreetSystemTest.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CoverageOptionsProvider">
+    <option name="myAddOrReplace" value="0" />
   </component>
   <component name="ExportToHTMLSettings">
     <option name="OPEN_IN_BROWSER" value="true" />
@@ -25,22 +42,58 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/../.." value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
+  <component name="GitLabMergeRequestFiltersHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPENED&quot;,
+    &quot;assignee&quot;: {
+      &quot;type&quot;: &quot;org.jetbrains.plugins.gitlab.mergerequest.ui.filters.GitLabMergeRequestsFiltersValue.MergeRequestsMemberFilterValue.MergeRequestsAssigneeFilterValue&quot;,
+      &quot;username&quot;: &quot;preetp&quot;,
+      &quot;fullname&quot;: &quot;Patel, Preet&quot;
+    }
+  }
+}</component>
+  <component name="GitLabMergeRequestsSettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;first&quot;: &quot;https://git.las.iastate.edu/cs309/2025fall/3_hosen_1&quot;,
+    &quot;second&quot;: &quot;6d21ed2b-5074-4426-9f8d-3cf5d6d52e0a&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="36RQtYb0ty1Sxpkk5HQcIB2Ho1i" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "JUnit.CampusConnect in CampusConnect.executor": "Coverage",
     "JUnit.CarsonSystemTest.executor": "Coverage",
+    "JUnit.ClassesSystemTest.executor": "Coverage",
+    "JUnit.PushSystemTest.executor": "Run",
+    "JUnit.PushWebSocketTest.executor": "Coverage",
+    "JUnit.TutorSystemTest.executor": "Run",
+    "JUnit.java in CampusConnect.executor": "Coverage",
     "Maven.CampusConnect [package].executor": "Run",
     "RequestMappingsPanelOrder0": "0",
     "RequestMappingsPanelOrder1": "1",
     "RequestMappingsPanelWidth0": "75",
     "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "Spring Boot.Main.executor": "Run",
-    "git-widget-placeholder": "Carson-Week12",
+    "git-widget-placeholder": "PreetTesting",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -53,8 +106,8 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="JUnit.CarsonSystemTest">
-    <configuration name="CarsonSystemTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.java in CampusConnect">
+    <configuration name="ClassesSystemTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="CampusConnect" />
       <extension name="coverage">
         <pattern>
@@ -63,21 +116,78 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="CampusConnect" />
-      <option name="MAIN_CLASS_NAME" value="CampusConnect.PreetSystemTest" />
+      <option name="MAIN_CLASS_NAME" value="CampusConnect.ClassesSystemTest" />
       <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PushSystemTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CampusConnect" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="CampusConnect.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="CampusConnect" />
+      <option name="MAIN_CLASS_NAME" value="CampusConnect.PushSystemTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PushWebSocketTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CampusConnect" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="CampusConnect.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="CampusConnect" />
+      <option name="MAIN_CLASS_NAME" value="CampusConnect.PushWebSocketTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TutorSystemTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CampusConnect" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="CampusConnect.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="CampusConnect" />
+      <option name="MAIN_CLASS_NAME" value="CampusConnect.TutorSystemTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="java in CampusConnect" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CampusConnect" />
+      <option name="TEST_OBJECT" value="directory" />
+      <dir value="$PROJECT_DIR$/src/test/java" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.PreetSystemTest" />
+        <item itemvalue="JUnit.java in CampusConnect" />
+        <item itemvalue="JUnit.PushWebSocketTest" />
+        <item itemvalue="JUnit.TutorSystemTest" />
+        <item itemvalue="JUnit.PushSystemTest" />
+        <item itemvalue="JUnit.ClassesSystemTest" />
       </list>
     </recent_temporary>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="0c61a590-19c3-44ac-8580-6af6959c8b90" name="Changes" comment="testing CI/CD" />
+      <changelist id="01ee6f06-2b84-458c-b6cc-b4de62b6eadf" name="Changes" comment="Need to redploy unmapped classes for database." />
       <created>1761170715555</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -149,9 +259,53 @@
     <MESSAGE value="testing CI/CD" />
     <option name="LAST_COMMIT_MESSAGE" value="testing CI/CD" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.time.format.DateTimeParseException" package="java.time.format" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/CampusConnect/SessionsSystemTest.java</url>
+          <line>328</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/CampusConnect/SessionsSystemTest.java</url>
+          <line>353</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/CampusConnect/SessionsSystemTest.java</url>
+          <line>242</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Ratings/Ratings.java</url>
+          <line>47</line>
+          <properties>
+            <option name="lambda-ordinal" value="-1" />
+          </properties>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Application$CarsonSystemTest.ic" NAME="CarsonSystemTest Coverage Results" MODIFIED="1764965658960" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+    <SUITE FILE_PATH="coverage/Application$ClassesSystemTest.ic" NAME="ClassesSystemTest Coverage Results" MODIFIED="1765071352087" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
       <FILTER>CampusConnect.*</FILTER>
     </SUITE>
+    <SUITE FILE_PATH="coverage/Application$TutorSystemTest.ic" NAME="TutorSystemTest Coverage Results" MODIFIED="1765067850321" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>CampusConnect.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/Application$PushWebSocketTest.ic" NAME="PushWebSocketTest Coverage Results" MODIFIED="1765075690022" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>CampusConnect.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/Application$CampusConnect_in_CampusConnect.ic" NAME="CampusConnect in CampusConnect Coverage Results" MODIFIED="1765064737658" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
+    <SUITE FILE_PATH="coverage/Application$CarsonSystemTest.ic" NAME="CarsonSystemTest Coverage Results" MODIFIED="1764972853950" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>CampusConnect.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/Application$java_in_CampusConnect.ic" NAME="java in CampusConnect Coverage Results" MODIFIED="1765076563600" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
   </component>
 </project>
