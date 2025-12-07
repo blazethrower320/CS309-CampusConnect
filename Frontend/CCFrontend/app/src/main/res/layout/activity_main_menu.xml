@@ -393,6 +393,33 @@
                 android:layout_marginTop="4dp" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/nav_deleteUsers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:padding="12dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:attr/selectableItemBackground">
+
+            <ImageView
+                android:layout_width="69dp"
+                android:layout_height="69dp"
+                android:src="@drawable/outline_delete_24"
+                android:contentDescription="Users"
+                app:tint="#FFFFFF" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Users"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
+
         <!-- Settings -->
         <LinearLayout
             android:id="@+id/nav_settings"

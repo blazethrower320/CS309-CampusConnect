@@ -63,5 +63,16 @@
             android:layout_marginTop="50dp"
             android:padding="10dp" />
 
+        <Button
+            android:id="@+id/btn_delete_session"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Delete Session"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#B00020"
+            android:layout_marginTop="16dp"
+            android:padding="10dp" />
+
     </LinearLayout>
 </ScrollView>
