@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.androidexample.User;
 
@@ -20,7 +21,7 @@ import org.json.JSONObject;
 public class EditSessionActivity extends AppCompatActivity {
 
     private EditText className, classCode, meetingLocation, meetingTime;
-    private Button saveButton;
+    private Button saveButton, deleteButton;
     private int tutorId;
     private int sessionId;
 
@@ -36,6 +37,8 @@ public class EditSessionActivity extends AppCompatActivity {
         meetingLocation = findViewById(R.id.edit_location);
         meetingTime = findViewById(R.id.edit_time);
         saveButton = findViewById(R.id.btn_save_session);
+        deleteButton = findViewById(R.id.btn_delete_session);
+
 
         // Get passed session data
         Intent i = getIntent();
@@ -51,6 +54,8 @@ public class EditSessionActivity extends AppCompatActivity {
 
         meetingTime.setOnClickListener(v -> showDatePicker());
 
+        deleteButton.setOnClickListener(v -> deleteSession());
+
     }
 
     private void showDatePicker() {
@@ -65,6 +70,28 @@ public class EditSessionActivity extends AppCompatActivity {
         );
 
         datePicker.show();
+    }
+
+    private void deleteSession() {
+        String url = BASE_URL + "/sessions/deleteSession/" + sessionId;
+
+        StringRequest req = new StringRequest(
+                Request.Method.POST,
+                url,
+                response -> {
+                    Toast.makeText(this, "Session deleted!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(EditSessionActivity.this, SessionActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                },
+                error -> {
+                    Toast.makeText(this, "Failed to delete session", Toast.LENGTH_SHORT).show();
+                    error.printStackTrace();
+                }
+        );
+
+        Volley.newRequestQueue(this).add(req);
     }
 
     private void showTimePicker(int year, int month, int day) {

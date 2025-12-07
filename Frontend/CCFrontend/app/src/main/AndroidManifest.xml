@@ -66,6 +66,9 @@
         <activity
             android:name=".AllMessages"
             android:exported="false" />
+        <activity
+            android:name=".AdminUserListActivity"
+            android:exported="false" />
 
         <activity
             android:name=".MainActivity"

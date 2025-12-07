@@ -42,14 +42,14 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         User user = User.getInstance();
-        Session s = sessions.get(position);   // <-- FIX #3: Use s, not "session"
+        Session s = sessions.get(position);
 
         boolean isAdmin = user.isAdmin();
-        int loggedInTutorId = user.getTutorId();
-        int sessionTutorUserId = s.getTutorUserId();  // <-- FIXED
+        int loggedInUserId = user.getUserId();
+        int sessionTutorUserId = s.getTutorUserId();
 
         // Show Edit button only for admin OR the tutor who created it
-        if (isAdmin || (loggedInTutorId != -1 && sessionTutorUserId == loggedInTutorId)) {
+        if (isAdmin || (loggedInUserId != -1 && sessionTutorUserId == loggedInUserId)) {
             holder.editButton.setVisibility(View.VISIBLE);
         } else {
             holder.editButton.setVisibility(View.GONE);
