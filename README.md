@@ -132,6 +132,7 @@
     - Get | `/sessions/active` - Returns a List<Sessions> of sessions that are before their meeting date<br>
     - Get | `/sessions/{classId}
     - POST | `/sessions/leaveSession/{userId}/{sessionId}` - Removes user from the session<br>
+    - POST | `/sessions/deleteSession/{sessionId}` - Deletes Session
     - PUT | `/sessions/editSession/{sessionId}` - Edits Session details<br>
         ```json
         {
