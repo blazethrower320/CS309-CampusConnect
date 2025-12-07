@@ -2,8 +2,10 @@ package CampusConnect.Database.Models.Classes;
 
 import CampusConnect.Database.Models.Sessions.Sessions;
 import CampusConnect.Database.Models.Tutors.Tutor;
+import CampusConnect.Database.Models.Tutors.TutorRepository;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashSet;
 import java.util.List;
@@ -48,6 +50,8 @@ public class Classes {
     public Set<Tutor> getTutors (){
         return tutors;
     }
+
+
 
 
 }
