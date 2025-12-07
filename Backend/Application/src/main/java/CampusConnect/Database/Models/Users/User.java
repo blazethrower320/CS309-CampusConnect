@@ -135,12 +135,6 @@ public class User {
         return tutor;
     }
 
-    public void setTutor(Tutor tutor){
-        this.tutor = tutor;
-        if(tutor != null && tutor.getUser() != this){
-            tutor.setUser(this);
-        }
-    }
     public Set<Ratings> getRatings() {
         return ratings;
     }

@@ -129,54 +129,6 @@ public class SessionsController
         return sessionsService.createSession(sessionsDTO);
     }
 
-    @GetMapping("/sessions/getSession/{sessionId}")
-    public ResponseEntity<Object> getSession(@PathVariable long sessionId)
-    {
-        Sessions session = sessionsRepository.findAllBySessionId(sessionId);
-        if(session == null)
-            return ResponseEntity.status(404).body("Session Not Found");
-        return ResponseEntity.ok(session);
-    }
-
-    @PatchMapping("/sessions/setMeetingTime/{time}/{sessionId}")
-    public Sessions setTime(@PathVariable String time, @PathVariable long sessionId)
-    {
-        Sessions session = sessionsRepository.getSessionsBySessionId(sessionId);
-        if(session == null){
-            throw new RuntimeException("Session not found");
-        }
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a");
-        try {
-            LocalDateTime meetingTime = LocalDateTime.parse(time, formatter);
-            session.setMeetingTime(meetingTime);
-            return sessionsRepository.save(session);
-        } catch (DateTimeParseException e) {
-            throw new RuntimeException("Invalid date/time format. Use MM/dd/yyyy hh:mm a");
-        }
-    }
-
-    @PatchMapping("/sessions/setMeetingLocation/{location}/{sessionId}")
-    public Sessions setMeetingLocation(@PathVariable String location, @PathVariable long sessionId){
-        Sessions session = sessionsRepository.getSessionsBySessionId(sessionId);
-        if(session == null){
-            throw new RuntimeException("Session not found");
-        }
-        session.setMeetingLocation(location);
-        return sessionsRepository.save(session);
-    }
-
-    @GetMapping("/sessions/getMeetingDate/{sessionId}")
-    public String getMeetingTime(@PathVariable long sessionId)
-    {
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a");
-
-        Sessions session = sessionsRepository.getSessionsBySessionId(sessionId);
-        if(session == null || session.getMeetingTime() == null) {
-            throw new RuntimeException("Meeting time does not exist");
-        }
-        return session.getMeetingTime().format(format);
-    }
-
     @PostMapping("/sessions/deleteSession/{sessionId}")
     public void deleteSession(@PathVariable long sessionId){
         Sessions session = sessionsRepository.getSessionsBySessionId(sessionId);
@@ -194,12 +146,6 @@ public class SessionsController
         Sessions session = sessionsRepository.findById(sessionId);
         Tutor setTutor = tutorRepository.findById(sessionDTO.getTutorId()).orElseThrow(()-> new RuntimeException("Tutor not found"));
 
-        session.setClassCode(sessionDTO.getClassCode());
-        session.setClassName(sessionDTO.getClassName());
-        session.setTutor(setTutor);
-        session.setMeetingTime(meetingTime);
-        session.setMeetingLocation(sessionDTO.getMeetingLocation());
-        sessionsRepository.save(session);
-        return session;
+        return sessionsService.editSession(sessionDTO,sessionId);
     }
 }
