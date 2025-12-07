@@ -12,8 +12,9 @@ import CampusConnect.Database.Models.Users.UserRepository;
 import java.util.List;
 
 @RestController
-public class TutorController
-{
+public class TutorController {
+    @Autowired
+    TutorService tutorService;
     @Autowired
     TutorRepository tutorRepository;
     @Autowired
@@ -30,27 +31,26 @@ public class TutorController
 
 
     @GetMapping(path = "/tutors")
-    public List<Tutor> getAllTutors()
-    {
+    public List<Tutor> getAllTutors() {
         return tutorRepository.findAll();
     }
 
     @GetMapping("/tutors/info/{tutorId}")
-    public Tutor getTutor(@PathVariable long tutorId)
-    {
+    public Tutor getTutor(@PathVariable long tutorId) {
         return tutorRepository.getTutorByTutorId(tutorId);
     }
 
     @GetMapping("/tutors/getClasses/{tutorId}")
-    public List<Classes> getTutorClasses(@PathVariable long tutorId){
+    public List<Classes> getTutorClasses(@PathVariable long tutorId) {
         return classesRepository.findAll();
     }
 
     @PostMapping("/tutors/createTutor/{username}")
-    public ResponseEntity<Object> createTutor(@PathVariable String username)
-    {
+    public Tutor createTutor(@PathVariable String username) {
+
         User givenUser = userRepository.findByUsername(username);
-        if(givenUser == null){
+
+        /*if(givenUser == null){
             return ResponseEntity.status(404).body(userNotFound);
         }
         boolean exists = tutorRepository.existsByUsername(username);
@@ -60,20 +60,22 @@ public class TutorController
         Tutor tutor =  new Tutor(givenUser);
         tutorRepository.save(tutor);
         return ResponseEntity.ok(tutor);
+         */
+        return tutorService.createTutor(givenUser);
     }
 
     @GetMapping("/tutors/getTutorRating/{tutorId}")
-    public double getTutorRating(@PathVariable long tutorId)
-    {
+    public double getTutorRating(@PathVariable long tutorId) {
         Tutor tutor = tutorRepository.getTutorByTutorId(tutorId);
         return tutor.getTotalRating();
     }
 
     @PostMapping("/tutors/deleteTutor/{username}")
-    public ResponseEntity<Object> deleteTutor(@PathVariable String username)
-    {
+    public ResponseEntity<Object> deleteTutor(@PathVariable String username) {
         Tutor tutor = tutorRepository.findByUsername(username);
-        if(tutor != null){
+        if (tutor != null) {
+            User user = tutor.getUser();
+            userRepository.save(user);
             tutorRepository.delete(tutor);
             return ResponseEntity.ok(tutorRemoved);
         }
@@ -81,29 +83,25 @@ public class TutorController
         return ResponseEntity.status(403).body(tutorNotFound);
     }
 
-    @PutMapping("tutors/editTotalClasses")
-    public ResponseEntity<Object> editTotalClasses(@RequestBody Tutor newTutor)
-    {
-        Tutor tutor = tutorRepository.findByUsername(newTutor.getUser().getUsername());
-        if (tutor != null) {
-            tutor.setTotalClasses(newTutor.gettotalClasses());
-            tutorRepository.save(tutor);
-            return ResponseEntity.ok(tutorUpdated);
-        }
-        return ResponseEntity.status(403).body(tutorNotFound);
+    @GetMapping("/tutors/getTutorFromUserId/{userId}")
+    public Tutor getTutorFromUserId(@PathVariable long userId) {
+        return tutorRepository.getTutorByUserUserId(userId);
     }
 
-    @GetMapping("/tutors/getTutorFromUserId/{userId}")
-    public Tutor getTutorFromUserId(@PathVariable long userId)
-   {
-      return tutorRepository.getTutorByUserUserId(userId);
-   }
-
-   @PatchMapping("tutors/addClass/{tutorId}/{classId}")
-    public Tutor addClassToTutor(@PathVariable long tutorId, @PathVariable long classId){
-        Tutor tutor = tutorRepository.findById(tutorId).orElseThrow(()-> new RuntimeException("Tutor not found"));
-        Classes setClass = classesRepository.findById(classId).orElseThrow(()-> new RuntimeException("Class not found"));
+    @PatchMapping("tutors/addClass/{tutorId}/{classId}")
+    public Tutor addClassToTutor(@PathVariable long tutorId, @PathVariable long classId) {
+        Tutor tutor = tutorRepository.findById(tutorId).orElseThrow(() -> new RuntimeException("Tutor not found"));
+        Classes setClass = classesRepository.findById(classId).orElseThrow(() -> new RuntimeException("Class not found"));
         tutor.addClasses(setClass);
+        return tutorRepository.save(tutor);
+
+    }
+
+    @PostMapping("tutors/removeClass/{tutorId}/{classId}")
+    public Tutor removeClassToTutor(@PathVariable long tutorId, @PathVariable long classId) {
+        Tutor tutor = tutorRepository.findById(tutorId).orElseThrow(() -> new RuntimeException("Tutor not found"));
+        Classes setClass = classesRepository.findById(classId).orElseThrow(() -> new RuntimeException("Class not found"));
+        tutor.removeClass(setClass);
         return tutorRepository.save(tutor);
     }
 }

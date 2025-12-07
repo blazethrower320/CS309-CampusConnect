@@ -22,4 +22,5 @@ public interface TutorRepository extends JpaRepository<Tutor, Long> {
     Tutor findByUser(User user);
     ArrayList<Tutor> findAllByClasses_ClassId(long classId);
     Tutor findByUser_UserId(long userId);
+
 }

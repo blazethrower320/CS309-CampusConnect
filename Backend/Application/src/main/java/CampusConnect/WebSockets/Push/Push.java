@@ -17,8 +17,6 @@ public class Push {
     private Long id;
 
     @Column
-    @Setter
-    @Getter
     private long tutorId;
 
     @Column

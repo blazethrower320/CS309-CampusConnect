@@ -21,17 +21,10 @@ public class ClassesController {
 
     //Returns the class given from the class Id.
     @GetMapping(path = "/classes/{classId}")
-    public Classes getClassById(@PathVariable Long Id) {
-        return classesRepository.findById(Id).orElse(null);
+    public Classes getClassById(@PathVariable Long classId) {
+        return classesRepository.findById(classId).orElse(null);
     }
 
-
-    //Returns the class code given from the class name.
-    @GetMapping(path = "/classes/code/{className}")
-    public String getClassCode(@PathVariable String className){
-        String currentClass = classesRepository.findByclassName(className).getclassCode();
-        return currentClass;
-    }
 
     @PostMapping(path = "/classes/delete/{classId}")
     public void deleteClass(@PathVariable long classId){
