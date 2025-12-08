@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="01ee6f06-2b84-458c-b6cc-b4de62b6eadf" name="Changes" comment="Created Tests for Tutor and Sessions. All test should be done.">
+    <list default="true" id="01ee6f06-2b84-458c-b6cc-b4de62b6eadf" name="Changes" comment="Added new create admin feature.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Admins/AdminsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Admins/AdminsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Admins/AdminsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Admins/AdminsRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/CampusConnect/PushSystemTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/CampusConnect/PushSystemTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -250,7 +248,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765077168256</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Added new create admin feature.">
+      <option name="closed" value="true" />
+      <created>1765232907174</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1765232907175</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -262,7 +268,8 @@
     <MESSAGE value="testing CI/CD" />
     <MESSAGE value="Created Tests for classes and Push." />
     <MESSAGE value="Created Tests for Tutor and Sessions. All test should be done." />
-    <option name="LAST_COMMIT_MESSAGE" value="Created Tests for Tutor and Sessions. All test should be done." />
+    <MESSAGE value="Added new create admin feature." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added new create admin feature." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
