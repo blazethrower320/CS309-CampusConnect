@@ -44,7 +44,7 @@ public class User {
     @JsonIgnore
     private Admins admin;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonIgnore
     private Tutor tutor;
 

@@ -11,5 +11,5 @@ public interface AdminsRepository extends JpaRepository<Admins, Long> {
     Admins getAdminByAdminId(Long id);
     Admins findByUser(User user);
     boolean existsByUser(User user);
-
+    Admins getAdminByUser_userId(Long id);
 }
