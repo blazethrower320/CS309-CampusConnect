@@ -53,7 +53,7 @@
             ``String userDNR`` - User does not exists <br>
             ``String userDeleted`` - User deleted <br>
             ``String WrongPassword`` - Wrong password <br>
-    - GET | `/users/IsTutor/{userID}` - Returns true or false if the user is a tutor <br>
+    - GET | `/users/getTutor/{userID}` - Returns true or false if the user is a tutor <br>
     - GET | `/users/major/{username}` - Returns the major of the given user from the username <br>
     - GET | `/users/editMajor/{username}/{major}` - Updates the major of the user <br>
     - GET | `/users/bio/{username}` - Returns the bio of the given user from the username <br>
