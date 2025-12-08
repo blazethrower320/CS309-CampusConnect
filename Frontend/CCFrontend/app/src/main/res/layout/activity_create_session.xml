@@ -34,25 +34,25 @@
 
         <!-- Input fields -->
         <EditText
-            android:id="@+id/edit_class_name"
+            android:id="@+id/create_class_name"
             style="@style/DarkInputField"
             android:hint="Class Name (e.g Computer Science 311)"
             android:inputType="text" />
 
         <EditText
-            android:id="@+id/edit_class_code"
+            android:id="@+id/create_class_code"
             style="@style/DarkInputField"
             android:hint="Class Code (e.g COMS311)"
             android:inputType="text" />
 
         <EditText
-            android:id="@+id/edit_meeting_location"
+            android:id="@+id/create_meeting_location"
             style="@style/DarkInputField"
             android:hint="Meeting Location (e.g Pearson Hall 203)"
             android:inputType="text" />
 
         <EditText
-            android:id="@+id/edit_meeting_time"
+            android:id="@+id/create_meeting_time"
             style="@style/DarkInputField"
             android:layout_width="match_parent"
             android:layout_marginTop="20dp"

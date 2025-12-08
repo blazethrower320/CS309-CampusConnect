@@ -47,10 +47,10 @@ public class CreateSessionActivity extends AppCompatActivity {
         }
 
         // Initialize views
-        editClassName = findViewById(R.id.edit_class_name);
-        editClassCode = findViewById(R.id.edit_class_code);
-        editMeetingLocation = findViewById(R.id.edit_meeting_location);
-        editMeetingTime = findViewById(R.id.edit_meeting_time);
+        editClassName = findViewById(R.id.create_class_name);
+        editClassCode = findViewById(R.id.create_class_code);
+        editMeetingLocation = findViewById(R.id.create_meeting_location);
+        editMeetingTime = findViewById(R.id.create_meeting_time);
         createButton = findViewById(R.id.button_create_session);
         backButton = findViewById(R.id.back_button);
 
