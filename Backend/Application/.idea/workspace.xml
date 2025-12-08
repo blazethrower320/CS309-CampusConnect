@@ -4,23 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="01ee6f06-2b84-458c-b6cc-b4de62b6eadf" name="Changes" comment="Need to redploy unmapped classes for database.">
-      <change afterPath="$PROJECT_DIR$/src/test/java/CampusConnect/ClassesSystemTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/CampusConnect/PushSystemTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/CampusConnect/SessionsSystemTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/CampusConnect/TutorSystemTest.java" afterDir="false" />
+    <list default="true" id="01ee6f06-2b84-458c-b6cc-b4de62b6eadf" name="Changes" comment="Created Tests for Tutor and Sessions. All test should be done.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Classes/Classes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Classes/Classes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Classes/ClassesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Classes/ClassesController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Sessions/SessionsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Sessions/SessionsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/Tutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/Tutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/TutorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/TutorController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/TutorRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/TutorRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/TutorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Tutors/TutorService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Admins/AdminsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Admins/AdminsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Admins/AdminsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Admins/AdminsRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/WebSockets/Push/Push.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/WebSockets/Push/Push.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/WebSockets/Push/PushTestController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/CampusConnect/PreetSystemTest.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,13 +66,14 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.Main.executor": "Run",
     "JUnit.CampusConnect in CampusConnect.executor": "Coverage",
     "JUnit.CarsonSystemTest.executor": "Coverage",
     "JUnit.ClassesSystemTest.executor": "Coverage",
     "JUnit.PushSystemTest.executor": "Run",
     "JUnit.PushWebSocketTest.executor": "Coverage",
     "JUnit.TutorSystemTest.executor": "Run",
-    "JUnit.java in CampusConnect.executor": "Coverage",
+    "JUnit.java in CampusConnect.executor": "Run",
     "Maven.CampusConnect [package].executor": "Run",
     "RequestMappingsPanelOrder0": "0",
     "RequestMappingsPanelOrder1": "1",
@@ -106,8 +95,9 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="JUnit.java in CampusConnect">
-    <configuration name="ClassesSystemTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Application.Main">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="CampusConnect.Main" />
       <module name="CampusConnect" />
       <extension name="coverage">
         <pattern>
@@ -115,9 +105,6 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="CampusConnect" />
-      <option name="MAIN_CLASS_NAME" value="CampusConnect.ClassesSystemTest" />
-      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -177,11 +164,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Main" />
         <item itemvalue="JUnit.java in CampusConnect" />
         <item itemvalue="JUnit.PushWebSocketTest" />
         <item itemvalue="JUnit.TutorSystemTest" />
         <item itemvalue="JUnit.PushSystemTest" />
-        <item itemvalue="JUnit.ClassesSystemTest" />
       </list>
     </recent_temporary>
   </component>
@@ -247,7 +234,23 @@
       <option name="project" value="LOCAL" />
       <updated>1763602703690</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Created Tests for classes and Push.">
+      <option name="closed" value="true" />
+      <created>1765077145243</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1765077145243</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Created Tests for Tutor and Sessions. All test should be done.">
+      <option name="closed" value="true" />
+      <created>1765077168256</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1765077168256</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -257,7 +260,9 @@
     <MESSAGE value="Leave sessions backend code is implemented." />
     <MESSAGE value="Updated SessionsDTO to take in classId, updated and added functions to create session effectively." />
     <MESSAGE value="testing CI/CD" />
-    <option name="LAST_COMMIT_MESSAGE" value="testing CI/CD" />
+    <MESSAGE value="Created Tests for classes and Push." />
+    <MESSAGE value="Created Tests for Tutor and Sessions. All test should be done." />
+    <option name="LAST_COMMIT_MESSAGE" value="Created Tests for Tutor and Sessions. All test should be done." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
