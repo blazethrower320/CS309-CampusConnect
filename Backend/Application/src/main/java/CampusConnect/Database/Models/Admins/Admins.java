@@ -26,9 +26,11 @@ public class Admins {
     public int getNukedUsersCount() { return nukedUsersCount; }
     public void setNukedUsersCount(int nukedUsersCount)
     {
-        nukedUsersCount = nukedUsersCount + 1;
+       this.nukedUsersCount = nukedUsersCount;
     }
-    public int incrementNukedUsersCount() { return nukedUsersCount + 1; }
+    public int incrementNukedUsersCount() {
+        return ++this.nukedUsersCount;
+    }
     public long getAdminId() { return adminId; }
     public User getUser(){
         return user;

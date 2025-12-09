@@ -38,9 +38,30 @@ public class RatingsController
     }
 
     @PostMapping("/ratings/createRating")
-    public void createRating(@RequestBody RatingsDTO ratingDTO)
+    public boolean createRating(@RequestBody RatingsDTO ratingDTO)
     {
-        ratingsService.createRating(ratingDTO);
+        try
+        {
+            ratingsService.createRating(ratingDTO);
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
     }
 
+    @PostMapping("/ratings/deleteRating/{ratingId}")
+    public boolean deleteRating(@PathVariable long ratingId)
+    {
+        try
+        {
+            ratingsRepository.deleteById(ratingId);
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
 }
