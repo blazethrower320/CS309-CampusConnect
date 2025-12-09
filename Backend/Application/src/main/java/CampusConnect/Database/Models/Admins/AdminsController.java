@@ -77,6 +77,7 @@ public class AdminsController {
             return false;
 
         admin.incrementNukedUsersCount();
+        adminsRepository.save(admin);
         return true;
     }
 
