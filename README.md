@@ -42,7 +42,7 @@
         Returns: <br>
             ``true`` - If it was successfully changed <br>
             ``false`` - If the user does not exists <br>
-    - DELETE | `/users/deleteUser` - Deletes a User from the database
+    - POST | `/users/deleteUser` - Deletes a User from the database
         ```json
         {
             "username": "username",
@@ -53,7 +53,7 @@
             ``String userDNR`` - User does not exists <br>
             ``String userDeleted`` - User deleted <br>
             ``String WrongPassword`` - Wrong password <br>
-    - GET | `/users/IsTutor/{userID}` - Returns true or false if the user is a tutor <br>
+    - GET | `/users/getTutor/{userID}` - Returns true or false if the user is a tutor <br>
     - GET | `/users/major/{username}` - Returns the major of the given user from the username <br>
     - GET | `/users/editMajor/{username}/{major}` - Updates the major of the user <br>
     - GET | `/users/bio/{username}` - Returns the bio of the given user from the username <br>
@@ -132,6 +132,18 @@
     - Get | `/sessions/active` - Returns a List<Sessions> of sessions that are before their meeting date<br>
     - Get | `/sessions/{classId}
     - POST | `/sessions/leaveSession/{userId}/{sessionId}` - Removes user from the session<br>
+    - POST | `/sessions/deleteSession/{sessionId}` - Deletes Session
+    - PUT | `/sessions/editSession/{sessionId}` - Edits Session details<br>
+        ```json
+        {
+            "tutorId": 1111,
+            "className" : "2",
+            "classCode" : "COMs309",
+            "meetingLocation": "Pearson",
+            "meetingTime": "MM/DD/YYYY hh/mm PM",
+            "dateCreated": "2025-10-29T19:00:00"    
+        }
+        ```
     - POST | `/sessions/createSession` - Creates a New Session with the Tutor, Also includes them as a Member<br>
         ```json
         {

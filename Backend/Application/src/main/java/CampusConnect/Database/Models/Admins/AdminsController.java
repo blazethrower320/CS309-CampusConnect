@@ -90,4 +90,18 @@ public class AdminsController {
         return admin.getNukedUsersCount();
     }
 
+    @PostMapping("/admin/createAdmin/{userId}")
+    public boolean createAdmin(@PathVariable long userId){
+        Admins admin = adminsRepository.getAdminByUser_userId(userId);
+        User user = userRepository.findById(userId).orElseThrow(()->  new RuntimeException("User Not Found"));
+        if( user != null) {
+            Admins newAdmin = new Admins();
+            newAdmin.setUser(user);
+            user.setAdmin(newAdmin);
+            adminsRepository.save(newAdmin);
+            return true;
+        }
+        return false;
+    }
+
 }

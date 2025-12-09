@@ -34,6 +34,11 @@
             android:name=".SessionActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".EditSessionActivity"
+            android:exported="false" />
+
+
         <!-- Main launcher activity -->
         <activity
             android:name=".CreateAccountActivity"
@@ -60,6 +65,9 @@
             android:exported="false" />
         <activity
             android:name=".AllMessages"
+            android:exported="false" />
+        <activity
+            android:name=".AdminUserListActivity"
             android:exported="false" />
 
         <activity

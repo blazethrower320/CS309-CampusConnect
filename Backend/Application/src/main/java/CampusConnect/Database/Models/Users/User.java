@@ -44,7 +44,7 @@ public class User {
     @JsonIgnore
     private Admins admin;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonIgnore
     private Tutor tutor;
 
@@ -135,12 +135,6 @@ public class User {
         return tutor;
     }
 
-    public void setTutor(Tutor tutor){
-        this.tutor = tutor;
-        if(tutor != null && tutor.getUser() != this){
-            tutor.setUser(this);
-        }
-    }
     public Set<Ratings> getRatings() {
         return ratings;
     }
