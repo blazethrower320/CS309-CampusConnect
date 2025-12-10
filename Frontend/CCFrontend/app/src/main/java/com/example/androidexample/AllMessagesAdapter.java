@@ -16,7 +16,7 @@ public class AllMessagesAdapter extends RecyclerView.Adapter<AllMessagesAdapter.
     private final List<MessageGroup> messageGroupList;
     private final OnItemClickListener listener;
 
-    // Interface for click events
+    // Interface for click events, now passes the whole object
     public interface OnItemClickListener {
         void onItemClick(MessageGroup messageGroup);
     }
@@ -36,9 +36,7 @@ public class AllMessagesAdapter extends RecyclerView.Adapter<AllMessagesAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        // Get the data for the current position
         MessageGroup currentGroup = messageGroupList.get(position);
-        // Bind the data to the views in the ViewHolder
         holder.bind(currentGroup, listener);
     }
 
@@ -47,22 +45,27 @@ public class AllMessagesAdapter extends RecyclerView.Adapter<AllMessagesAdapter.
         return messageGroupList.size();
     }
 
-    // ViewHolder class to hold the views for each item
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView groupNameText;
-        TextView messageTimeText;
+        TextView chatTypeText;
+        TextView extraText;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             // Find the views from your item_messagesgroup.xml layout
             groupNameText = itemView.findViewById(R.id.session_course_name_text);
-            messageTimeText = itemView.findViewById(R.id.message_sent_time);
+            chatTypeText = itemView.findViewById(R.id.chat_type);
+            extraText = itemView.findViewById(R.id.extra_txt); // Initialize the new TextView
         }
 
         public void bind(final MessageGroup messageGroup, final OnItemClickListener listener) {
             // Set the data to the views
-            groupNameText.setText(messageGroup.getGroupName());
-            messageTimeText.setText(messageGroup.getMessageTime());
+            groupNameText.setText(messageGroup.getName());
+            extraText.setText(messageGroup.getExtraText());
+
+            // The time field is not in the JSON, so hide it or set it to an empty string
+            chatTypeText.setText("");
+            chatTypeText.setVisibility(View.GONE); // Hiding is cleaner
 
             // Set the click listener on the whole item view
             itemView.setOnClickListener(v -> listener.onItemClick(messageGroup));
