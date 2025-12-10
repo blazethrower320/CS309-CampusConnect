@@ -4,17 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="01ee6f06-2b84-458c-b6cc-b4de62b6eadf" name="Changes" comment="Worked on Test">
-      <change afterPath="$PROJECT_DIR$/src/test/java/CampusConnect/AdminSystemTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/CampusConnect/GroupMessagesSystemTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/CampusConnect/PrivateMessagesSystemTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/CampusConnect/RatingSystemTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/CampusConnect/UserSystemTest.java" afterDir="false" />
+    <list default="true" id="01ee6f06-2b84-458c-b6cc-b4de62b6eadf" name="Changes" comment="Need to redploy unmapped classes for database.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Admins/Admins.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Admins/Admins.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Admins/AdminsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Admins/AdminsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Users/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/CampusConnect/CarsonSystemTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Sessions/SessionsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Sessions/SessionsController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,39 +41,39 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "JUnit.AdminSystemTest.executor": "Run",
-    "JUnit.All in CampusConnect.executor": "Run",
-    "JUnit.CampusConnect in CampusConnect.executor": "Coverage",
-    "JUnit.CarsonSystemTest (1).executor": "Coverage",
-    "JUnit.CarsonSystemTest.executor": "Run",
-    "JUnit.GroupMessagesSystemTest.executor": "Run",
-    "JUnit.PrivateMessagesSystemTest.executor": "Coverage",
-    "JUnit.RatingSystemTest.executor": "Run",
-    "JUnit.UserSystemTest.executor": "Run",
-    "JUnit.java in CampusConnect.executor": "Run",
-    "Maven.CampusConnect [package].executor": "Run",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "Spring Boot.Main.executor": "Run",
-    "git-widget-placeholder": "Carson-Week12",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;JUnit.AdminSystemTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.All in CampusConnect.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CampusConnect in CampusConnect.executor&quot;: &quot;Coverage&quot;,
+    &quot;JUnit.CarsonSystemTest (1).executor&quot;: &quot;Coverage&quot;,
+    &quot;JUnit.CarsonSystemTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GroupMessagesSystemTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PrivateMessagesSystemTest.executor&quot;: &quot;Coverage&quot;,
+    &quot;JUnit.RatingSystemTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserSystemTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.java in CampusConnect.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.CampusConnect [package].executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;Spring Boot.Main.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Carson-Week12&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
-  <component name="RunManager" selected="JUnit.All in CampusConnect">
+}</component>
+  <component name="RunManager" selected="Spring Boot.Main">
     <configuration name="AdminSystemTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="CampusConnect" />
       <extension name="coverage">
@@ -205,6 +197,7 @@
       <workItem from="1764959877624" duration="980000" />
       <workItem from="1764965395735" duration="593000" />
       <workItem from="1764988247916" duration="41000" />
+      <workItem from="1765394041862" duration="2415000" />
     </task>
     <task id="LOCAL-00001" summary="Added mapping for sessions feature. Sessions mapped with tutor and users table.">
       <option name="closed" value="true" />
