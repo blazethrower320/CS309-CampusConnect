@@ -16,7 +16,7 @@
 
         <LinearLayout
             android:layout_width="343dp"
-            android:layout_height="474dp"
+            android:layout_height="476dp"
             android:layout_gravity="center"
             android:layout_marginTop="90dp"
             android:background="@drawable/layout_bg"
@@ -30,7 +30,6 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/layout_bg"
-                android:backgroundTint="#474747"
                 android:orientation="vertical">
 
                 <TextView
@@ -71,7 +70,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="25dp"
                     android:background="@drawable/text_editor_panel"
                     android:orientation="horizontal"
                     android:paddingLeft="10dp"
@@ -97,7 +96,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
                     android:background="@drawable/clear_btn"
                     android:paddingLeft="15dp"
                     android:text="Forgot Password?"
@@ -106,11 +104,12 @@
 
                 <Button
                     android:id="@+id/login_btn"
-                    android:layout_width="250dp"
+                    android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="45dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="50dp"
                     android:background="@drawable/btn_primary"
+                    android:gravity="center"
                     android:text="Login"
                     android:textColor="#ffffff"
                     android:textSize="15sp" />
@@ -119,7 +118,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:padding="10dp">
@@ -139,7 +137,7 @@
                         android:lines="1"
                         android:text="Create Account"
                         android:textColor="#A1A1FF"
-                        android:textSize="12sp" />
+                        android:textSize="13sp" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
