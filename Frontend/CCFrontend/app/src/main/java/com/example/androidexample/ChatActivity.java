@@ -64,6 +64,7 @@ public class ChatActivity extends AppCompatActivity implements WebSocketListener
         chatMessageList = new ArrayList<>();
         messageAdapter = new MessageAdapter(chatMessageList);
         messagesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         messagesRecyclerView.setAdapter(messageAdapter);
 
         // Get user info
