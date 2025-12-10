@@ -45,7 +45,7 @@ public class RatingsController
     @GetMapping("/ratings/getTutorAverageUsrId/{userId}")
     public double getTutorAverageRating(@PathVariable long userId)
     {
-        Tutor tutor = tutorRepository.findById(userId).get();
+        Tutor tutor = tutorRepository.findByUser_UserId(userId);
         List<Ratings> tutorRatings = ratingsRepository.getAllRatingsByTutor(tutor);
 
         int totalStars = 0;
