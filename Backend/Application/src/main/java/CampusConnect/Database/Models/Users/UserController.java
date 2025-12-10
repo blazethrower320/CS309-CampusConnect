@@ -70,7 +70,7 @@ public class UserController {
         return userRepository.findAllByUsername(username);
     }
     @GetMapping("/users/findUser/{name}")
-    public List<User> getUserByFirstName(@PathVariable String name)
+    public User getUserByFirstName(@PathVariable String name)
     {
         return userRepository.findAllByFirstName(name);
     }
@@ -185,6 +185,7 @@ public class UserController {
 
         // Save the User
         User newUser = new User(userReq.getUsername(), userReq.getPassword());
+
         newUser = userRepository.save(newUser);
 
         // If the user should also be an admin, create Admin entity

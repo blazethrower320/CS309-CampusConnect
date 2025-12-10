@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -125,6 +126,14 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
             drawerLayout.closeDrawer(GravityCompat.START);
         });
 
+        LinearLayout UsersBtn = findViewById(R.id.nav_deleteUsers);
+        UsersBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(MainMenuActivity.this, AdminUserListActivity.class);
+            startActivity(intent);
+            drawerLayout.closeDrawer(GravityCompat.START);
+        });
+
+
         LinearLayout reviewsBtn = findViewById(R.id.nav_reviews);
         reviewsBtn.setOnClickListener(v -> {
             Intent intent = new Intent(MainMenuActivity.this, ReviewListActivity.class);
@@ -157,7 +166,6 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
         msgBtn.setOnClickListener(this);
         //setNumClassBtn.setOnClickListener(this);
 
-        deleteAccountBtn.setOnClickListener(v -> DeleteUser());
 
         activeSessionsRecycler = findViewById(R.id.active_sessions_recycler);
         emptySessionsMessage = findViewById(R.id.empty_sessions_message);
@@ -177,16 +185,19 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
         if (user.isAdmin())
         {
             statusText.setText("Status: Admin");
+            UsersBtn.setVisibility(View.VISIBLE);
         }
         else if (isTutor) {
             connectWebSocketForTutor();
             statusText.setText("Status: Tutor");
             loadTutorStats();
             tutorStatsCard.setVisibility(View.VISIBLE);
+            UsersBtn.setVisibility(View.GONE);
         }
         else
         {
             statusText.setText("Status: Student");
+            UsersBtn.setVisibility(View.GONE);
         }
     }
 
@@ -236,64 +247,7 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
             //User.getInstance().clearInstance();
             //finish();
         }
-        if (v.getId() == R.id.delete_account_btn)
-        {
-            DeleteUser();
-            startActivity(new Intent(MainMenuActivity.this, MainActivity.class));
-            finish();
-        }
     }
-
-    private void DeleteUser()
-    {
-        if (username == null || password == null)
-        {
-            Toast.makeText(this, "Missing credentials", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        JSONObject requestBodyJson = new JSONObject();
-        try
-        {
-            requestBodyJson.put("username", username);
-            requestBodyJson.put("password", password);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return;
-        }
-
-        final String requestBody = requestBodyJson.toString();
-        StringRequest stringRequest = new StringRequest(
-                Request.Method.POST, // changed from DELETE to POST
-                URL_DELETE_USER,
-                response -> {
-                    Toast.makeText(this, "Account Deleted", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(MainMenuActivity.this, MainActivity.class));
-                    finish();
-                },
-                error -> {
-                    Log.e("Volley Error", error.toString());
-                    Toast.makeText(this, "Unable to delete account", Toast.LENGTH_SHORT).show();
-                }
-        ) {
-            @Override
-            public String getBodyContentType() {
-                return "application/json; charset=utf-8";
-            }
-
-            @Override
-            public byte[] getBody() {
-                return requestBody.getBytes();
-            }
-        };
-
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
-    }
-
-
     private void fetchUserSessions() {
         String url = BASE_URL + "/sessions/user/" + userId;
         loadingSpinner.setVisibility(View.VISIBLE);
@@ -356,17 +310,25 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
 
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
-                    int totalClasses = response.optInt("totalClasses", -1);
-                    double rating = response.optDouble("rating", -1);
+                    // Get classes count from the "classes" array
+                    int totalClasses = response.optJSONArray("classes") != null
+                            ? response.optJSONArray("classes").length()
+                            : 0;
+
+                    // Get total rating
+                    double rating = response.optDouble("totalRating", -1);
 
                     tutorStatClasses.setText("Classes: " + (totalClasses >= 0 ? totalClasses : "--"));
                     tutorStatRating.setText("Rating: " + (rating >= 0 ? rating : "--"));
+
+                    Log.d("TutorStats", "Loaded stats: Classes=" + totalClasses + ", Rating=" + rating);
                 },
-                error -> Log.e("TutorStats", "Error", error)
+                error -> Log.e("TutorStats", "Error loading tutor stats", error)
         );
 
         requestQueue.add(req);
     }
+
 
 
     private void checkNotificationPermission() {
