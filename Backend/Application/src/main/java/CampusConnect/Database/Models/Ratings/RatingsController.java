@@ -36,6 +36,11 @@ public class RatingsController
     {
         return ratingsRepository.getAllRatingsByTutorTutorId(tutorId);
     }
+    @GetMapping("/ratings/getTutorRatingsUserId/{UserId}")
+    public List<Ratings> getTutorRatingsUserID(@PathVariable long userId)
+    {
+        return ratingsRepository.getAllRatingsByUser_UserId(userId);
+    }
 
     @PostMapping("/ratings/createRating")
     public boolean createRating(@RequestBody RatingsDTO ratingDTO)
