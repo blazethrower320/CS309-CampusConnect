@@ -30,7 +30,6 @@ public class MessagesController
 
     @GetMapping("/messages/getAllChats/{userId}")
     public List<DisplayChat> getAllChatsForUser(@PathVariable long userId) {
-
         List<DisplayChat> combinedChats = new ArrayList<>();
         List<PrivateMessages> privateMessages = privateMessagesRepository.findByUserIdOrReceiverUserId(userId, userId);
         Set<Long> privateChatOtherIds = new HashSet<>();
