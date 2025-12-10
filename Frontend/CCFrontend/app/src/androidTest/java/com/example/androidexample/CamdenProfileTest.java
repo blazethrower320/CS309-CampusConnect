@@ -2,7 +2,6 @@ package com.example.androidexample;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -31,7 +30,7 @@ import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 
 @RunWith(AndroidJUnit4.class)
-public class CamdenSystemTest
+public class CamdenProfileTest
 {
 
     private MockWebServer server;
@@ -55,6 +54,8 @@ public class CamdenSystemTest
     {
         // Shut down the server after each test
         server.shutdown();
+        User.clearInstance();
+
     }
 
     // ✓ Tests OnCreate() and updateUIWithProfileUser() using the User Singleton

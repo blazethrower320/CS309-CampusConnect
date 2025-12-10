@@ -100,10 +100,12 @@ public class ChatActivity extends AppCompatActivity implements WebSocketListener
         String serverUrl;
 
         if (isGroupChat) {
+            Log.i("WebSocket", "Setting up group chat connection");
             serverUrl = "ws://coms-3090-037.class.las.iastate.edu:8080/groupChat/{sessionId}/{userId}";
             serverUrl = serverUrl.replace("{sessionId}", String.valueOf(sessionId));
             serverUrl = serverUrl.replace("{userId}", String.valueOf(userId));
         } else {
+            Log.i("WebSocket", "Setting up private chat connection");
             serverUrl = "ws://coms-3090-037.class.las.iastate.edu:8080/DM/{userId1}/{userId2}";
             serverUrl = serverUrl.replace("{userId1}", String.valueOf(userId));
             serverUrl = serverUrl.replace("{userId2}", String.valueOf(sessionId));
@@ -144,7 +146,8 @@ public class ChatActivity extends AppCompatActivity implements WebSocketListener
                     messageJson.put("message", messageText);
                     WebSocketManager.getInstance().sendMessage(messageJson.toString());
 
-                    chatMessageList.add(new ChatMessage(messageText, true, 0));
+                    // Inside sendBtn.setOnClickListener
+                    chatMessageList.add(new ChatMessage(messageText, true, 0, this.username));
                     messageAdapter.notifyItemInserted(chatMessageList.size() - 1);
                     messagesRecyclerView.scrollToPosition(chatMessageList.size() - 1);
                     msgTxt.setText("");
@@ -168,14 +171,13 @@ public class ChatActivity extends AppCompatActivity implements WebSocketListener
 
             if (!hasHistoryLoaded) {
                 // We only attempt to load history ONCE.
-                hasHistoryLoaded = true;
+                hasHistoryLoaded = true; // Mark history as "attempted"
 
-                // Check if the message is a valid JSON Array.
-                // A simple string like "[]" is a valid array but will have length 0.
+                // First, try to parse as a JSON Array (the ideal format)
                 if (message.trim().startsWith("[")) {
                     try {
                         JSONArray historyArray = new JSONArray(message);
-                        Log.d("WebSocket", "Parsing as history array...");
+                        Log.d("WebSocket", "Parsing as JSON history array...");
                         for (int i = 0; i < historyArray.length(); i++) {
                             JSONObject msgJson = historyArray.getJSONObject(i);
                             String content = msgJson.getString("message");
@@ -186,30 +188,90 @@ public class ChatActivity extends AppCompatActivity implements WebSocketListener
                             boolean isSentByUser = (senderId == this.userId);
                             chatMessageList.add(new ChatMessage(content, isSentByUser, messageType, senderName));
                         }
-
-                        // IMPORTANT: Only update UI if we actually added messages.
-                        if (!chatMessageList.isEmpty()) {
-                            messageAdapter.notifyDataSetChanged();
-                            messagesRecyclerView.scrollToPosition(chatMessageList.size() - 1);
-                            Log.d("WebSocket", "Successfully loaded " + chatMessageList.size() + " messages from history.");
-                        } else {
-                            Log.d("WebSocket", "History was an empty array '[]'. No messages loaded.");
-                        }
-
                     } catch (JSONException e) {
-                        Log.e("WebSocket", "Error parsing what looked like a history array. Message: " + message, e);
+                        // If it starts with '[' but fails to parse, it might be a plain string.
+                        // Fallback to the plain text parser.
+                        Log.e("WebSocket", "Failed to parse as JSON array, falling back to plain text parser. Message: " + message);
+                        parsePlainTextHistory(message);
                     }
                 } else {
-                    // If it doesn't start with '[', it must be a single message.
-                    Log.w("WebSocket", "Initial message was not a history array. Treating as a single message.");
-                    parseSingleMessage(message);
+                    // If it doesn't start with '[', it's either a single JSON object or plain text.
+                    // We will treat it as plain text history first.
+                    Log.d("WebSocket", "Initial message is not a JSON array. Parsing as plain text history.");
+                    parsePlainTextHistory(message);
                 }
+
+                // After parsing (either format), update the UI.
+                if (!chatMessageList.isEmpty()) {
+                    messageAdapter.notifyDataSetChanged();
+                    messagesRecyclerView.scrollToPosition(chatMessageList.size() - 1);
+                    Log.d("WebSocket", "Successfully processed history. Total messages: " + chatMessageList.size());
+                } else {
+                    Log.d("WebSocket", "History was empty or could not be parsed. No messages loaded.");
+                }
+
             } else {
-                // If history is already loaded, all subsequent messages are single messages.
+                // If history is already loaded, all subsequent messages are single JSON messages.
                 parseSingleMessage(message);
             }
         });
     }
+
+    /**
+     * Parses a block of plain text history where messages are in the format "Name: Message".
+     * It groups consecutive messages from the same sender into a single bubble.
+     * @param historyText The full string of chat history.
+     */
+    /**
+     * Parses a block of plain text history where messages are in the format "Name: Message".
+     * It groups consecutive messages from the same sender and handles image URLs.
+     * @param historyText The full string of chat history.
+     */
+    /**
+     * Parses a block of plain text history where messages are in the format "Name: Message".
+     * It creates a NEW BUBBLE for every single line and handles image URLs.
+     * @param historyText The full string of chat history.
+     */
+    private void parsePlainTextHistory(String historyText) {
+        String[] lines = historyText.split("\\r?\\n"); // Split by new line
+
+        for (String line : lines) {
+            if (line.trim().isEmpty()) {
+                continue; // Skip empty lines
+            }
+
+            int separatorIndex = line.indexOf(':');
+            if (separatorIndex == -1) {
+                // If a line has no ':', we can't determine the sender.
+                // For simplicity, we will skip these malformed lines in this version.
+                Log.w("HistoryParser", "Skipping malformed history line: " + line);
+                continue;
+            }
+
+            String senderName = line.substring(0, separatorIndex).trim();
+            String content = line.substring(separatorIndex + 1).trim();
+
+            boolean isSentByUser = senderName.equals(this.username);
+            int messageType = 0; // Default to 0 (text)
+
+            // Check if the content is an image URL
+
+            String baseUrl = "http://coms-3090-037.class.las.iastate.edu:8080";
+            if (content.startsWith(baseUrl)) {
+                messageType = 1; // Set message type to 1 (image)
+
+                // Remove the base URL from the content string
+                content = content.substring(baseUrl.length());
+            }
+
+            //
+            // MODIFIED LOGIC: Always create a new ChatMessage for every line.
+            //
+            ChatMessage newMessage = new ChatMessage(content, isSentByUser, messageType, senderName);
+            chatMessageList.add(newMessage);
+        }
+    }
+
 
     private void parseSingleMessage(String message) {
         try {
@@ -281,15 +343,14 @@ public class ChatActivity extends AppCompatActivity implements WebSocketListener
         Volley.newRequestQueue(this).add(multipartRequest);
     }
 
-    private void sendImageUrlOverWebSocket(String imageUrl) {
+    void sendImageUrlOverWebSocket(String imageUrl) {
         try {
             JSONObject messageJson = new JSONObject();
             messageJson.put("type", 1);
             messageJson.put("message", imageUrl);
             WebSocketManager.getInstance().sendMessage(messageJson.toString());
 
-            chatMessageList.add(new ChatMessage(imageUrl, true, 1));
-            messageAdapter.notifyItemInserted(chatMessageList.size() - 1);
+            chatMessageList.add(new ChatMessage(imageUrl, true, 1, this.username));            messageAdapter.notifyItemInserted(chatMessageList.size() - 1);
             messagesRecyclerView.scrollToPosition(chatMessageList.size() - 1);
         } catch (JSONException e) {
             Log.e("WebSocketSend", "Error sending image URL", e);

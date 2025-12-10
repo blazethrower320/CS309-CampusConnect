@@ -1,7 +1,7 @@
 package com.example.androidexample;
 
 public class ChatMessage {
-    private final String content;
+    private String content;
     private final boolean isSentByUser;
     private final int messageType; // 0 for text, 1 for image
     private String senderName; // Added to store the name of the sender
@@ -14,6 +14,11 @@ public class ChatMessage {
         this.isSentByUser = isSentByUser;
         this.messageType = messageType;
         this.senderName = null; // Not needed for sent messages
+    }
+
+    public void appendContent(String textToAppend) {
+        // The 'this.content' refers to the 'content' field of the ChatMessage object
+        this.content += textToAppend;
     }
 
     /**
@@ -41,5 +46,10 @@ public class ChatMessage {
 
     public String getSenderName() {
         return senderName;
+    }
+
+    public void setContent(String s)
+    {
+        this.content = s;
     }
 }
