@@ -104,8 +104,14 @@ public class ChatActivity extends AppCompatActivity implements WebSocketListener
             serverUrl = "ws://coms-3090-037.class.las.iastate.edu:8080/groupChat/{sessionId}/{userId}";
             serverUrl = serverUrl.replace("{sessionId}", String.valueOf(sessionId));
             serverUrl = serverUrl.replace("{userId}", String.valueOf(userId));
-        } else {
+        } else
+        {
             Log.i("WebSocket", "Setting up private chat connection");
+            if(getIntent().getIntExtra("tutorUserId", -1) != -1)
+            {
+                sessionId = getIntent().getIntExtra("tutorUserId", -1);
+            }
+            Log.i("WebSocket", "userId: " + userId + ", OtherUserId: " + sessionId);
             serverUrl = "ws://coms-3090-037.class.las.iastate.edu:8080/DM/{userId1}/{userId2}";
             serverUrl = serverUrl.replace("{userId1}", String.valueOf(userId));
             serverUrl = serverUrl.replace("{userId2}", String.valueOf(sessionId));

@@ -54,6 +54,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private User user;
     private User otherUser;
     private String tutorUsername;
+    private int profileUserId;
 
     private static final String BASE_URL = "http://coms-3090-037.class.las.iastate.edu:8080";
 
@@ -101,6 +102,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             // Viewing tutor's profile
             GetUserInfo(tutorUsername);          // populates profileUser fields
             fetchUserIdByUsername(tutorUsername); // fetch numeric userId
+
         } else {
             // Viewing own profile
             GetUserInfo(loggedInUser.getUsername());
@@ -160,6 +162,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 intent.putExtra("userId", loggedInUser.getUserId());
                 intent.putExtra("username", loggedInUser.getUsername());
                 intent.putExtra("chatName", profileUser.getFirstName());
+                intent.putExtra("isGroupChat", false);
 
             Log.d("ProfileActivity", "Starting ChatActivity with tutorUserId: "
                         + profileUser.getUserId() + ", tutorUsername: " + profileUser.getUsername());
@@ -273,10 +276,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 response -> {
                     try {
                         profileUser = User.fromJson(response); // create a new User object
-                        if(profileUser.getTutorId()!=0)
-                        {
-                            getTutorRating(user.getUserId());
-                        }
+                        //if(profileUser.getTutorId()!=0)
+                        //{
+                            profileUser.setUserId(profileUserId);
+                            //getTutorRating(profileUser.getUserId());
+                            Log.i("ProfileActivity", "Tutor ID: " + profileUser.getUserId());
+                        //}
                         updateUIWithProfileUser(); // update UI after network call
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -301,6 +306,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                             profileUser.setUserId(userId);
                         }
                         Log.d("ProfileActivity", "Fetched userId: " + userId);
+                        profileUserId = userId;
+                        getTutorRating(userId);
                         msgBtn.setEnabled(true);
                     } catch (NumberFormatException e) {
                         Log.e("ProfileActivity", "Failed to parse userId: " + response, e);
@@ -315,7 +322,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
 
     private void getTutorRating(int tutorId) {
-        String url = BASE_URL + "/tutors/getTutorRating/" + tutorId;
+        String url = BASE_URL + "/ratings/getTutorAverageUsrId/" + tutorId;
         RequestQueue queue = Volley.newRequestQueue(this);
 
         // Since the endpoint returns a plain string (the double), a StringRequest is appropriate.
@@ -352,7 +359,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         sessionAdapter = new PastSessionAdapter(pastSessionList);
         pastSessionsRecyclerView.setAdapter(sessionAdapter);
 
-        String url = BASE_URL + "/sessions/inactive";
+        String url = BASE_URL + "/sessions/inactive/" + User.getInstance().getUserId(); //TODO NEW CODE TO TROUBLESHOOT
         RequestQueue queue = Volley.newRequestQueue(this);
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
