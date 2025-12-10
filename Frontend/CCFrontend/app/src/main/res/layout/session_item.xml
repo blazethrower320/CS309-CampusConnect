@@ -73,78 +73,51 @@
             android:textSize="16sp"
             android:layout_marginTop="6dp" />
 
-
-
         <!-- Location and Time Row -->
-        <!-- Location + Time + Edit Button Row -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginTop="10dp"
-            android:gravity="center_vertical">
+            android:gravity="start">
 
-            <!-- LEFT SIDE: Location + Time stacked horizontally -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:gravity="start|center_vertical">
+            <!-- Location icon + text -->
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginEnd="4dp"
+                android:src="@drawable/outline_location"
+                app:tint="#FFFFFF"/>
 
-                <!-- Location icon + text -->
-                <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="35dp"
-                    android:layout_marginEnd="4dp"
-                    android:src="@drawable/outline_location"
-                    app:tint="#FFFFFF"/>
-
-                <TextView
-                    android:id="@+id/meeting_location"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Coover 101"
-                    android:textColor="#FFFFFF"
-                    android:textSize="15sp" />
-
-                <!-- Space between location and time -->
-                <Space
-                    android:layout_width="16dp"
-                    android:layout_height="match_parent" />
-
-                <!-- Time icon + text -->
-                <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="35dp"
-                    android:layout_marginEnd="4dp"
-                    android:src="@drawable/outline_alarm"
-                    app:tint="#FFFFFF"/>
-
-                <TextView
-                    android:id="@+id/meeting_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Fridays 3:00 PM"
-                    android:textColor="#FFFFFF"
-                    android:textSize="15sp" />
-            </LinearLayout>
-
-            <!-- RIGHT SIDE: Edit button -->
             <TextView
-                android:id="@+id/button_edit_session"
-                android:layout_width="60dp"
-                android:layout_height="38dp"
-                android:background="@drawable/session_join_button_background"
-                android:gravity="center"
-                android:text="Edit"
+                android:id="@+id/meeting_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Coover 101"
                 android:textColor="#FFFFFF"
-                android:textStyle="bold"
-                android:textSize="14sp"
-                android:padding="6dp"
-                android:visibility="gone" />
-        </LinearLayout>
+                android:textSize="15sp" />
 
+            <!-- Space between location and time -->
+            <Space
+                android:layout_width="16dp"
+                android:layout_height="match_parent" />
+
+            <!-- Time icon + text -->
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginEnd="4dp"
+                android:src="@drawable/outline_alarm"
+                app:tint="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/meeting_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fridays 3:00 PM"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp" />
+        </LinearLayout>
 
     </LinearLayout>
 

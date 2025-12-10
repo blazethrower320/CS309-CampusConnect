@@ -95,20 +95,42 @@ public class CreateAccountActivity extends AppCompatActivity {
 
     /** Create user and update global User instance **/
     private void createUser(String username, String password, String firstName, String lastName) {
-        // Step 1: POST to create the user
-        StringRequest createRequest = new StringRequest(
+        StringRequest request = new StringRequest(
                 Request.Method.POST,
                 URL_CREATE_USER,
                 response -> {
                     Log.d("CreateUser", "Response: " + response);
+                    msgResponse.setText("User Created Successfully");
+                    showToast("User Created");
 
-                    // Check if response is "User"
-                    if (response.trim().equalsIgnoreCase("User created successfully")) {
-                        // Step 2: GET userId from username
-                        fetchUserId(username, password, firstName, lastName);
-                    } else {
-                        showToast("Unexpected response from server: " + response);
-                        msgResponse.setText("User Creation Failed");
+                    // Attempt to parse returned user data
+                    try {
+                        JSONObject json = new JSONObject(response);
+                        int userId = json.optInt("userId", -1);
+
+                        // Set user data globally in User.java singleton
+                        User user = User.getInstance();
+                        user.setUsername(username);
+                        user.setPassword(password);
+                        user.setAdmin(isAdmin);
+                        user.setTutor(isTutor);
+                        user.setUserId(userId);
+                        user.setFirstName(firstName);
+                        user.setLastName(lastName);
+
+                        Log.d("UserSingleton", "User saved globally: " + user.toString());
+
+                        if (isAdmin) {
+                            createRoleAccount(username, URL_CREATE_ADMIN, true, false);
+                        } else if (isTutor) {
+                            createRoleAccount(username, URL_CREATE_TUTOR, false, true);
+                        } else {
+                            goToMainMenu();
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        showToast("Error parsing user response");
                     }
                 },
                 error -> {
@@ -119,15 +141,8 @@ public class CreateAccountActivity extends AppCompatActivity {
         ) {
             @Override
             public byte[] getBody() {
-                try {
-                    JSONObject body = new JSONObject();
-                    body.put("username", username);
-                    body.put("password", password);
-                    return body.toString().getBytes("utf-8");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return null;
-                }
+                String jsonBody = "{\"username\":\"" + username + "\",\"password\":\"" + password + "\"}";
+                return jsonBody.getBytes();
             }
 
             @Override
@@ -136,49 +151,8 @@ public class CreateAccountActivity extends AppCompatActivity {
             }
         };
 
-        queue.add(createRequest);
+        queue.add(request);
     }
-
-    private void fetchUserId(String username, String password, String firstName, String lastName) {
-        String url = BASE_URL + "/users/getUserId/" + username;
-
-        StringRequest getRequest = new StringRequest(
-                Request.Method.GET,
-                url,
-                response -> {
-                    try {
-                        int userId = Integer.parseInt(response.trim());
-
-                        // Populate User singleton
-                        User user = User.getInstance();
-                        user.setUsername(username);
-                        user.setPassword(password);
-                        user.setUserId(userId);
-                        user.setFirstName(firstName);
-                        user.setLastName(lastName);
-                        user.setAdmin(isAdmin);
-                        user.setTutor(isTutor);
-
-                        Log.d("UserSingleton", "User saved globally: " + user.toString());
-
-                        // Update database
-                        updateUserInDatabase(user);
-
-                    } catch (NumberFormatException e) {
-                        e.printStackTrace();
-                        showToast("Error parsing userId from server");
-                    }
-                },
-                error -> {
-                    Log.e("GetUserId", "Error: " + error.toString());
-                    showToast("Failed to fetch userId");
-                }
-        );
-
-        queue.add(getRequest);
-    }
-
-
 
     /** Admin or Tutor account creation **/
     private void createRoleAccount(String username, String baseUrl, boolean isAdmin, boolean isTutor) {
@@ -202,63 +176,6 @@ public class CreateAccountActivity extends AppCompatActivity {
 
         queue.add(request);
     }
-
-    private static final String URL_UPDATE_USER = BASE_URL + "/users/update";
-
-    private void updateUserInDatabase(User user) {
-        try {
-            JSONObject body = new JSONObject();
-            body.put("firstName", user.getFirstName());
-            body.put("lastName", user.getLastName());
-            body.put("username", user.getUsername());
-            body.put("password", user.getPassword());
-            body.put("isTutor", user.isTutor());
-            body.put("isAdmin", user.isAdmin());
-            body.put("major", "");          // Optional: set if you have values
-            body.put("classification", "");
-            body.put("bio", "");
-
-            Log.d("UpdateUserDebug", "PUT Body: " + body.toString());
-
-            StringRequest updateRequest = new StringRequest(
-                    Request.Method.PUT,
-                    URL_UPDATE_USER,
-                    response -> {
-                        Log.d("UpdateUserDebug", "User updated successfully: " + response);
-                        // After updating, continue with Admin/Tutor creation or main menu
-                        if (user.isAdmin()) {
-                            createRoleAccount(user.getUsername(), URL_CREATE_ADMIN, true, false);
-                        } else if (user.isTutor()) {
-                            createRoleAccount(user.getUsername(), URL_CREATE_TUTOR, false, true);
-                        } else {
-                            goToMainMenu();
-                        }
-                    },
-                    error -> {
-                        Log.e("UpdateUserDebug", "Error updating user: " + error.toString());
-                        showToast("Failed to update user info");
-                    }
-            ) {
-                @Override
-                public byte[] getBody() {
-                    return body.toString().getBytes();
-                }
-
-                @Override
-                public String getBodyContentType() {
-                    return "application/json; charset=utf-8";
-                }
-            };
-
-            queue.add(updateRequest);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e("UpdateUserDebug", "Exception building JSON body: " + e.getMessage());
-        }
-    }
-
-
 
     /** Navigate to Main Menu **/
     private void goToMainMenu() {

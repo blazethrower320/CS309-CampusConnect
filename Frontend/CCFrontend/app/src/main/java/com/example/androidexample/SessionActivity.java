@@ -389,7 +389,6 @@ public class SessionActivity extends AppCompatActivity implements WebSocketListe
 
                     session.setTutorUsername(username);
                     session.setTutorUserId(tutorUserId);
-                    session.setTutorId(tutorId);
 
                     Log.e("tutorUserId", String.valueOf(tutorUserId));
                     sessionAdapter.notifyDataSetChanged();
