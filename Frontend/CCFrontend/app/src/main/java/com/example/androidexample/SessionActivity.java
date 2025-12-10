@@ -102,6 +102,7 @@ public class SessionActivity extends AppCompatActivity implements WebSocketListe
             startActivity(new Intent(this, CreateSessionActivity.class));
             finish();
         });
+        if (isAdmin) createSession.setVisibility(View.GONE);
 
         fetchSessionsFromBackend();
     }

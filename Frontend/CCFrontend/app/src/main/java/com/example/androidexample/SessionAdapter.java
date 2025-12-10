@@ -51,6 +51,7 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.ViewHold
         // Show Edit button only for admin OR the tutor who created it
         if (isAdmin || (loggedInUserId != -1 && sessionTutorUserId == loggedInUserId)) {
             holder.editButton.setVisibility(View.VISIBLE);
+            holder.joinButton.setVisibility(View.GONE);
         } else {
             holder.editButton.setVisibility(View.GONE);
         }

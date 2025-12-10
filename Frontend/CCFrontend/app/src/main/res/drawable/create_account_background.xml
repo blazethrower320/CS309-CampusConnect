@@ -1,0 +1,14 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- Light grey background -->
+    <solid android:color="#474747" />
+
+    <!-- Rounded corners for the “pill” look -->
+    <corners android:radius="12dp" />
+
+    <!-- Thin border -->
+    <stroke
+        android:width="9dp"
+        android:color="#212121" />
+</shape>

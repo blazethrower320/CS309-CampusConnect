@@ -85,7 +85,7 @@
                     android:layout_weight="0.39"
                     android:layout_height="48dp"
                     android:background="@android:drawable/btn_dropdown"
-                    android:popupBackground="#BA91FB"/>
+                    android:popupBackground="#FFFFFF"/>
 
                 <SearchView
                     android:id="@+id/user_search_view"

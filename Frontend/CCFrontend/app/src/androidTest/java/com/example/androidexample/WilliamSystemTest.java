@@ -610,7 +610,6 @@ public class WilliamSystemTest {
                 .check(matches(hasMinimumChildCount(1)));
     }
 
-    // MIGHT NOT WORK BECAUSE OF DRAWER LAYOUT
     @Test
     public void testNavigationDrawerButtons() {
         IntentTestUtils.launchActivity(SessionActivity.class);

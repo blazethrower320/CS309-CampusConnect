@@ -3,10 +3,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,6 +27,9 @@ public class EditSessionActivity extends AppCompatActivity {
 
     private EditText className, classCode, meetingLocation, meetingTime;
     private Button saveButton, deleteButton;
+
+    private ImageButton Backbtn;
+
     private int tutorId;
     private int sessionId;
 
@@ -38,6 +46,15 @@ public class EditSessionActivity extends AppCompatActivity {
         meetingTime = findViewById(R.id.edit_time);
         saveButton = findViewById(R.id.btn_save_session);
         deleteButton = findViewById(R.id.btn_delete_session);
+        Backbtn = findViewById(R.id.btn_back);
+
+
+        Backbtn.setOnClickListener(v -> {
+            Intent intent = new Intent(EditSessionActivity.this, SessionActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish(); // close EditSessionActivity
+        });
 
 
         // Get passed session data
@@ -47,7 +64,8 @@ public class EditSessionActivity extends AppCompatActivity {
         className.setText(i.getStringExtra("className"));
         classCode.setText(i.getStringExtra("classCode"));
         meetingLocation.setText(i.getStringExtra("meetingLocation"));
-        meetingTime.setText(i.getStringExtra("meetingTime"));
+        String rawTime = i.getStringExtra("meetingTime");
+        meetingTime.setText(formatMeetingTime(rawTime));
         tutorId = i.getIntExtra("tutorId", -1);
 
         saveButton.setOnClickListener(v -> sendEditRequest());
@@ -57,6 +75,22 @@ public class EditSessionActivity extends AppCompatActivity {
         deleteButton.setOnClickListener(v -> deleteSession());
 
     }
+
+    private String formatMeetingTime(String backendTime) {
+        try {
+            // Backend format: "2025-10-29T19:00:00"
+            SimpleDateFormat backendFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            Date date = backendFormat.parse(backendTime);
+
+            // Desired format: "MM/dd/yyyy hh:mm AM/PM"
+            SimpleDateFormat displayFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+            return displayFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return backendTime; // fallback if parsing fails
+        }
+    }
+
 
     private void showDatePicker() {
         final Calendar calendar = Calendar.getInstance();
