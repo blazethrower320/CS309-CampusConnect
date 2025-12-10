@@ -240,7 +240,7 @@ public class SessionsSystemTest {
                 header("Content-Type", "application/json").
                 header("charset","utf-8").
                 when().
-                get("/sessions/user/253"); //UserID
+                get("/sessions/user/499"); //UserID
 
         // Check status code
         int statusCode16 = response16.getStatusCode();
@@ -326,7 +326,7 @@ public class SessionsSystemTest {
                         "password" : "1234"
                         }
                         """).
-                post("/sessions/leaveSession/253/2");   //USERID
+                post("/sessions/leaveSession/499/2");   //USERID
 
         int statusCode8 = response8.getStatusCode();
         assertEquals(200, statusCode8);
@@ -351,7 +351,7 @@ public class SessionsSystemTest {
                 header("Content-Type", "application/json").
                 header("charset","utf-8").
                 when().
-                post("sessions/deleteSession/237");
+                post("sessions/deleteSession/297");
 
         int statusCode11 = response11.getStatusCode();
         assertEquals(200, statusCode11);

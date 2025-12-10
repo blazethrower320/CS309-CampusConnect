@@ -1,0 +1,223 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > AdminsController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">CampusConnect.Database.Models.Admins</a>
+</div>
+
+<h1>Coverage Summary for Class: AdminsController (CampusConnect.Database.Models.Admins)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AdminsController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    12.5%
+  </span>
+  <span class="absValue">
+    (1/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    10%
+  </span>
+  <span class="absValue">
+    (4/40)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package CampusConnect.Database.Models.Admins;
+&nbsp;
+&nbsp;import CampusConnect.Database.Models.Tutors.Tutor;
+&nbsp;import CampusConnect.Database.Models.Tutors.TutorRepository;
+&nbsp;import CampusConnect.Database.Models.Users.User;
+&nbsp;import CampusConnect.Database.Models.Users.UserRepository;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;@RestController
+<b class="fc">&nbsp;public class AdminsController {</b>
+<b class="fc">&nbsp;    private String userNotFound = &quot;User not found&quot;;</b>
+<b class="fc">&nbsp;    private String adminNotFound = &quot;Admin not found&quot;;</b>
+<b class="fc">&nbsp;    private String adminAlreadyExists = &quot;Admin already exists&quot;;</b>
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    AdminsRepository adminsRepository;
+&nbsp;    @Autowired
+&nbsp;    UserRepository userRepository;
+&nbsp;    @Autowired
+&nbsp;    TutorRepository tutorRepository;
+&nbsp;
+&nbsp;    //Returns all classes
+&nbsp;    @GetMapping(path = &quot;/admins&quot;)
+&nbsp;    public List&lt;Admins&gt; getAllAdmins() {
+<b class="nc">&nbsp;        return adminsRepository.findAll();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public ResponseEntity&lt;Object&gt; CreateAdmin(User user)
+&nbsp;    {
+<b class="nc">&nbsp;        if(user == null)</b>
+<b class="nc">&nbsp;            return ResponseEntity.status(404).body(userNotFound);</b>
+&nbsp;
+<b class="nc">&nbsp;        Admins admin = new Admins(user);</b>
+&nbsp;
+<b class="nc">&nbsp;        adminsRepository.save(admin);</b>
+<b class="nc">&nbsp;        return ResponseEntity.ok(admin);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @PostMapping(&quot;/admin/updateRatingsTutor/{username}/{rating}&quot;)
+&nbsp;    public boolean UpdateRatings(@PathVariable String username, @PathVariable double rating)
+&nbsp;    {
+<b class="nc">&nbsp;        Tutor tutor = tutorRepository.findByUsername(username);</b>
+<b class="nc">&nbsp;        if(tutor == null)</b>
+&nbsp;        {
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        tutor.setTotalRating(rating);</b>
+<b class="nc">&nbsp;        tutorRepository.save(tutor);</b>
+&nbsp;
+<b class="nc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostMapping(&quot;/admin/deleteAdmin/{userId}&quot;)
+&nbsp;    public boolean DeleteAdmin(@PathVariable long userId)
+&nbsp;    {
+<b class="nc">&nbsp;        User user = userRepository.getUserByUserId(userId);</b>
+<b class="nc">&nbsp;        Admins admin = adminsRepository.findByUser(user);</b>
+<b class="nc">&nbsp;        if(admin == null)</b>
+&nbsp;        {
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        adminsRepository.delete(admin);</b>
+<b class="nc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/admin/incrementNukedUsers&quot;)
+&nbsp;    public boolean incrementNukedUsers(@RequestBody User user)
+&nbsp;    {
+<b class="nc">&nbsp;        Admins admin = adminsRepository.findByUser(user);</b>
+<b class="nc">&nbsp;        if(admin == null)</b>
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;
+<b class="nc">&nbsp;        admin.incrementNukedUsersCount();</b>
+<b class="nc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/admin/getAdminNukedUsers&quot;)
+&nbsp;    public int getAdminNukedUsers(@RequestBody User user)
+&nbsp;    {
+<b class="nc">&nbsp;        Admins admin = adminsRepository.findByUser(user);</b>
+<b class="nc">&nbsp;        if(admin == null)</b>
+<b class="nc">&nbsp;            return 0;</b>
+&nbsp;
+<b class="nc">&nbsp;        return admin.getNukedUsersCount();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostMapping(&quot;/admin/createAdmin/{userId}&quot;)
+&nbsp;    public boolean createAdmin(@PathVariable long userId){
+<b class="nc">&nbsp;        Admins admin = adminsRepository.getAdminByUser_userId(userId);</b>
+<b class="nc">&nbsp;        User user = userRepository.findById(userId).orElseThrow(()-&gt;  new RuntimeException(&quot;User Not Found&quot;));</b>
+<b class="nc">&nbsp;        if( user != null) {</b>
+<b class="nc">&nbsp;            Admins newAdmin = new Admins();</b>
+<b class="nc">&nbsp;            newAdmin.setUser(user);</b>
+<b class="nc">&nbsp;            user.setAdmin(newAdmin);</b>
+<b class="nc">&nbsp;            adminsRepository.save(newAdmin);</b>
+<b class="nc">&nbsp;            return true;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return false;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-12-10 15:43</div>
+</div>
+</body>
+</html>
