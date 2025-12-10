@@ -39,15 +39,17 @@ public class SessionsController
         return sessionsRepository.findAll();
     }
 
-    @GetMapping(path = "/sessions/inactive")
-    public List<Sessions> getPreviousSessions() {
+    @GetMapping(path = "/sessions/inactive/{userId}")
+    public List<Sessions> getPreviousSessions(@PathVariable long userId) {
         LocalDateTime currentTime = LocalDateTime.now();
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a");
+
         return sessionsRepository.findAll().stream()
                 .filter(s -> {
                     try {
                         if (s.getMeetingTime() == null) return false;
-                        return s.getMeetingTime().isBefore(currentTime) || s.getMeetingTime().isEqual(currentTime);
+                        boolean isPastOrNow = s.getMeetingTime().isBefore(currentTime) || s.getMeetingTime().isEqual(currentTime);
+                        boolean containsUser = s.getUsers().stream().anyMatch(u -> u.getUserId() == userId);
+                        return isPastOrNow && containsUser;
                     } catch (Exception e) {
                         return false;
                     }
