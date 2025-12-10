@@ -39,9 +39,8 @@ import okhttp3.mockwebserver.RecordedRequest;
 @RunWith(RobolectricTestRunner.class)
 @Config(
         manifest = "src/main/AndroidManifest.xml",
-        resourceDir = "src/main/res",
         packageName = "com.example.androidexample",
-        sdk = 28
+        sdk = 33
 )
 public class MockTestsWilliam {
 
