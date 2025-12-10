@@ -98,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     requestBody,
                     response -> {
                         try {
+                            boolean isAdmin = response.optBoolean("isAdmin", false);
                             int userId = response.optInt("userId", -1);
 
                             // Make a second call to get full user info (including tutor flag)
@@ -109,7 +110,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     null,
                                     userResponse -> {
                                         boolean isTutor = userResponse.optBoolean("isTutor", false);
-                                        boolean isAdmin = userResponse.optBoolean("isAdmin", false);
 
                                         Log.i("LoginSuccess", "User logged in. isAdmin=" + isAdmin + ", isTutor=" + isTutor + ", userId=" + userId);
 

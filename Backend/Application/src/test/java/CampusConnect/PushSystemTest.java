@@ -55,7 +55,7 @@ class PushSystemTest {
         String response = messages.poll(2, java.util.concurrent.TimeUnit.SECONDS);
 
         // Assert response
-        assertThat(response).isEqualTo("Chet joined your study session: Development");
+        assertThat(response).isEqualTo("CamdenKlicker joined your study session: Development");
 
         // Close session
         session.close();
