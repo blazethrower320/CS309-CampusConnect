@@ -46,6 +46,10 @@ public class WebSocketManager {
         this.webSocketListener = listener;
     }
 
+
+    public WebSocketListener getWebSocketListener() {
+        return webSocketListener;
+    }
     /**
      * Removes the currently set WebSocketListener from this WebSocketManager instance.
      * This action effectively disconnects the listener from handling WebSocket events.

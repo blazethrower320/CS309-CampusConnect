@@ -130,7 +130,6 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
         UsersBtn.setOnClickListener(v -> {
             Intent intent = new Intent(MainMenuActivity.this, AdminUserListActivity.class);
             startActivity(intent);
-            finish();
             drawerLayout.closeDrawer(GravityCompat.START);
         });
 

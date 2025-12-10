@@ -41,6 +41,9 @@ public class TutorListAdapter extends RecyclerView.Adapter<TutorListAdapter.Tuto
         void onReviewsClicked(TutorItem tutor);
     }
 
+    public List<TutorItem> getTutorList() {
+        return tutorList;
+    }
 
     @NonNull
     @Override
