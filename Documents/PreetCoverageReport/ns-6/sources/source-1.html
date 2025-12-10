@@ -1,0 +1,170 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > Ratings</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">CampusConnect.Database.Models.Ratings</a>
+</div>
+
+<h1>Coverage Summary for Class: Ratings (CampusConnect.Database.Models.Ratings)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Ratings</td>
+<td class="coverageStat">
+  <span class="percent">
+    16.7%
+  </span>
+  <span class="absValue">
+    (2/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    15%
+  </span>
+  <span class="absValue">
+    (3/20)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Ratings$HibernateInstantiator$Q20bGpgt</td>
+  </tr>
+  <tr>
+    <td class="name">Ratings$HibernateProxy$Q40dItux</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    16.7%
+  </span>
+  <span class="absValue">
+    (2/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    15%
+  </span>
+  <span class="absValue">
+    (3/20)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package CampusConnect.Database.Models.Ratings;
+&nbsp;
+&nbsp;import CampusConnect.Database.Models.Tutors.Tutor;
+&nbsp;import CampusConnect.Database.Models.Users.User;
+&nbsp;import jakarta.persistence.*;
+&nbsp;
+&nbsp;@Entity
+&nbsp;public class Ratings
+&nbsp;{
+&nbsp;
+&nbsp;    @Id
+&nbsp;    @GeneratedValue(strategy = GenerationType.IDENTITY)
+&nbsp;    private long id;
+<b class="fc">&nbsp;    @Column(nullable = false)</b>
+&nbsp;    private int rating = 0;
+<b class="fc">&nbsp;    private String comments = &quot;&quot;;</b>
+&nbsp;
+&nbsp;
+&nbsp;    @ManyToOne
+&nbsp;    @JoinColumn(name = &quot;tutor_id&quot;, nullable = false)
+&nbsp;    private Tutor tutor;
+&nbsp;
+&nbsp;    @ManyToOne
+&nbsp;    @JoinColumn(name = &quot;user_id&quot;, nullable = false)
+&nbsp;    private User user;
+&nbsp;
+<b class="nc">&nbsp;    public Ratings(Tutor tutor, User user) {</b>
+<b class="nc">&nbsp;        this.tutor = tutor;</b>
+<b class="nc">&nbsp;        this.user = user;</b>
+&nbsp;    }
+<b class="nc">&nbsp;    public Ratings(Tutor tutor, User user, int rating, String comments) {</b>
+<b class="nc">&nbsp;        this.tutor = tutor;</b>
+<b class="nc">&nbsp;        this.user = user;</b>
+<b class="nc">&nbsp;        this.rating = rating;</b>
+<b class="nc">&nbsp;        this.comments = comments;</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public Ratings(){}</b>
+&nbsp;
+<b class="nc">&nbsp;    public long getId() { return id; }</b>
+<b class="nc">&nbsp;    public int getRating() { return rating; }</b>
+<b class="nc">&nbsp;    public void setRating(int rating) { this.rating = rating; }</b>
+&nbsp;
+&nbsp;    // Add these
+<b class="nc">&nbsp;    public Tutor getTutor() { return tutor; }</b>
+<b class="nc">&nbsp;    public void setTutor(Tutor tutor) { this.tutor = tutor; }</b>
+&nbsp;
+<b class="nc">&nbsp;    public User getUser() { return user; }</b>
+<b class="nc">&nbsp;    public void setUser(User user) { this.user = user; }</b>
+&nbsp;
+<b class="nc">&nbsp;    public String getComments() { return comments; }</b>
+<b class="nc">&nbsp;    public void setComments(String comments) { this.comments = comments; }</b>
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-12-10 15:43</div>
+</div>
+</body>
+</html>

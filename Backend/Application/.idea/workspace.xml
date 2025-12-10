@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="01ee6f06-2b84-458c-b6cc-b4de62b6eadf" name="Changes" comment="Added new create admin feature.">
+    <list default="true" id="01ee6f06-2b84-458c-b6cc-b4de62b6eadf" name="Changes" comment="Comment out test.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/CampusConnect/CarsonSystemTest.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/CampusConnect/PushSystemTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/CampusConnect/PushSystemTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/CampusConnect/SessionsSystemTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/CampusConnect/SessionsSystemTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,7 +73,7 @@
     "JUnit.PushSystemTest.executor": "Run",
     "JUnit.PushWebSocketTest.executor": "Coverage",
     "JUnit.TutorSystemTest.executor": "Run",
-    "JUnit.java in CampusConnect.executor": "Run",
+    "JUnit.java in CampusConnect.executor": "Coverage",
     "Maven.CampusConnect [package].executor": "Run",
     "RequestMappingsPanelOrder0": "0",
     "RequestMappingsPanelOrder1": "1",
@@ -93,7 +95,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="JUnit.java in CampusConnect">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="CampusConnect.Main" />
       <module name="CampusConnect" />
@@ -162,8 +164,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Main" />
         <item itemvalue="JUnit.java in CampusConnect" />
+        <item itemvalue="Application.Main" />
         <item itemvalue="JUnit.PushWebSocketTest" />
         <item itemvalue="JUnit.TutorSystemTest" />
         <item itemvalue="JUnit.PushSystemTest" />
@@ -256,7 +258,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765232907175</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Comment out test.">
+      <option name="closed" value="true" />
+      <created>1765233944951</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1765233944951</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -269,7 +279,8 @@
     <MESSAGE value="Created Tests for classes and Push." />
     <MESSAGE value="Created Tests for Tutor and Sessions. All test should be done." />
     <MESSAGE value="Added new create admin feature." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added new create admin feature." />
+    <MESSAGE value="Comment out test." />
+    <option name="LAST_COMMIT_MESSAGE" value="Comment out test." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -293,14 +304,6 @@
           <line>242</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Ratings/Ratings.java</url>
-          <line>47</line>
-          <properties>
-            <option name="lambda-ordinal" value="-1" />
-          </properties>
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
@@ -318,6 +321,6 @@
     <SUITE FILE_PATH="coverage/Application$CarsonSystemTest.ic" NAME="CarsonSystemTest Coverage Results" MODIFIED="1764972853950" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
       <FILTER>CampusConnect.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/Application$java_in_CampusConnect.ic" NAME="java in CampusConnect Coverage Results" MODIFIED="1765076563600" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
+    <SUITE FILE_PATH="coverage/Application$java_in_CampusConnect.ic" NAME="java in CampusConnect Coverage Results" MODIFIED="1765402628709" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
   </component>
 </project>
