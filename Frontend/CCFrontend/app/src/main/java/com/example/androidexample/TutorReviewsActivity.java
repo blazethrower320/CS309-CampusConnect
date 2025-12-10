@@ -163,20 +163,45 @@ public class TutorReviewsActivity extends AppCompatActivity {
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 response -> {
                     ratingList.clear();
+                    List<RatingItem> adminRatings = new ArrayList<>();
+                    List<RatingItem> normalRatings = new ArrayList<>();
+
                     for (int i = 0; i < response.length(); i++) {
                         try {
                             JSONObject obj = response.getJSONObject(i);
-                            String username = obj.getJSONObject("user").getString("username");
+                            JSONObject userObj = obj.getJSONObject("user");
+
+                            String username = userObj.getString("username");
                             String comment = obj.optString("comments", "");
                             double rating = obj.optDouble("rating", 0);
-                            ratingList.add(new RatingItem(username, comment, rating));
+
+                            boolean isAdminReviewer = false;
+
+                            // Detect admin based on backend
+                            if (userObj.has("isAdmin"))
+                                isAdminReviewer = userObj.getBoolean("isAdmin");
+                            else if (userObj.has("role"))
+                                isAdminReviewer = userObj.getString("role").equalsIgnoreCase("ADMIN");
+
+                            RatingItem newItem = new RatingItem(username, comment, rating, isAdminReviewer);
+
+                            if (isAdminReviewer)
+                                adminRatings.add(newItem);
+                            else
+                                normalRatings.add(newItem);
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
+
+                    // Put admins FIRST
+                    ratingList.addAll(adminRatings);
+                    ratingList.addAll(normalRatings);
+
                     adapter.notifyDataSetChanged();
                 },
-                error -> Log.e("TutorReviewsActivity", "Failed to load ratings: " + error.toString())
+                error -> Log.e("TutorReviewsActivity", "Failed to load ratings: " + error)
         );
 
         queue.add(request);

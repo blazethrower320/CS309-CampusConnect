@@ -17,14 +17,16 @@
         android:background="@drawable/nestedlayout_bg"
         android:gravity="center_vertical">
 
+        <!-- Profile Image -->
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile_image"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:src="@drawable/baseline_account_circle_24"
             app:civ_border_width="2dp"
-            app:civ_border_color="#FFFFFF"/>
+            app:civ_border_color="#FFFFFF" />
 
+        <!-- Name + Username -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -47,26 +49,36 @@
                 android:layout_height="wrap_content"
                 android:text="username"
                 android:textColor="@color/white"
-                android:textSize="14sp"/>
+                android:textSize="14sp" />
         </LinearLayout>
 
-        <Button
-            android:id="@+id/make_admin_btn"
-            android:layout_width="95dp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#BA9D1D"
-            android:paddingHorizontal="16dp"
-            android:text="Make Admin"
-            android:textColor="@color/white" />
-
-        <Button
-            android:id="@+id/delete_btn"
+        <!-- RIGHT-SIDE BUTTON COLUMN -->
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:paddingHorizontal="16dp"
-            android:text="Delete"
-            android:backgroundTint="@color/red"
-            android:textColor="@color/white"/>
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            android:paddingStart="8dp">
+
+            <Button
+                android:id="@+id/make_admin_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="Make Admin"
+                android:backgroundTint="#BA9D1D"
+                android:textColor="@color/white"
+                android:paddingHorizontal="16dp"
+                android:layout_marginBottom="6dp"/>
+
+            <Button
+                android:id="@+id/delete_btn"
+                android:layout_width="111dp"
+                android:layout_height="40dp"
+                android:backgroundTint="@color/red"
+                android:text="Delete"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
     </LinearLayout>
+
 </androidx.cardview.widget.CardView>

@@ -1,6 +1,7 @@
 package com.example.androidexample;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,15 @@ public class RatingListAdapter extends RecyclerView.Adapter<RatingListAdapter.Ra
     @Override
     public void onBindViewHolder(@NonNull RatingViewHolder holder, int position) {
         RatingItem item = ratings.get(position);
-        holder.username.setText(item.username);
+
+        if (item.isAdmin) {
+            holder.username.setText(item.username + " (Administrator)");
+            holder.username.setTextColor(Color.YELLOW);
+        } else {
+            holder.username.setText(item.username);
+            holder.username.setTextColor(Color.WHITE);
+        }
+
         holder.comment.setText(item.comment);
         holder.ratingBar.setRating((float) item.rating);
     }

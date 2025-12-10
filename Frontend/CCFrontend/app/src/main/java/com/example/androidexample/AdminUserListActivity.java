@@ -31,8 +31,10 @@ import java.util.List;
 public class AdminUserListActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
+
     private UserAdapter adapter;
     private List<SimpleUser> usersList;
+
     private RequestQueue queue;
 
     private static final String BASE_URL = "http://coms-3090-037.class.las.iastate.edu:8080";
@@ -43,6 +45,9 @@ public class AdminUserListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_deleteusers);
+
+        ImageButton backButton = findViewById(R.id.back_button);
+        backButton.setOnClickListener(v -> finish());
 
         recyclerView = findViewById(R.id.past_sessions_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -106,12 +111,13 @@ public class AdminUserListActivity extends AppCompatActivity {
                             JSONObject obj = array.getJSONObject(i);
 
                             SimpleUser user = new SimpleUser(
+                                    obj.optInt("userId", 0),
                                     obj.optString("username", ""),
                                     obj.optString("firstName", ""),
                                     obj.optString("lastName", ""),
                                     obj.optString("password", ""),
                                     obj.optBoolean("isAdmin", false),
-                                    false // initially false, will check below
+                                    false
                             );
 
                             usersList.add(user);
@@ -152,10 +158,10 @@ public class AdminUserListActivity extends AppCompatActivity {
                     Request.Method.POST,
                     URL_DELETE_USER,
                     response -> {
-                        if (response.equalsIgnoreCase("userDeleted")) {
+                        if (response.equals("Deleted User")) {
                             Toast.makeText(this, "User deleted: " + user.getUsername(), Toast.LENGTH_SHORT).show();
                             usersList.remove(user);
-                            adapter.notifyDataSetChanged();
+                            adapter.reapplyFilter();
                         } else {
                             Toast.makeText(this, "Error: " + response, Toast.LENGTH_SHORT).show();
                         }
@@ -184,15 +190,21 @@ public class AdminUserListActivity extends AppCompatActivity {
     }
 
     private void makeAdmin(SimpleUser user) {
-        String url = BASE_URL + "/admin/createAdmin/" + user.getUsername();
+        String url = BASE_URL + "/admin/createAdmin/" + user.getUserId();
 
         StringRequest request = new StringRequest(
                 Request.Method.POST,
                 url,
                 response -> {
-                    Toast.makeText(this, "Promoted to Admin: " + user.getUsername(), Toast.LENGTH_SHORT).show();
-                    user.setAdmin(true);
-                    adapter.reapplyFilter();
+                    boolean success = Boolean.parseBoolean(response.trim());
+
+                    if (success) {
+                        Toast.makeText(this, "Promoted to Admin: " + user.getUsername(), Toast.LENGTH_SHORT).show();
+                        user.setAdmin(true);
+                        adapter.reapplyFilter();
+                    } else {
+                        Toast.makeText(this, "Server returned false — user not promoted", Toast.LENGTH_SHORT).show();
+                    }
                 },
                 error -> {
                     Toast.makeText(this, "Failed to promote user", Toast.LENGTH_SHORT).show();
@@ -203,30 +215,47 @@ public class AdminUserListActivity extends AppCompatActivity {
         queue.add(request);
     }
 
+
     private void fetchTutorStatus(SimpleUser user, Runnable callback) {
-        String url = BASE_URL + "/users/IsTutor/" + user.getUsername(); // or userID if you have it
+        String url = BASE_URL + "/users/getTutor/" + user.getUserId();
 
         StringRequest request = new StringRequest(Request.Method.GET, url,
                 response -> {
-                    boolean isTutor = Boolean.parseBoolean(response);
+
+                    Log.d("TutorStatus", "User " + user.getUsername() + " response: " + response);
+
+                    boolean isTutor;
+
+                    // CASE 1: backend returns empty string → NOT A TUTOR
+                    if (response == null || response.trim().isEmpty()) {
+                        isTutor = false;
+                    }
+                    // CASE 2: backend returns a JSON object → IS A TUTOR
+                    else if (response.trim().startsWith("{")) {
+                        isTutor = true;
+                    }
+                    // failsafe
+                    else {
+                        isTutor = false;
+                    }
+
                     user.setTutor(isTutor);
 
-                    // If they are a tutor, append (tutor) to display name
-                    if (isTutor) {
-                        user.setDisplayName(user.getFirstName() + " " + user.getLastName() + " (tutor)");
-                    } else {
-                        user.setDisplayName(user.getFirstName() + " " + user.getLastName());
-                    }
+                    String name = user.getFirstName() + " " + user.getLastName();
+                    user.setDisplayName(isTutor ? name + " (tutor)" : name);
 
                     callback.run();
                 },
                 error -> {
+                    // treat errors as non-tutor
                     user.setTutor(false);
                     user.setDisplayName(user.getFirstName() + " " + user.getLastName());
                     callback.run();
-                });
+                }
+        );
 
         queue.add(request);
     }
+
 
 }

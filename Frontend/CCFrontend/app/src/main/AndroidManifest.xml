@@ -20,10 +20,6 @@
             android:exported="false"/>
 
         <activity
-            android:name=".StringReqActivity"
-            android:exported="false" />
-
-        <activity
             android:name=".MainMenuActivity"
             android:exported="false" />
         <activity
@@ -37,7 +33,6 @@
         <activity
             android:name=".EditSessionActivity"
             android:exported="false" />
-
 
         <!-- Main launcher activity -->
         <activity
@@ -69,6 +64,7 @@
         <activity
             android:name=".AdminUserListActivity"
             android:exported="false" />
+
 
         <activity
             android:name=".MainActivity"

@@ -202,6 +202,17 @@ public class WilliamSystemTest {
         assertTrue("Temp user should be removed after test", deleted);
     }
 
+    @Test
+    public void testBackButtonNavigatesToMainActivity() {
+        ActivityScenario.launch(ForgotPasswordActivity.class);
+        onView(withId(R.id.back_btn))
+                .perform(click());
+
+        onView(withId(R.id.login_btn))
+                .check(matches(isDisplayed()));
+    }
+
+
 
     // ------------------------------------------------------------
     // 3) CREATE ACCOUNT TESTS
@@ -320,10 +331,10 @@ public class WilliamSystemTest {
     }
 
 
-
     // ------------------------------------------------------------
     // 4) TUTOR LIST TESTS
     // ------------------------------------------------------------
+
 
     @Test
     public void testActivityLaunchesCorrectly() {
@@ -471,7 +482,7 @@ public class WilliamSystemTest {
         onView(withId(R.id.comment_box)).check(matches(isEnabled()));
     }
 
-    // REDO THIS
+    // (connect real tutor account id (make sure JohnZeet has reviews))
     @Test
     public void testTutorReviewsRecyclerViewLoads() {
         User user = User.getInstance();
@@ -481,7 +492,7 @@ public class WilliamSystemTest {
         user.setUserId(3001);
 
         Intent intent = new Intent(ApplicationProvider.getApplicationContext(), TutorReviewsActivity.class);
-        intent.putExtra("tutorId", 2001);
+        intent.putExtra("tutorId", 1);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         ApplicationProvider.getApplicationContext().startActivity(intent);
 
@@ -559,16 +570,21 @@ public class WilliamSystemTest {
         onView(withId(R.id.nav_reviews)).perform(click());
     }
 
-    // REDO THIS
+    // (connect real tutor account & session)
     @Test
     public void testTutorCannotJoinOwnSession() {
         User user = User.getInstance();
         user.setTutor(true);
-        user.setUsername("TutorTest");
+        user.setUsername("JohnZeet");
+        user.setTutorId(1);
+        user.setUserId(1);
 
         IntentTestUtils.launchActivity(SessionActivity.class);
 
         TestUtils.sleep(1000);
+
+        onView(withId(R.id.class_search_view)).perform(typeText("ComS 309"));
+        TestUtils.sleep(1000); // wait for filtering
 
         onView(withId(R.id.sessions_recycler))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0,
@@ -629,7 +645,6 @@ public class WilliamSystemTest {
                         }));
     }
 
-    // (MAYBE) REDO THIS
     @Test
     public void testJoinSession() {
         // Mock logged-in user as a student
@@ -677,7 +692,6 @@ public class WilliamSystemTest {
     // 7) CREATE SESSION ACTIVITY TESTS
     // ------------------------------------------------------------
 
-
     @Test
     public void testCreateSessionActivityLoadsCorrectly() {
         ActivityScenario.launch(CreateSessionActivity.class);
@@ -697,12 +711,14 @@ public class WilliamSystemTest {
         user.setUserId(1234);
         user.setTutor(true);
         user.setTutorId(5678);
+
         ActivityScenario.launch(CreateSessionActivity.class);
 
+        // Attempt to click "Create Session" button without filling fields
         onView(withId(R.id.button_create_session)).perform(scrollTo(), click());
 
-        // Check that we remain on same page because toast prevents creation
-        onView(withId(R.id.edit_class_name)).check(matches(isDisplayed()));
+        // Check that the class name field is still visible
+        onView(withId(R.id.create_class_name)).check(matches(isDisplayed()));
     }
 
     @Test
@@ -715,17 +731,17 @@ public class WilliamSystemTest {
                 .check(matches(isDisplayed())); // SessionActivity RecyclerView
     }
 
-
+    // THIS ALSO COUNTS AS THE DELETE SESSION TEST (connect real tutor account)
     @Test
     public void testCreateAndDeleteSession() {
         // ---------------------------------------------------------
         // Setup: Real logged-in tutor
         // ---------------------------------------------------------
         User user = User.getInstance();
-        user.setUsername("TutorTest");
-        user.setUserId(1234);
+        user.setUsername("JohnZeet");
+        user.setUserId(1);
         user.setTutor(true);
-        user.setTutorId(5678);
+        user.setTutorId(1);
 
         ActivityScenario.launch(CreateSessionActivity.class);
 
@@ -869,16 +885,17 @@ public class WilliamSystemTest {
         onView(withId(R.id.edit_time)).check(matches(withText("12/06/2025 02:00 PM")));
     }
 
+    // (connect real tutor account)
     @Test
     public void testCreateEditAndSaveSession() {
         // ---------------------------------------------------------
         // Setup: Real logged-in tutor
         // ---------------------------------------------------------
         User user = User.getInstance();
-        user.setUsername("TutorTest");
-        user.setUserId(1234);
+        user.setUsername("JohnZeet");
+        user.setUserId(1);
         user.setTutor(true);
-        user.setTutorId(5678);
+        user.setTutorId(1);
 
         // Launch CreateSessionActivity
         ActivityScenario.launch(CreateSessionActivity.class);
@@ -951,6 +968,44 @@ public class WilliamSystemTest {
         onView(withId(R.id.sessions_recycler))
                 .check(matches(isDisplayed()))
                 .check(matches(hasDescendant(withText("COMS 310 Advanced"))));
+        TestUtils.sleep(1500);
+
+        // Filter the RecyclerView by the session name
+        onView(withId(R.id.class_search_view)).perform(typeText("COMS 310 Advanced"));
+        TestUtils.sleep(1000); // wait for filtering
+
+        // Click the Edit button inside the first item of the RecyclerView
+        onView(withId(R.id.sessions_recycler))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, new ViewAction() {
+                    @Override
+                    public Matcher<View> getConstraints() {
+                        return isAssignableFrom(View.class);
+                    }
+
+                    @Override
+                    public String getDescription() {
+                        return "Click the Edit button inside RecyclerView item";
+                    }
+
+                    @Override
+                    public void perform(UiController uiController, View view) {
+                        View editButton = view.findViewById(R.id.button_edit_session);
+                        if (editButton != null && editButton.isClickable()) {
+                            editButton.performClick();
+                        }
+                    }
+                }));
+
+        // Wait for EditSessionActivity to load
+        TestUtils.sleep(1000);
+
+        // Click the Delete button in EditSessionActivity
+        onView(withId(R.id.btn_delete_session)).perform(scrollTo(), click());
+
+        // Verify we returned to SessionActivity
+        onView(withId(R.id.sessions_recycler))
+                .check(matches(isDisplayed()));
+
     }
 
 
@@ -987,49 +1042,6 @@ public class WilliamSystemTest {
     // 9) DELETE USER ACTIVITY TESTS
     // ------------------------------------------------------------
 
-    // REDO THIS
-    @Test
-    public void testDeleteButtonDoesNotCrash() {
-        // Mock logged-in admin user if needed
-        User user = User.getInstance();
-        user.setUsername("AdminTest");
-        user.setAdmin(true);
-
-        // Launch AdminUserListActivity
-        IntentTestUtils.launchActivity(AdminUserListActivity.class);
-
-        TestUtils.sleep(2000); // Wait for RecyclerView to populate
-
-        onView(withId(R.id.past_sessions_recycler_view))
-                .check(matches(hasMinimumChildCount(1)));
-
-        // Click the first "Delete" button in the RecyclerView
-        onView(withId(R.id.past_sessions_recycler_view))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(0,
-                        new ViewAction() {
-                            @Override
-                            public Matcher<View> getConstraints() {
-                                return isAssignableFrom(View.class);
-                            }
-
-                            @Override
-                            public String getDescription() {
-                                return "Click Delete button inside RecyclerView item";
-                            }
-
-                            @Override
-                            public void perform(UiController uiController, View view) {
-                                View deleteButton = view.findViewById(R.id.delete_btn);
-                                if (deleteButton != null && deleteButton.isClickable()) {
-                                    deleteButton.performClick();
-                                }
-                            }
-                        }));
-
-        // Ensure RecyclerView still exists (no crash)
-        onView(withId(R.id.past_sessions_recycler_view)).check(matches(isDisplayed()));
-    }
-
     @Test
     public void testCreateSearchAndDeleteUser() throws Exception {
 
@@ -1051,7 +1063,7 @@ public class WilliamSystemTest {
         TestUtils.sleep(1000);
 
         // -----------------------------------------------
-        // LAUNCH ADMIN USER LIST SCREEN
+        // LAUNCH ADMIN USER LIST SCREEN (connect real admin account)
         // -----------------------------------------------
         User user = User.getInstance();
         user.setUsername("AdminTest");

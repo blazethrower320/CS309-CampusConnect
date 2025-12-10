@@ -130,18 +130,28 @@ public class EditSessionActivity extends AppCompatActivity {
             body.put("classCode", classCode.getText().toString());
             body.put("meetingLocation", meetingLocation.getText().toString());
             body.put("meetingTime", meetingTime.getText().toString());
-            body.put("dateCreated", "2025-10-29T19:00:00"); // not used, backend ignores it
+            body.put("dateCreated", "2025-10-29T19:00:00"); // unused but required
 
             String url = BASE_URL + "/sessions/editSession/" + sessionId;
 
-            JsonObjectRequest req = new JsonObjectRequest(Request.Method.PUT, url, body,
+            JsonObjectRequest req = new JsonObjectRequest(
+                    Request.Method.PUT,
+                    url,
+                    body,
                     response -> {
                         Toast.makeText(this, "Session updated!", Toast.LENGTH_SHORT).show();
+
+                        // Return to SessionActivity and clear EditSessionActivity from back stack
                         Intent intent = new Intent(EditSessionActivity.this, SessionActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
-                        finish();
+
+                        finish(); // <- closes EditSessionActivity cleanly
                     },
-                    error -> Toast.makeText(this, "Error updating session", Toast.LENGTH_SHORT).show()
+                    error -> {
+                        Toast.makeText(this, "Error updating session", Toast.LENGTH_SHORT).show();
+                        error.printStackTrace();
+                    }
             );
 
             Volley.newRequestQueue(this).add(req);
