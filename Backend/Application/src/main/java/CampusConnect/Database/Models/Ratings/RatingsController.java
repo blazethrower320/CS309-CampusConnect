@@ -36,7 +36,7 @@ public class RatingsController
     {
         return ratingsRepository.getAllRatingsByTutorTutorId(tutorId);
     }
-    @GetMapping("/ratings/getTutorRatingsUserId/{UserId}")
+    @GetMapping("/ratings/getTutorRatingsUserId/{userId}")
     public List<Ratings> getTutorRatingsUserID(@PathVariable long userId)
     {
         return ratingsRepository.getAllRatingsByUser_UserId(userId);

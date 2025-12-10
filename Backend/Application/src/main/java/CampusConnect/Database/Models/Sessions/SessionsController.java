@@ -42,7 +42,6 @@ public class SessionsController
     @GetMapping(path = "/sessions/inactive/{userId}")
     public List<Sessions> getPreviousSessions(@PathVariable long userId) {
         LocalDateTime currentTime = LocalDateTime.now();
-
         return sessionsRepository.findAll().stream()
                 .filter(s -> {
                     try {
