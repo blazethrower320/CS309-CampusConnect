@@ -1,0 +1,226 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > Tutor</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">CampusConnect.Database.Models.Tutors</a>
+</div>
+
+<h1>Coverage Summary for Class: Tutor (CampusConnect.Database.Models.Tutors)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Tutor</td>
+<td class="coverageStat">
+  <span class="percent">
+    73.3%
+  </span>
+  <span class="absValue">
+    (11/15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    82.6%
+  </span>
+  <span class="absValue">
+    (19/23)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Tutor$HibernateInstantiator$qMjUsLfK</td>
+  </tr>
+  <tr>
+    <td class="name">Tutor$HibernateProxy$kYDvJ3SN</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    73.3%
+  </span>
+  <span class="absValue">
+    (11/15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    82.6%
+  </span>
+  <span class="absValue">
+    (19/23)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package CampusConnect.Database.Models.Tutors;
+&nbsp;
+&nbsp;
+&nbsp;import CampusConnect.Database.Models.Classes.Classes;
+&nbsp;import CampusConnect.Database.Models.Ratings.Ratings;
+&nbsp;import CampusConnect.Database.Models.Sessions.Sessions;
+&nbsp;import CampusConnect.Database.Models.Users.User;
+&nbsp;import com.fasterxml.jackson.annotation.JsonIgnore;
+&nbsp;import jakarta.persistence.*;
+&nbsp;
+&nbsp;import java.util.HashSet;
+&nbsp;import java.util.Set;
+&nbsp;
+&nbsp;@Entity
+&nbsp;public class Tutor {
+&nbsp;    @Id
+&nbsp;    @GeneratedValue(strategy = GenerationType.IDENTITY)
+&nbsp;    private long tutorId;
+<b class="fc">&nbsp;    @Column(name = &quot;rating&quot;)</b>
+&nbsp;    private double totalRating = 5.0;
+<b class="fc">&nbsp;    private double hourlyRate = 0;</b>
+&nbsp;    private String username;
+&nbsp;
+&nbsp;    @OneToOne
+&nbsp;    @JoinColumn(name = &quot;user_id&quot;, nullable = false, unique = true)
+&nbsp;    private User user;
+&nbsp;
+<b class="fc">&nbsp;    @OneToMany(mappedBy = &quot;tutor&quot;, cascade = CascadeType.ALL, orphanRemoval = true)</b>
+&nbsp;    @JsonIgnore
+&nbsp;    private Set&lt;Ratings&gt; ratings = new HashSet&lt;&gt;();
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;    @OneToMany(mappedBy = &quot;tutor&quot;)</b>
+&nbsp;    @JsonIgnore
+&nbsp;    private Set&lt;Sessions&gt; tutorSessions = new HashSet&lt;&gt;();
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;    @ManyToMany</b>
+&nbsp;    @JoinTable(
+&nbsp;            name = &quot;tutor_classes&quot;,
+&nbsp;            joinColumns = @JoinColumn(name = &quot;tutorId&quot;),
+&nbsp;            inverseJoinColumns = @JoinColumn(name = &quot;classId&quot;)
+&nbsp;    )
+&nbsp;    private Set&lt;Classes&gt; classes = new HashSet&lt;&gt;();
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;    public Tutor() {}</b>
+&nbsp;
+<b class="fc">&nbsp;    public Tutor(User user) {</b>
+<b class="fc">&nbsp;        this.user = user;</b>
+<b class="fc">&nbsp;        this.username = user.getUsername();</b>
+&nbsp;        //this.userId = userId;
+&nbsp;        //this.totalClasses = totalClasses;
+&nbsp;        //this.rating = rating;
+&nbsp;        //this.username = username;
+&nbsp;    }
+<b class="fc">&nbsp;    public String getUsername(){ return username; }</b>
+&nbsp;    //public long getUserId() { return userId; }
+<b class="fc">&nbsp;    public long getTutorId() { return tutorId; }</b>
+&nbsp;
+<b class="fc">&nbsp;    public double getTotalRating() { return totalRating; }</b>
+&nbsp;
+&nbsp;    public void setTotalRating(double rating) {
+<b class="nc">&nbsp;        this.totalRating = rating;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public User getUser(){
+<b class="fc">&nbsp;        return user;</b>
+&nbsp;    }
+&nbsp;    public double getHourlyRate(){
+<b class="fc">&nbsp;        return hourlyRate;</b>
+&nbsp;    }
+&nbsp;    public void setHourlyRate(Double rate){
+<b class="nc">&nbsp;        this.hourlyRate = rate;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /*
+&nbsp;    public void setUser(User user){
+&nbsp;        this.user = user;
+&nbsp;        if(user != null &amp;&amp; user.getTutor() != this){
+&nbsp;            user.setTutor(this);
+&nbsp;        }
+&nbsp;    }
+&nbsp;     */
+&nbsp;    public Set&lt;Ratings&gt; getRatings() {
+<b class="nc">&nbsp;        return ratings;</b>
+&nbsp;    }
+&nbsp;    public void setRatings(Set&lt;Ratings&gt; ratings) {
+<b class="nc">&nbsp;        this.ratings = ratings;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Set&lt;Classes&gt; getClasses() {
+<b class="fc">&nbsp;        return classes;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void addClasses(Classes classes){
+<b class="fc">&nbsp;        this.classes.add(classes);</b>
+<b class="fc">&nbsp;        classes.getTutors().add(this);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void removeClass(Classes classes){
+<b class="fc">&nbsp;        this.classes.remove(classes);</b>
+&nbsp;    }
+&nbsp;    public Set&lt;Sessions&gt; getTutorSessions(){
+<b class="fc">&nbsp;        return tutorSessions;</b>
+&nbsp;    }
+&nbsp;}
+&nbsp;
+&nbsp;
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-12-10 15:43</div>
+</div>
+</body>
+</html>
