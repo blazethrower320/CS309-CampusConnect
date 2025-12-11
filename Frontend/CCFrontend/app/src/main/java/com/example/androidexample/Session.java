@@ -7,6 +7,8 @@ public class Session {
     private int tutorUserId;
     private String meetingLocation;
     private String meetingTime;
+
+    private int tutorId;
     private String tutorUsername;
     private boolean joined;
 
@@ -26,6 +28,10 @@ public class Session {
     public String getClassCode() { return classCode; }
     public String getMeetingLocation() { return meetingLocation; }
     public String getMeetingTime() { return meetingTime; }
+
+    public int getTutorId() { return tutorId; }
+
+    public void setTutorId(int tutorId) { this.tutorId = tutorId; }
 
     public int getTutorUserId() { return tutorUserId; }
 

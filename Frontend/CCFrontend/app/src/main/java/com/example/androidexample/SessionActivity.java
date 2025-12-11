@@ -102,6 +102,7 @@ public class SessionActivity extends AppCompatActivity implements WebSocketListe
             startActivity(new Intent(this, CreateSessionActivity.class));
             finish();
         });
+        if (isAdmin) createSession.setVisibility(View.GONE);
 
         fetchSessionsFromBackend();
     }
@@ -389,6 +390,7 @@ public class SessionActivity extends AppCompatActivity implements WebSocketListe
 
                     session.setTutorUsername(username);
                     session.setTutorUserId(tutorUserId);
+                    session.setTutorId(tutorId);
 
                     Log.e("tutorUserId", String.valueOf(tutorUserId));
                     sessionAdapter.notifyDataSetChanged();

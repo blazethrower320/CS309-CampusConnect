@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -125,6 +126,14 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
             drawerLayout.closeDrawer(GravityCompat.START);
         });
 
+        LinearLayout UsersBtn = findViewById(R.id.nav_deleteUsers);
+        UsersBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(MainMenuActivity.this, AdminUserListActivity.class);
+            startActivity(intent);
+            drawerLayout.closeDrawer(GravityCompat.START);
+        });
+
+
         LinearLayout reviewsBtn = findViewById(R.id.nav_reviews);
         reviewsBtn.setOnClickListener(v -> {
             Intent intent = new Intent(MainMenuActivity.this, ReviewListActivity.class);
@@ -177,16 +186,19 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
         if (user.isAdmin())
         {
             statusText.setText("Status: Admin");
+            UsersBtn.setVisibility(View.VISIBLE);
         }
         else if (isTutor) {
             connectWebSocketForTutor();
             statusText.setText("Status: Tutor");
             loadTutorStats();
             tutorStatsCard.setVisibility(View.VISIBLE);
+            UsersBtn.setVisibility(View.GONE);
         }
         else
         {
             statusText.setText("Status: Student");
+            UsersBtn.setVisibility(View.GONE);
         }
     }
 
@@ -560,7 +572,5 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(putRequest);
     }
-
-
 
 }
