@@ -42,7 +42,7 @@ public class TutorController {
 
     @GetMapping("/tutors/getClasses/{tutorId}")
     public List<Classes> getTutorClasses(@PathVariable long tutorId) {
-        return classesRepository.findAll();
+        return classesRepository.findByTutors_tutorId(tutorId);
     }
 
     @PostMapping("/tutors/createTutor/{username}")

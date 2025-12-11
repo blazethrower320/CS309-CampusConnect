@@ -3,6 +3,8 @@ package CampusConnect.Database.Models.Classes;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 public interface ClassesRepository extends JpaRepository<Classes, Long> {
     @Transactional
     void deleteById(Long id);
@@ -10,4 +12,6 @@ public interface ClassesRepository extends JpaRepository<Classes, Long> {
     Classes findByclassName(String name);
     boolean existsByclassName(String className);
     boolean existsByclassCode(String classCode);
+
+    List<Classes> findByTutors_tutorId(long tutorId);
 }
