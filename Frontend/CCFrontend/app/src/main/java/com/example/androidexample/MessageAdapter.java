@@ -191,6 +191,11 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         {
             senderText.setText(message.getSenderName());
             // Use Glide to load the image from the URL
+            Log.d("Image URL: ",  message.getContent());
+            if (!message.getContent().startsWith("http://coms-3090-037.class.las.iastate.edu:8080"))
+            {
+                message.setContent("http://coms-3090-037.class.las.iastate.edu:8080/images/" + message.getContent());
+            }
             Glide.with(itemView.getContext())
                     .load(message.getContent()) // The content is the image URL
                     .placeholder(R.drawable.image_placeholder) // Optional

@@ -3,6 +3,7 @@ package com.example.androidexample;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,38 +35,46 @@ public class AllMessages extends AppCompatActivity {
     private boolean isAdmin;
     private String password;
 
+    private User user;
+
+    private ImageButton backBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_allmessages_page);
 
-        // Get user data passed from the previous activity
-        Intent intent = getIntent();
-        username = intent.getStringExtra("username");
-        userId = intent.getIntExtra("userId", -1);
-        isTutor = intent.getBooleanExtra("isTutor", false);
-        isAdmin = intent.getBooleanExtra("isAdmin", false);
-        password = intent.getStringExtra("password");
+        //Get current user
+        user = User.getInstance();
+        backBtn = findViewById(R.id.back_btn);
 
+        backBtn.setOnClickListener(v ->
+        {
+            startActivity(new Intent(this, MainMenuActivity.class));
+            finish();
+        });
+
+
+
+        // Initialize RecyclerView
         recyclerView = findViewById(R.id.messages_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         messageGroupList = new ArrayList<>();
 
+        // The click listener now receives the full MessageGroup object
         adapter = new AllMessagesAdapter(this, messageGroupList, (messageGroup) -> {
-            // Click listener for each item
+            // This code runs when a user taps on a card
             Intent chatIntent = new Intent(AllMessages.this, ChatActivity.class);
 
-            // Pass all necessary data to ChatActivity
-            chatIntent.putExtra("username", username);
-            chatIntent.putExtra("userId", userId);
-            chatIntent.putExtra("isTutor", isTutor);
-            chatIntent.putExtra("isAdmin", isAdmin);
-            chatIntent.putExtra("password", password);
+            // ===================================================================
+            // THE KEY CHANGE: Pass the 'Id' from the clicked MessageGroup object
+            // This ID will now be used by ChatActivity to know which chat to open.
+            // ===================================================================
+            chatIntent.putExtra("sessionId", messageGroup.getId());
+            chatIntent.putExtra("isGroupChat", messageGroup.isGroupChat());
 
-            // Pass the specific data for the selected chat
-            chatIntent.putExtra("sessionId", messageGroup.getSessionId());
-
+            chatIntent.putExtra("chatName", messageGroup.getName());
             startActivity(chatIntent);
         });
         recyclerView.setAdapter(adapter);
@@ -74,34 +83,44 @@ public class AllMessages extends AppCompatActivity {
     }
 
     private void fetchMessageGroups() {
-        // The URL to fetch all sessions/DMs for the current user.
-        String url = "http://coms-3090-037.class.las.iastate.edu:8080/sessions/user/" + userId;
+        // This URL should return an array of JSON objects for the user
+        String url = "http://coms-3090-037.class.las.iastate.edu:8080/messages/getAllChats/" + user.getUserId(); // Example URL
         RequestQueue queue = Volley.newRequestQueue(this);
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                Request.Method.GET,
-                url,
-                null,
+                Request.Method.GET, url, null,
                 response -> {
                     Log.d(TAG, "Response: " + response.toString());
                     messageGroupList.clear();
 
                     try {
                         for (int i = 0; i < response.length(); i++) {
-                            JSONObject sessionObject = response.getJSONObject(i);
+                            JSONObject chatObject = response.getJSONObject(i);
 
-                            int sessionId = sessionObject.getInt("id");
-                            String groupName = sessionObject.getJSONObject("course").getString("name");
-                            // Using a placeholder for time. You might get this from your JSON.
-                            String messageTime = ""; // e.g., "9:00 PM"
-
-                            messageGroupList.add(new MessageGroup(sessionId, groupName, messageTime));
+                            // ===================================================================
+                            // THE KEY CHANGE: Parse the fields from your backend's JSON
+                            // ===================================================================
+                            int chatId = chatObject.getInt("Id");
+                            String chatName = chatObject.getString("Name");
+                            boolean isGroup = chatObject.getBoolean("isGroupChat");
+                            // ===================================================================
+                            Log.i("AllMessages Data", "Chat ID: " + chatId + ", Name: " + chatName + ", isGroup: " + isGroup);
+                            String chatType = "";
+                            if(isGroup)
+                            {
+                                chatType = "Group Chat";
+                            }
+                            else
+                            {
+                                chatType = "Direct Message";
+                            }
+                            messageGroupList.add(new MessageGroup(chatId, chatName, isGroup, chatType));
                         }
                     } catch (JSONException e) {
                         Log.e(TAG, "JSON parsing error", e);
                         Toast.makeText(AllMessages.this, "Error parsing data!", Toast.LENGTH_SHORT).show();
                     }
-                    adapter.notifyDataSetChanged();
+                    adapter.notifyDataSetChanged(); // Refresh the list
                 },
                 error -> {
                     Log.e(TAG, "Volley error: " + error.toString());
