@@ -22,7 +22,7 @@ class PushSystemTest {
 
     @LocalServerPort
     int port;
-/*
+
     @Test
     void testWebSocketEndpoint() throws Exception {
 
@@ -55,10 +55,10 @@ class PushSystemTest {
         String response = messages.poll(2, java.util.concurrent.TimeUnit.SECONDS);
 
         // Assert response
-        assertThat(response).isEqualTo("CamdenKlicker joined your study session: Development");
+        assertThat(response).isEqualTo("Zach joined your study session: Development");
 
         // Close session
         session.close();
     }
- */
+
 }

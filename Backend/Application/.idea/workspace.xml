@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="01ee6f06-2b84-458c-b6cc-b4de62b6eadf" name="Changes" comment="Comment out test.">
+    <list default="true" id="01ee6f06-2b84-458c-b6cc-b4de62b6eadf" name="Changes" comment="Merge branch 'main' of https://git.las.iastate.edu/cs309/2025fall/3_hosen_1 into PreetTesting&#10;&#10;# Conflicts:&#10;#&#9;Backend/Application/.idea/workspace.xml">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Ratings/RatingsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Ratings/RatingsController.java" afterDir="false" />
     </list>
@@ -309,13 +309,20 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Application$All_in_CampusConnect.ic" NAME="All in CampusConnect Coverage Results" MODIFIED="1765321655647" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
     <SUITE FILE_PATH="coverage/Application$ClassesSystemTest.ic" NAME="ClassesSystemTest Coverage Results" MODIFIED="1765071352087" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>CampusConnect.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/Application$CarsonSystemTest__1_.ic" NAME="CarsonSystemTest (1) Coverage Results" MODIFIED="1764975599934" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
       <FILTER>CampusConnect.*</FILTER>
     </SUITE>
     <SUITE FILE_PATH="coverage/Application$TutorSystemTest.ic" NAME="TutorSystemTest Coverage Results" MODIFIED="1765067850321" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
       <FILTER>CampusConnect.*</FILTER>
     </SUITE>
     <SUITE FILE_PATH="coverage/Application$PushWebSocketTest.ic" NAME="PushWebSocketTest Coverage Results" MODIFIED="1765075690022" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>CampusConnect.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/Application$PrivateMessagesSystemTest.ic" NAME="PrivateMessagesSystemTest Coverage Results" MODIFIED="1765321292653" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
       <FILTER>CampusConnect.*</FILTER>
     </SUITE>
     <SUITE FILE_PATH="coverage/Application$CampusConnect_in_CampusConnect.ic" NAME="CampusConnect in CampusConnect Coverage Results" MODIFIED="1765064737658" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
