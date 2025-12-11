@@ -64,6 +64,9 @@
         <activity
             android:name=".AdminUserListActivity"
             android:exported="false" />
+        <activity
+            android:name=".EditSessionActivity"
+            android:exported="false" />
 
         <activity
             android:name=".MainActivity"
