@@ -1,55 +1,44 @@
 package com.example.androidexample;
 
+//Class for ChatMessage Objects(individual message bubbles)
 public class ChatMessage {
     private String content;
-    private final boolean isSentByUser;
-    private final int messageType; // 0 for text, 1 for image
-    private String senderName; // Added to store the name of the sender
+    private boolean isSentByUser;
+    private int messageType; // 0 for "TEXT", 1 for "IMAGE
+    private String senderName;
 
-    /**
-     * Constructor for messages sent by the current user (local echo).
-     */
-    public ChatMessage(String content, boolean isSentByUser, int messageType) {
+    public ChatMessage(String content, boolean isSentByUser, int messageType)
+    {
         this.content = content;
         this.isSentByUser = isSentByUser;
         this.messageType = messageType;
-        this.senderName = null; // Not needed for sent messages
+        this.senderName = null;
     }
-
-    public void appendContent(String textToAppend) {
-        // The 'this.content' refers to the 'content' field of the ChatMessage object
-        this.content += textToAppend;
-    }
-
-    /**
-     * Constructor for messages received from others, including chat history.
-     */
+    //Constructor for messages recieved from others.
     public ChatMessage(String content, boolean isSentByUser, int messageType, String senderName) {
         this.content = content;
         this.isSentByUser = isSentByUser;
         this.messageType = messageType;
-        this.senderName = senderName;
+        this.senderName = senderName; // Set the sender's name
     }
 
-    // --- Getters ---
-    public String getContent() {
+    // Add getters for all four fields
+    public String getContent()
+    {
         return content;
     }
-
-    public boolean isSentByUser() {
+    public boolean isSentByUser()
+    {
         return isSentByUser;
     }
-
-    public int getMessageType() {
+    public int getMessageType()
+    {
         return messageType;
     }
-
-    public String getSenderName() {
+    public String getSenderName()
+    {
         return senderName;
     }
-
-    public void setContent(String s)
-    {
-        this.content = s;
-    }
 }
+
+    

@@ -260,7 +260,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/past_sessions_recycler_view"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="300dp"
                     android:layout_marginTop="0dp"
                     android:nestedScrollingEnabled="true"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
