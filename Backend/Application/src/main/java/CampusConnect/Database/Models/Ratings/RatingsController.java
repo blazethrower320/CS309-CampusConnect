@@ -42,6 +42,18 @@ public class RatingsController
         return ratingsRepository.getAllRatingsByUser_UserId(userId);
     }
 
+    @GetMapping("/ratings/getTutorAverageUsrId/{userId}")
+    public double getTutorAverageRating(@PathVariable long userId)
+    {
+        Tutor tutor = tutorRepository.findByUser_UserId(userId);
+        List<Ratings> tutorRatings = ratingsRepository.getAllRatingsByTutor(tutor);
+
+        int totalStars = 0;
+        for(Ratings ratings : tutorRatings)
+            totalStars += ratings.getRating();
+        return totalStars;
+    }
+
     @PostMapping("/ratings/createRating")
     public boolean createRating(@RequestBody RatingsDTO ratingDTO)
     {
