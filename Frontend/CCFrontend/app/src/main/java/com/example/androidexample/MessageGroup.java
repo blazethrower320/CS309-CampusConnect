@@ -1,32 +1,26 @@
 package com.example.androidexample;
 
 public class MessageGroup {
-    private final int id; // The chat ID (from backend)
-    private final String name; // The chat name (from backend)
-    private final boolean isGroupChat; // The type of chat (from backend)
-    private final String extraText; // For the "Enter Chat" text
+    private int sessionId;
+    private String groupName;
+    private String messageTime;
 
-    public MessageGroup(int id, String name, boolean isGroupChat, String extraText) {
-        this.id = id;
-        this.name = name;
-        this.isGroupChat = isGroupChat;
-        this.extraText = extraText;
+    public MessageGroup(int sessionId, String groupName, String messageTime) {
+        this.sessionId = sessionId;
+        this.groupName = groupName;
+        this.messageTime = messageTime;
     }
 
     // --- Getters ---
-    public int getId() {
-        return id;
+    public int getSessionId() {
+        return sessionId;
     }
 
-    public String getName() {
-        return name;
+    public String getGroupName() {
+        return groupName;
     }
 
-    public boolean isGroupChat() {
-        return isGroupChat;
-    }
-
-    public String getExtraText() {
-        return extraText;
+    public String getMessageTime() {
+        return messageTime;
     }
 }

@@ -54,7 +54,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private User user;
     private User otherUser;
     private String tutorUsername;
-    private int profileUserId;
 
     private static final String BASE_URL = "http://coms-3090-037.class.las.iastate.edu:8080";
 
@@ -102,7 +101,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             // Viewing tutor's profile
             GetUserInfo(tutorUsername);          // populates profileUser fields
             fetchUserIdByUsername(tutorUsername); // fetch numeric userId
-
         } else {
             // Viewing own profile
             GetUserInfo(loggedInUser.getUsername());
@@ -161,16 +159,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 intent.putExtra("tutorUsername", profileUser.getUsername());
                 intent.putExtra("userId", loggedInUser.getUserId());
                 intent.putExtra("username", loggedInUser.getUsername());
-                intent.putExtra("chatName", profileUser.getFirstName());
-                intent.putExtra("isGroupChat", false);
-
-            Log.d("ProfileActivity", "Starting ChatActivity with tutorUserId: "
+                Log.d("ProfileActivity", "Starting ChatActivity with tutorUserId: "
                         + profileUser.getUserId() + ", tutorUsername: " + profileUser.getUsername());
                 v.getContext().startActivity(intent);
         }
         if (id == R.id.logout_btn) {
             User.clearInstance(); // clear singleton
-            WebSocketManager.getInstance().disconnectWebSocket();
             startActivity(new Intent(this, MainActivity.class));
             finish();
         }
@@ -222,11 +216,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         // Buttons visibility
         if (!profileUser.getUsername().equals(loggedInUser.getUsername())) {
             editProfileBtn.setVisibility(View.GONE);
-            logoutBtn.setVisibility(View.GONE);
             msgBtn.setVisibility(View.VISIBLE);
         } else {
             editProfileBtn.setVisibility(View.VISIBLE);
-            logoutBtn.setVisibility(View.VISIBLE);
             msgBtn.setVisibility(View.GONE);
         }
     }
@@ -276,12 +268,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 response -> {
                     try {
                         profileUser = User.fromJson(response); // create a new User object
-                        //if(profileUser.getTutorId()!=0)
-                        //{
-                            profileUser.setUserId(profileUserId);
-                            //getTutorRating(profileUser.getUserId());
-                            Log.i("ProfileActivity", "Tutor ID: " + profileUser.getUserId());
-                        //}
                         updateUIWithProfileUser(); // update UI after network call
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -306,8 +292,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                             profileUser.setUserId(userId);
                         }
                         Log.d("ProfileActivity", "Fetched userId: " + userId);
-                        profileUserId = userId;
-                        getTutorRating(userId);
                         msgBtn.setEnabled(true);
                     } catch (NumberFormatException e) {
                         Log.e("ProfileActivity", "Failed to parse userId: " + response, e);
@@ -321,45 +305,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
 
 
-    private void getTutorRating(int tutorId) {
-        String url = BASE_URL + "/ratings/getTutorAverageUsrId/" + tutorId;
-        RequestQueue queue = Volley.newRequestQueue(this);
 
-        // Since the endpoint returns a plain string (the double), a StringRequest is appropriate.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                response -> {
-                    try
-                    {
-                        // The response is the rating, e.g., "4.5"
-                        double rating = Double.parseDouble(response.trim());
-                        // Format the rating to one decimal place and set it to the TextView
-                        tutorRatingValue.setText(String.format("%.1f", rating));
-                        tutorRatingText.setVisibility(View.VISIBLE);
-                        Log.d("GetTutorRating", "Successfully fetched rating: " + rating);
-                    }
-                    catch (NumberFormatException e)
-                    {
-                        Log.e("GetTutorRating", "Failed to parse rating from response: " + response, e);
-                        tutorRatingValue.setText("N/A"); // Show 'Not Available' on parsing error
-                    }
-                },
-                error -> {
-                    Log.e("GetTutorRating", "Error fetching tutor rating for ID " + tutorId, error);
-                    tutorRatingValue.setText("N/A"); // Show 'Not Available' on network error
-                });
-
-        queue.add(stringRequest);
-    }
-
-
-
-
-        private void loadPastSessionData() {
+    private void loadPastSessionData() {
         pastSessionList = new ArrayList<>();
         sessionAdapter = new PastSessionAdapter(pastSessionList);
         pastSessionsRecyclerView.setAdapter(sessionAdapter);
 
-        String url = BASE_URL + "/sessions/inactive/" + User.getInstance().getUserId(); //TODO NEW CODE TO TROUBLESHOOT
+        String url = BASE_URL + "/sessions/inactive";
         RequestQueue queue = Volley.newRequestQueue(this);
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
