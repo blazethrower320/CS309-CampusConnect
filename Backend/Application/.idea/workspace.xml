@@ -7,6 +7,7 @@
     <list default="true" id="01ee6f06-2b84-458c-b6cc-b4de62b6eadf" name="Changes" comment="Update">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/CampusConnect/PushSystemTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/CampusConnect/PushSystemTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Ratings/RatingsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CampusConnect/Database/Models/Ratings/RatingsController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -199,6 +200,9 @@
       <workItem from="1764793885785" duration="5320000" />
       <workItem from="1764959877624" duration="980000" />
       <workItem from="1764965395735" duration="593000" />
+      <workItem from="1764988247916" duration="41000" />
+      <workItem from="1765394041862" duration="2415000" />
+      <workItem from="1765397708505" duration="5180000" />
     </task>
     <task id="LOCAL-00001" summary="Added mapping for sessions feature. Sessions mapped with tutor and users table.">
       <option name="closed" value="true" />
