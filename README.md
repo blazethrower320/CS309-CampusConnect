@@ -1,3 +1,17 @@
+# CampusConnect
+CampusConnect is a semester long project (COMS309) where we build a Andriod Application. The app serves as a a central point where students can request tutoring sessions from available tutors. Users can create and manage their profiles, join tutoring sessions, receive notifications and many more features. 
+
+### The Team
+Backend
+ - Carson Torrey
+ - Preet Patel
+
+Frontend
+ - William Rossow
+ - Camden Klicker
+
+
+
 # Backend
 
 ### API Calls
@@ -233,6 +247,7 @@
                 }
         ```
            
+
 
 
 
